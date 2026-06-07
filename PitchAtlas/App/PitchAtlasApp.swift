@@ -2,9 +2,13 @@ import SwiftUI
 
 @main
 struct PitchAtlasApp: App {
+    /// The bundled content, loaded once at launch and shared via @Environment.
+    @State private var store = PitchStore()
+
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environment(store)
                 .preferredColorScheme(.dark)
         }
     }
@@ -39,13 +43,23 @@ enum AppTab: String, CaseIterable, Identifiable {
 }
 
 struct RootView: View {
-    @State private var selectedTab: AppTab = .atlas
+    @State private var selectedTab: AppTab = RootView.initialTab
+
+    /// DEBUG-only launch override so QA can open straight to a tab; production always starts on Atlas.
+    static var initialTab: AppTab {
+        #if DEBUG
+        if let raw = ProcessInfo.processInfo.environment["PA_TAB"], let tab = AppTab(rawValue: raw) {
+            return tab
+        }
+        #endif
+        return .atlas
+    }
 
     var body: some View {
         TabView(selection: $selectedTab) {
             ForEach(AppTab.allCases) { tab in
                 NavigationStack {
-                    ComingOnlineScreen(tab: tab)
+                    screen(for: tab)
                 }
                 .tabItem { Label(tab.title, systemImage: tab.systemImage) }
                 .tag(tab)
@@ -53,52 +67,21 @@ struct RootView: View {
         }
         .tint(PitchAtlasTheme.cyan)
     }
-}
 
-/// Honest placeholder shell for the foundation build — the void field + brand type,
-/// labeled as not-yet-wired. No fake data. Each tab's real surface replaces this.
-struct ComingOnlineScreen: View {
-    let tab: AppTab
-
-    var body: some View {
-        ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
-
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                Text("PITCH ATLAS")
-                    .font(PitchAtlasTheme.martian(11))
-                    .tracking(3)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
-
-                Text(tab.title.uppercased())
-                    .font(PitchAtlasTheme.anton(44))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .antonSkew()
-
-                Text("Sourced, not corrected.")
-                    .font(PitchAtlasTheme.newsreaderItalic(18))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .padding(.top, PitchAtlasSpacing.xs)
-
-                HStack(spacing: PitchAtlasSpacing.xs) {
-                    Circle()
-                        .fill(PitchAtlasTheme.cyan)
-                        .frame(width: 8, height: 8)
-                        .shadow(color: PitchAtlasTheme.cyan.opacity(0.6), radius: 4)
-                    Text("Surface coming online")
-                        .font(PitchAtlasTheme.martian(10))
-                        .tracking(1.5)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
-                }
-                .padding(.top, PitchAtlasSpacing.lg)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(PitchAtlasSpacing.xl)
+    @ViewBuilder
+    private func screen(for tab: AppTab) -> some View {
+        switch tab {
+        case .atlas: AtlasView()
+        case .index: IndexView()
+        case .grips: GripsView()
+        case .craftsmen: CraftsmenView()
+        case .sources: SourcesView()
         }
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 #Preview {
     RootView()
+        .environment(PitchStore())
+        .preferredColorScheme(.dark)
 }

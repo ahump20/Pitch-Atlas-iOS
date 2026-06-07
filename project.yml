@@ -23,20 +23,36 @@ targets:
     platform: iOS
     sources:
       - path: PitchAtlas
+    # An explicit, xcodegen-authored Info.plist (generated, gitignored) — required
+    # because UIAppFonts is an array and Xcode's INFOPLIST_KEY_ generated-plist
+    # mechanism only supports a fixed allowlist of scalar keys, not font arrays.
+    info:
+      path: PitchAtlas/Info.plist
+      properties:
+        CFBundleDisplayName: Pitch Atlas
+        UIUserInterfaceStyle: Dark
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        # Export-compliance: no non-exempt encryption — keeps TestFlight uploads moving.
+        ITSAppUsesNonExemptEncryption: false
+        # Bundled OFL typefaces (Resources/Fonts/*.ttf). Registered here so
+        # Font.custom resolves the exact PostScript names the theme references.
+        UIAppFonts:
+          - Anton-Regular.ttf
+          - Newsreader-Regular.ttf
+          - Newsreader-Italic.ttf
+          - HankenGrotesk-Regular.ttf
+          - HankenGrotesk-Medium.ttf
+          - MartianMono-Regular.ttf
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pitchatlas.app
         # PRODUCT_NAME stays "PitchAtlas" (no space) so TEST_HOST resolves; the
-        # spaced, user-facing label is carried by CFBundleDisplayName below.
+        # spaced, user-facing label is carried by CFBundleDisplayName above.
         TARGETED_DEVICE_FAMILY: "1"            # iPhone only (v1)
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
-        INFOPLIST_KEY_UILaunchScreen_Generation: YES
-        INFOPLIST_KEY_UIUserInterfaceStyle: Dark
-        INFOPLIST_KEY_CFBundleDisplayName: Pitch Atlas
-        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
-        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
-        GENERATE_INFOPLIST_FILE: YES
     scheme:
       testTargets:
         - PitchAtlasTests

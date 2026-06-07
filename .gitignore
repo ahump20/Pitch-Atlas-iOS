@@ -11,6 +11,8 @@ build/
 
 # xcodegen output is generated from project.yml — do not commit the generated project
 PitchAtlas.xcodeproj/
+# Info.plist is authored by xcodegen from project.yml's info block — generated, not source
+PitchAtlas/Info.plist
 
 # Generated content (regenerated from the web repo by tools/generate-content)
 # Committed JSON lives in PitchAtlas/Resources/Content; the *intermediate* build dir is ignored.
