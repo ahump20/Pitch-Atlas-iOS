@@ -1,0 +1,1463 @@
+[
+  {
+    "id": "mlb-active-spin",
+    "label": "MLB.com Statcast Glossary, Active Spin",
+    "url": "https://www.mlb.com/glossary/statcast/active-spin",
+    "retrievedAt": "2026-06-04",
+    "season": "2019 reference (Verlander 98.5%)"
+  },
+  {
+    "id": "mlb-ivb",
+    "label": "MLB.com Statcast Glossary, Induced Vertical Break",
+    "url": "https://www.mlb.com/glossary/statcast/induced-vertical-break",
+    "retrievedAt": "2026-06-04",
+    "season": "2024 league average +16 in"
+  },
+  {
+    "id": "mlb-spin-rate",
+    "label": "MLB.com, What Statcast spin rate means for fastballs",
+    "url": "https://www.mlb.com/news/what-statcast-spin-rate-means-for-fastballs-c212735620",
+    "retrievedAt": "2026-06-04",
+    "season": "2019 baseline ~2,300 rpm"
+  },
+  {
+    "id": "mlb-cole",
+    "label": "MLB.com, Why Cole's fastball is in a league of its own (Statcast)",
+    "url": "https://www.mlb.com/news/gerrit-cole-fastball-best-of-yankees",
+    "retrievedAt": "2026-06-04",
+    "season": "2019"
+  },
+  {
+    "id": "savant-strider",
+    "label": "Baseball Savant (Statcast), Spencer Strider",
+    "url": "https://baseballsavant.mlb.com/savant-player/spencer-strider-675911",
+    "retrievedAt": "2026-06-04",
+    "season": "2023"
+  },
+  {
+    "id": "thescore-strider",
+    "label": "theScore, How Spencer Strider developed a cheat-code pitch",
+    "url": "https://www.thescore.com/mlb/news/2631293",
+    "retrievedAt": "2026-06-04",
+    "season": "2023"
+  },
+  {
+    "id": "mlb-greene",
+    "label": "MLB.com, The keys to Hunter Greene's breakout season (Statcast)",
+    "url": "https://www.mlb.com/news/keys-to-hunter-greene-s-breakout-season",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "savant-greene",
+    "label": "Baseball Savant (Statcast), Hunter Greene",
+    "url": "https://baseballsavant.mlb.com/savant-player/hunter-greene-668881",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "tht-kagan",
+    "label": "The Hardball Times, David Kagan citing Alan Nathan",
+    "url": "https://tht.fangraphs.com/the-physics-of-a-rising-fastball/",
+    "retrievedAt": "2026-06-04",
+    "season": "physics"
+  },
+  {
+    "id": "wiki-four-seam",
+    "label": "Wikipedia, Four-seam fastball",
+    "url": "https://en.wikipedia.org/wiki/Four-seam_fastball",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "wiki-fastball",
+    "label": "Wikipedia, Fastball",
+    "url": "https://en.wikipedia.org/wiki/Fastball",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "efastball",
+    "label": "eFastball, Four-seam fastball grip",
+    "url": "https://efastball.com/baseball/pitching/grips/four-seam-fastball-grip/",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "platecrate",
+    "label": "Plate Crate, Mastering the four-seam fastball",
+    "url": "https://www.platecrate.com/blogs/baseball-101/mastering-the-four-seam-fastball-how-to-grip-a-fastball-in-baseball",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "wiki-baseball-ball",
+    "label": "Wikipedia, Baseball (ball)",
+    "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "mathcurve",
+    "label": "mathcurve.com, Seam line of a tennis ball (Ferreol / Esculier)",
+    "url": "https://mathcurve.com/courbes3d.gb/couture/couture.shtml",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "mathworld",
+    "label": "Wolfram MathWorld, Baseball Cover (Thompson)",
+    "url": "https://mathworld.wolfram.com/BaseballCover.html",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "frontiers",
+    "label": "Frontiers in Applied Mathematics and Statistics (2018), aerodynamic forces on a baseball",
+    "url": "https://www.frontiersin.org/journals/applied-mathematics-and-statistics/articles/10.3389/fams.2018.00066/full",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "texasleaguers",
+    "label": "TexasLeaguers Pitch Spin Visualization Tool (red-dot method, Alan Nathan)",
+    "url": "https://scout.texasleaguers.com/spin",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "lau-github",
+    "label": "Lau Sze Yui, GitHub",
+    "url": "https://github.com/903124",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "mlb-glossary-sinker",
+    "label": "MLB.com Statcast Glossary, Sinker (SI)",
+    "url": "https://www.mlb.com/glossary/pitch-types/sinker",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "driveline-sinker",
+    "label": "Driveline Baseball, How to Throw a Sinker or Two-Seam Fastball",
+    "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-sinker-or-two-seam-fastball/",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "driveline-ssw",
+    "label": "Driveline Baseball, Seam-Shifted Wakes and their Effect on Sinkers",
+    "url": "https://www.drivelinebaseball.com/2020/11/more-than-what-it-seams-an-introduction-to-seam-shifted-wakes-and-their-effect-on-sinkers/",
+    "retrievedAt": "2026-06-04",
+    "season": "2020"
+  },
+  {
+    "id": "savant-valdez",
+    "label": "Baseball Savant (Statcast), Framber Valdez",
+    "url": "https://baseballsavant.mlb.com/savant-player/framber-valdez-664285",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "savant-webb",
+    "label": "Baseball Savant (Statcast), Logan Webb",
+    "url": "https://baseballsavant.mlb.com/savant-player/logan-webb-657277",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "savant-holmes",
+    "label": "Baseball Savant (Statcast), Clay Holmes",
+    "url": "https://baseballsavant.mlb.com/savant-player/clay-holmes-605280",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "pitcherlist-valdez",
+    "label": "Pitcher List, How Lower Is Better for Framber Valdez",
+    "url": "https://pitcherlist.com/how-lower-is-better-for-framber-valdez/",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "fangraphs-valdez",
+    "label": "FanGraphs, Framber Valdez",
+    "url": "https://www.fangraphs.com/players/framber-valdez/17295/stats/pitching",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "fangraphs-webb",
+    "label": "FanGraphs, Logan Webb",
+    "url": "https://www.fangraphs.com/players/logan-webb/17995/stats?position=P",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "medium-perfect-sinker",
+    "label": "Colin Hofmeister, Reverse-Engineering the Perfect Sinker",
+    "url": "https://medium.com/@colinhofmeister/reverse-engineering-the-perfect-sinker-b5fbcbe06f2e",
+    "retrievedAt": "2026-06-04",
+    "season": "2026"
+  },
+  {
+    "id": "mlb-glossary-changeup",
+    "label": "MLB.com Statcast Glossary, Changeup (CH)",
+    "url": "https://www.mlb.com/glossary/pitch-types/changeup",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "mlb-williams-airbender",
+    "label": "MLB.com, Devin Williams and the Airbender changeup",
+    "url": "https://www.mlb.com/news/devin-williams-airbender-pitch-explainer",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "driveline-changeup",
+    "label": "Driveline Baseball, How to Throw a Changeup",
+    "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-changeup/",
+    "retrievedAt": "2026-06-04",
+    "season": "2020"
+  },
+  {
+    "id": "savant-williams",
+    "label": "Baseball Savant (Statcast), Devin Williams",
+    "url": "https://baseballsavant.mlb.com/savant-player/devin-williams-642207",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "fangraphs-changeup-2011",
+    "label": "FanGraphs, The Best Pitches of 2011: Changeup (Cole Hamels)",
+    "url": "https://blogs.fangraphs.com/the-best-pitches-of-2011-changeup/",
+    "retrievedAt": "2026-06-04",
+    "season": "2011"
+  },
+  {
+    "id": "fangraphs-hamels-2019",
+    "label": "FanGraphs, Cole Hamels' Vintage Changeup Returned in 2019",
+    "url": "https://blogs.fangraphs.com/cole-hamels-vintage-changeup-returned-in-2019/",
+    "retrievedAt": "2026-06-04",
+    "season": "2019"
+  },
+  {
+    "id": "mlb-spin-vs-velo",
+    "label": "MLB.com, Statcast spin rate compared to velocity",
+    "url": "https://www.mlb.com/news/statcast-spin-rate-compared-to-velocity-c160896926",
+    "retrievedAt": "2026-06-04",
+    "season": "2015 league averages"
+  },
+  {
+    "id": "mccovey-webb",
+    "label": "McCovey Chronicles, Logan Webb's changeup",
+    "url": "https://www.mccoveychronicles.com/2024/2/22/24080658/problematic-pitches-logan-webb-edition-san-francisco-giants-2024",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "mlb-glossary-spin-rate",
+    "label": "MLB.com Statcast Glossary, Spin Rate",
+    "url": "https://www.mlb.com/glossary/statcast/spin-rate",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "savant-kershaw",
+    "label": "Baseball Savant (Statcast), Clayton Kershaw",
+    "url": "https://baseballsavant.mlb.com/savant-player/clayton-kershaw-477132",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "savant-morton",
+    "label": "Baseball Savant (Statcast), Charlie Morton",
+    "url": "https://baseballsavant.mlb.com/savant-player/charlie-morton-450203",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "driveline-curveball",
+    "label": "Driveline Baseball, How to Throw a Curveball",
+    "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-curveball/",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "baseballmonkey-curveball",
+    "label": "Baseball Monkey, How to Throw a Curveball",
+    "url": "https://www.baseballmonkey.com/learn/how-to-throw-curveball",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "savant-slider-movement",
+    "label": "Baseball Savant (Statcast), Pitch Movement Leaderboard (Sliders)",
+    "url": "https://baseballsavant.mlb.com/leaderboard/pitch-movement?year=2024&pitch_type=SL",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "savant-cease",
+    "label": "Baseball Savant (Statcast), Dylan Cease",
+    "url": "https://baseballsavant.mlb.com/savant-player/dylan-cease-656302",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "savant-glasnow",
+    "label": "Baseball Savant (Statcast), Tyler Glasnow",
+    "url": "https://baseballsavant.mlb.com/savant-player/tyler-glasnow-607192",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "savant-sale",
+    "label": "Baseball Savant (Statcast), Chris Sale",
+    "url": "https://baseballsavant.mlb.com/savant-player/chris-sale-519242",
+    "retrievedAt": "2026-06-04",
+    "season": "2024"
+  },
+  {
+    "id": "mlb-sweeper-explained",
+    "label": "MLB.com, Explaining the sweeper (slider vs sweeper break)",
+    "url": "https://www.mlb.com/news/sweeper-slider-latest-pitching-trend-explained",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "driveline-slider",
+    "label": "Driveline Baseball, How to Throw a Slider",
+    "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-slider/",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "driveline-grips-sliders",
+    "label": "Driveline Baseball Help, Pitch Grips: Sliders",
+    "url": "https://help.drivelinebaseball.com/portal/en/kb/articles/pitch-grips-sliders",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "tht-gyro-physics",
+    "label": "The Hardball Times, The Physics of the Gyro Pitch (Alan Nathan)",
+    "url": "https://tht.fangraphs.com/the-physics-of-the-gyro-pitch/",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "fangraphs-romo-no-dot",
+    "label": "FanGraphs, Sergio Romo's No-Dot Slider Revealed",
+    "url": "https://blogs.fangraphs.com/sergio-romos-no-dot-slider-revealed/",
+    "retrievedAt": "2026-06-04"
+  },
+  {
+    "id": "gibson-fangraphs",
+    "label": "FanGraphs, Remembering the Intense and Indomitable Bob Gibson",
+    "url": "https://blogs.fangraphs.com/remembering-the-intense-and-indomitable-bob-gibson-1935-2020/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "gibson-wiki",
+    "label": "Wikipedia, Bob Gibson",
+    "url": "https://en.wikipedia.org/wiki/Bob_Gibson",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "gibson-almanac",
+    "label": "Baseball Almanac, Bob Gibson Quotes",
+    "url": "https://www.baseball-almanac.com/quotes/bob_gibson_quotes.shtml",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "gibson-hof-1968",
+    "label": "National Baseball Hall of Fame, Gibson's 1968 season",
+    "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
+    "retrievedAt": "2026-06-05",
+    "season": "1968"
+  },
+  {
+    "id": "gibson-cbs-backup",
+    "label": "CBS Sports, Bob Gibson's back-up slider",
+    "url": "https://www.cbssports.com/mlb/news/gif-bob-gibsons-back-up-slider/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "ryan-espn",
+    "label": "ESPN, There's never been another pitcher like Nolan Ryan",
+    "url": "https://www.espn.com/mlb/story/_/id/29171065/legendary-dominating-historically-wild-there-never-another-pitcher-nolan-ryan",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "ryan-sabr",
+    "label": "Society for American Baseball Research, Nolan Ryan (BioProject)",
+    "url": "https://sabr.org/bioproj/person/nolan-ryan/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "ryan-hof",
+    "label": "National Baseball Hall of Fame, Nolan Ryan",
+    "url": "https://baseballhall.org/hall-of-famers/ryan-nolan",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "ryan-almanac",
+    "label": "Baseball Almanac, Nolan Ryan career register",
+    "url": "https://www.baseball-almanac.com/players/player.php?p=ryanno01",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "ryan-wiki",
+    "label": "Wikipedia, Nolan Ryan",
+    "url": "https://en.wikipedia.org/wiki/Nolan_Ryan",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "clemens-espn-classic",
+    "label": "ESPN Classic, Clemens thrives on confrontation",
+    "url": "https://www.espn.com/classic/biography/s/clemens_roger.html",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "clemens-almanac",
+    "label": "Baseball Almanac, Roger Clemens Quotes",
+    "url": "https://www.baseball-almanac.com/quotes/roger_clemens_quotes.shtml",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "clemens-wiki",
+    "label": "Wikipedia, Roger Clemens",
+    "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "clemens-sabr-1986",
+    "label": "SABR Games Project, April 29, 1986: Clemens strikes out 20",
+    "url": "https://sabr.org/gamesproj/game/april-29-1986-roger-clemens-becomes-first-pitcher-to-strike-out-20-in-nine-innings/",
+    "retrievedAt": "2026-06-05",
+    "season": "1986"
+  },
+  {
+    "id": "clemens-mlb-1996",
+    "label": "MLB.com Cut4, Clemens strikes out 20 Tigers",
+    "url": "https://www.mlb.com/cut4/roger-clemens-strikes-out-20-tigers/c-150116768",
+    "retrievedAt": "2026-06-05",
+    "season": "1996"
+  },
+  {
+    "id": "maddux-daringfireball",
+    "label": "Daring Fireball, quoting Thomas Boswell (Washington Post, Jan 7, 2014)",
+    "url": "https://daringfireball.net/linked/2014/01/13/maddux",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "maddux-lbs",
+    "label": "Larry Brown Sports, the Maddux / Tony Gwynn quote (via Boswell)",
+    "url": "https://larrybrownsports.com/baseball/greg-maddux-awesome-tony-gwynn-quote/232778",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "maddux-wiki",
+    "label": "Wikipedia, Greg Maddux",
+    "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "maddux-almanac",
+    "label": "Baseball Almanac, Greg Maddux Quotes",
+    "url": "https://www.baseball-almanac.com/quotes/greg_maddux_quotes.shtml",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "skenes-mlb-confidence",
+    "label": "MLB.com, Skenes' newest pitch is his confidence pitch (Alex Stumpf)",
+    "url": "https://www.mlb.com/news/paul-skenes-adds-splinker-to-pitch-mix",
+    "retrievedAt": "2026-06-05",
+    "season": "2024"
+  },
+  {
+    "id": "skenes-fox",
+    "label": "FOX Sports, Paul Skenes and his splinker at the All-Star Game",
+    "url": "https://www.foxsports.com/stories/mlb/must-watch-tv-paul-skenes-his-splinker-take-center-stage-mlb-all-star-game",
+    "retrievedAt": "2026-06-05",
+    "season": "2024"
+  },
+  {
+    "id": "skenes-mlb-arsenal",
+    "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
+    "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
+    "retrievedAt": "2026-06-05",
+    "season": "2025"
+  },
+  {
+    "id": "skenes-mlb-debut",
+    "label": "MLB.com, A splinker? Skenes' hybrid pitch (debut, Alex Stumpf)",
+    "url": "https://www.mlb.com/news/paul-skenes-splinker-fools-hitters-in-mlb-debut",
+    "retrievedAt": "2026-06-05",
+    "season": "2024"
+  },
+  {
+    "id": "skenes-yahoo",
+    "label": "Yahoo Sports, Paul Skenes reveals how he throws his splinker",
+    "url": "https://sports.yahoo.com/article/pirates-paul-skenes-reveals-throws-195218605.html",
+    "retrievedAt": "2026-06-05",
+    "season": "2024"
+  },
+  {
+    "id": "santana-sabr",
+    "label": "Society for American Baseball Research, Johan Santana (BioProject)",
+    "url": "https://sabr.org/bioproj/person/johan-santana/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "santana-twinsalmanac",
+    "label": "The Twins Almanac, Johan Santana",
+    "url": "https://twinsalmanac.com/johansantana/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "santana-wiki",
+    "label": "Wikipedia, Johan Santana",
+    "url": "https://en.wikipedia.org/wiki/Johan_Santana",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "santana-fastballs",
+    "label": "Fast Balls, Tales of the changeup: an analysis of Johan Santana (PITCHf/x)",
+    "url": "https://fastballs.wordpress.com/2010/05/19/tales-of-the-changeup-an-analysis-of-johan-santana/",
+    "retrievedAt": "2026-06-05",
+    "season": "2007"
+  },
+  {
+    "id": "santana-fangraphs-nohit",
+    "label": "FanGraphs, Johan Santana Rides Changeup to No-Hitter",
+    "url": "https://blogs.fangraphs.com/johan-santana-rides-changeup-to-no-hitter/",
+    "retrievedAt": "2026-06-05",
+    "season": "2012"
+  },
+  {
+    "id": "gyro-sabr-brj",
+    "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
+    "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
+    "retrievedAt": "2026-06-05",
+    "season": "2007"
+  },
+  {
+    "id": "gyro-bp",
+    "label": "Baseball Prospectus, Schrodinger's Bat: Searching for the Gyroball (Dan Fox)",
+    "url": "https://www.baseballprospectus.com/news/article/6419/schrodingers-bat-searching-for-the-gyroball/",
+    "retrievedAt": "2026-06-05",
+    "season": "2007"
+  },
+  {
+    "id": "gyro-deadspin",
+    "label": "Deadspin, Unspinning the Mythical Gyroball (Barry Petchesky)",
+    "url": "https://deadspin.com/unspinning-the-mythical-gyroball-the-demon-miracle-pit-1451016294/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "gyro-illinois",
+    "label": "University of Illinois News Bureau, Is the so-called gyroball just hype? (Alan Nathan)",
+    "url": "https://news.illinois.edu/is-the-so-called-gyroball-just-hype/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sutter-hof",
+    "label": "National Baseball Hall of Fame, Sutter remembered as pioneer of the split-finger",
+    "url": "https://baseballhall.org/discover/Sutter-remembered-as-pioneer-of-split-fingered-fastball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sutter-wiki",
+    "label": "Wikipedia, Bruce Sutter",
+    "url": "https://en.wikipedia.org/wiki/Bruce_Sutter",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-splitter",
+    "label": "Wikipedia, Split-finger fastball",
+    "url": "https://en.wikipedia.org/wiki/Split-finger_fastball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "gausman-conversation",
+    "label": "The Conversation, the physics of Kevin Gausman's splitter",
+    "url": "https://theconversation.com/how-the-physics-of-baseball-explains-blue-jay-kevin-gausmans-signature-pitch-268732",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "gausman-rpp",
+    "label": "Rockland Peak Performance, what makes Gausman's splitter effective",
+    "url": "https://rocklandpeakperformance.com/what-makes-kevin-gausmans-splitter-so-effective/",
+    "retrievedAt": "2026-06-05",
+    "season": "2021"
+  },
+  {
+    "id": "gausman-jays",
+    "label": "Jays Journal, Gausman's splitter is one of the best pitches in baseball",
+    "url": "https://jaysjournal.com/kevin-gausman-s-splitter-has-been-one-of-the-best-pitches-in-baseball-01js0g3za211",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "ohtani-mlb-splitter",
+    "label": "MLB.com, Ohtani's splitter still the most unhittable pitch",
+    "url": "https://www.mlb.com/news/shohei-ohtani-splitter-still-most-unhittable-pitch",
+    "retrievedAt": "2026-06-05",
+    "season": "2021"
+  },
+  {
+    "id": "tanaka-br",
+    "label": "Bleacher Report, Masahiro Tanaka's splitter",
+    "url": "https://bleacherreport.com/articles/2102823-masahiro-tanakas-splitter-and-the-10-best-strikeout-pitches-of-mlb",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "schilling-wiki",
+    "label": "Wikipedia, Curt Schilling",
+    "url": "https://en.wikipedia.org/wiki/Curt_Schilling",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "driveline-splitters",
+    "label": "Driveline Baseball Help, Pitch Grips: Splitters",
+    "url": "https://help.drivelinebaseball.com/portal/en/kb/articles/pitch-grips-splitters",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "duran-mlb",
+    "label": "MLB.com, Meet the 'splinker' pitch (Jhoan Duran, Do-Hyoung Park)",
+    "url": "https://www.mlb.com/news/jhoan-duran-on-his-unique-splinker-pitch",
+    "retrievedAt": "2026-06-05",
+    "season": "2022"
+  },
+  {
+    "id": "duran-fangraphs",
+    "label": "FanGraphs, Jhoan Duran and the One True Split-Finger Fastball",
+    "url": "https://blogs.fangraphs.com/jhoan-duran-and-the-one-true-split-finger-fastball/",
+    "retrievedAt": "2026-06-05",
+    "season": "2025"
+  },
+  {
+    "id": "miller-mlb",
+    "label": "MLB.com, Mason Miller adds a splinker",
+    "url": "https://www.mlb.com/news/mason-miller-adds-splinker-to-pitching-arsenal",
+    "retrievedAt": "2026-06-05",
+    "season": "2024"
+  },
+  {
+    "id": "joyce-mlb",
+    "label": "MLB.com, Ben Joyce on adding a splinker",
+    "url": "https://www.mlb.com/news/ben-joyce-on-adding-a-splinker-to-his-arsenal",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "dobbins-fangraphs",
+    "label": "FanGraphs, Red Sox prospect Hunter Dobbins has added a splinker",
+    "url": "https://blogs.fangraphs.com/red-sox-prospect-hunter-dobbins-has-added-a-splinker-and-upped-his-velo/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wainwright-fangraphs-grip",
+    "label": "FanGraphs, Nick Kingham, Mark Prior, and Adam Wainwright on Crafting Their Curveballs (David Laurila)",
+    "url": "https://blogs.fangraphs.com/nick-kingham-mark-prior-and-adam-wainwright-on-crafting-their-curveballs/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wainwright-espn-curve",
+    "label": "ESPN, The secret to Adam Wainwright's success: a curveball like none other (Buster Olney)",
+    "url": "https://www.espn.com/mlb/insider/story/_/id/34178817/the-secret-st-louis-cardinals-righty-adam-wainwright-success-curveball-other",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wainwright-fangraphs-curve",
+    "label": "FanGraphs, Checking in on Adam Wainwright's Curveball",
+    "url": "https://blogs.fangraphs.com/checking-in-on-adam-wainwrights-curveball/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "savant-wainwright",
+    "label": "Baseball Savant (Statcast), Adam Wainwright",
+    "url": "https://baseballsavant.mlb.com/savant-player/adam-wainwright-425794",
+    "retrievedAt": "2026-06-05",
+    "season": "2023"
+  },
+  {
+    "id": "wainwright-bref",
+    "label": "Baseball-Reference, Adam Wainwright",
+    "url": "https://www.baseball-reference.com/players/w/wainwad01.shtml",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wainwright-nlcs-wiki",
+    "label": "Wikipedia, 2006 National League Championship Series",
+    "url": "https://en.wikipedia.org/wiki/2006_National_League_Championship_Series",
+    "retrievedAt": "2026-06-05",
+    "season": "2006"
+  },
+  {
+    "id": "wainwright-2000-stlredbirds",
+    "label": "STLRedbirds.com, September 23, 2021: Adam Wainwright throws his 2,000th strikeout",
+    "url": "https://www.stlredbirds.com/2023/03/18/september-23-2021-adam-wainwright-throws-his-2000th-strikeout/",
+    "retrievedAt": "2026-06-05",
+    "season": "2021"
+  },
+  {
+    "id": "mlb-glossary-four-seam",
+    "label": "MLB.com Glossary — Four-Seam Fastball (FF)",
+    "url": "https://www.mlb.com/glossary/pitch-types/four-seam-fastball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-glossary-two-seam",
+    "label": "MLB.com Glossary — Two-Seam Fastball",
+    "url": "https://www.mlb.com/glossary/pitch-types/two-seam-fastball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-glossary-cutter",
+    "label": "MLB.com Glossary — Cutter (FC)",
+    "url": "https://www.mlb.com/glossary/pitch-types/cutter",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "driveline-ssw-sinkers",
+    "label": "Driveline Baseball — An Introduction to Seam-Shifted Wakes and Their Effect on Sinkers",
+    "url": "https://www.drivelinebaseball.com/2020/11/more-than-what-it-seams-an-introduction-to-seam-shifted-wakes-and-their-effect-on-sinkers/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "vivaelbirdos-one-seam",
+    "label": "Viva El Birdos — Adam Wainwright, One-seam Sinkers, and Seam-shifted Wake",
+    "url": "https://www.vivaelbirdos.com/2021/11/21/22793429/adam-wainwright-one-seam-sinkers-and-seam-shifted-wake",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-clase-cutter",
+    "label": "MLB.com — Why Emmanuel Clase's cutter is one of the most unhittable pitches in MLB",
+    "url": "https://www.mlb.com/news/why-emmanuel-clase-cutter-is-one-of-most-unhittable-pitches-in-mlb",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "tht-rising-fastball-physics",
+    "label": "The Hardball Times (FanGraphs) — The Physics of a Rising Fastball",
+    "url": "https://tht.fangraphs.com/the-physics-of-a-rising-fastball/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "fangraphs-nathan-pitching-physics",
+    "label": "FanGraphs — Q&A: Alan Nathan on the Physics of Pitching",
+    "url": "https://blogs.fangraphs.com/qa-alan-nathan-on-the-physics-of-pitching/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-changeup",
+    "label": "Changeup — Wikipedia (standard/straight and three-finger changeup, grip and velocity separation)",
+    "url": "https://en.wikipedia.org/wiki/Changeup",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-circle-changeup",
+    "label": "Circle changeup — Wikipedia (OK-circle grip, pronation/arm-side run, Pedro Martinez)",
+    "url": "https://en.wikipedia.org/wiki/Circle_changeup",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "pedro-circle-change-search",
+    "label": "Boston Globe 'Magic on the mound' — Pedro Martinez circle changeup as a signature pitch",
+    "url": "https://apps.bostonglobe.com/graphics/2015/07/pedro/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "efastball-palmball",
+    "label": "eFastball — Palm Ball Change Up Grip (deep-palm grip, hand-pressure velocity kill, Trevor Hoffman)",
+    "url": "https://www.efastball.com/baseball/pitching/grips/palm-ball-grip/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-palmball",
+    "label": "Palmball — Wikipedia (ball cradled in palm, Trevor Hoffman as notable thrower)",
+    "url": "https://en.wikipedia.org/wiki/Palmball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "palmball-football-change-naming",
+    "label": "Wikipedia Palmball (used as the reachable anchor for the palmball pitch; the 'football change' informal alias is recorded as unverified community naming since no reachable authoritative source states it)",
+    "url": "https://en.wikipedia.org/wiki/Palmball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-vulcan-changeup",
+    "label": "Vulcan changeup — Wikipedia (V-shaped middle/ring-finger grip, pronation, split-finger behavior, Joe Nelson)",
+    "url": "https://en.wikipedia.org/wiki/Vulcan_changeup",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-fosh",
+    "label": "Fosh (baseball) — Wikipedia (cross between splitter and straight change, grip, Boddicker/Nipper origin)",
+    "url": "https://en.wikipedia.org/wiki/Fosh_(baseball)",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "fangraphs-kick-change",
+    "label": "FanGraphs — 'Landen Roupp Spins a Curveball, Hayden Birdsong Throws a Kick-Change' (spiked middle finger kicking the axis, near-zero IVB, Giants, Tread Athletics)",
+    "url": "https://blogs.fangraphs.com/landen-roupp-spins-a-curveball-hayden-birdsong-throws-a-kick-change/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-forkball",
+    "label": "Forkball — Wikipedia (deep wide grip, wrist snap, tumble, near-extinct, Senga ghost fork, splitter ancestor)",
+    "url": "https://en.wikipedia.org/wiki/Forkball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "fangraphs-sasaki",
+    "label": "FanGraphs — 'Roki Sasaki Is Putting It All Together' (NPB-developed forkball, ~492 rpm low-spin, knuckleball-like movement)",
+    "url": "https://blogs.fangraphs.com/roki-sasaki-is-putting-it-all-together/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "gorout-pitch-grips",
+    "label": "GoRout — Baseball Pitch Grips guide (three-finger grip changeup and circle changeup as named changeup grips)",
+    "url": "https://gorout.com/baseball-pitch-grips/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-glossary-slider",
+    "label": "Slider (SL) — MLB.com Glossary, Pitch Types",
+    "url": "https://www.mlb.com/glossary/pitch-types/slider",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-ohtani-sweeper",
+    "label": "Shohei Ohtani has baseball's best sweeper — MLB.com",
+    "url": "https://www.mlb.com/news/shohei-ohtani-has-best-sweeper-in-mlb",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-glossary-slurve",
+    "label": "Slurve (SV) — MLB.com Glossary, Pitch Types",
+    "url": "https://www.mlb.com/glossary/pitch-types/slurve",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "baseballscouter-cutter-slider",
+    "label": "The 'Cutter' vs. 'Slider': Spotting the Difference (incl. the slutter / cut-slider) — Baseball Scouter",
+    "url": "https://baseballscouter.com/cutter-vs-slider-pitch-comparison/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-glossary-curveball",
+    "label": "Curveball (CU) — MLB.com Glossary, Pitch Types",
+    "url": "https://www.mlb.com/glossary/pitch-types/curveball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-twelve-six-curveball",
+    "label": "12–6 curveball — Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/12%E2%80%936_curveball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-glossary-knuckle-curve",
+    "label": "Knuckle-curve (KC) — MLB.com Glossary, Pitch Types",
+    "url": "https://www.mlb.com/glossary/pitch-types/knuckle-curve",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-greinke-eephus-curve",
+    "label": "Zack Greinke's eephus curve is baffling hitters — MLB.com",
+    "url": "https://www.mlb.com/news/zack-greinke-s-eephus-curve-is-baffling-hitters",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-screwball",
+    "label": "Screwball — Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Screwball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-hubbell-screwball",
+    "label": "Hubbell's Elbow: Don't Blame the Screwball — Society for American Baseball Research",
+    "url": "https://sabr.org/journal/article/hubbells-elbow-dont-blame-the-screwball/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "knuckleball-grokipedia",
+    "label": "Knuckleball — Grokipedia (grip, near-zero spin, chaotic flutter)",
+    "url": "https://grokipedia.com/page/Knuckleball!",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-dickey-alumni",
+    "label": "MLB.com — R.A. Dickey to pitch in Mets' 2025 Alumni Classic (knuckleball career context)",
+    "url": "https://www.mlb.com/news/r-a-dickey-to-pitch-in-mets-2025-alumni-classic",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "retrosimba-sewell",
+    "label": "RetroSimba — Over the rainbow: How Rip Sewell found his pot of gold (1941 hunting accident, eephus origin, 1946 ASG homer)",
+    "url": "https://retrosimba.com/2024/01/08/over-the-rainbow-how-rip-sewell-found-his-pot-of-gold/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-eephus",
+    "label": "Eephus pitch — Wikipedia (velocity ~55 mph or less, high arc, Williams 1946 homer)",
+    "url": "https://en.wikipedia.org/wiki/Eephus_pitch",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "tht-shuuto",
+    "label": "The shuuto — The Hardball Times / FanGraphs (arm-side run, 'just a two-seamer,' opposite of a cutter)",
+    "url": "https://tht.fangraphs.com/tht-live/the-shuuto/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "shuuto-grokipedia",
+    "label": "Shuuto — Grokipedia (NPB pitch, loose arm-side-run label, two-seam classification)",
+    "url": "https://grokipedia.com/page/Shuuto",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "gyroball-grokipedia",
+    "label": "Gyroball — Grokipedia (Himeno/Tezuka simulation origin, bullet spin, Matsuzaka myth, Sasaki gyro slider)",
+    "url": "https://grokipedia.com/page/Gyroball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-spitball",
+    "label": "Spitball — Wikipedia (saliva/Vaseline mechanism, 17 grandfathered pitchers, Grimes 1934, Perry)",
+    "url": "https://en.wikipedia.org/wiki/Spitball",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-deadball-spitball",
+    "label": "SABR — The Spitball and the End of the Deadball Era (Feb 1920 Joint Rules Committee ban; Chapman post-ban; named freak pitches incl. mud/shine/emery)",
+    "url": "https://sabr.org/journal/article/the-spitball-and-the-end-of-the-deadball-era/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-niekro-1987",
+    "label": "SABR Games Project — August 3, 1987: Twins' Joe Niekro ejected for allegedly scuffing ball (emery board, sandpaper, gouged balls)",
+    "url": "https://sabr.org/gamesproj/game/august-3-1987-twins-joe-niekro-ejected-for-allegedly-scuffing-ball/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-cicotte",
+    "label": "SABR BioProject — Eddie Cicotte (shine ball, talcum-loaded trouser pocket, legal 1917 until Feb 1920)",
+    "url": "https://sabr.org/bioproj/person/eddie-cicotte/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-gaylord-perry",
+    "label": "Gaylord Perry — Wikipedia (Vaseline/grease ball concealment, late-career ejection)",
+    "url": "https://en.wikipedia.org/wiki/Gaylord_Perry",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-rubbing-mud",
+    "label": "Baseball rubbing mud — Wikipedia (Lena Blackburne mud mandatory/legal under Rule 4.01(c) to dull gloss)",
+    "url": "https://en.wikipedia.org/wiki/Baseball_rubbing_mud",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-satchel-paige",
+    "label": "Satchel Paige — Wikipedia (hesitation pitch, 1948 Platt at-bat, Harridge balk ruling)",
+    "url": "https://en.wikipedia.org/wiki/Satchel_Paige",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-hilton-smith",
+    "label": "Hilton Smith — SABR Biography Project (curveball; O'Neil on Musial/Mize; Paige's shadow; ~161 league wins)",
+    "url": "https://sabr.org/bioproj/person/a4c98932",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "bbhof-hilton-smith",
+    "label": "Hilton Smith — National Baseball Hall of Fame (Monte Irvin curveball quote; 'forgotten star'; relieved Paige)",
+    "url": "https://baseballhall.org/hall-of-famers/smith-hilton",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-rube-foster",
+    "label": "Andrew 'Rube' Foster — SABR Biography Project (Malarcher's fadeaway description; NNL founding 1920; Father of Black Baseball)",
+    "url": "https://sabr.org/bioproj/person/andrew-rube-foster/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-bullet-rogan",
+    "label": "Bullet Rogan — Wikipedia (no-windup delivery, overhand/sidearm, curve/spitball/palmball/forkball/fastball arsenal)",
+    "url": "https://en.wikipedia.org/wiki/Bullet_Rogan",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-bullet-rogan",
+    "label": "Bullet Rogan — SABR Biography Project (Frank Duncan quote on the arsenal and palm-thrown curve)",
+    "url": "https://sabr.org/bioproj/person/bullet-rogan/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "seamheads-rogan",
+    "label": "Bullet Rogan — Seamheads Negro Leagues Database player page (reconstructed career pitching line)",
+    "url": "https://www.seamheads.com/NegroLgs/player.php?playerID=rogan01bul",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-smokey-bandit",
+    "label": "Smokey and the Bandit: The Greatest Pitching Duel in Blackball History — SABR (Aug 2, 1930; 27 K, 1-0, 12 innings, age 44)",
+    "url": "https://sabr.org/journal/article/smokey-and-the-bandit-the-greatest-pitching-duel-in-blackball-history/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "baseball-history-daily-brewer",
+    "label": "Chet Brewer — Baseball History Daily (Cum Posey 1936 Pittsburgh Courier account of the broken emery-ball pact)",
+    "url": "https://baseballhistorydaily.com/tag/chet-brewer/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-chet-brewer",
+    "label": "Chet Brewer — SABR Biography Project (emery ball, overhand drop, finesse repertoire)",
+    "url": "https://sabr.org/bioproj/person/chet-brewer",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "wiki-chet-brewer",
+    "label": "Chet Brewer — Wikipedia (emery ball learned from Osborne/Radcliffe; Radcliffe's emery-cloth-in-gum quote; 1920 ban context)",
+    "url": "https://en.wikipedia.org/wiki/Chet_Brewer",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-phil-cockrell",
+    "label": "Phil Cockrell — SABR Biography Project ('moist ball' spitball; ~6 no-hitters; 1924 Bolden-to-Foster umpire standoff; NNL/ECL never adopted the ban)",
+    "url": "https://sabr.org/bioproj/person/phil-cockrell/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "pbs-negro-leagues-2020",
+    "label": "MLB reclassifies Negro Leagues as major league — PBS NewsHour (Dec 16, 2020; ~3,400 players; '1969 omission clearly an error')",
+    "url": "https://www.pbs.org/newshour/arts/mlb-reclassifies-negro-leagues-as-major-league",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "cbs-negro-leagues-2024",
+    "label": "Statistics from Negro Leagues officially integrated into MLB record books — CBS News (May 2024; >2,300 players; Gibson .372 AVG, .718 SLG, 1.177 OPS)",
+    "url": "https://www.cbsnews.com/news/negro-leagues-statistics-integrated-mlb-record-books-josh-gibson/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "seamheads-db",
+    "label": "Seamheads Negro Leagues Database — homepage (box-score reconstruction method; coverage 1886-1948; 1920s most complete decade)",
+    "url": "https://www.seamheads.com/NegroLgs/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "nl-redding-sabr",
+    "label": "Dick Redding — SABR BioProject",
+    "url": "https://sabr.org/bioproj/person/dick-redding/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "nl-day-sabr",
+    "label": "Leon Day — SABR BioProject",
+    "url": "https://sabr.org/bioproj/person/leon-day/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "nl-brown-sabr",
+    "label": "Dave Brown — SABR BioProject",
+    "url": "https://sabr.org/bioproj/person/dave-brown-2/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "nl-bell-sabr",
+    "label": "William Bell — SABR BioProject",
+    "url": "https://sabr.org/bioproj/person/william-bell-2/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "nl-bell-emuseum",
+    "label": "William Bell, Sr. — Negro Leagues Baseball eMuseum",
+    "url": "https://nlbemuseum.com/history/players/bellwsr.html",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "nl-paige-sabr-journal",
+    "label": "Leroy Robert 'Satchel' Paige — SABR journal article",
+    "url": "https://sabr.org/journal/article/leroy-robert-satchel-paige/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "sabr-paige-bioproj",
+    "label": "SABR Baseball Biography Project — Satchel Paige (the documented life account; names no showman pitches)",
+    "url": "https://sabr.org/bioproj/person/satchel-paige/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "loc-whipsy-dipsy",
+    "label": "Library of Congress, Baseball Americana — \"Whipsy-Dipsy-Do\" Ball (quotes Paige's own pitch-naming boast)",
+    "url": "https://www.loc.gov/exhibitions/baseball-americana/about-this-exhibition/whos-playing/a-game-divided/whipsy-dipsy-do-ball/",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "history-paige-10-things",
+    "label": "History.com — 10 Things You May Not Know About Satchel Paige (showman labels and the hesitation pitch)",
+    "url": "https://www.history.com/articles/10-things-you-may-not-know-about-satchel-paige",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "trivia-mafia-paige",
+    "label": "Trivia Mafia — Satchel Paige, The Man of 19 Pitches (quotes Negro Leagues Baseball Museum's Bob Kendrick; the \"19 pitches\" oral-tradition source)",
+    "url": "https://www.triviamafia.com/fridayknowitall/leroy-satchel-paige",
+    "retrievedAt": "2026-06-05"
+  },
+  {
+    "id": "mlb-glossary-sweeper",
+    "label": "MLB.com Statcast Glossary, Sweeper (ST)",
+    "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "mlb-ohtani-2025-statcast",
+    "label": "MLB.com, Shohei Ohtani's 2025 pitching debut — a Statcast breakdown",
+    "url": "https://www.mlb.com/news/shohei-ohtani-2025-pitching-debut-statcast-breakdown",
+    "retrievedAt": "2026-06-06",
+    "season": "2025"
+  },
+  {
+    "id": "savant-ohtani",
+    "label": "Baseball Savant (Statcast), Shohei Ohtani",
+    "url": "https://baseballsavant.mlb.com/savant-player/shohei-ohtani-660271",
+    "retrievedAt": "2026-06-06",
+    "season": "2025"
+  },
+  {
+    "id": "savant-peralta",
+    "label": "Baseball Savant (Statcast), Freddy Peralta",
+    "url": "https://baseballsavant.mlb.com/savant-player/freddy-peralta-642547",
+    "retrievedAt": "2026-06-06",
+    "season": "2025"
+  },
+  {
+    "id": "savant-darvish",
+    "label": "Baseball Savant (Statcast), Yu Darvish",
+    "url": "https://baseballsavant.mlb.com/savant-player/yu-darvish-506433",
+    "retrievedAt": "2026-06-06",
+    "season": "2025"
+  },
+  {
+    "id": "fangraphs-ssw-mainstream",
+    "label": "FanGraphs, The Seam-Shifted Revolution Is Headed for the Mainstream",
+    "url": "https://blogs.fangraphs.com/the-seam-shifted-revolution-is-headed-for-the-mainstream/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "driveline-ssw-quality",
+    "label": "Driveline Baseball, The Impact of Seam-Shifted Wakes on Pitch Quality",
+    "url": "https://www.drivelinebaseball.com/2021/03/the-impact-of-seam-shifted-wakes-on-pitch-quality/",
+    "retrievedAt": "2026-06-06",
+    "season": "2021"
+  },
+  {
+    "id": "mlb-glossary-knuckleball",
+    "label": "MLB.com Statcast Glossary, Knuckleball (KN)",
+    "url": "https://www.mlb.com/glossary/pitch-types/knuckleball",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "wiki-knuckleball",
+    "label": "Wikipedia, Knuckleball",
+    "url": "https://en.wikipedia.org/wiki/Knuckleball",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "fangraphs-dickey-knuckle",
+    "label": "FanGraphs, Tracking R.A. Dickey's Knuckleball",
+    "url": "https://blogs.fangraphs.com/tracking-r-a-dickeys-knuckleball/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "fangraphs-waldron-knuckle",
+    "label": "FanGraphs, Matt Waldron and His Knuckleball Are Sticking Around",
+    "url": "https://blogs.fangraphs.com/matt-waldron-and-his-knuckleball-are-sticking-around/",
+    "retrievedAt": "2026-06-06",
+    "season": "2024"
+  },
+  {
+    "id": "illinois-dickey-knuckle",
+    "label": "University of Illinois Physics of Baseball (Alan Nathan), R.A. Dickey knuckleball analysis",
+    "url": "https://baseball.physics.illinois.edu/DickeyPitch103a.html",
+    "retrievedAt": "2026-06-06",
+    "season": "2012"
+  },
+  {
+    "id": "si-waldron-knuckle",
+    "label": "Sports Illustrated, Matt Waldron's record-low-spin knuckleball",
+    "url": "https://www.si.com/mlb/2024/04/08/matt-waldron-knuckleball-padres-giants",
+    "retrievedAt": "2026-06-06",
+    "season": "2024"
+  },
+  {
+    "id": "wiki-cut-fastball",
+    "label": "Wikipedia, Cut fastball",
+    "url": "https://en.wikipedia.org/wiki/Cut_fastball",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "savant-clase",
+    "label": "Baseball Savant (Statcast), Emmanuel Clase",
+    "url": "https://baseballsavant.mlb.com/savant-player/emmanuel-clase-661403",
+    "retrievedAt": "2026-06-06",
+    "season": "2025"
+  },
+  {
+    "id": "savant-burnes",
+    "label": "Baseball Savant (Statcast), Corbin Burnes",
+    "url": "https://baseballsavant.mlb.com/savant-player/corbin-burnes-669203",
+    "retrievedAt": "2026-06-06",
+    "season": "2025"
+  },
+  {
+    "id": "br-rivera-cutter",
+    "label": "Bleacher Report, Visual Breakdown of the Rise & Dominance of Mariano Rivera's Cutter",
+    "url": "https://bleacherreport.com/articles/1737396-visual-breakdown-of-the-rise-dominance-of-mariano-riveras-cutter",
+    "retrievedAt": "2026-06-06",
+    "season": "2007-2008"
+  },
+  {
+    "id": "mlb-glossary-forkball",
+    "label": "MLB.com Statcast Glossary, Forkball (FO)",
+    "url": "https://www.mlb.com/glossary/pitch-types/forkball",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "bp-forkball",
+    "label": "Baseball Prospectus, Spinning Yarn: The Forkball",
+    "url": "https://www.baseballprospectus.com/news/article/12558/spinning-yarn-the-forkball/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "mlb-sasaki-fork",
+    "label": "MLB.com, Roki Sasaki's forkball and splitter explained",
+    "url": "https://www.mlb.com/news/roki-sasaki-s-forkball-and-splitter-explained",
+    "retrievedAt": "2026-06-06",
+    "season": "2026"
+  },
+  {
+    "id": "fangraphs-senga-ghostfork",
+    "label": "FanGraphs, A (Ghost) Fork in the Road: Senga's Premier Pitch",
+    "url": "https://blogs.fangraphs.com/a-ghost-fork-in-the-road-what-can-we-expect-from-sengas-premier-pitch/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "fangraphs-senga-kodai",
+    "label": "FanGraphs, Cracking the Kodai to Senga's Success",
+    "url": "https://blogs.fangraphs.com/cracking-the-kodai-to-sengas-success/",
+    "retrievedAt": "2026-06-06",
+    "season": "2025"
+  },
+  {
+    "id": "bref-nomo",
+    "label": "Baseball-Reference, Hideo Nomo",
+    "url": "https://www.baseball-reference.com/players/n/nomohi01.shtml",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "sabr-nomo",
+    "label": "Society for American Baseball Research, Hideo Nomo (BioProject)",
+    "url": "https://sabr.org/bioproj/person/hideo-nomo/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "mlb-glossary-eephus",
+    "label": "MLB.com Statcast Glossary, Eephus (EP)",
+    "url": "https://www.mlb.com/glossary/pitch-types/eephus",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "tht-sewell-eephus",
+    "label": "The Hardball Times, Rip Sewell, the Eephus, and the All-Star Game",
+    "url": "https://tht.fangraphs.com/rip-sewell-the-eephus-and-the-all-star-game/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "ledoux-eephus",
+    "label": "James LeDoux, A Statcast study of the eephus pitch",
+    "url": "https://jamesrledoux.com/projects/eephus/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "mlb-greinke-54",
+    "label": "MLB.com, Zack Greinke sits on the mound and throws a 54 mph pitch",
+    "url": "https://www.mlb.com/news/zack-greinke-sits-on-mound-throws-54-mph-pitch",
+    "retrievedAt": "2026-06-06",
+    "season": "2020"
+  },
+  {
+    "id": "niekro-wiki",
+    "label": "Wikipedia, Phil Niekro",
+    "url": "https://en.wikipedia.org/wiki/Phil_Niekro",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "niekro-fangraphs",
+    "label": "FanGraphs, Remembering Phil Niekro, King of the Knuckleballers",
+    "url": "https://blogs.fangraphs.com/remembering-phil-niekro-king-of-the-knuckleballers-1939-2020/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "niekro-hof",
+    "label": "National Baseball Hall of Fame, Phil Niekro",
+    "url": "https://baseballhall.org/hall-of-famers/niekro-phil",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "niekro-sabr",
+    "label": "Society for American Baseball Research, Phil Niekro (BioProject)",
+    "url": "https://sabr.org/bioproj/person/phil-niekro/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "hubbell-sabr",
+    "label": "Society for American Baseball Research, Carl Hubbell (BioProject)",
+    "url": "https://sabr.org/bioproj/person/carl-hubbell/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "hubbell-hof",
+    "label": "National Baseball Hall of Fame, Carl Hubbell",
+    "url": "https://baseballhall.org/hall-of-famers/hubbell-carl",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "hubbell-asg-sabr",
+    "label": "SABR Games Project, July 10, 1934: Carl Hubbell strikes out five Hall of Famers in a row",
+    "url": "https://sabr.org/gamesproj/game/july-10-1934-carl-hubbell-strikes-out-five-hall-of-famers-in-a-row-at-all-star-game/",
+    "retrievedAt": "2026-06-06",
+    "season": "1934"
+  },
+  {
+    "id": "hubbell-wiki",
+    "label": "Wikipedia, Carl Hubbell",
+    "url": "https://en.wikipedia.org/wiki/Carl_Hubbell",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "hubbell-almanac",
+    "label": "Baseball Almanac, Carl Hubbell Quotes",
+    "url": "https://www.baseball-almanac.com/quotes/carl_hubbell_quotes.shtml",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "hubbell-retrosimba",
+    "label": "RetroSimba, Carl Hubbell: giant among pitchers knew glory, tragedy",
+    "url": "https://retrosimba.com/2018/11/24/carl-hubbell-giant-among-pitchers-knew-glory-tragedy/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "rivera-wiki",
+    "label": "Wikipedia, Mariano Rivera",
+    "url": "https://en.wikipedia.org/wiki/Mariano_Rivera",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "rivera-cbs-cutter",
+    "label": "CBS Sports, Mariano Rivera: birth of the cutter was a gift from God",
+    "url": "https://www.cbssports.com/mlb/news/mariano-rivera-birth-of-the-cutter-was-gift-from-god-part-4-of-5/",
+    "retrievedAt": "2026-06-06",
+    "season": "1997"
+  },
+  {
+    "id": "rivera-hof",
+    "label": "National Baseball Hall of Fame, Mariano Rivera",
+    "url": "https://baseballhall.org/hall-of-famers/rivera-mariano",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "rivera-bref",
+    "label": "Baseball-Reference, Mariano Rivera",
+    "url": "https://www.baseball-reference.com/players/r/riverma01.shtml",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "rivera-bbwaa",
+    "label": "BBWAA, Rivera, Halladay, Martinez and Mussina elected to the Hall of Fame",
+    "url": "https://bbwaa.com/19-hof/",
+    "retrievedAt": "2026-06-06",
+    "season": "2019"
+  },
+  {
+    "id": "rivera-si",
+    "label": "Sports Illustrated, Mariano Rivera voted into the Hall of Fame unanimously",
+    "url": "https://www.si.com/mlb/2019/01/22/mariano-rivera-voted-baseball-hall-fame-unanimous-total",
+    "retrievedAt": "2026-06-06",
+    "season": "2019"
+  },
+  {
+    "id": "hamels-espn-crasnick",
+    "label": "ESPN, Jerry Crasnick on Cole Hamels and his changeup",
+    "url": "https://www.espn.com/mlb/columns/story?columnist=crasnick_jerry&id=2878204",
+    "retrievedAt": "2026-06-06",
+    "season": "2007"
+  },
+  {
+    "id": "hamels-espn-2008",
+    "label": "ESPN, Phillies pitcher Hamels earns World Series MVP",
+    "url": "https://www.espn.com/mlb/playoffs2008/news/story?id=3671956",
+    "retrievedAt": "2026-06-06",
+    "season": "2008"
+  },
+  {
+    "id": "hamels-statmuse",
+    "label": "StatMuse, Cole Hamels career stats",
+    "url": "https://www.statmuse.com/mlb/player/cole-hamels-24707/career-stats",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "hamels-fangraphs-jaws",
+    "label": "FanGraphs, JAWS and the 2026 Hall of Fame Ballot: Cole Hamels (Jay Jaffe)",
+    "url": "https://blogs.fangraphs.com/jaws-and-the-2026-hall-of-fame-ballot-cole-hamels/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "hamels-wiki",
+    "label": "Wikipedia, Cole Hamels",
+    "url": "https://en.wikipedia.org/wiki/Cole_Hamels",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "exp-wikipedia-shuuto",
+    "label": "Wikipedia — Shuuto (razor shuuto / Masaji Hiramatsu)",
+    "url": "https://en.wikipedia.org/wiki/Shuuto",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "exp-br-bullpen-hiramatsu",
+    "label": "Baseball-Reference Bullpen — Masaji Hiramatsu (thrower biography; cited in brief, corroborated by search snippet, not independently re-fetched — page returns 403 to automated requests)",
+    "url": "https://www.baseball-reference.com/bullpen/Masaji_Hiramatsu",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "exp-baltimore-sun-reckless-richards",
+    "label": "The Baltimore Sun — \"'Reckless' Richards cracks open O's coffers\"",
+    "url": "https://www.baltimoresun.com/2003/10/29/reckless-richards-cracks-open-os-coffers/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "exp-sabr-paul-richards-bio",
+    "label": "SABR BioProject — Paul Richards",
+    "url": "https://sabr.org/bioproj/person/paul-richards/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "exp-mlb-airbender-explainer",
+    "label": "MLB.com — \"Devin Williams brings unique Airbender pitch to Yankees\"",
+    "url": "https://www.mlb.com/news/devin-williams-airbender-pitch-explainer",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "exp-fangraphs-unicorn-changeup",
+    "label": "FanGraphs — \"Devin Williams and the Unicorn Changeup\"",
+    "url": "https://blogs.fangraphs.com/devin-williams-and-the-unicorn-changeup/",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "exp-azsnakepit-deathball",
+    "label": "AZ Snake Pit (SB Nation): \"The Deathball: An Important Pitch to the Dbacks in 2025 That You've Likely Never Heard Of\" (Jeff Irving, Jan 2025)",
+    "url": "https://www.azsnakepit.com/2025/1/6/24336678/the-deathball-an-important-pitch-to-the-dbacks-in-2025-that-youve-likely-never-heard-of",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "exp-mlb-dead-fish-valdez",
+    "label": "MLB.com — César Valdez's 'Dead Fish' changeup analyzed",
+    "url": "https://www.mlb.com/news/cesar-valdez-s-dead-fish-changeup-analyzed",
+    "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "exp-baltsun-dead-fish-valdez",
+    "label": "Baltimore Sun — How César Valdez's 'Dead Fish' changeup became a weapon at the back end of the Orioles' bullpen",
+    "url": "https://www.baltimoresun.com/2020/09/19/how-csar-valdezs-dead-fish-changeup-became-a-weapon-at-the-backend-of-the-orioles-bullpen/",
+    "retrievedAt": "2026-06-06"
+  }
+]

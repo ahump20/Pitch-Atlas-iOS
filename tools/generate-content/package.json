@@ -1,0 +1,14 @@
+{
+  "name": "pitch-atlas-ios-content-generator",
+  "private": true,
+  "type": "module",
+  "description": "Generates bundled JSON for the iOS app from the Pitch Atlas web repo's src/data. Single source of truth lives on the web side.",
+  "scripts": {
+    "generate": "tsx generate.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

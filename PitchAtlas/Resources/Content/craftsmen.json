@@ -1,0 +1,1420 @@
+[
+  {
+    "slug": "bob-gibson",
+    "name": "Bob Gibson",
+    "kind": "craftsman",
+    "era": "1959-1975",
+    "hand": "right",
+    "signaturePitch": "Slider",
+    "signaturePitchSlug": "slider",
+    "specimenNo": "C-01",
+    "tagline": "The most feared arm of his era, who pitched as though the plate were his to defend.",
+    "intro": "Gibson did not negotiate with hitters. He worked from a low three-quarter slot and an explosive fall toward first base, and he treated the strike zone as territory he owned. The slider was the put-away pitch, including a back-up version that started inside on a same-handed hitter and bent back over the plate, the opposite of what the eyes told the batter to expect.",
+    "signature": {
+      "value": "His slider, thrown hard, was the strikeout pitch; the famous \"back-up slider\" started in on a same-handed hitter and swept back over the plate, breaking the wrong way on purpose. The final out of his record 17-strikeout 1968 World Series Game 1 was Willie Horton frozen on that pitch.",
+      "source": {
+        "id": "gibson-cbs-backup",
+        "label": "CBS Sports, Bob Gibson's back-up slider",
+        "url": "https://www.cbssports.com/mlb/news/gif-bob-gibsons-back-up-slider/",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Described by CBS Sports from film of the back-up slider; the grip itself is not documented in a reachable source, so none is asserted."
+    },
+    "mentalEdge": {
+      "value": "He wanted to own the outside corner; the only reason to throw inside, he said, was to keep a hitter from leaning out over the plate. He framed his reputation as intensity rather than anger, and called pitching roughly ninety percent mental.",
+      "source": {
+        "id": "gibson-fangraphs",
+        "label": "FanGraphs, Remembering the Intense and Indomitable Bob Gibson",
+        "url": "https://blogs.fangraphs.com/remembering-the-intense-and-indomitable-bob-gibson-1935-2020/",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "reputable-analysis",
+      "note": "Paraphrased from the FanGraphs appreciation, which quotes Gibson on owning the outside half. The knockdown was part of the toolkit: he listed \"knockdown, brushback, and hit-batsman\" among his nine pitches."
+    },
+    "quote": {
+      "value": "The part of pitching that separates the stars from everyone else is about 90 percent mental. That is why I considered it so important to mess with a batter’s head without letting him inside mine.",
+      "source": {
+        "id": "gibson-wiki",
+        "label": "Wikipedia, Bob Gibson",
+        "url": "https://en.wikipedia.org/wiki/Bob_Gibson",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words"
+    },
+    "numbers": [
+      {
+        "label": "ERA (1968)",
+        "claim": {
+          "value": "1.12",
+          "source": {
+            "id": "gibson-hof-1968",
+            "label": "National Baseball Hall of Fame, Gibson's 1968 season",
+            "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
+            "retrievedAt": "2026-06-05",
+            "season": "1968"
+          },
+          "confidence": "official-data",
+          "note": "The lowest live-ball-era ERA for a qualifier; it helped trigger the mound being lowered for 1969."
+        }
+      },
+      {
+        "label": "Record (1968)",
+        "claim": {
+          "value": "22-9",
+          "source": {
+            "id": "gibson-hof-1968",
+            "label": "National Baseball Hall of Fame, Gibson's 1968 season",
+            "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
+            "retrievedAt": "2026-06-05",
+            "season": "1968"
+          },
+          "confidence": "official-data"
+        }
+      },
+      {
+        "label": "Strikeouts (1968)",
+        "claim": {
+          "value": "268",
+          "source": {
+            "id": "gibson-hof-1968",
+            "label": "National Baseball Hall of Fame, Gibson's 1968 season",
+            "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
+            "retrievedAt": "2026-06-05",
+            "season": "1968"
+          },
+          "confidence": "official-data"
+        }
+      },
+      {
+        "label": "Shutouts (1968)",
+        "claim": {
+          "value": "13",
+          "source": {
+            "id": "gibson-hof-1968",
+            "label": "National Baseball Hall of Fame, Gibson's 1968 season",
+            "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
+            "retrievedAt": "2026-06-05",
+            "season": "1968"
+          },
+          "confidence": "official-data"
+        }
+      },
+      {
+        "label": "World Series Game 1 K (1968)",
+        "claim": {
+          "value": "17",
+          "source": {
+            "id": "gibson-cbs-backup",
+            "label": "CBS Sports, Bob Gibson's back-up slider",
+            "url": "https://www.cbssports.com/mlb/news/gif-bob-gibsons-back-up-slider/",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data",
+          "note": "A single-game World Series record, vs. Detroit; the last strikeout came on the back-up slider."
+        }
+      },
+      {
+        "label": "Slider velocity (described)",
+        "claim": {
+          "value": "about 90 mph",
+          "source": {
+            "id": "gibson-fangraphs",
+            "label": "FanGraphs, Remembering the Intense and Indomitable Bob Gibson",
+            "url": "https://blogs.fangraphs.com/remembering-the-intense-and-indomitable-bob-gibson-1935-2020/",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "secondhand-attributed",
+          "approximate": true,
+          "note": "A descriptive estimate from FanGraphs. No radar tracking existed in his era."
+        }
+      }
+    ],
+    "rights": "original"
+  },
+  {
+    "slug": "nolan-ryan",
+    "name": "Nolan Ryan",
+    "kind": "craftsman",
+    "era": "1966-1993",
+    "hand": "right",
+    "signaturePitch": "Four-seam fastball",
+    "signaturePitchSlug": "four-seam",
+    "specimenNo": "C-02",
+    "tagline": "Twenty-seven seasons, seven no-hitters, and a fastball he would not throw down the middle for anyone.",
+    "intro": "Ryan paired the most overpowering fastball of his generation with a hard overhand curve and a refusal to give in. He would rather walk a hitter than throw a pitch he did not trust, and he kept doing it into his forties, throwing his seventh no-hitter at age 44.",
+    "signature": {
+      "value": "A four-seam fastball that, on September 7, 1974, became the first officially radar-clocked above 100 mph, paired with a power overhand curve. The conviction to never throw it down the middle is the rest of the pitch.",
+      "source": {
+        "id": "ryan-wiki",
+        "label": "Wikipedia, Nolan Ryan",
+        "url": "https://en.wikipedia.org/wiki/Nolan_Ryan",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "reputable-analysis",
+      "note": "Sources differ on the exact date of the 100.8 mph reading (some place it August 20, 1974); the measurement was taken ten feet in front of the plate."
+    },
+    "mentalEdge": {
+      "value": "Ryan accepted record walk totals as the price of never giving in. Told he was not pitching the way a man of his ability should, his answer was that if he was going to lose, he would lose his own way. He framed the gap between good and great as mental: stay exact about the pitch you need, or the velocity is wasted.",
+      "source": {
+        "id": "ryan-espn",
+        "label": "ESPN, There's never been another pitcher like Nolan Ryan",
+        "url": "https://www.espn.com/mlb/story/_/id/29171065/legendary-dominating-historically-wild-there-never-another-pitcher-nolan-ryan",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "quote": {
+      "value": "If I’m going to lose, I’m going to lose my way. Who gets the L?",
+      "source": {
+        "id": "ryan-espn",
+        "label": "ESPN, There's never been another pitcher like Nolan Ryan",
+        "url": "https://www.espn.com/mlb/story/_/id/29171065/legendary-dominating-historically-wild-there-never-another-pitcher-nolan-ryan",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "To Tony Kornheiser, on his conviction-first approach."
+    },
+    "numbers": [
+      {
+        "label": "Career strikeouts",
+        "claim": {
+          "value": "5,714",
+          "source": {
+            "id": "ryan-hof",
+            "label": "National Baseball Hall of Fame, Nolan Ryan",
+            "url": "https://baseballhall.org/hall-of-famers/ryan-nolan",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data",
+          "note": "The MLB record, 839 ahead of the runner-up."
+        }
+      },
+      {
+        "label": "No-hitters",
+        "claim": {
+          "value": "7",
+          "source": {
+            "id": "ryan-hof",
+            "label": "National Baseball Hall of Fame, Nolan Ryan",
+            "url": "https://baseballhall.org/hall-of-famers/ryan-nolan",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data",
+          "note": "The MLB record; the seventh came at age 44."
+        }
+      },
+      {
+        "label": "Seasons pitched",
+        "claim": {
+          "value": "27",
+          "source": {
+            "id": "ryan-hof",
+            "label": "National Baseball Hall of Fame, Nolan Ryan",
+            "url": "https://baseballhall.org/hall-of-famers/ryan-nolan",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data",
+          "note": "1966 to 1993."
+        }
+      },
+      {
+        "label": "Career record",
+        "claim": {
+          "value": "324-292",
+          "source": {
+            "id": "ryan-almanac",
+            "label": "Baseball Almanac, Nolan Ryan career register",
+            "url": "https://www.baseball-almanac.com/players/player.php?p=ryanno01",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data"
+        }
+      },
+      {
+        "label": "Career walks",
+        "claim": {
+          "value": "2,795",
+          "source": {
+            "id": "ryan-almanac",
+            "label": "Baseball Almanac, Nolan Ryan career register",
+            "url": "https://www.baseball-almanac.com/players/player.php?p=ryanno01",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data",
+          "note": "Also the MLB record: the trade-off of never throwing to contact."
+        }
+      },
+      {
+        "label": "Fastball, radar-clocked (1974)",
+        "claim": {
+          "value": "100.8 mph",
+          "source": {
+            "id": "ryan-wiki",
+            "label": "Wikipedia, Nolan Ryan",
+            "url": "https://en.wikipedia.org/wiki/Nolan_Ryan",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The first fastball officially clocked over 100 mph, measured ten feet in front of the plate."
+        }
+      }
+    ],
+    "rights": "original"
+  },
+  {
+    "slug": "roger-clemens",
+    "name": "Roger Clemens",
+    "kind": "craftsman",
+    "era": "1984-2007",
+    "hand": "right",
+    "signaturePitch": "Split-finger fastball",
+    "signaturePitchSlug": "splitter",
+    "specimenNo": "C-03",
+    "tagline": "The only pitcher with two twenty-strikeout games, built late on a splitter he called Mr. Splitty.",
+    "intro": "Clemens started on a mid-90s fastball and a ferocious, confrontational presence, then in the 1990s added the split-finger he jokingly nicknamed \"Mr. Splitty\" and made it his out pitch. He is the only pitcher in history with two twenty-strikeout games in nine innings.",
+    "signature": {
+      "value": "From the 1990s on, the strikeouts ran through a split-finger fastball he nicknamed \"Mr. Splitty.\" It left his hand looking like the fastball and dropped off the table late, the wide grip killing the backspin that keeps a four-seamer riding.",
+      "source": {
+        "id": "clemens-wiki",
+        "label": "Wikipedia, Roger Clemens",
+        "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "reputable-analysis",
+      "note": "The nickname and the splitter’s role are documented on Wikipedia; the \"Mr. Splittee\" spelling sometimes seen is a typo. No Clemens-specific splitter tracking data exists for most of his career."
+    },
+    "mentalEdge": {
+      "value": "Clemens drew a hard line between game day and every other day, cultivating an unfriendly, intimidating presence on the mound that he called motivation, not anger. Strikeouts, he said, were a situational tool to apply pressure, not the point of every at-bat.",
+      "source": {
+        "id": "clemens-espn-classic",
+        "label": "ESPN Classic, Clemens thrives on confrontation",
+        "url": "https://www.espn.com/classic/biography/s/clemens_roger.html",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "quote": {
+      "value": "If someone met me on a game day, he wouldn’t like me. The days in between, I’m the goodest guy you can find.",
+      "source": {
+        "id": "clemens-espn-classic",
+        "label": "ESPN Classic, Clemens thrives on confrontation",
+        "url": "https://www.espn.com/classic/biography/s/clemens_roger.html",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "Said in 1990 with the Red Sox, on his game-day persona."
+    },
+    "numbers": [
+      {
+        "label": "Career wins",
+        "claim": {
+          "value": "354",
+          "source": {
+            "id": "clemens-wiki",
+            "label": "Wikipedia, Roger Clemens",
+            "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data"
+        }
+      },
+      {
+        "label": "Career strikeouts",
+        "claim": {
+          "value": "4,672",
+          "source": {
+            "id": "clemens-wiki",
+            "label": "Wikipedia, Roger Clemens",
+            "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data"
+        }
+      },
+      {
+        "label": "Cy Young Awards",
+        "claim": {
+          "value": "7",
+          "source": {
+            "id": "clemens-wiki",
+            "label": "Wikipedia, Roger Clemens",
+            "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data",
+          "note": "1986, 1987, 1991, 1997, 1998, 2001, 2004. A record."
+        }
+      },
+      {
+        "label": "20-K game, April 29, 1986",
+        "claim": {
+          "value": "20 K, 0 BB, vs. Seattle",
+          "source": {
+            "id": "clemens-sabr-1986",
+            "label": "SABR Games Project, April 29, 1986: Clemens strikes out 20",
+            "url": "https://sabr.org/gamesproj/game/april-29-1986-roger-clemens-becomes-first-pitcher-to-strike-out-20-in-nine-innings/",
+            "retrievedAt": "2026-06-05",
+            "season": "1986"
+          },
+          "confidence": "official-data",
+          "note": "The first nine-inning 20-strikeout game in MLB history."
+        }
+      },
+      {
+        "label": "20-K game, Sept 18, 1996",
+        "claim": {
+          "value": "20 K, 0 BB, vs. Detroit",
+          "source": {
+            "id": "clemens-mlb-1996",
+            "label": "MLB.com Cut4, Clemens strikes out 20 Tigers",
+            "url": "https://www.mlb.com/cut4/roger-clemens-strikes-out-20-tigers/c-150116768",
+            "retrievedAt": "2026-06-05",
+            "season": "1996"
+          },
+          "confidence": "official-data",
+          "note": "Tied his own record; his last win in a Red Sox uniform."
+        }
+      }
+    ],
+    "rights": "original"
+  },
+  {
+    "slug": "greg-maddux",
+    "name": "Greg Maddux",
+    "kind": "craftsman",
+    "era": "1986-2008",
+    "hand": "right",
+    "signaturePitch": "Two-seam fastball",
+    "signaturePitchSlug": "two-seam",
+    "specimenNo": "C-04",
+    "tagline": "The thinking pitcher: four straight Cy Youngs on command, deception, and a fastball that rarely touched 89.",
+    "intro": "Maddux won with location and changing speeds where others won with velocity. A two-seam fastball that ran, a circle change off the same arm action, and a near-religious commitment to locating the fastball down and away made hitters unable to trust their own eyes.",
+    "signature": {
+      "value": "A two-seam fastball with arm-side run, paired with a circle changeup thrown off identical arm action, all governed by command. The two-seamer was his natural fastball; he said it played up once he learned a cutter, giving him late movement both ways off the same look.",
+      "source": {
+        "id": "maddux-wiki",
+        "label": "Wikipedia, Greg Maddux",
+        "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "mentalEdge": {
+      "value": "Maddux’s edge was perceptual. A hitter cannot reliably judge the speed of a pitch in the moment, he argued, so if every pitch leaves the same release point at the same arm speed and only the velocity changes, the hitter is helpless. Where most pitchers reach back for more in a jam, he tried to locate better.",
+      "source": {
+        "id": "maddux-daringfireball",
+        "label": "Daring Fireball, quoting Thomas Boswell (Washington Post, Jan 7, 2014)",
+        "url": "https://daringfireball.net/linked/2014/01/13/maddux",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "quote": {
+      "value": "But if a pitcher can change speeds, every hitter is helpless, limited by human vision. Except for that (expletive) Tony Gwynn.",
+      "source": {
+        "id": "maddux-daringfireball",
+        "label": "Daring Fireball, quoting Thomas Boswell (Washington Post, Jan 7, 2014)",
+        "url": "https://daringfireball.net/linked/2014/01/13/maddux",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "To Thomas Boswell, originally in his January 7, 2014 Washington Post column; confirmed verbatim at two reachable reproductions."
+    },
+    "numbers": [
+      {
+        "label": "Career wins",
+        "claim": {
+          "value": "355",
+          "source": {
+            "id": "maddux-wiki",
+            "label": "Wikipedia, Greg Maddux",
+            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis"
+        }
+      },
+      {
+        "label": "Career ERA",
+        "claim": {
+          "value": "3.16",
+          "source": {
+            "id": "maddux-wiki",
+            "label": "Wikipedia, Greg Maddux",
+            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis"
+        }
+      },
+      {
+        "label": "Career strikeouts",
+        "claim": {
+          "value": "3,371",
+          "source": {
+            "id": "maddux-wiki",
+            "label": "Wikipedia, Greg Maddux",
+            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "On a fastball that rarely touched 89 mph late in his career."
+        }
+      },
+      {
+        "label": "Cy Young Awards",
+        "claim": {
+          "value": "4 (consecutive)",
+          "source": {
+            "id": "maddux-wiki",
+            "label": "Wikipedia, Greg Maddux",
+            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "1992 through 1995, a feat matched by only one other pitcher."
+        }
+      },
+      {
+        "label": "Gold Gloves",
+        "claim": {
+          "value": "18",
+          "source": {
+            "id": "maddux-wiki",
+            "label": "Wikipedia, Greg Maddux",
+            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The most by any player at any position."
+        }
+      }
+    ],
+    "rights": "original"
+  },
+  {
+    "slug": "johan-santana",
+    "name": "Johan Santana",
+    "kind": "craftsman",
+    "era": "2000-2012",
+    "hand": "left",
+    "signaturePitch": "Circle changeup",
+    "signaturePitchSlug": "circle-change",
+    "specimenNo": "C-05",
+    "tagline": "A circle changeup widely called the best of its era, built entirely on looking exactly like the fastball.",
+    "intro": "Santana’s 2000s peak ran on a circle changeup that scouts and hitters called the best of its era. Its deception came not from exotic movement but from identical arm action, release point, and effort, so hitters committed early and the ball arrived more than ten mph slower than they expected. He won the AL Cy Young unanimously in 2004 and 2006.",
+    "signature": {
+      "value": "A circle changeup launched with arm action, release point, and effort indistinguishable from his low-90s fastball, so the two looked like twins until the change arrived late and slow with fade down and away from righties. By one pitch-value measure he is the career leader in changeup value since tracking began in 2002.",
+      "source": {
+        "id": "santana-sabr",
+        "label": "Society for American Baseball Research, Johan Santana (BioProject)",
+        "url": "https://sabr.org/bioproj/person/johan-santana/",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "mentalEdge": {
+      "value": "The whole design was disguise. The Twins sent him to Triple-A in 2002 specifically to force-feed the changeup, where a coach made him throw one to nearly every hitter until he trusted it completely. The reputation said a 15-to-20 mph gap; the 2007 tracking data put the real fastball-to-change gap near 10 mph, meaning the deception, not the separation, is what made it elite.",
+      "source": {
+        "id": "santana-sabr",
+        "label": "Society for American Baseball Research, Johan Santana (BioProject)",
+        "url": "https://sabr.org/bioproj/person/johan-santana/",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "reputable-analysis",
+      "note": "A real, sourced tension worth keeping: Bret Boone and scouting lore cite a 15-20 mph gap; PITCHf/x measured about 10 mph in 2007."
+    },
+    "quote": {
+      "value": "I was challenging myself and forcing myself to take command of that pitch.",
+      "source": {
+        "id": "santana-sabr",
+        "label": "Society for American Baseball Research, Johan Santana (BioProject)",
+        "url": "https://sabr.org/bioproj/person/johan-santana/",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "On developing the changeup at Triple-A Edmonton in 2002."
+    },
+    "numbers": [
+      {
+        "label": "ERA (2004, unanimous Cy Young)",
+        "claim": {
+          "value": "2.61",
+          "source": {
+            "id": "santana-twinsalmanac",
+            "label": "The Twins Almanac, Johan Santana",
+            "url": "https://twinsalmanac.com/johansantana/",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Led the majors; won the AL Cy Young unanimously."
+        }
+      },
+      {
+        "label": "Strikeouts (2004)",
+        "claim": {
+          "value": "265",
+          "source": {
+            "id": "santana-twinsalmanac",
+            "label": "The Twins Almanac, Johan Santana",
+            "url": "https://twinsalmanac.com/johansantana/",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis"
+        }
+      },
+      {
+        "label": "ERA (2006, unanimous Cy Young)",
+        "claim": {
+          "value": "2.77",
+          "source": {
+            "id": "santana-twinsalmanac",
+            "label": "The Twins Almanac, Johan Santana",
+            "url": "https://twinsalmanac.com/johansantana/",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis"
+        }
+      },
+      {
+        "label": "Fastball vs. changeup gap (2007 PITCHf/x)",
+        "claim": {
+          "value": "about 10 mph (93.0 / 83.1)",
+          "source": {
+            "id": "santana-fastballs",
+            "label": "Fast Balls, Tales of the changeup: an analysis of Johan Santana (PITCHf/x)",
+            "url": "https://fastballs.wordpress.com/2010/05/19/tales-of-the-changeup-an-analysis-of-johan-santana/",
+            "retrievedAt": "2026-06-05",
+            "season": "2007"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Close to a normal MLB changeup separation, and well under the 15-20 mph the pitch was reputed to have."
+        }
+      },
+      {
+        "label": "Career changeup value (since 2002)",
+        "claim": {
+          "value": "133.4 runs (the leader)",
+          "source": {
+            "id": "santana-fangraphs-nohit",
+            "label": "FanGraphs, Johan Santana Rides Changeup to No-Hitter",
+            "url": "https://blogs.fangraphs.com/johan-santana-rides-changeup-to-no-hitter/",
+            "retrievedAt": "2026-06-05",
+            "season": "2012"
+          },
+          "confidence": "reputable-analysis"
+        }
+      }
+    ],
+    "rights": "original"
+  },
+  {
+    "slug": "adam-wainwright",
+    "name": "Adam Wainwright",
+    "kind": "craftsman",
+    "era": "2005-2023",
+    "hand": "right",
+    "signaturePitch": "12-6 curveball",
+    "signaturePitchSlug": "twelve-six",
+    "specimenNo": "C-06",
+    "tagline": "One curveball, one team, eighteen seasons: a 75-mph hook so trusted it ended a pennant on a called strike three.",
+    "intro": "Wainwright spent his whole career with the St. Louis Cardinals, and he spent it leaning on one pitch. The curveball was big and slow and arrived at the same speed no matter how hard he threw it, and it buckled knees from his rookie September to his final start. His brother taught it to him as a kid. He threw it on top of the ball and well out in front, with a double-jointed thumb that put extra spin on the end of it, and when the biggest at-bat of his life arrived, he threw it again.",
+    "signature": {
+      "value": "A big, slow curveball thrown on top of the ball and released well out in front, so it stayed hidden until it broke. His grip was a little around the seam, and he had a double-jointed thumb he could turn over at release to add spin on the end of the pitch. In his prime it was a true over-the-top 12-6; as his arm slot dropped with age it took on more side-to-side, a two-plane 2-to-7 shape.",
+      "source": {
+        "id": "wainwright-fangraphs-grip",
+        "label": "FanGraphs, Nick Kingham, Mark Prior, and Adam Wainwright on Crafting Their Curveballs (David Laurila)",
+        "url": "https://blogs.fangraphs.com/nick-kingham-mark-prior-and-adam-wainwright-on-crafting-their-curveballs/",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "His own account to FanGraphs: the around-the-seam grip, the double-jointed thumb, the out-front release, and the 12-6 flattening toward 2-to-7 as he aged."
+    },
+    "mentalEdge": {
+      "value": "His edge was one pitch he trusted completely. He could throw the curve as hard as he wanted and it still came out 75 mph, the same every time, so he could throw it in any count without tipping speed. He was blunt about how much rested on it: without the curveball, he said, he never gets out of A-ball. Hitters knew it was coming and could not lay off; Joey Votto compared reading it to a ball dropped off a ladder, impossible to tell ball from strike.",
+      "source": {
+        "id": "wainwright-espn-curve",
+        "label": "ESPN, The secret to Adam Wainwright's success: a curveball like none other (Buster Olney)",
+        "url": "https://www.espn.com/mlb/insider/story/_/id/34178817/the-secret-st-louis-cardinals-righty-adam-wainwright-success-curveball-other",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "The \"75 mph however hard I throw it\" and \"out of A-ball\" lines are Wainwright's own, via ESPN. Votto's \"ladder\" description is a hitter's, from the same piece."
+    },
+    "quote": {
+      "value": "If I didn’t have my curveball, I don’t get out of A-ball.",
+      "source": {
+        "id": "wainwright-espn-curve",
+        "label": "ESPN, The secret to Adam Wainwright's success: a curveball like none other (Buster Olney)",
+        "url": "https://www.espn.com/mlb/insider/story/_/id/34178817/the-secret-st-louis-cardinals-righty-adam-wainwright-success-curveball-other",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "To ESPN, on how completely his career rested on the one pitch."
+    },
+    "numbers": [
+      {
+        "label": "Career strikeouts",
+        "claim": {
+          "value": "2,202",
+          "source": {
+            "id": "wainwright-bref",
+            "label": "Baseball-Reference, Adam Wainwright",
+            "url": "https://www.baseball-reference.com/players/w/wainwad01.shtml",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data",
+          "note": "All with the Cardinals; the 2,000th came on the curve in 2021."
+        }
+      },
+      {
+        "label": "Career wins",
+        "claim": {
+          "value": "200",
+          "source": {
+            "id": "wainwright-bref",
+            "label": "Baseball-Reference, Adam Wainwright",
+            "url": "https://www.baseball-reference.com/players/w/wainwad01.shtml",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data",
+          "note": "Plus two Gold Gloves, three All-Star selections, and four top-three Cy Young finishes, all in St. Louis."
+        }
+      },
+      {
+        "label": "Opponent line vs. the curve (career)",
+        "claim": {
+          "value": "26 wRC+",
+          "source": {
+            "id": "wainwright-fangraphs-curve",
+            "label": "FanGraphs, Checking in on Adam Wainwright's Curveball",
+            "url": "https://blogs.fangraphs.com/checking-in-on-adam-wainwrights-curveball/",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data",
+          "note": "Roughly 74% below league-average offense against the pitch over his career; 100 is average."
+        }
+      },
+      {
+        "label": "Curve, 2023 (Statcast)",
+        "claim": {
+          "value": "71.5 mph · 16.5 in glove-side · 13.5 in drop",
+          "source": {
+            "id": "savant-wainwright",
+            "label": "Baseball Savant (Statcast), Adam Wainwright",
+            "url": "https://baseballsavant.mlb.com/savant-player/adam-wainwright-425794",
+            "retrievedAt": "2026-06-05",
+            "season": "2023"
+          },
+          "confidence": "official-data",
+          "note": "Late-career the curve swept as a two-plane 2-to-7, not the over-the-top 12-6 of his prime."
+        }
+      },
+      {
+        "label": "The Beltran strikeout",
+        "claim": {
+          "value": "NLCS Game 7, 2006",
+          "source": {
+            "id": "wainwright-nlcs-wiki",
+            "label": "Wikipedia, 2006 National League Championship Series",
+            "url": "https://en.wikipedia.org/wiki/2006_National_League_Championship_Series",
+            "retrievedAt": "2026-06-05",
+            "season": "2006"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Rookie Wainwright froze Carlos Beltran on a 0-2 curve, bases loaded and two outs, to clinch the pennant and send St. Louis to the World Series."
+        }
+      },
+      {
+        "label": "2,000th strikeout",
+        "claim": {
+          "value": "on the curve, 2021",
+          "source": {
+            "id": "wainwright-2000-stlredbirds",
+            "label": "STLRedbirds.com, September 23, 2021: Adam Wainwright throws his 2,000th strikeout",
+            "url": "https://www.stlredbirds.com/2023/03/18/september-23-2021-adam-wainwright-throws-his-2000th-strikeout/",
+            "retrievedAt": "2026-06-05",
+            "season": "2021"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The 85th pitcher to reach 2,000; with Bob Gibson, the only two to collect all 2,000 as Cardinals."
+        }
+      }
+    ],
+    "rights": "original"
+  },
+  {
+    "slug": "paul-skenes",
+    "name": "Paul Skenes",
+    "kind": "craftsman",
+    "era": "2024-present",
+    "hand": "right",
+    "signaturePitch": "Splinker",
+    "signaturePitchSlug": "splinker",
+    "specimenNo": "C-07",
+    "tagline": "The modern phenom whose splinker, a pitch he found by accident, is already one of the best in baseball.",
+    "intro": "Skenes reached the majors in 2024 and was the NL Rookie of the Year that fall. His signature is the \"splinker,\" a sinker-splitter hybrid his catcher named, thrown in the mid-90s with splitter-like dive off a 98 mph four-seam look. He still thinks of it as a sinker.",
+    "signature": {
+      "value": "A \"splinker,\" held with a light two-seam split rather than a deep splitter wedge, fired around 94 mph off a 98 mph four-seam look. Low spin gives it more drop than a normal splitter and arm-side run into right-handers; it leaves the hand on nearly the same path as the fastball, then falls.",
+      "source": {
+        "id": "skenes-mlb-arsenal",
+        "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
+        "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
+        "retrievedAt": "2026-06-05",
+        "season": "2025"
+      },
+      "confidence": "reputable-analysis",
+      "note": "He discovered the modern version by feel: the grip did not change, but the release and the feel at release did, on one random throw."
+    },
+    "mentalEdge": {
+      "value": "Skenes leans on deception by sameness, the splinker emerging on the same arm slot and release as his four-seam so hitters cannot tell the rising fastball from the diving hybrid out of the hand. He treats it as a confidence pitch, reaching for it in the highest-leverage counts and using it differently every outing.",
+      "source": {
+        "id": "skenes-mlb-confidence",
+        "label": "MLB.com, Skenes' newest pitch is his confidence pitch (Alex Stumpf)",
+        "url": "https://www.mlb.com/news/paul-skenes-adds-splinker-to-pitch-mix",
+        "retrievedAt": "2026-06-05",
+        "season": "2024"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "quote": {
+      "value": "I still think of it as a sinker. It’s funny to see guys swing at fastballs in the dirt.",
+      "source": {
+        "id": "skenes-mlb-confidence",
+        "label": "MLB.com, Skenes' newest pitch is his confidence pitch (Alex Stumpf)",
+        "url": "https://www.mlb.com/news/paul-skenes-adds-splinker-to-pitch-mix",
+        "retrievedAt": "2026-06-05",
+        "season": "2024"
+      },
+      "confidence": "pitcher-own-words"
+    },
+    "numbers": [
+      {
+        "label": "Splinker velocity",
+        "claim": {
+          "value": "about 94 mph",
+          "source": {
+            "id": "skenes-mlb-arsenal",
+            "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
+            "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
+            "retrievedAt": "2026-06-05",
+            "season": "2025"
+          },
+          "confidence": "official-data",
+          "note": "Roughly 4 mph under his four-seam and nearly 8 mph above the average MLB splitter."
+        }
+      },
+      {
+        "label": "Splinker spin rate",
+        "claim": {
+          "value": "about 1,750 rpm",
+          "source": {
+            "id": "skenes-mlb-arsenal",
+            "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
+            "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
+            "retrievedAt": "2026-06-05",
+            "season": "2025"
+          },
+          "confidence": "official-data",
+          "note": "Far below the average sinker (about 2,150 rpm), which is why it behaves like neither a true sinker nor a true splitter."
+        }
+      },
+      {
+        "label": "Run value since debut",
+        "claim": {
+          "value": "+18 (top-five pitch in baseball)",
+          "source": {
+            "id": "skenes-mlb-arsenal",
+            "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
+            "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
+            "retrievedAt": "2026-06-05",
+            "season": "2025"
+          },
+          "confidence": "official-data"
+        }
+      },
+      {
+        "label": "Opponent average vs. splinker (first 6 starts)",
+        "claim": {
+          "value": ".073 (3-for-41)",
+          "source": {
+            "id": "skenes-mlb-confidence",
+            "label": "MLB.com, Skenes' newest pitch is his confidence pitch (Alex Stumpf)",
+            "url": "https://www.mlb.com/news/paul-skenes-adds-splinker-to-pitch-mix",
+            "retrievedAt": "2026-06-05",
+            "season": "2024"
+          },
+          "confidence": "official-data"
+        }
+      }
+    ],
+    "rights": "original"
+  },
+  {
+    "slug": "phil-niekro",
+    "name": "Phil Niekro",
+    "kind": "craftsman",
+    "era": "1964-1987",
+    "hand": "right",
+    "signaturePitch": "Knuckleball",
+    "signaturePitchSlug": "knuckleball",
+    "specimenNo": "C-08",
+    "tagline": "The only knuckleballer to win 300 games — a Hall of Fame career built on the one pitch nobody, himself included, could fully explain.",
+    "intro": "They called him Knucksie. On a floating knuckleball his father taught him, Phil Niekro pitched more innings than any pitcher who started in the live-ball era and threw deep into his late 40s, long after a fastball would have left him. The knuckleball is usually a last resort; for Niekro it was a 300-win, Hall of Fame career.",
+    "signature": {
+      "value": "A true no-spin knuckleball: he arched the first two fingers of his right hand so only their tips and nails touched the ball, forsaking all humanly imparted spin and letting the seams and the air do the rest. With almost nothing on it, the pitch fluttered late and unpredictably — and because it asked so little of the arm, it let him pitch into his 48th year.",
+      "source": {
+        "id": "niekro-fangraphs",
+        "label": "FanGraphs, Remembering Phil Niekro, King of the Knuckleballers",
+        "url": "https://blogs.fangraphs.com/remembering-phil-niekro-king-of-the-knuckleballers-1939-2020/",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "reputable-analysis",
+      "note": "The fingertip-and-nail grip description is from the FanGraphs remembrance; he learned the pitch from his father and from minor-leaguer Nick McKay (SABR)."
+    },
+    "mentalEdge": {
+      "value": "Durability as a weapon. Teammate Dale Murphy called him the ultimate gamer and competitor, and the record bears it out: the most innings of any live-ball-era starter, and the oldest pitcher ever to throw a shutout, at 46 years and 188 days — a mark that stood nearly 25 years until Jamie Moyer passed it. A pitch that spares the arm let him simply outlast everyone.",
+      "source": {
+        "id": "niekro-wiki",
+        "label": "Wikipedia, Phil Niekro",
+        "url": "https://en.wikipedia.org/wiki/Phil_Niekro",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "reputable-analysis",
+      "note": "The \"ultimate gamer\" characterization is Murphy's, via FanGraphs; the longevity records are from Wikipedia and the Hall of Fame."
+    },
+    "numbers": [
+      {
+        "label": "Career wins-losses",
+        "claim": {
+          "value": "318-274",
+          "source": {
+            "id": "niekro-hof",
+            "label": "National Baseball Hall of Fame, Phil Niekro",
+            "url": "https://baseballhall.org/hall-of-famers/niekro-phil",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Confirmed by the Hall of Fame and Wikipedia."
+        }
+      },
+      {
+        "label": "Career strikeouts",
+        "claim": {
+          "value": "3,342",
+          "source": {
+            "id": "niekro-hof",
+            "label": "National Baseball Hall of Fame, Phil Niekro",
+            "url": "https://baseballhall.org/hall-of-famers/niekro-phil",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis"
+        }
+      },
+      {
+        "label": "Innings pitched",
+        "claim": {
+          "value": "5,404.1",
+          "source": {
+            "id": "niekro-wiki",
+            "label": "Wikipedia, Phil Niekro",
+            "url": "https://en.wikipedia.org/wiki/Phil_Niekro",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The most of any pitcher who started in the post-1920 live-ball era."
+        }
+      },
+      {
+        "label": "Oldest to throw a shutout",
+        "claim": {
+          "value": "46 years, 188 days",
+          "source": {
+            "id": "niekro-wiki",
+            "label": "Wikipedia, Phil Niekro",
+            "url": "https://en.wikipedia.org/wiki/Phil_Niekro",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "A record until Jamie Moyer (47 years, 170 days) in May 2010."
+        }
+      },
+      {
+        "label": "Hall of Fame",
+        "claim": {
+          "value": "Inducted 1997",
+          "source": {
+            "id": "niekro-hof",
+            "label": "National Baseball Hall of Fame, Phil Niekro",
+            "url": "https://baseballhall.org/hall-of-famers/niekro-phil",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The only knuckleballer to win 300+ games."
+        }
+      }
+    ],
+    "quote": {
+      "value": "I figured if there's any way I'm going to win my 300th game by striking the guy out, I was going to do it with the pitch that won the first game for me.",
+      "source": {
+        "id": "niekro-fangraphs",
+        "label": "FanGraphs, Remembering Phil Niekro, King of the Knuckleballers",
+        "url": "https://blogs.fangraphs.com/remembering-phil-niekro-king-of-the-knuckleballers-1939-2020/",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "On finishing his 300th win with the knuckleball."
+    },
+    "rights": "original"
+  },
+  {
+    "slug": "carl-hubbell",
+    "name": "Carl Hubbell",
+    "kind": "craftsman",
+    "era": "1928-1943",
+    "hand": "left",
+    "signaturePitch": "Screwball",
+    "specimenNo": "C-09",
+    "tagline": "The screwball master who struck out five Hall of Famers in a row — and deformed his own arm doing it.",
+    "intro": "They called him King Carl and the Meal Ticket. Carl Hubbell threw the screwball, a pitch that breaks the wrong way, so well that in the 1934 All-Star Game he struck out Babe Ruth, Lou Gehrig, Jimmie Foxx, Al Simmons, and Joe Cronin in succession. The pitch fed him for a decade and left his throwing arm permanently turned, his palm facing outward at rest.",
+    "signature": {
+      "value": "A screwball thrown over the top with exactly the same motion as his fastball — the deception, he said, was not the break but the change of speed. To make it, he had to defy nature and twist his wrist to the right at release, so the ball broke down and to the left, away from a right-handed hitter. Years of that twist left his left palm facing out instead of in.",
+      "source": {
+        "id": "hubbell-sabr",
+        "label": "Society for American Baseball Research, Carl Hubbell (BioProject)",
+        "url": "https://sabr.org/bioproj/person/carl-hubbell/",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "reputable-analysis",
+      "note": "The same-motion delivery, the wrist twist, and the change-of-speed framing are from SABR; the palm-out deformity is confirmed by SABR and RetroSimba."
+    },
+    "mentalEdge": {
+      "value": "Matchless control, and a sequence built on it: he used the curveball to set up the screwball, so by the time the screwball arrived the hitter had already been moved off balance. It is why he could throw a backwards-breaking pitch for strikes in any count without giving the at-bat away.",
+      "source": {
+        "id": "hubbell-sabr",
+        "label": "Society for American Baseball Research, Carl Hubbell (BioProject)",
+        "url": "https://sabr.org/bioproj/person/carl-hubbell/",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "numbers": [
+      {
+        "label": "1934 All-Star Game",
+        "claim": {
+          "value": "5 straight strikeouts",
+          "source": {
+            "id": "hubbell-asg-sabr",
+            "label": "SABR Games Project, July 10, 1934: Carl Hubbell strikes out five Hall of Famers in a row",
+            "url": "https://sabr.org/gamesproj/game/july-10-1934-carl-hubbell-strikes-out-five-hall-of-famers-in-a-row-at-all-star-game/",
+            "retrievedAt": "2026-06-06",
+            "season": "1934"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Ruth, Gehrig, Foxx, Simmons, and Cronin in succession, after a leadoff single and a walk left two on with nobody out."
+        }
+      },
+      {
+        "label": "Career wins-losses",
+        "claim": {
+          "value": "253-154",
+          "source": {
+            "id": "hubbell-wiki",
+            "label": "Wikipedia, Carl Hubbell",
+            "url": "https://en.wikipedia.org/wiki/Carl_Hubbell",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis"
+        }
+      },
+      {
+        "label": "Career ERA",
+        "claim": {
+          "value": "2.98",
+          "source": {
+            "id": "hubbell-hof",
+            "label": "National Baseball Hall of Fame, Carl Hubbell",
+            "url": "https://baseballhall.org/hall-of-famers/hubbell-carl",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis"
+        }
+      },
+      {
+        "label": "Consecutive wins",
+        "claim": {
+          "value": "24",
+          "source": {
+            "id": "hubbell-hof",
+            "label": "National Baseball Hall of Fame, Carl Hubbell",
+            "url": "https://baseballhall.org/hall-of-famers/hubbell-carl",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "An all-time record, 16 in 1936 and 8 in 1937."
+        }
+      },
+      {
+        "label": "NL MVP",
+        "claim": {
+          "value": "1933 and 1936",
+          "source": {
+            "id": "hubbell-wiki",
+            "label": "Wikipedia, Carl Hubbell",
+            "url": "https://en.wikipedia.org/wiki/Carl_Hubbell",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "In 1936 (26-6) he was the first-ever unanimous NL MVP."
+        }
+      }
+    ],
+    "quote": {
+      "value": "The screwball's an unnatural pitch. Nature never intended a man to turn his hand like that throwing rocks at a bear.",
+      "source": {
+        "id": "hubbell-almanac",
+        "label": "Baseball Almanac, Carl Hubbell Quotes",
+        "url": "https://www.baseball-almanac.com/quotes/carl_hubbell_quotes.shtml",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "pitcher-own-words"
+    },
+    "rights": "original"
+  },
+  {
+    "slug": "mariano-rivera",
+    "name": "Mariano Rivera",
+    "kind": "craftsman",
+    "era": "1995-2013",
+    "hand": "right",
+    "signaturePitch": "Cutter",
+    "signaturePitchSlug": "cutter",
+    "specimenNo": "C-10",
+    "tagline": "The greatest closer ever, built on one pitch he discovered by accident — and the first player voted into the Hall of Fame unanimously.",
+    "intro": "Mariano Rivera is the rarest thing in the game: a pitcher everyone knew was throwing one pitch, who threw it anyway, for nineteen years, better than anyone has thrown anything. The cutter arrived by accident in 1997, playing catch. He never really changed it, and it carried him to the all-time saves record and a unanimous Hall of Fame call.",
+    "signature": {
+      "value": "Essentially one pitch his whole career: a cutter that looked like a four-seam fastball until it broke late to his glove side, in on the hands of a left-handed hitter, splitting bats at the thin part of the barrel. Ryan Klesko famously broke three bats in a single at-bat against it in the 1999 World Series.",
+      "source": {
+        "id": "rivera-wiki",
+        "label": "Wikipedia, Mariano Rivera",
+        "url": "https://en.wikipedia.org/wiki/Mariano_Rivera",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "reputable-analysis",
+      "note": "The bat-breaking mechanism and the Klesko at-bat are from the Wikipedia cut-fastball article; the one-pitch career is documented in his Wikipedia biography."
+    },
+    "mentalEdge": {
+      "value": "Total acceptance, total repetition. By his own account he did not change a thing about the pitch once he found it — no grip, no motion — and threw it in front of hitters who knew it was coming. The edge was a closer's calm welded to a pitch precise enough that knowing did not help.",
+      "source": {
+        "id": "rivera-cbs-cutter",
+        "label": "CBS Sports, Mariano Rivera: birth of the cutter was a gift from God",
+        "url": "https://www.cbssports.com/mlb/news/mariano-rivera-birth-of-the-cutter-was-gift-from-god-part-4-of-5/",
+        "retrievedAt": "2026-06-06",
+        "season": "1997"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "numbers": [
+      {
+        "label": "Career saves",
+        "claim": {
+          "value": "652",
+          "source": {
+            "id": "rivera-hof",
+            "label": "National Baseball Hall of Fame, Mariano Rivera",
+            "url": "https://baseballhall.org/hall-of-famers/rivera-mariano",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The all-time record."
+        }
+      },
+      {
+        "label": "Career ERA+",
+        "claim": {
+          "value": "205",
+          "source": {
+            "id": "rivera-bref",
+            "label": "Baseball-Reference, Mariano Rivera",
+            "url": "https://www.baseball-reference.com/players/r/riverma01.shtml",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The best all-time among pitchers with 1,000+ innings; career ERA 2.21."
+        }
+      },
+      {
+        "label": "Postseason ERA",
+        "claim": {
+          "value": "0.70",
+          "source": {
+            "id": "rivera-wiki",
+            "label": "Wikipedia, Mariano Rivera",
+            "url": "https://en.wikipedia.org/wiki/Mariano_Rivera",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The lowest in MLB history, over 141 postseason innings, with 42 postseason saves."
+        }
+      },
+      {
+        "label": "World Series titles",
+        "claim": {
+          "value": "5",
+          "source": {
+            "id": "rivera-wiki",
+            "label": "Wikipedia, Mariano Rivera",
+            "url": "https://en.wikipedia.org/wiki/Mariano_Rivera",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "1996, 1998-2000, 2009; World Series MVP in 1999."
+        }
+      },
+      {
+        "label": "Hall of Fame vote",
+        "claim": {
+          "value": "425 of 425 (100%)",
+          "source": {
+            "id": "rivera-bbwaa",
+            "label": "BBWAA, Rivera, Halladay, Martinez and Mussina elected to the Hall of Fame",
+            "url": "https://bbwaa.com/19-hof/",
+            "retrievedAt": "2026-06-06",
+            "season": "2019"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The first player ever elected unanimously, breaking Ken Griffey Jr.'s prior record."
+        }
+      }
+    ],
+    "quote": {
+      "value": "The Lord gave it to me. Oh, the Lord. Definitely.",
+      "source": {
+        "id": "rivera-cbs-cutter",
+        "label": "CBS Sports, Mariano Rivera: birth of the cutter was a gift from God",
+        "url": "https://www.cbssports.com/mlb/news/mariano-rivera-birth-of-the-cutter-was-gift-from-god-part-4-of-5/",
+        "retrievedAt": "2026-06-06",
+        "season": "1997"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "On the 1997 accidental discovery of the cutter while playing catch with Ramiro Mendoza."
+    },
+    "rights": "original"
+  },
+  {
+    "slug": "cole-hamels",
+    "name": "Cole Hamels",
+    "kind": "craftsman",
+    "era": "2006-2020",
+    "hand": "left",
+    "signaturePitch": "Circle changeup",
+    "signaturePitchSlug": "circle-change",
+    "specimenNo": "C-11",
+    "tagline": "A left-handed changeup artist whose out-pitch carried him to a World Series MVP — the southpaw answer to Santana.",
+    "intro": "Cole Hamels threw a changeup good enough to start a championship. A power lefty with an ordinary-looking fastball, he made his living on a circle change he could throw in any count, and in October 2008 he rode it to both the NLCS and World Series MVP. Where Johan Santana was the right-handed model of the disguised changeup, Hamels was its left-handed counterpart.",
+    "signature": {
+      "value": "A circle changeup he learned in high school, thrown from the same release point as his fastball and curve so all three came out looking identical — the deception was the sameness, not the movement. He varied it on purpose: slower for swings and misses, firmer for ground balls. He developed it after breaking his arm in high school pushed him toward an off-speed pitch.",
+      "source": {
+        "id": "hamels-espn-crasnick",
+        "label": "ESPN, Jerry Crasnick on Cole Hamels and his changeup",
+        "url": "https://www.espn.com/mlb/columns/story?columnist=crasnick_jerry&id=2878204",
+        "retrievedAt": "2026-06-06",
+        "season": "2007"
+      },
+      "confidence": "reputable-analysis",
+      "note": "The grip origin (HS coach Mark Furtak, Rancho Bernardo) and the slow-vs-firm variation are from ESPN; the same-release-point deception is from the FanGraphs JAWS profile; the broken-arm origin is from Wikipedia."
+    },
+    "mentalEdge": {
+      "value": "He turned a two-pitch guessing game into a three-way one. As he put it, adding the changeup meant a hitter went from a 50-50 fastball-or-curve guess to a one-in-three — and because all three left his hand the same way, the extra option was pure friction, not a tell.",
+      "source": {
+        "id": "hamels-espn-crasnick",
+        "label": "ESPN, Jerry Crasnick on Cole Hamels and his changeup",
+        "url": "https://www.espn.com/mlb/columns/story?columnist=crasnick_jerry&id=2878204",
+        "retrievedAt": "2026-06-06",
+        "season": "2007"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "numbers": [
+      {
+        "label": "2008 postseason",
+        "claim": {
+          "value": "4-0, 1.80 ERA",
+          "source": {
+            "id": "hamels-espn-2008",
+            "label": "ESPN, Phillies pitcher Hamels earns World Series MVP",
+            "url": "https://www.espn.com/mlb/playoffs2008/news/story?id=3671956",
+            "retrievedAt": "2026-06-06",
+            "season": "2008"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Across five starts; NLCS MVP and World Series MVP, a rare double."
+        }
+      },
+      {
+        "label": "Career strikeouts",
+        "claim": {
+          "value": "2,560",
+          "source": {
+            "id": "hamels-statmuse",
+            "label": "StatMuse, Cole Hamels career stats",
+            "url": "https://www.statmuse.com/mlb/player/cole-hamels-24707/career-stats",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis"
+        }
+      },
+      {
+        "label": "Career wins-losses",
+        "claim": {
+          "value": "163-122",
+          "source": {
+            "id": "hamels-statmuse",
+            "label": "StatMuse, Cole Hamels career stats",
+            "url": "https://www.statmuse.com/mlb/player/cole-hamels-24707/career-stats",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "With a 3.43 ERA over 2,698 innings."
+        }
+      },
+      {
+        "label": "Career WAR",
+        "claim": {
+          "value": "59.0",
+          "source": {
+            "id": "hamels-fangraphs-jaws",
+            "label": "FanGraphs, JAWS and the 2026 Hall of Fame Ballot: Cole Hamels (Jay Jaffe)",
+            "url": "https://blogs.fangraphs.com/jaws-and-the-2026-hall-of-fame-ballot-cole-hamels/",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "123 ERA+; a four-time All-Star."
+        }
+      }
+    ],
+    "quote": {
+      "value": "It just rolls off my fingers.",
+      "source": {
+        "id": "hamels-espn-crasnick",
+        "label": "ESPN, Jerry Crasnick on Cole Hamels and his changeup",
+        "url": "https://www.espn.com/mlb/columns/story?columnist=crasnick_jerry&id=2878204",
+        "retrievedAt": "2026-06-06",
+        "season": "2007"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "On the feel of his changeup."
+    },
+    "rights": "original"
+  },
+  {
+    "slug": "gyroball",
+    "name": "The gyroball",
+    "kind": "legend",
+    "era": "Designed 2001",
+    "signaturePitch": "Bullet spin, zero Magnus",
+    "specimenNo": "L-01",
+    "tagline": "The pitch designed on a computer, mythologized into a monster, and quietly debunked by physics.",
+    "intro": "The gyroball is real but heavily mythologized. It was not discovered on a mound but designed on a computer by a Japanese pitching coach and a computer scientist, who modeled its properties and published them in a 2001 book. The legend that grew around it, a \"double-spin\" pitch that breaks twice and that Daisuke Matsuzaka threw as a secret weapon, is the part that does not survive contact with the data.",
+    "signature": {
+      "value": "A ball thrown with \"bullet\" spin, the spin axis aligned with the direction of flight, so the spin never passes over the face of the ball. With the angle between spin axis and trajectory at zero, the net Magnus force is essentially zero: the pitch falls on gravity and drag alone, with no lateral break. Its only honest real-world cousin is the accidental \"back-up slider,\" which shares the same spin signature.",
+      "source": {
+        "id": "gyro-sabr-brj",
+        "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
+        "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
+        "retrievedAt": "2026-06-05",
+        "season": "2007"
+      },
+      "confidence": "reputable-analysis",
+      "note": "From Nathan and Baldwin’s analysis: \"the net Magnus force on the ball is zero. The only forces acting on the gyroball are gravity and drag.\""
+    },
+    "quote": {
+      "value": "I have done it in a game, but not too much. Sometimes accidentally.",
+      "source": {
+        "id": "gyro-sabr-brj",
+        "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
+        "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
+        "retrievedAt": "2026-06-05",
+        "season": "2007"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Daisuke Matsuzaka, asked whether he throws the gyroball; relayed from a 2006 Yahoo! Sports piece and cited in the SABR analysis."
+    },
+    "legendNote": {
+      "value": "The dramatic-break legend is false: with zero Magnus force there is no break to exaggerate. Two independent PITCHf/x studies of Matsuzaka’s 2007 pitches, one of 790 pitches and one of 586, both concluded he threw essentially no gyroballs. What it does do, against a hitter expecting a fastball, is drop roughly 15 inches more than that fastball would.",
+      "source": {
+        "id": "gyro-sabr-brj",
+        "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
+        "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
+        "retrievedAt": "2026-06-05",
+        "season": "2007"
+      },
+      "confidence": "reputable-analysis",
+      "note": "The two studies (SABR’s 790 pitches and Baseball Prospectus’s 586) reached the same conclusion from different samples. Both are kept here rather than merged."
+    },
+    "numbers": [
+      {
+        "label": "Net Magnus force (pure gyroball)",
+        "claim": {
+          "value": "zero",
+          "source": {
+            "id": "gyro-sabr-brj",
+            "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
+            "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
+            "retrievedAt": "2026-06-05",
+            "season": "2007"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Spin axis aligned with the trajectory, so no spin-induced force."
+        }
+      },
+      {
+        "label": "Extra drop vs. an expected fastball",
+        "claim": {
+          "value": "about 15 in",
+          "source": {
+            "id": "gyro-sabr-brj",
+            "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
+            "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
+            "retrievedAt": "2026-06-05",
+            "season": "2007"
+          },
+          "confidence": "reputable-analysis",
+          "approximate": true,
+          "note": "Alan Nathan elsewhere estimates closer to 18 inches."
+        }
+      },
+      {
+        "label": "Matsuzaka gyroballs found (790 pitches, 2007)",
+        "claim": {
+          "value": "very few, if any",
+          "source": {
+            "id": "gyro-sabr-brj",
+            "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
+            "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
+            "retrievedAt": "2026-06-05",
+            "season": "2007"
+          },
+          "confidence": "reputable-analysis"
+        }
+      },
+      {
+        "label": "Matsuzaka gyroballs found (586 pitches, 2007)",
+        "claim": {
+          "value": "no room for one",
+          "source": {
+            "id": "gyro-bp",
+            "label": "Baseball Prospectus, Schrodinger's Bat: Searching for the Gyroball (Dan Fox)",
+            "url": "https://www.baseballprospectus.com/news/article/6419/schrodingers-bat-searching-for-the-gyroball/",
+            "retrievedAt": "2026-06-05",
+            "season": "2007"
+          },
+          "confidence": "reputable-analysis",
+          "note": "A separate Baseball Prospectus study, same conclusion."
+        }
+      }
+    ],
+    "rights": "original"
+  }
+]

@@ -1,0 +1,35 @@
+# Xcode / build
+.build/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserstate
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# xcodegen output is generated from project.yml — do not commit the generated project
+PitchAtlas.xcodeproj/
+
+# Generated content (regenerated from the web repo by tools/generate-content)
+# Committed JSON lives in PitchAtlas/Resources/Content; the *intermediate* build dir is ignored.
+tools/generate-content/node_modules/
+tools/generate-content/.tsx-cache/
+
+# Specimen bundle (built + sanitized from the web repo; regenerated, not source)
+PitchAtlas/Resources/specimen/dist/
+
+# macOS / editor
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Secrets / signing — never commit
+*.p8
+*.p12
+*.mobileprovision
+.appstoreconnect/
+secrets.env
+.env

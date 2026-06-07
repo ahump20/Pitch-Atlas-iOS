@@ -1,0 +1,8 @@
+# Treat bundled binary assets as binary (no line-ending munging, no diff noise)
+*.webp binary
+*.ttf binary
+*.otf binary
+*.png binary
+*.glb binary
+*.gltf binary
+*.wasm binary
