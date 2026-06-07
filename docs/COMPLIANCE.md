@@ -18,24 +18,20 @@ This single cut clears five obligations at once:
 
 The web community backend (Supabase project `cloeoulvrrfcbitrjpso`, anonymous-karma + discussion + field-notes, already live) is reused **as-is in v2** — v2 is additive, not a rebuild.
 
-## Third-party media — CUT from the iOS build
+## No web view in v1 — the specimen is native (third-party media is moot)
 
-The web bundle carries live third-party embeds that are safe on the web but **rejection-grade inside an app**:
+**v1 ships with no `WKWebView` at all.** The interactive WebGL 3D specimen — and therefore the web bundle that carried the rejection-grade third-party embeds (`PitchingNinjaTweet.tsx` → `twimg.com`, `StreamableFacade.tsx` iframe, the baked tweet JSON) — is **not in the binary.** Each pitch's specimen is drawn **natively in SwiftUI** (`SeamBall`) from the same closed-form figure-eight seam equation the web uses, so the physics cannot drift, and a holographic foil rakes across the specimen card via CoreMotion as the phone tilts.
 
-- `src/components/embeds/PitchingNinjaTweet.tsx` — lazy-loads `react-tweet`, which fetches media from `twimg.com` at render. Shows an identifiable MLB pitcher in uniform.
-- `src/components/embeds/StreamableFacade.tsx` — a Streamable iframe streaming third-party footage.
-- `src/data/tweets/794874011671007232.json` — the baked tweet payload.
+This makes the v1 compliance story strictly simpler and safer than the original island plan:
 
-**Decision: strip all three from the iOS `dist/` before bundling** (Step 7). Two reasons, both decisive:
+1. **5.2 IP** — no MLB footage, no third-party creator video, no embeds anywhere. The visual actor is the original seam specimen and the developer's own grip photography.
+2. **Offline + 4.7/2.5.2** — there is no remote code and no network call of any kind. The app is offline by construction; "works in airplane mode" is trivially true.
 
-1. **5.2 IP** — an app re-presenting MLB game footage and a third-party creator's video reads very differently to a reviewer than an embedded tweet on a website.
-2. **Offline + 4.7/2.5.2** — `react-tweet` fetches at render and cannot run offline; an iframe loads remote content and remote script. Either breaks the "works in airplane mode" promise and trips the executable-code rule.
-
-The sanitizer must prove the bundled `dist/` makes **zero runtime network requests and loads zero remote `script-src`.**
+The interactive WebGL 3D specimen (drag-to-spin, live spin-axis vector) is a planned **v1.1** enhancement, to be added as a bundled, offline, custom-scheme island with the embeds stripped — verified on hardware before it ships. It is **out of scope for the v1 submission.**
 
 ## Guideline 4.2 (minimum functionality) — the top rejection risk, and the rebuttal
 
-A content/reference product is the textbook 4.2.2 target ("a website zipped in a WebView"). The defense is structural, designed in from the start — see `APP-REVIEW-NOTES.md` for the reviewer-facing argument. In short: the app is native tab bar + native searchable index + native offline grip library + native sources + offline-by-construction content; the WebView is **one card-sized island per pitch**, not the app. (The web also uses `createBrowserRouter` with absolute paths, so a full-site wrapper would 404 under a custom scheme anyway — the island is the only correct design.)
+A content/reference product is the textbook 4.2.2 target ("a website zipped in a WebView"). The defense is structural: the app is **100% native** — native tab bar, a native searchable pitch index with family filters, a native offline grip library, native craftsmen / lost-pitches wings, a native sources/provenance browser, and a **native specimen drawn from the real seam equation** — with all content bundled and working offline on first launch. There is no web view to mistake for a wrapped website. See `APP-REVIEW-NOTES.md` for the reviewer-facing argument.
 
 ## Privacy
 
