@@ -45,6 +45,11 @@ targets:
           - HankenGrotesk-Regular.ttf
           - HankenGrotesk-Medium.ttf
           - MartianMono-Regular.ttf
+        # Custom URL scheme for in-app deep links (pitchatlas://pitch/<slug>, etc.)
+        CFBundleURLTypes:
+          - CFBundleURLName: com.pitchatlas.app
+            CFBundleURLSchemes:
+              - pitchatlas
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pitchatlas.app

@@ -43,7 +43,8 @@ enum AppTab: String, CaseIterable, Identifiable {
 }
 
 struct RootView: View {
-    @State private var selectedTab: AppTab = RootView.initialTab
+    @Environment(PitchStore.self) private var store
+    @State private var router = DeepLinkRouter()
 
     /// DEBUG-only launch override so QA can open straight to a tab; production always starts on Atlas.
     static var initialTab: AppTab {
@@ -56,27 +57,43 @@ struct RootView: View {
     }
 
     var body: some View {
-        TabView(selection: $selectedTab) {
-            ForEach(AppTab.allCases) { tab in
-                NavigationStack {
-                    screen(for: tab)
-                }
-                .tabItem { Label(tab.title, systemImage: tab.systemImage) }
-                .tag(tab)
-            }
+        @Bindable var router = router
+        TabView(selection: $router.selection) {
+            NavigationStack(path: $router.atlasPath) { AtlasView() }
+                .tabItem { Label(AppTab.atlas.title, systemImage: AppTab.atlas.systemImage) }
+                .tag(AppTab.atlas)
+            NavigationStack(path: $router.indexPath) { IndexView() }
+                .tabItem { Label(AppTab.index.title, systemImage: AppTab.index.systemImage) }
+                .tag(AppTab.index)
+            NavigationStack(path: $router.gripsPath) { GripsView() }
+                .tabItem { Label(AppTab.grips.title, systemImage: AppTab.grips.systemImage) }
+                .tag(AppTab.grips)
+            NavigationStack(path: $router.craftsmenPath) { CraftsmenView() }
+                .tabItem { Label(AppTab.craftsmen.title, systemImage: AppTab.craftsmen.systemImage) }
+                .tag(AppTab.craftsmen)
+            NavigationStack(path: $router.sourcesPath) { SourcesView() }
+                .tabItem { Label(AppTab.sources.title, systemImage: AppTab.sources.systemImage) }
+                .tag(AppTab.sources)
         }
         .tint(PitchAtlasTheme.cyan)
+        .onOpenURL { url in router.handle(url, store: store) }
+        .task { applyDebugLaunch() }
     }
 
-    @ViewBuilder
-    private func screen(for tab: AppTab) -> some View {
-        switch tab {
-        case .atlas: AtlasView()
-        case .index: IndexView()
-        case .grips: GripsView()
-        case .craftsmen: CraftsmenView()
-        case .sources: SourcesView()
+    /// DEBUG-only: push a detail straight from a launch env so QA can screenshot it
+    /// without the system "open in app?" prompt. No effect in production.
+    private func applyDebugLaunch() {
+        #if DEBUG
+        let env = ProcessInfo.processInfo.environment
+        if let slug = env["PA_PITCH"], let entry = store.pitch(slug: slug) {
+            router.selection = .atlas
+            router.atlasPath.append(entry)
         }
+        if let slug = env["PA_CRAFTSMAN"], let craftsman = store.craftsman(slug: slug) {
+            router.selection = .craftsmen
+            router.craftsmenPath.append(craftsman)
+        }
+        #endif
     }
 }
 
