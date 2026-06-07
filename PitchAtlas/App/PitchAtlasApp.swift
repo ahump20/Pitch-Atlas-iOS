@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct PitchAtlasApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     /// The bundled content, loaded once at launch and shared via @Environment.
     @State private var store = PitchStore()
     /// The gyroscope feed for the foil rake, shared across surfaces.
@@ -14,6 +15,12 @@ struct PitchAtlasApp: App {
                 .environment(motion)
                 .preferredColorScheme(.dark)
                 .task { motion.start() }
+                .onChange(of: scenePhase) { _, phase in
+                    // The gyro is a hardware resource: run it only while the app
+                    // is active, release it on background/inactive. start() guards
+                    // on isDeviceMotionActive, so re-activation re-arms identically.
+                    phase == .active ? motion.start() : motion.stop()
+                }
         }
     }
 }
