@@ -101,12 +101,14 @@ struct IndexView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: PitchAtlasSpacing.xs) {
                 FilterChip(label: "All", dot: nil, selected: family == nil) {
+                    Haptics.toggle()
                     family = nil
                 }
                 ForEach(store.repertoire.families) { info in
                     FilterChip(label: info.label,
                                dot: info.family.accent,
                                selected: family == info.family) {
+                        Haptics.toggle()
                         family = (family == info.family) ? nil : info.family
                     }
                 }

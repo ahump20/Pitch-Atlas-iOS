@@ -4,12 +4,16 @@ import SwiftUI
 struct PitchAtlasApp: App {
     /// The bundled content, loaded once at launch and shared via @Environment.
     @State private var store = PitchStore()
+    /// The gyroscope feed for the foil rake, shared across surfaces.
+    @State private var motion = MotionProvider()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(store)
+                .environment(motion)
                 .preferredColorScheme(.dark)
+                .task { motion.start() }
         }
     }
 }

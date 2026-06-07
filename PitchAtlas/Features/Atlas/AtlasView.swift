@@ -70,6 +70,8 @@ struct AtlasView: View {
                     }
                     .padding(.vertical, PitchAtlasSpacing.md)
                     .frame(maxWidth: .infinity)
+                    .leatherPress(padding: PitchAtlasSpacing.lg)
+                    .foilRake()
                 }
                 .buttonStyle(.plain)
             }

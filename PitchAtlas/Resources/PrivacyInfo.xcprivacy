@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Pitch Atlas privacy manifest.
+  v1 is a fully offline reference app: no accounts, no analytics, no network calls,
+  no tracking, and no required-reason APIs (no UserDefaults, no file-timestamp,
+  disk-space, system-boot, or active-keyboard APIs). Device-motion (gyroscope) for
+  the foil rake does not require a privacy-manifest entry. Privacy label = Data Not Collected.
+-->
+<plist version="1.0">
+<dict>
+    <key>NSPrivacyTracking</key>
+    <false/>
+    <key>NSPrivacyTrackingDomains</key>
+    <array/>
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array/>
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array/>
+</dict>
+</plist>

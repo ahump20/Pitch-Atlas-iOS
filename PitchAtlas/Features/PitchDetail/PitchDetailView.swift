@@ -72,7 +72,9 @@ struct PitchDetailView: View {
                 SectionLabel(text: humanize(entry.seam.accuracyLevel.rawValue), size: 8)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, PitchAtlasSpacing.sm)
+            .padding(.vertical, PitchAtlasSpacing.lg)
+            .leatherPress(padding: PitchAtlasSpacing.lg)
+            .foilRake()
 
             Text(display.heroIntro)
                 .font(PitchAtlasTheme.hanken(16))
