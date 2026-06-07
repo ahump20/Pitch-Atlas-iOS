@@ -158,6 +158,7 @@ struct EmptyStateView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, PitchAtlasSpacing.xl2)
+        .leatherPress()
         .accessibilityElement(children: .combine)
         .accessibilityLabel(message)
     }
@@ -171,5 +172,46 @@ struct HairlineDivider: View {
             .fill(PitchAtlasTheme.navyLine)
             .frame(height: 1)
             .accessibilityHidden(true)
+    }
+}
+
+// MARK: - Holographic wordmark (the refractor sheen)
+
+/// The Atlas masthead wordmark. Rather than paint the full 8-stop foil across the
+/// glyphs at once (an even "RGB strip"), this shows a metallic *slice* of the foil:
+/// the gradient is oversized and offset so only a band sits inside the letters,
+/// matching the web's `.rfx-holo` (background-size:300%). The slice rides the
+/// gyroscope so the wordmark shimmers as the phone tilts — the one move the web
+/// can only fake. Reduce Motion holds the slice still; the static slice still
+/// reads as foil, never a flat rainbow.
+struct HoloWordmark: View {
+    @Environment(MotionProvider.self) private var motion
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    let text: String
+    var size: CGFloat = 56
+    var lineSpacing: CGFloat = -6
+
+    private var glyphs: Text {
+        Text(text).font(PitchAtlasTheme.anton(size))
+    }
+
+    var body: some View {
+        let rake = reduceMotion ? 0.0 : motion.roll
+        let tip = reduceMotion ? 0.0 : motion.pitch
+        glyphs
+            .foregroundStyle(.clear)
+            .lineSpacing(lineSpacing)
+            .overlay {
+                PitchAtlasTheme.foil
+                    .scaleEffect(2.8)
+                    .offset(x: CGFloat(rake) * 90, y: CGFloat(tip) * 28)
+                    .animation(.easeOut(duration: 0.14), value: motion.roll)
+                    .animation(.easeOut(duration: 0.14), value: motion.pitch)
+                    .mask(glyphs.lineSpacing(lineSpacing))
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            .antonSkew()
+            .accessibilityLabel(text.replacingOccurrences(of: "\n", with: " "))
+            .accessibilityAddTraits(.isHeader)
     }
 }

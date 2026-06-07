@@ -158,10 +158,18 @@ extension View {
     /// The brand signature: Anton sheared -7deg with a dark layered stroke/shadow.
     /// A flat, un-skewed Anton headline reads as a generic sports template — this
     /// modifier is what keeps the wordmark on-brand. (SwiftUI has no text-stroke;
-    /// the shadow stands in for the dark stroke until a layered-glyph treatment lands.)
+    /// the hard offset shadow stands in for the dark stroke.)
+    ///
+    /// This is a true 2D horizontal *shear* (matching the web's `transform:
+    /// skewX(-7deg)`), not a Z-axis rotation. A rotation crooks the baseline so the
+    /// whole word tilts; a shear leans the vertical strokes like athletic italic
+    /// while the baseline stays level. tan(-7deg) puts the lean forward, web-true.
     func antonSkew() -> some View {
-        self
-            .rotation3DEffect(.degrees(7), axis: (x: 0, y: 0, z: 1))
-            .shadow(color: .black.opacity(0.45), radius: 0, x: 3, y: 3)
+        let shear = CGAffineTransform(a: 1, b: 0,
+                                      c: CGFloat(tan(-7.0 * Double.pi / 180.0)),
+                                      d: 1, tx: 0, ty: 0)
+        return self
+            .transformEffect(shear)
+            .shadow(color: .black.opacity(0.45), radius: 0, x: 2, y: 3)
     }
 }

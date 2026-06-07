@@ -213,7 +213,7 @@ struct RepertoireRow: View {
             StatusPill(text: entry.status.displayLabel, tone: entry.status.tone)
             if entry.filedSlug != nil {
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 11, weight: .semibold))
+                    .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(PitchAtlasTheme.ink3)
             }
         }

@@ -213,7 +213,8 @@ struct SourcesView: View {
             }
         }
         .padding(.horizontal, PitchAtlasSpacing.sm)
-        .padding(.vertical, PitchAtlasSpacing.xs)
+        .padding(.vertical, PitchAtlasSpacing.sm)
+        .frame(minHeight: 44)
         .background(
             RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
                 .fill(PitchAtlasTheme.paper2)

@@ -160,7 +160,7 @@ struct IndexView: View {
                     .buttonStyle(.plain)
                 }
             }
-            .leatherPress(padding: PitchAtlasSpacing.xs2, radius: PitchAtlasRadius.card)
+            .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card)
         }
     }
 
@@ -236,6 +236,9 @@ private struct FilterChip: View {
                 RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
                     .strokeBorder(selected ? Color.clear : PitchAtlasTheme.machined, lineWidth: 1)
             )
+            // Guarantee a 44pt hit area (Fitts) without ballooning the painted pill.
+            .frame(minHeight: 44)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(label)

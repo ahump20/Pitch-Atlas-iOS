@@ -157,7 +157,7 @@ struct PitchDetailView: View {
                     ForEach(Array(model.contacts.enumerated()), id: \.offset) { _, contact in
                         VStack(alignment: .leading, spacing: 2) {
                             HStack(spacing: PitchAtlasSpacing.xs) {
-                                FamilyDot(color: PitchAtlasTheme.cyan)
+                                FamilyDot(color: canonical.family.accent)
                                 Text("\(humanize(contact.finger.rawValue)) · \(contact.label)")
                                     .font(PitchAtlasTheme.hankenMedium(14))
                                     .foregroundStyle(PitchAtlasTheme.bone)
@@ -209,7 +209,7 @@ struct PitchDetailView: View {
 
     private func coaching(_ guide: GripGuide) -> some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: guide.family.uppercased(), color: PitchAtlasTheme.cyan)
+            SectionLabel(text: guide.family, color: PitchAtlasTheme.cyan)
             Text(guide.tagline)
                 .font(PitchAtlasTheme.newsreader(19))
                 .foregroundStyle(PitchAtlasTheme.bone)

@@ -79,8 +79,9 @@ struct GripsView: View {
 
             if !store.grips.intro.isEmpty {
                 Text(store.grips.intro)
-                    .font(PitchAtlasTheme.newsreaderItalic(18))
+                    .font(PitchAtlasTheme.newsreader(18))
                     .foregroundStyle(PitchAtlasTheme.bone2)
+                    .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -95,7 +96,7 @@ struct GripsView: View {
     private var honestyBanner: some View {
         if !store.grips.proofLimit.isEmpty {
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.sandBright)
+                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3)
                 Text(store.grips.proofLimit)
                     .font(PitchAtlasTheme.hanken(14))
                     .foregroundStyle(PitchAtlasTheme.bone2)

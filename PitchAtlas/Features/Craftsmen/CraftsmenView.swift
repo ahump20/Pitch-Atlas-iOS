@@ -17,7 +17,7 @@ struct CraftsmenView: View {
             PitchAtlasTheme.void.ignoresSafeArea()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     masthead
 
                     content

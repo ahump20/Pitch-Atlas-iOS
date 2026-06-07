@@ -21,7 +21,7 @@ struct AtlasView: View {
         ZStack {
             PitchAtlasTheme.void.ignoresSafeArea()
             ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl2) {
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     masthead
                     if case .failed(let msg) = store.status {
                         ErrorStateView(reason: msg)
@@ -46,12 +46,7 @@ struct AtlasView: View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "THE FIELD MANUAL", color: PitchAtlasTheme.cyanDeep)
 
-            Text("PITCH\nATLAS")
-                .font(PitchAtlasTheme.anton(56))
-                .foregroundStyle(PitchAtlasTheme.foil)
-                .antonSkew()
-                .lineSpacing(-6)
-                .fixedSize(horizontal: false, vertical: true)
+            HoloWordmark(text: "PITCH\nATLAS", size: 56)
 
             Text("Sourced, not corrected.")
                 .font(PitchAtlasTheme.newsreaderItalic(19))
@@ -66,7 +61,7 @@ struct AtlasView: View {
                             .font(PitchAtlasTheme.martian(10))
                             .tracking(2)
                             .foregroundStyle(PitchAtlasTheme.cyan)
-                        SectionLabel(text: "Tap the specimen", size: 8)
+                        SectionLabel(text: "Tap the specimen", size: 10)
                     }
                     .padding(.vertical, PitchAtlasSpacing.md)
                     .frame(maxWidth: .infinity)
@@ -100,7 +95,7 @@ struct AtlasView: View {
                                         .font(PitchAtlasTheme.hankenMedium(14))
                                         .foregroundStyle(PitchAtlasTheme.bone)
                                 }
-                                SectionLabel(text: entry.display.specimenNo, size: 8)
+                                SectionLabel(text: entry.display.specimenNo, color: PitchAtlasTheme.cyanDeep, size: 8)
                             }
                             .frame(width: 130, alignment: .leading)
                             .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.tile)
@@ -142,7 +137,7 @@ struct AtlasView: View {
             }
             Spacer()
             Image(systemName: "arrow.up.right")
-                .font(.system(size: 12, weight: .semibold))
+                .font(.system(size: 16, weight: .semibold))
                 .foregroundStyle(tone)
         }
         .leatherPress()
@@ -157,7 +152,7 @@ struct AtlasView: View {
                 HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
                     ProvenanceDot(confidence: tier)
                         .padding(.top, 3)
-                    VStack(alignment: .leading, spacing: 1) {
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
                         Text(tier.label)
                             .font(PitchAtlasTheme.martian(9))
                             .tracking(1)
