@@ -1,7 +1,7 @@
 import SwiftUI
 
 // =============================================================================
-// SeamBall — the native specimen
+// SeamBall: the native specimen
 // =============================================================================
 // Draws the baseball seam from the SAME closed-form figure-eight the web ships
 // (x = 2 sin t + sin 3t ; y = 2 cos t − cos 3t ; z = 2√2 cos 2t), normalized to
@@ -9,8 +9,7 @@ import SwiftUI
 // the break arrow is derived from the sourced motion (never stored, never faked).
 // Labeled a seam-informed schematic, because that is what it is.
 //
-// This is the offline / Reduce-Motion specimen and the target the WebView island
-// dissolves into — same math, so the two can never disagree.
+// This is the bundled Reduce Motion specimen and the pitch-detail ball surface.
 // =============================================================================
 
 /// The projected seam outline, rotated in-plane by the spin-axis orientation.

@@ -1,27 +1,47 @@
-# App Review — Notes for the Reviewer (draft)
+# App Review Notes
 
-Drafted at scope-lock (not at submission) because the Guideline 4.2 native-value argument is the actual rebuttal to the single highest-probability rejection, and it should exist before the build is finished. Paste the final version into App Store Connect → App Review Information → Notes.
+Paste into App Store Connect after replacing any build-specific placeholders.
 
----
+Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community features use Supabase only after sign-in.
 
-**What Pitch Atlas is:** a native, offline reference for how baseball pitches are gripped and thrown. Every fact carries a visible source and a confidence tier ("Sourced, not corrected").
+## Reviewer Path
 
-**No account is required or offered.** The entire app is usable on first launch with no sign-in, no network connection, and no data collection. There is no login screen. (App Privacy: Data Not Collected.)
+1. Launch the app.
+2. Browse Atlas, Index, Grips, Craftsmen, and Sources without signing in.
+3. Open Atlas → Account and Safety to sign in with Apple or email magic link.
+4. Open a pitch detail and scroll to Community.
+5. Accept the community guidelines and 17+ confirmation.
+6. Submit a Field Note or Discussion post.
+7. For image upload, accept image terms and choose a still image with PhotosPicker.
+8. Use the item menu to report content.
+9. Use the item menu to block a different user.
+10. Return to Account and Safety to delete the account.
 
-**Native functionality (why this is an app, not a website — Guideline 4.2):**
+## Community Safety
 
-- A native tab bar and per-tab navigation (Atlas, Index, Grips, Craftsmen, Sources).
-- A **native, searchable pitch index** with family filters and honest status labels — fully native SwiftUI, no web view.
-- A **native offline grip library** of first-party grip photography with a pitcher's own notes — bundled in the app, works in airplane mode.
-- A **native sources/provenance browser** — every claim's citation, rendered natively.
-- All reference content (pitches, craftsmen, lost pitches, sources) is **bundled in the binary and works fully offline on first launch** — no server, no loading states for content.
+- Posting, reporting, blocking, image uploads, and account deletion require sign-in.
+- Community posts are user-submitted field notes, not measured claims.
+- Reports are write-only for normal clients and can auto-hide content through backend policy/trigger rules.
+- Blocking hides community content both ways and prevents unsafe direct replies.
+- Account deletion calls the JWT-protected Supabase `delete-account` Edge Function.
 
-**The pitch specimen is fully native — there is no web view in this build.** Each pitch's specimen (the baseball with its seam drawn from the real closed-form figure-eight seam equation, oriented to the pitch's spin axis, with a physics-derived break indicator) is rendered natively in SwiftUI. As the phone tilts, a holographic foil rakes across the specimen card (CoreMotion). No WebGL, no remote code, no network — the app contains no `WKWebView` and makes no network requests at all.
+## Media
 
-**To verify offline behavior:** enable Airplane Mode and launch the app — every tab, the index, the grip library, the craftsmen hall, and the sources browser load with full content. The native specimen renders instantly from bundled data. Nothing in the app requires a network connection.
+iOS v1 accepts still images only through PhotosPicker. There is no video upload, GIF upload, live camera capture, or camera permission.
 
-**Content rights:** the grip photography is the developer's own first-party work. The visual subject throughout is an original seam specimen or first-party photography. No third-party player photos, team/league marks, or re-hosted footage are included.
+## Privacy
 
----
+The app does not track users and does not include ads. It collects account email/user ID, user-written content, and uploaded still images only for app functionality and moderation/safety. App privacy labels should not say “Data Not Collected.”
 
-_Update before submission: confirm the exact tab names and add a one-line "what changed" for the build under review. (The interactive WebGL 3D specimen is a planned v1.1 enhancement; v1 ships the native specimen described above.)_
+## Native Value
+
+The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, native pitch/grip screens, native bundled content, native source/provenance rendering, native account/safety flows, and native community surfaces.
+
+## Build Notes
+
+- Bundle ID: `com.pitchatlas.app`
+- Privacy policy: `https://pitch-atlas.com/privacy`
+- Support: `https://pitch-atlas.com/support`
+- No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, video upload, or BSI dependency.
+
+Open blocker before submission: Supabase GitHub branch status still reports `MIGRATIONS_FAILED`. The live project has the iOS preflight migrations and `delete-account` function applied, but automatic Supabase branch/deploy health must be repaired before relying on it for release operations.

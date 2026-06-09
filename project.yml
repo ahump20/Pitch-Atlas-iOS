@@ -9,7 +9,7 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    # DEVELOPMENT_TEAM is intentionally not committed — configure signing locally
+    # DEVELOPMENT_TEAM is intentionally not committed. Configure signing locally
     # (Xcode › Signing & Capabilities) or in CI. Pitch Atlas ships under its own
     # signing identity.
     MARKETING_VERSION: "1.0.0"
@@ -17,13 +17,21 @@ settings:
     SWIFT_STRICT_CONCURRENCY: minimal
     ENABLE_USER_SCRIPT_SANDBOXING: YES
 
+packages:
+  Supabase:
+    url: https://github.com/supabase/supabase-swift.git
+    from: 2.0.0
+
 targets:
   PitchAtlas:
     type: application
     platform: iOS
     sources:
       - path: PitchAtlas
-    # An explicit, xcodegen-authored Info.plist (generated, gitignored) — required
+    dependencies:
+      - package: Supabase
+        product: Supabase
+    # An explicit, xcodegen-authored Info.plist (generated, gitignored) is required
     # because UIAppFonts is an array and Xcode's INFOPLIST_KEY_ generated-plist
     # mechanism only supports a fixed allowlist of scalar keys, not font arrays.
     info:
@@ -34,7 +42,7 @@ targets:
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
-        # Export-compliance: no non-exempt encryption — keeps TestFlight uploads moving.
+        # Export-compliance: no non-exempt encryption keeps TestFlight uploads moving.
         ITSAppUsesNonExemptEncryption: false
         # Bundled OFL typefaces (Resources/Fonts/*.ttf). Registered here so
         # Font.custom resolves the exact PostScript names the theme references.

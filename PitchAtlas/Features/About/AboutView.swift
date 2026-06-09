@@ -1,16 +1,17 @@
 import SwiftUI
 
 // =============================================================================
-// Pitch Atlas — About
+// Pitch Atlas About
 // =============================================================================
 // The screen that says, in plain words, what this thing is and why it can be
-// trusted offline. It reinforces the native value (a bundled, offline reference),
-// the provenance model (every number wears its tier), and v1 honesty (content is
-// generated from the companion web reference and checked, not auto-refreshed).
+// trusted. It reinforces the native value (a bundled reference that remains
+// readable offline), the provenance model (every number wears its tier), and v1
+// honesty (reference content is checked at build time; community is live only
+// after sign-in).
 //
 // Pure prose: there is no collection to enumerate, so there are no detail pushes.
 // The one freshness fact is store.sourcesLastChecked, computed off the build
-// manifest — never a hardcoded "today" or "live." If the bundle failed to decode,
+// manifest. Never a hardcoded "today" or "live." If the bundle failed to decode,
 // the screen still renders, with a small honest error noting content may be
 // incomplete.
 // =============================================================================
@@ -64,12 +65,12 @@ struct AboutView: View {
     private var whatThisIsCard: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "What this is")
-            Text("An offline, sourced reference for how pitches are gripped and thrown. A pitch index, filed specimens, a first-party grip library, a craftsmen hall, the lost-pitches wing, and a full sources colophon — all in one place, all readable without a connection.")
+            Text("A sourced reference for how pitches are gripped and thrown. The pitch index, filed specimens, first-party grip library, craftsmen hall, lost-pitches wing, and sources colophon are bundled into the app and readable without a connection.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
                 .lineSpacing(3)
-            Text("Every number wears its confidence tier. Nothing is marked right or wrong — a grip is filed, never graded.")
+            Text("Every number wears its confidence tier. Nothing is marked right or wrong. A grip is filed, never graded.")
                 .font(PitchAtlasTheme.newsreaderItalic(14))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -77,7 +78,7 @@ struct AboutView: View {
         }
         .leatherPress()
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("What this is. An offline, sourced reference for how pitches are gripped and thrown — a pitch index, filed specimens, a first-party grip library, a craftsmen hall, the lost-pitches wing, and a full sources colophon. Every number wears its confidence tier. Nothing is marked right or wrong.")
+        .accessibilityLabel("What this is. A sourced reference for how pitches are gripped and thrown. The pitch index, filed specimens, first-party grip library, craftsmen hall, lost-pitches wing, and sources colophon are bundled into the app and readable without a connection. Every number wears its confidence tier. Nothing is marked right or wrong.")
     }
 
     // MARK: - The provenance model
@@ -85,7 +86,7 @@ struct AboutView: View {
     private var provenanceModelCard: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "The provenance model")
-            Text("Every figure carries a tier dot. A confident claim shows where it came from — its source travels with it. A weaker claim carries a note that says what is uncertain and why. When something can't be verified, it is shown as unverified rather than hidden, so the gap stays visible instead of dressed up.")
+            Text("Every figure carries a tier dot. A confident claim shows where it came from, and its source travels with it. A weaker claim carries a note that says what is uncertain and why. When something can't be verified, it is shown as unverified rather than hidden, so the gap stays visible instead of dressed up.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
@@ -107,7 +108,7 @@ struct AboutView: View {
         let checked = store.sourcesLastChecked
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "How it stays honest")
-            Text("The content is generated from the companion web reference and bundled into the app, so the whole atlas works fully offline. There is no live feed and nothing refreshes on its own.")
+            Text("Reference content is generated from the companion web reference and bundled into the app. Community notes, discussion, reporting, blocking, and account deletion use the live Pitch Atlas Supabase backend and require sign-in.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
@@ -135,8 +136,8 @@ struct AboutView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
             checked.isEmpty
-                ? "How it stays honest. Content is generated from the companion web reference and bundled, so it works fully offline. Sources last checked, not recorded in this build. Checked, not auto-refreshed."
-                : "How it stays honest. Content is generated from the companion web reference and bundled, so it works fully offline. Sources last checked \(checked). Checked, not auto-refreshed."
+                ? "How it stays honest. Reference content is generated from the companion web reference and bundled into the app. Community actions use the live Pitch Atlas Supabase backend and require sign-in. Sources last checked, not recorded in this build. Checked, not auto-refreshed."
+                : "How it stays honest. Reference content is generated from the companion web reference and bundled into the app. Community actions use the live Pitch Atlas Supabase backend and require sign-in. Sources last checked \(checked). Checked, not auto-refreshed."
         )
     }
 
