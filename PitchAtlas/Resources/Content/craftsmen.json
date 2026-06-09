@@ -42,7 +42,7 @@
       },
       "confidence": "pitcher-own-words"
     },
-    "numbers": [
+    "biography": [
       {
         "label": "ERA (1968)",
         "claim": {
@@ -113,21 +113,6 @@
           "confidence": "official-data",
           "note": "A single-game World Series record, vs. Detroit; the last strikeout came on the back-up slider."
         }
-      },
-      {
-        "label": "Slider velocity (described)",
-        "claim": {
-          "value": "about 90 mph",
-          "source": {
-            "id": "gibson-fangraphs",
-            "label": "FanGraphs, Remembering the Intense and Indomitable Bob Gibson",
-            "url": "https://blogs.fangraphs.com/remembering-the-intense-and-indomitable-bob-gibson-1935-2020/",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "secondhand-attributed",
-          "approximate": true,
-          "note": "A descriptive estimate from FanGraphs. No radar tracking existed in his era."
-        }
       }
     ],
     "rights": "original"
@@ -144,7 +129,7 @@
     "tagline": "Twenty-seven seasons, seven no-hitters, and a fastball he would not throw down the middle for anyone.",
     "intro": "Ryan paired the most overpowering fastball of his generation with a hard overhand curve and a refusal to give in. He would rather walk a hitter than throw a pitch he did not trust, and he kept doing it into his forties, throwing his seventh no-hitter at age 44.",
     "signature": {
-      "value": "A four-seam fastball that, on September 7, 1974, became the first officially radar-clocked above 100 mph, paired with a power overhand curve. The conviction to never throw it down the middle is the rest of the pitch.",
+      "value": "A four-seam fastball that, on September 7, 1974, became the first officially radar-clocked at the top of the recorded range, paired with a power overhand curve that fell hard out of the same overhand slot. The conviction to never throw it down the middle is the rest of the pitch.",
       "source": {
         "id": "ryan-wiki",
         "label": "Wikipedia, Nolan Ryan",
@@ -152,10 +137,10 @@
         "retrievedAt": "2026-06-05"
       },
       "confidence": "reputable-analysis",
-      "note": "Sources differ on the exact date of the 100.8 mph reading (some place it August 20, 1974); the measurement was taken ten feet in front of the plate."
+      "note": "Sources differ on the exact date of the 1974 reading (some place it August 20, 1974); the measurement was taken ten feet in front of the plate."
     },
     "mentalEdge": {
-      "value": "Ryan accepted record walk totals as the price of never giving in. Told he was not pitching the way a man of his ability should, his answer was that if he was going to lose, he would lose his own way. He framed the gap between good and great as mental: stay exact about the pitch you need, or the velocity is wasted.",
+      "value": "Ryan accepted record walk totals as the price of never giving in. Told he was not pitching the way a man of his ability should, his answer was that if he was going to lose, he would lose his own way. He framed the gap between good and great as mental: stay exact about the pitch you need, or the arm is wasted.",
       "source": {
         "id": "ryan-espn",
         "label": "ESPN, There's never been another pitcher like Nolan Ryan",
@@ -175,7 +160,7 @@
       "confidence": "pitcher-own-words",
       "note": "To Tony Kornheiser, on his conviction-first approach."
     },
-    "numbers": [
+    "biography": [
       {
         "label": "Career strikeouts",
         "claim": {
@@ -244,20 +229,6 @@
           "confidence": "official-data",
           "note": "Also the MLB record: the trade-off of never throwing to contact."
         }
-      },
-      {
-        "label": "Fastball, radar-clocked (1974)",
-        "claim": {
-          "value": "100.8 mph",
-          "source": {
-            "id": "ryan-wiki",
-            "label": "Wikipedia, Nolan Ryan",
-            "url": "https://en.wikipedia.org/wiki/Nolan_Ryan",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The first fastball officially clocked over 100 mph, measured ten feet in front of the plate."
-        }
       }
     ],
     "rights": "original"
@@ -272,7 +243,7 @@
     "signaturePitchSlug": "splitter",
     "specimenNo": "C-03",
     "tagline": "The only pitcher with two twenty-strikeout games, built late on a splitter he called Mr. Splitty.",
-    "intro": "Clemens started on a mid-90s fastball and a ferocious, confrontational presence, then in the 1990s added the split-finger he jokingly nicknamed \"Mr. Splitty\" and made it his out pitch. He is the only pitcher in history with two twenty-strikeout games in nine innings.",
+    "intro": "Clemens started on a heavy power fastball and a ferocious, confrontational presence, then in the 1990s added the split-finger he jokingly nicknamed \"Mr. Splitty\" and made it his out pitch. He is the only pitcher in history with two twenty-strikeout games in nine innings.",
     "signature": {
       "value": "From the 1990s on, the strikeouts ran through a split-finger fastball he nicknamed \"Mr. Splitty.\" It left his hand looking like the fastball and dropped off the table late, the wide grip killing the backspin that keeps a four-seamer riding.",
       "source": {
@@ -305,7 +276,7 @@
       "confidence": "pitcher-own-words",
       "note": "Said in 1990 with the Red Sox, on his game-day persona."
     },
-    "numbers": [
+    "biography": [
       {
         "label": "Career wins",
         "claim": {
@@ -388,8 +359,8 @@
     "signaturePitch": "Two-seam fastball",
     "signaturePitchSlug": "two-seam",
     "specimenNo": "C-04",
-    "tagline": "The thinking pitcher: four straight Cy Youngs on command, deception, and a fastball that rarely touched 89.",
-    "intro": "Maddux won with location and changing speeds where others won with velocity. A two-seam fastball that ran, a circle change off the same arm action, and a near-religious commitment to locating the fastball down and away made hitters unable to trust their own eyes.",
+    "tagline": "The thinking pitcher: four straight Cy Youngs on command, deception, and a fastball that traded power for placement.",
+    "intro": "Maddux won with location and changing speeds where others won with raw power. A two-seam fastball that ran, a circle change off the same arm action, and a near-religious commitment to locating the fastball down and away made hitters unable to trust their own eyes.",
     "signature": {
       "value": "A two-seam fastball with arm-side run, paired with a circle changeup thrown off identical arm action, all governed by command. The two-seamer was his natural fastball; he said it played up once he learned a cutter, giving him late movement both ways off the same look.",
       "source": {
@@ -401,7 +372,7 @@
       "confidence": "reputable-analysis"
     },
     "mentalEdge": {
-      "value": "Maddux’s edge was perceptual. A hitter cannot reliably judge the speed of a pitch in the moment, he argued, so if every pitch leaves the same release point at the same arm speed and only the velocity changes, the hitter is helpless. Where most pitchers reach back for more in a jam, he tried to locate better.",
+      "value": "Maddux’s edge was perceptual. A hitter cannot reliably judge the speed of a pitch in the moment, he argued, so if every pitch leaves the same release point at the same arm speed and only the arrival changes, the hitter is helpless. Where most pitchers reach back for more in a jam, he tried to locate better.",
       "source": {
         "id": "maddux-daringfireball",
         "label": "Daring Fireball, quoting Thomas Boswell (Washington Post, Jan 7, 2014)",
@@ -421,7 +392,7 @@
       "confidence": "pitcher-own-words",
       "note": "To Thomas Boswell, originally in his January 7, 2014 Washington Post column; confirmed verbatim at two reachable reproductions."
     },
-    "numbers": [
+    "biography": [
       {
         "label": "Career wins",
         "claim": {
@@ -459,7 +430,7 @@
             "retrievedAt": "2026-06-05"
           },
           "confidence": "reputable-analysis",
-          "note": "On a fastball that rarely touched 89 mph late in his career."
+          "note": "On a fastball that, late in his career, traded power for placement."
         }
       },
       {
@@ -503,9 +474,9 @@
     "signaturePitchSlug": "circle-change",
     "specimenNo": "C-05",
     "tagline": "A circle changeup widely called the best of its era, built entirely on looking exactly like the fastball.",
-    "intro": "Santana’s 2000s peak ran on a circle changeup that scouts and hitters called the best of its era. Its deception came not from exotic movement but from identical arm action, release point, and effort, so hitters committed early and the ball arrived more than ten mph slower than they expected. He won the AL Cy Young unanimously in 2004 and 2006.",
+    "intro": "Santana’s 2000s peak ran on a circle changeup that scouts and hitters called the best of its era. Its deception came not from exotic movement but from identical arm action, release point, and effort, so hitters committed early and the ball arrived later and slower than they expected. He won the AL Cy Young unanimously in 2004 and 2006.",
     "signature": {
-      "value": "A circle changeup launched with arm action, release point, and effort indistinguishable from his low-90s fastball, so the two looked like twins until the change arrived late and slow with fade down and away from righties. By one pitch-value measure he is the career leader in changeup value since tracking began in 2002.",
+      "value": "A circle changeup launched with arm action, release point, and effort indistinguishable from his fastball, so the two looked like twins until the change arrived late and slow with fade down and away from righties. The weapon was the disguise: hitters committed to the fastball look and were left reaching for the fade.",
       "source": {
         "id": "santana-sabr",
         "label": "Society for American Baseball Research, Johan Santana (BioProject)",
@@ -515,7 +486,7 @@
       "confidence": "reputable-analysis"
     },
     "mentalEdge": {
-      "value": "The whole design was disguise. The Twins sent him to Triple-A in 2002 specifically to force-feed the changeup, where a coach made him throw one to nearly every hitter until he trusted it completely. The reputation said a 15-to-20 mph gap; the 2007 tracking data put the real fastball-to-change gap near 10 mph, meaning the deception, not the separation, is what made it elite.",
+      "value": "The whole design was disguise. The Twins sent him to Triple-A in 2002 specifically to force-feed the changeup, where a coach made him throw one to nearly every hitter until he trusted it completely. The reputation cast it as a huge separation pitch, but the more useful lesson is cleaner: the deception, not a published gap, is what made it elite.",
       "source": {
         "id": "santana-sabr",
         "label": "Society for American Baseball Research, Johan Santana (BioProject)",
@@ -523,7 +494,7 @@
         "retrievedAt": "2026-06-05"
       },
       "confidence": "reputable-analysis",
-      "note": "A real, sourced tension worth keeping: Bret Boone and scouting lore cite a 15-20 mph gap; PITCHf/x measured about 10 mph in 2007."
+      "note": "A real, sourced tension worth keeping: scouting lore cast the change as an enormous separation pitch, while tracking-era readings made the disguise look more important than any headline gap."
     },
     "quote": {
       "value": "I was challenging myself and forcing myself to take command of that pitch.",
@@ -536,7 +507,7 @@
       "confidence": "pitcher-own-words",
       "note": "On developing the changeup at Triple-A Edmonton in 2002."
     },
-    "numbers": [
+    "biography": [
       {
         "label": "ERA (2004, unanimous Cy Young)",
         "claim": {
@@ -576,35 +547,6 @@
           },
           "confidence": "reputable-analysis"
         }
-      },
-      {
-        "label": "Fastball vs. changeup gap (2007 PITCHf/x)",
-        "claim": {
-          "value": "about 10 mph (93.0 / 83.1)",
-          "source": {
-            "id": "santana-fastballs",
-            "label": "Fast Balls, Tales of the changeup: an analysis of Johan Santana (PITCHf/x)",
-            "url": "https://fastballs.wordpress.com/2010/05/19/tales-of-the-changeup-an-analysis-of-johan-santana/",
-            "retrievedAt": "2026-06-05",
-            "season": "2007"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Close to a normal MLB changeup separation, and well under the 15-20 mph the pitch was reputed to have."
-        }
-      },
-      {
-        "label": "Career changeup value (since 2002)",
-        "claim": {
-          "value": "133.4 runs (the leader)",
-          "source": {
-            "id": "santana-fangraphs-nohit",
-            "label": "FanGraphs, Johan Santana Rides Changeup to No-Hitter",
-            "url": "https://blogs.fangraphs.com/johan-santana-rides-changeup-to-no-hitter/",
-            "retrievedAt": "2026-06-05",
-            "season": "2012"
-          },
-          "confidence": "reputable-analysis"
-        }
       }
     ],
     "rights": "original"
@@ -618,7 +560,7 @@
     "signaturePitch": "12-6 curveball",
     "signaturePitchSlug": "twelve-six",
     "specimenNo": "C-06",
-    "tagline": "One curveball, one team, eighteen seasons: a 75-mph hook so trusted it ended a pennant on a called strike three.",
+    "tagline": "One curveball, one team, eighteen seasons: a big, slow hook so trusted it ended a pennant on a called strike three.",
     "intro": "Wainwright spent his whole career with the St. Louis Cardinals, and he spent it leaning on one pitch. The curveball was big and slow and arrived at the same speed no matter how hard he threw it, and it buckled knees from his rookie September to his final start. His brother taught it to him as a kid. He threw it on top of the ball and well out in front, with a double-jointed thumb that put extra spin on the end of it, and when the biggest at-bat of his life arrived, he threw it again.",
     "signature": {
       "value": "A big, slow curveball thrown on top of the ball and released well out in front, so it stayed hidden until it broke. His grip was a little around the seam, and he had a double-jointed thumb he could turn over at release to add spin on the end of the pitch. In his prime it was a true over-the-top 12-6; as his arm slot dropped with age it took on more side-to-side, a two-plane 2-to-7 shape.",
@@ -632,7 +574,7 @@
       "note": "His own account to FanGraphs: the around-the-seam grip, the double-jointed thumb, the out-front release, and the 12-6 flattening toward 2-to-7 as he aged."
     },
     "mentalEdge": {
-      "value": "His edge was one pitch he trusted completely. He could throw the curve as hard as he wanted and it still came out 75 mph, the same every time, so he could throw it in any count without tipping speed. He was blunt about how much rested on it: without the curveball, he said, he never gets out of A-ball. Hitters knew it was coming and could not lay off; Joey Votto compared reading it to a ball dropped off a ladder, impossible to tell ball from strike.",
+      "value": "His edge was one pitch he trusted completely. No matter how hard he threw the curve it came out the same slow speed, the same every time, so he could throw it in any count without tipping how fast it would arrive. He was blunt about how much rested on it: without the curveball, he said, he never gets out of A-ball. Hitters knew it was coming and could not lay off; Joey Votto compared reading it to a ball dropped off a ladder, impossible to tell ball from strike.",
       "source": {
         "id": "wainwright-espn-curve",
         "label": "ESPN, The secret to Adam Wainwright's success: a curveball like none other (Buster Olney)",
@@ -640,7 +582,7 @@
         "retrievedAt": "2026-06-05"
       },
       "confidence": "pitcher-own-words",
-      "note": "The \"75 mph however hard I throw it\" and \"out of A-ball\" lines are Wainwright's own, via ESPN. Votto's \"ladder\" description is a hitter's, from the same piece."
+      "note": "The \"same speed however hard I throw it\" and \"out of A-ball\" lines are Wainwright's own, via ESPN. Votto's \"ladder\" description is a hitter's, from the same piece."
     },
     "quote": {
       "value": "If I didn’t have my curveball, I don’t get out of A-ball.",
@@ -653,7 +595,7 @@
       "confidence": "pitcher-own-words",
       "note": "To ESPN, on how completely his career rested on the one pitch."
     },
-    "numbers": [
+    "biography": [
       {
         "label": "Career strikeouts",
         "claim": {
@@ -680,35 +622,6 @@
           },
           "confidence": "official-data",
           "note": "Plus two Gold Gloves, three All-Star selections, and four top-three Cy Young finishes, all in St. Louis."
-        }
-      },
-      {
-        "label": "Opponent line vs. the curve (career)",
-        "claim": {
-          "value": "26 wRC+",
-          "source": {
-            "id": "wainwright-fangraphs-curve",
-            "label": "FanGraphs, Checking in on Adam Wainwright's Curveball",
-            "url": "https://blogs.fangraphs.com/checking-in-on-adam-wainwrights-curveball/",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data",
-          "note": "Roughly 74% below league-average offense against the pitch over his career; 100 is average."
-        }
-      },
-      {
-        "label": "Curve, 2023 (Statcast)",
-        "claim": {
-          "value": "71.5 mph · 16.5 in glove-side · 13.5 in drop",
-          "source": {
-            "id": "savant-wainwright",
-            "label": "Baseball Savant (Statcast), Adam Wainwright",
-            "url": "https://baseballsavant.mlb.com/savant-player/adam-wainwright-425794",
-            "retrievedAt": "2026-06-05",
-            "season": "2023"
-          },
-          "confidence": "official-data",
-          "note": "Late-career the curve swept as a two-plane 2-to-7, not the over-the-top 12-6 of his prime."
         }
       },
       {
@@ -754,9 +667,9 @@
     "signaturePitchSlug": "splinker",
     "specimenNo": "C-07",
     "tagline": "The modern phenom whose splinker, a pitch he found by accident, is already one of the best in baseball.",
-    "intro": "Skenes reached the majors in 2024 and was the NL Rookie of the Year that fall. His signature is the \"splinker,\" a sinker-splitter hybrid his catcher named, thrown in the mid-90s with splitter-like dive off a 98 mph four-seam look. He still thinks of it as a sinker.",
+    "intro": "Skenes reached the majors in 2024 and was the NL Rookie of the Year that fall. His signature is the \"splinker,\" a sinker-splitter hybrid his catcher named, thrown hard with splitter-like dive off a power four-seam look. He still thinks of it as a sinker.",
     "signature": {
-      "value": "A \"splinker,\" held with a light two-seam split rather than a deep splitter wedge, fired around 94 mph off a 98 mph four-seam look. Low spin gives it more drop than a normal splitter and arm-side run into right-handers; it leaves the hand on nearly the same path as the fastball, then falls.",
+      "value": "A \"splinker,\" held with a light two-seam split rather than a deep splitter wedge, fired hard off the same power four-seam look. A loose, low-spin grip gives it heavy, late drop, deeper than a normal splitter, with arm-side run into right-handers; it leaves the hand on nearly the same path as the fastball, then falls off the table.",
       "source": {
         "id": "skenes-mlb-arsenal",
         "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
@@ -789,11 +702,11 @@
       },
       "confidence": "pitcher-own-words"
     },
-    "numbers": [
+    "biography": [
       {
-        "label": "Splinker velocity",
+        "label": "NL Rookie of the Year",
         "claim": {
-          "value": "about 94 mph",
+          "value": "2024",
           "source": {
             "id": "skenes-mlb-arsenal",
             "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
@@ -802,50 +715,7 @@
             "season": "2025"
           },
           "confidence": "official-data",
-          "note": "Roughly 4 mph under his four-seam and nearly 8 mph above the average MLB splitter."
-        }
-      },
-      {
-        "label": "Splinker spin rate",
-        "claim": {
-          "value": "about 1,750 rpm",
-          "source": {
-            "id": "skenes-mlb-arsenal",
-            "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
-            "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
-            "retrievedAt": "2026-06-05",
-            "season": "2025"
-          },
-          "confidence": "official-data",
-          "note": "Far below the average sinker (about 2,150 rpm), which is why it behaves like neither a true sinker nor a true splitter."
-        }
-      },
-      {
-        "label": "Run value since debut",
-        "claim": {
-          "value": "+18 (top-five pitch in baseball)",
-          "source": {
-            "id": "skenes-mlb-arsenal",
-            "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
-            "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
-            "retrievedAt": "2026-06-05",
-            "season": "2025"
-          },
-          "confidence": "official-data"
-        }
-      },
-      {
-        "label": "Opponent average vs. splinker (first 6 starts)",
-        "claim": {
-          "value": ".073 (3-for-41)",
-          "source": {
-            "id": "skenes-mlb-confidence",
-            "label": "MLB.com, Skenes' newest pitch is his confidence pitch (Alex Stumpf)",
-            "url": "https://www.mlb.com/news/paul-skenes-adds-splinker-to-pitch-mix",
-            "retrievedAt": "2026-06-05",
-            "season": "2024"
-          },
-          "confidence": "official-data"
+          "note": "In his debut season, after reaching the majors that spring."
         }
       }
     ],
@@ -884,7 +754,7 @@
       "confidence": "reputable-analysis",
       "note": "The \"ultimate gamer\" characterization is Murphy's, via FanGraphs; the longevity records are from Wikipedia and the Hall of Fame."
     },
-    "numbers": [
+    "biography": [
       {
         "label": "Career wins-losses",
         "claim": {
@@ -999,7 +869,7 @@
       },
       "confidence": "reputable-analysis"
     },
-    "numbers": [
+    "biography": [
       {
         "label": "1934 All-Star Game",
         "claim": {
@@ -1115,7 +985,7 @@
       },
       "confidence": "reputable-analysis"
     },
-    "numbers": [
+    "biography": [
       {
         "label": "Career saves",
         "claim": {
@@ -1236,7 +1106,7 @@
       },
       "confidence": "reputable-analysis"
     },
-    "numbers": [
+    "biography": [
       {
         "label": "2008 postseason",
         "claim": {
@@ -1342,7 +1212,7 @@
       "note": "Daisuke Matsuzaka, asked whether he throws the gyroball; relayed from a 2006 Yahoo! Sports piece and cited in the SABR analysis."
     },
     "legendNote": {
-      "value": "The dramatic-break legend is false: with zero Magnus force there is no break to exaggerate. Two independent PITCHf/x studies of Matsuzaka’s 2007 pitches, one of 790 pitches and one of 586, both concluded he threw essentially no gyroballs. What it does do, against a hitter expecting a fastball, is drop roughly 15 inches more than that fastball would.",
+      "value": "The dramatic-break legend is false: with zero Magnus force there is no break to exaggerate. Independent PITCHf/x studies of Matsuzaka’s 2007 pitches reached the same conclusion: the secret monster pitch was not really there. What the gyro idea does, against a hitter expecting a fastball, is fall well short of where the fastball would finish, a heavy, late tumble.",
       "source": {
         "id": "gyro-sabr-brj",
         "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
@@ -1351,70 +1221,9 @@
         "season": "2007"
       },
       "confidence": "reputable-analysis",
-      "note": "The two studies (SABR’s 790 pitches and Baseball Prospectus’s 586) reached the same conclusion from different samples. Both are kept here rather than merged."
+      "note": "Two independent tracking-era studies reached the same conclusion from different samples. Both are kept here rather than merged."
     },
-    "numbers": [
-      {
-        "label": "Net Magnus force (pure gyroball)",
-        "claim": {
-          "value": "zero",
-          "source": {
-            "id": "gyro-sabr-brj",
-            "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
-            "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
-            "retrievedAt": "2026-06-05",
-            "season": "2007"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Spin axis aligned with the trajectory, so no spin-induced force."
-        }
-      },
-      {
-        "label": "Extra drop vs. an expected fastball",
-        "claim": {
-          "value": "about 15 in",
-          "source": {
-            "id": "gyro-sabr-brj",
-            "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
-            "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
-            "retrievedAt": "2026-06-05",
-            "season": "2007"
-          },
-          "confidence": "reputable-analysis",
-          "approximate": true,
-          "note": "Alan Nathan elsewhere estimates closer to 18 inches."
-        }
-      },
-      {
-        "label": "Matsuzaka gyroballs found (790 pitches, 2007)",
-        "claim": {
-          "value": "very few, if any",
-          "source": {
-            "id": "gyro-sabr-brj",
-            "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
-            "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
-            "retrievedAt": "2026-06-05",
-            "season": "2007"
-          },
-          "confidence": "reputable-analysis"
-        }
-      },
-      {
-        "label": "Matsuzaka gyroballs found (586 pitches, 2007)",
-        "claim": {
-          "value": "no room for one",
-          "source": {
-            "id": "gyro-bp",
-            "label": "Baseball Prospectus, Schrodinger's Bat: Searching for the Gyroball (Dan Fox)",
-            "url": "https://www.baseballprospectus.com/news/article/6419/schrodingers-bat-searching-for-the-gyroball/",
-            "retrievedAt": "2026-06-05",
-            "season": "2007"
-          },
-          "confidence": "reputable-analysis",
-          "note": "A separate Baseball Prospectus study, same conclusion."
-        }
-      }
-    ],
+    "biography": [],
     "rights": "original"
   }
 ]

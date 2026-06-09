@@ -32,7 +32,7 @@ struct AtlasView: View {
                     freshness
                 }
                 .padding(PitchAtlasSpacing.lg)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle("Atlas")

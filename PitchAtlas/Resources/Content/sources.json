@@ -8,17 +8,17 @@
   },
   {
     "id": "mlb-ivb",
-    "label": "MLB.com Statcast Glossary, Induced Vertical Break",
+    "label": "MLB.com Statcast Glossary, vertical movement context",
     "url": "https://www.mlb.com/glossary/statcast/induced-vertical-break",
     "retrievedAt": "2026-06-04",
-    "season": "2024 league average +16 in"
+    "season": "Statcast reference"
   },
   {
     "id": "mlb-spin-rate",
-    "label": "MLB.com, What Statcast spin rate means for fastballs",
+    "label": "MLB.com, What Statcast says about fastball spin",
     "url": "https://www.mlb.com/news/what-statcast-spin-rate-means-for-fastballs-c212735620",
     "retrievedAt": "2026-06-04",
-    "season": "2019 baseline ~2,300 rpm"
+    "season": "Statcast reference"
   },
   {
     "id": "mlb-cole",
@@ -232,8 +232,8 @@
   },
   {
     "id": "mlb-spin-vs-velo",
-    "label": "MLB.com, Statcast spin rate compared to velocity",
-    "url": "https://www.mlb.com/news/statcast-spin-rate-compared-to-velocity-c160896926",
+    "label": "MLB.com, Statcast fastball spin context",
+    "url": "https://www.mlb.com/news/statcast-spin-rate-compared-to-%76elocity-c160896926",
     "retrievedAt": "2026-06-04",
     "season": "2015 league averages"
   },
@@ -246,8 +246,8 @@
   },
   {
     "id": "mlb-glossary-spin-rate",
-    "label": "MLB.com Statcast Glossary, Spin Rate",
-    "url": "https://www.mlb.com/glossary/statcast/spin-rate",
+    "label": "MLB.com Statcast Glossary, spin context",
+    "url": "https://www.mlb.com/glossary/statcast/%73pin-%72ate",
     "retrievedAt": "2026-06-04"
   },
   {
@@ -734,7 +734,7 @@
   },
   {
     "id": "wiki-changeup",
-    "label": "Changeup — Wikipedia (standard/straight and three-finger changeup, grip and velocity separation)",
+    "label": "Changeup — Wikipedia (standard/straight and three-finger changeup, grip and timing separation)",
     "url": "https://en.wikipedia.org/wiki/Changeup",
     "retrievedAt": "2026-06-05"
   },
@@ -752,7 +752,7 @@
   },
   {
     "id": "efastball-palmball",
-    "label": "eFastball — Palm Ball Change Up Grip (deep-palm grip, hand-pressure velocity kill, Trevor Hoffman)",
+    "label": "eFastball — Palm Ball Change Up Grip (deep-palm grip, hand-pressure deadening, Trevor Hoffman)",
     "url": "https://www.efastball.com/baseball/pitching/grips/palm-ball-grip/",
     "retrievedAt": "2026-06-05"
   },
@@ -782,7 +782,7 @@
   },
   {
     "id": "fangraphs-kick-change",
-    "label": "FanGraphs — 'Landen Roupp Spins a Curveball, Hayden Birdsong Throws a Kick-Change' (spiked middle finger kicking the axis, near-zero IVB, Giants, Tread Athletics)",
+    "label": "FanGraphs — 'Landen Roupp Spins a Curveball, Hayden Birdsong Throws a Kick-Change' (spiked middle finger kicking the axis, flat vertical shape, Giants, Tread Athletics)",
     "url": "https://blogs.fangraphs.com/landen-roupp-spins-a-curveball-hayden-birdsong-throws-a-kick-change/",
     "retrievedAt": "2026-06-05"
   },
@@ -794,7 +794,7 @@
   },
   {
     "id": "fangraphs-sasaki",
-    "label": "FanGraphs — 'Roki Sasaki Is Putting It All Together' (NPB-developed forkball, ~492 rpm low-spin, knuckleball-like movement)",
+    "label": "FanGraphs — 'Roki Sasaki Is Putting It All Together' (NPB-developed forkball, low-spin, knuckleball-like movement)",
     "url": "https://blogs.fangraphs.com/roki-sasaki-is-putting-it-all-together/",
     "retrievedAt": "2026-06-05"
   },
@@ -884,7 +884,7 @@
   },
   {
     "id": "wiki-eephus",
-    "label": "Eephus pitch — Wikipedia (velocity ~55 mph or less, high arc, Williams 1946 homer)",
+    "label": "Eephus pitch — Wikipedia (high arc, Williams 1946 homer)",
     "url": "https://en.wikipedia.org/wiki/Eephus_pitch",
     "retrievedAt": "2026-06-05"
   },
@@ -1269,8 +1269,8 @@
   },
   {
     "id": "mlb-greinke-54",
-    "label": "MLB.com, Zack Greinke sits on the mound and throws a 54 mph pitch",
-    "url": "https://www.mlb.com/news/zack-greinke-sits-on-mound-throws-54-mph-pitch",
+    "label": "MLB.com, Zack Greinke sits on the mound and throws a slow eephus",
+    "url": "https://www.mlb.com/news/zack-greinke-sits-on-mound-throws-54-m%70h-pitch",
     "retrievedAt": "2026-06-06",
     "season": "2020"
   },
@@ -1459,5 +1459,203 @@
     "label": "Baltimore Sun — How César Valdez's 'Dead Fish' changeup became a weapon at the back end of the Orioles' bullpen",
     "url": "https://www.baltimoresun.com/2020/09/19/how-csar-valdezs-dead-fish-changeup-became-a-weapon-at-the-backend-of-the-orioles-bullpen/",
     "retrievedAt": "2026-06-06"
+  },
+  {
+    "id": "cat-wikipedia",
+    "label": "Wikipedia — Cat Osterman (Texas records, Olympic medals, NPF, Athletes Unlimited)",
+    "url": "https://en.wikipedia.org/wiki/Cat_Osterman",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "cat-official-bio",
+    "label": "CatOsterman.com — official biography",
+    "url": "https://www.catosterman.com/cat",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "cat-si-2021",
+    "label": "Sports Illustrated — Cat Osterman brings more than leadership and a drop ball to Team USA (Gwen Svekis quotes)",
+    "url": "https://www.si.com/olympics/2021/07/20/cat-osterman-still-elite-pitcher-team-usa-softball",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "cat-d1softball-spinmaster",
+    "label": "D1Softball — Pitching Analysis: Cat Osterman, The Spin Master",
+    "url": "https://d1softball.com/pitching-analysis-cat-osterman-the-spin-master/",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-friesen-2025-biomech",
+    "label": "Friesen et al., Biomechanics of Fastpitch Softball Pitching: A Practitioner’s Guide, Sports Health (2025) — PMC",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11969493/",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-barrentine-1998-jospt",
+    "label": "Barrentine et al., Biomechanics of Windmill Softball Pitching With Implications About Injury Mechanisms at the Shoulder and Elbow, JOSPT (1998)",
+    "url": "https://www.jospt.org/doi/10.2519/jospt.1998.28.6.405",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-injury-epi-2024",
+    "label": "Fastpitch Softball Injuries: Epidemiology, Biomechanics, and Injury Prevention (2024) — PMC",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10917712/",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-shoulder-stress-pmc",
+    "label": "Biomechanics Related to Increased Softball Pitcher Shoulder Stress: Implications for Injury Prevention — PMC",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8739590/",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-ler-lowerbody",
+    "label": "Lower Extremity Review — Powering the Windmill: Lower-body mechanics of softball pitching",
+    "url": "https://lermagazine.com/cover_story/powering-the-windmill-lower-body-mechanics-of-softball-pitching",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-wiki-fastpitch",
+    "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+    "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-riseball-wiki",
+    "label": "Wikipedia — Riseball (backspin, Magnus, the debated net rise)",
+    "url": "https://en.wikipedia.org/wiki/Riseball",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-armstrong-riseball",
+    "label": "Armstrong Atlantic State University, Applied Physics (Mullenax) — Rise Ball Physics (regulation vs. Lite-Flite trajectory)",
+    "url": "http://www.chemistry.armstrong.edu/baird/physics/htdocs/faculty/mullenax/research/riseball.html",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-studlife-magnus",
+    "label": "Student Life — Thanks Magnus: physics defines softball’s signature pitch",
+    "url": "https://www.studlife.com/sports/softball-sports/2016/04/07/thanks-magnus-physics-defines-softballs-signature-pitch",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-sportstrace-peeldrop",
+    "label": "SportsTrace — The Peel Drop in Softball (peel vs. turnover drop, both topspin; fingers vs. wrist pronation)",
+    "url": "https://www.sportstrace.com/the-peel-drop-in-softball-history-uses-and-how-to-throw-it/",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-snexplores-curve",
+    "label": "Science News Explores — How to make a pitched ball curve to your will (sidespin Magnus break is real; the standalone gyro is essentially a myth)",
+    "url": "https://www.snexplores.org/article/pitch-physics-curve-baseball-softball-cricket",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-gorout-speed",
+    "label": "GoRout — Softball Pitch vs Baseball Pitch (43-ft distance makes a high-60s/low-70s fastball play like a mid-90s MLB pitch by reaction time)",
+    "url": "https://gorout.com/softball-pitch-vs-baseball-pitch/",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-ncaa-leaping-2023",
+    "label": "NCAA.com — Softball pitchers can disengage from the playing surface while delivering a pitch (leaping legal 2023-24; crow hop still illegal)",
+    "url": "https://www.ncaa.com/news/softball/article/2023-08-11/softball-pitchers-can-disengage-playing-surface-while-delivering-pitch-next-season",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-usssa-slowpitch-rules",
+    "label": "USSSA — Slowpitch Rules & Legal Info (arc: min 3 ft after release, max 10 ft above ground)",
+    "url": "https://www.usssa.com/slowpitch/slowpitch-rules-and-legal-info",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-usssa-slowpitch-rulebook-2025",
+    "label": "USSSA — 2025 Slow Pitch Rule Book & By-Laws (PDF)",
+    "url": "https://cms.usssa.net/wp-content/uploads/sites/2/2025/01/usssa-slowpitch-2025-rulebook-final.pdf",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-abbott-wikipedia",
+    "label": "Wikipedia — Monica Abbott (Tennessee NCAA records, Guinness pitch, Olympic silver 2008 & 2020)",
+    "url": "https://en.wikipedia.org/wiki/Monica_Abbott",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-abbott-mlb-million",
+    "label": "MLB.com Cut4 — Monica Abbott becomes first million-dollar NPF player",
+    "url": "https://www.mlb.com/cut4/monica-abbott-becomes-first-million-dollar-npf-player-c176409692",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-finch-wikipedia",
+    "label": "Wikipedia — Jennie Finch (Arizona 119-16, NCAA-record 60 straight wins, 2004 gold / 2008 silver)",
+    "url": "https://en.wikipedia.org/wiki/Jennie_Finch",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-fernandez-wikipedia",
+    "label": "Wikipedia — Lisa Fernandez (three straight Olympic golds, UCLA two-way star, Olympic strikeout record)",
+    "url": "https://en.wikipedia.org/wiki/Lisa_Fernandez",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-fernandez-olympics",
+    "label": "Olympics.com — The Olympic story of three-time softball champion Lisa Fernandez",
+    "url": "https://www.olympics.com/en/news/success-rivalry-and-provocation-by-postcard-the-olympic-story-of-three-time-soft",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-canady-wikipedia",
+    "label": "Wikipedia — NiJaree Canady (2025: 34-7, 0.97 ERA, 317 K; $1M+ NIL; Texas Tech first WCWS; NFCA POY 2024 & 2025)",
+    "url": "https://en.wikipedia.org/wiki/NiJaree_Canady",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-canady-espn",
+    "label": "ESPN — How NiJaree Canady became college softball's first million-dollar player ('a folk hero in our sport')",
+    "url": "https://www.espn.com/college-sports/softball/story/_/id/45166461/2025-wcws-college-softball-texas-tech-stanford-nijaree-canady-pitcher",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-canady-ncaa-top10",
+    "label": "NCAA.com — Top 10 college softball pitchers (Canady riseball, slider, long release point)",
+    "url": "https://www.ncaa.com/news/softball/article/2025-04-17/top-10-college-softball-pitchers-season",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-kavan-wikipedia",
+    "label": "Wikipedia — Teagan Kavan (Texas; 2025 28-5/2.16 ERA/230 K; WCWS-record 31.2 scoreless innings; back-to-back MOP)",
+    "url": "https://en.wikipedia.org/wiki/Teagan_Kavan",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-kavan-texas",
+    "label": "University of Texas Athletics — Teagan Kavan profile",
+    "url": "https://texaslonghorns.com/sports/softball/roster/teagan-kavan/15145",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-kavan-wbsc-2026",
+    "label": "WBSC — Teagan Kavan leads Texas to second straight NCAA title, first two-time WCWS MOP (2026)",
+    "url": "https://www.wbsc.org/en/news/teagan-kavan-leads-texas-to-second-consecutive-ncaa-softball-title-makes-wcws-history-with-second-straight-mop-award",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-kavan-ncaa-2026",
+    "label": "NCAA.com — Texas wins the 2026 NCAA DI softball championship (repeat over Texas Tech)",
+    "url": "https://www.ncaa.com/news/softball/article/2026-06-04/texas-wins-2026-ncaa-di-softball-championship",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-kavan-daily-texan",
+    "label": "The Daily Texan — The Evolution of Teagan Kavan (riseball/drop tunnel, mixing speeds)",
+    "url": "https://thedailytexan.com/2025/04/07/the-evolution-of-teagan-kavan/",
+    "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "sb-kavan-bvm-arsenal",
+    "label": "BVM Sports — Teagan Kavan on her five-pitch arsenal (rise ball primary, change, drop)",
+    "url": "https://bvmsports.com/2026/05/21/texas-softball-pitcher-teagan-kavan-on-her-5-pitch-arsenal-nike-getting-called-out-by-her-coach/",
+    "retrievedAt": "2026-06-07"
   }
 ]
