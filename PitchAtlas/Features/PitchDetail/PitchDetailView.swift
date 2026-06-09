@@ -75,6 +75,8 @@ struct PitchDetailView: View {
             .leatherPress(padding: PitchAtlasSpacing.lg)
             .foilRake()
 
+            BlazeInlineCompanionView(style: .pitch, mood: .chasing)
+
             Text(display.heroIntro)
                 .font(PitchAtlasTheme.hanken(16))
                 .foregroundStyle(PitchAtlasTheme.bone)
