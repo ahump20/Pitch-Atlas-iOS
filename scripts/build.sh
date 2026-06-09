@@ -8,7 +8,7 @@ cd "$(dirname "$0")/.."
 SCHEME="PitchAtlas"
 DERIVED=".build/DerivedData"
 BUILD_DEST="${PA_BUILD_DEST:-generic/platform=iOS Simulator}"
-TEST_DEST="${PA_TEST_DEST:-platform=iOS Simulator,name=iPhone 16 Pro,OS=latest}"
+TEST_DEST="${PA_TEST_DEST:-platform=iOS Simulator,name=iPhone 17 Pro,OS=latest}"
 cmd="${1:-build}"
 
 if command -v xcodegen >/dev/null 2>&1; then
@@ -24,10 +24,17 @@ case "$cmd" in
       -quiet | tail -20
     ;;
   test)
-    xcodebuild test \
-      -scheme "$SCHEME" -sdk iphonesimulator \
-      -destination "$TEST_DEST" -derivedDataPath "$DERIVED" \
-      | xcpretty 2>/dev/null || true
+    set -o pipefail
+    if command -v xcpretty >/dev/null 2>&1; then
+      xcodebuild test \
+        -scheme "$SCHEME" -sdk iphonesimulator \
+        -destination "$TEST_DEST" -derivedDataPath "$DERIVED" \
+        | xcpretty
+    else
+      xcodebuild test \
+        -scheme "$SCHEME" -sdk iphonesimulator \
+        -destination "$TEST_DEST" -derivedDataPath "$DERIVED"
+    fi
     ;;
   clean)
     rm -rf "$DERIVED" && echo "cleaned $DERIVED"

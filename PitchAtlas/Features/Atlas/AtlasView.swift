@@ -1,7 +1,7 @@
 import SwiftUI
 
 // =============================================================================
-// AtlasView — the home surface
+// AtlasView: the home surface
 // =============================================================================
 // The brand showcase and the hub: the holographic wordmark, a featured native
 // specimen, the filed-specimen rail, entry points to the wings that are not tabs
@@ -71,7 +71,7 @@ struct AtlasView: View {
                 .buttonStyle(.plain)
             }
 
-            Text("How every pitch is gripped and thrown — the index, the filed specimens, the grip library, the craftsmen, and the lost pitches. Offline, and every number wears its source.")
+            Text("How every pitch is gripped and thrown. The index, filed specimens, grip library, craftsmen, and lost pitches are bundled with sources; community opens when you sign in.")
                 .font(PitchAtlasTheme.hanken(16))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
@@ -117,10 +117,13 @@ struct AtlasView: View {
                 wingRow(title: "The Field Manual", sub: "Sourced teaching across \(store.knowledge.count) wings", tone: PitchAtlasTheme.cyan)
             }.buttonStyle(.plain)
             NavigationLink { LostPitchesView() } label: {
-                wingRow(title: "Lost Pitches", sub: "The Negro Leagues wing — the tier is the feature", tone: PitchAtlasTheme.sandBright)
+                wingRow(title: "Lost Pitches", sub: "The Negro Leagues wing. The tier is the feature", tone: PitchAtlasTheme.sandBright)
             }.buttonStyle(.plain)
             NavigationLink { AboutView() } label: {
                 wingRow(title: "About the Atlas", sub: "How it stays honest", tone: PitchAtlasTheme.ink3)
+            }.buttonStyle(.plain)
+            NavigationLink { AccountView() } label: {
+                wingRow(title: "Account and Safety", sub: "Sign in, report, block, support, and delete account", tone: PitchAtlasTheme.amberBright)
             }.buttonStyle(.plain)
         }
     }

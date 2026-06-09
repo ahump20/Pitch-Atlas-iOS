@@ -1,43 +1,47 @@
-# Pitch Atlas — Privacy Policy (iOS v1)
+# Pitch Atlas Privacy Policy (iOS)
 
-_Last updated: 2026-06-06_
+_Last updated: 2026-06-09_
 
-Pitch Atlas is an offline reference app. **It does not collect any data.**
+Pitch Atlas is a native reference and community app. The reference manual works while logged out. Community actions require a Supabase account.
 
-## What we collect
+## Data We Collect
 
-Nothing. The app has no accounts, no sign-in, no analytics, no advertising, and
-no tracking. It makes no network requests in normal use — all content (pitch
-specimens, the grip library, craftsmen, lost pitches, and sources) is bundled in
-the app and read from the device.
+When you sign in or use community features, Pitch Atlas may collect:
 
-- **No personal information** is requested, stored, or transmitted.
-- **No usage or analytics data** is collected.
-- **No identifiers** are used for tracking, and there is no App Tracking
-  Transparency prompt because nothing is tracked.
-- **Device motion** (the gyroscope) is read only on-device, in the moment, to
-  animate the holographic foil as you tilt the phone. It is never stored and
-  never leaves the device.
+- email address
+- Supabase user ID
+- field notes, discussion posts, reports, and block records
+- still images you choose to upload from PhotosPicker
 
-This is why the App Store privacy label reads **"Data Not Collected."**
+Pitch Atlas does not collect live camera footage, video uploads, advertising identifiers, or tracking data.
+
+## How We Use Data
+
+We use this data to:
+
+- keep your session working
+- publish your community posts
+- attach your chosen still images to posts
+- handle reports and blocks
+- delete your account when requested
+- keep the community safer
+
+We do not sell data and do not track users across apps or websites.
+
+## Photos
+
+iOS v1 accepts still images only. The app re-encodes selected images before upload when feasible to reduce metadata exposure. Do not upload images you do not own, images of minors, copyrighted media, abusive content, unsafe content, or medical-advice claims.
+
+## Account Deletion
+
+You can delete your account inside the app from Account and Safety. Deletion calls a JWT-protected Supabase Edge Function that removes account-linked community records, owned discussion-media storage objects, block rows, and the Supabase Auth user.
 
 ## Children
 
-Because the app collects no data, it is safe for all ages. It contains no user
-accounts, no user-generated content, and no external links that transmit data.
-
-## Changes
-
-If a future version adds any feature that collects data, this policy and the App
-Store privacy label will be updated before that version ships, and the change
-will be described here.
+Posting or uploading requires confirming you are 17 or older. The logged-out reference manual remains available without an account.
 
 ## Contact
 
-Questions about this policy can be sent to the address listed on the app's App
-Store page.
+Support: [https://pitch-atlas.com/support](https://pitch-atlas.com/support)
 
----
-
-_This policy describes the iOS v1 binary, which collects no data. It intentionally
-does not describe any separate web service._
+Privacy: [https://pitch-atlas.com/privacy](https://pitch-atlas.com/privacy)

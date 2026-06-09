@@ -1,13 +1,12 @@
 import SwiftUI
 
 // =============================================================================
-// PitchDetailView — the filed specimen (v1 native)
+// PitchDetailView: the filed specimen (v1 native)
 // =============================================================================
 // The flagship surface. Native everything: the SeamBall specimen, the foundation
 // gauges, the grip lab, the coaching guide, the master-variant ledger, and the
-// seam-geometry honesty card. The WebView island + 3D→2D dissolve + gyroscope
-// foil layer in on top of the SeamBall in Steps 8/9 — this native version is what
-// makes the screen valid and complete on its own.
+// seam-geometry honesty card. This native version is what makes the screen valid
+// and complete on its own.
 // =============================================================================
 
 struct PitchDetailView: View {
@@ -315,21 +314,15 @@ struct PitchDetailView: View {
         .leatherPress()
     }
 
-    // MARK: Community preview (honest, gated off)
+    // MARK: Community
 
     private var communityPreview: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "COMMUNITY VARIANTS")
-            Text(entry.community.provenanceNote)
-                .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(entry.community.safetyNote)
-                .font(PitchAtlasTheme.newsreaderItalic(12))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .leatherPress()
+        CommunityPanel(
+            pitchSlug: entry.slug,
+            pitchName: canonical.name,
+            provenanceNote: entry.community.provenanceNote,
+            safetyNote: entry.community.safetyNote
+        )
     }
 
     // MARK: Seam geometry honesty card

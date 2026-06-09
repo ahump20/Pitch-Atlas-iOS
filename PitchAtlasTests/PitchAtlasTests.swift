@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 @testable import PitchAtlas
 
 final class PitchAtlasTests: XCTestCase {
@@ -10,7 +11,7 @@ final class PitchAtlasTests: XCTestCase {
                        ["atlas", "index", "grips", "craftsmen", "sources"])
     }
 
-    /// Provenance mapping must always resolve — an unknown tier falls back to the
+    /// Provenance mapping must always resolve. An unknown tier falls back to the
     /// honest gray (unverified), never crashes and never silently upgrades.
     func testConfidenceColorFallback() {
         let known = PitchAtlasTheme.color(forConfidence: "official-data")
@@ -24,7 +25,7 @@ final class PitchAtlasTests: XCTestCase {
     func testBundleDecodesCleanly() {
         let store = PitchStore()
         if case .failed(let message) = store.status {
-            XCTFail("Content failed to decode — \(message)")
+            XCTFail("Content failed to decode: \(message)")
         }
         XCTAssertFalse(store.pitches.isEmpty, "no pitches decoded")
         XCTAssertFalse(store.repertoire.entries.isEmpty, "no repertoire entries decoded")
@@ -37,7 +38,7 @@ final class PitchAtlasTests: XCTestCase {
 
     /// Drift guard: decoded record counts must match the build manifest. If the
     /// generator emits more records than the models can decode (a new field/shape),
-    /// the array decode throws and counts diverge — caught here and in CI.
+    /// the array decode throws and counts diverge. This catches that in CI.
     func testDecodedCountsMatchManifest() {
         let store = PitchStore()
         XCTAssertEqual(store.pitches.count, store.manifest.counts["pitches.json"])
@@ -47,6 +48,53 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(store.knowledge.count, store.manifest.counts["knowledge.json"])
         XCTAssertEqual(store.grips.entries.count, store.manifest.counts["grips.json"])
         XCTAssertEqual(store.sources.count, store.manifest.counts["sources.json"])
+    }
+
+    func testSupabaseConfigUsesPitchAtlasProject() {
+        XCTAssertEqual(SupabaseConfig.projectURL.absoluteString, "https://cloeoulvrrfcbitrjpso.supabase.co")
+        XCTAssertEqual(SupabaseConfig.authRedirectURL.absoluteString, "pitchatlas://auth-callback")
+        XCTAssertTrue(SupabaseConfig.publishableKey.hasPrefix("sb_publishable_"))
+        XCTAssertFalse(SupabaseConfig.publishableKey.lowercased().contains("service_role"))
+    }
+
+    func testCommunityImagePreparationRejectsNonImages() {
+        XCTAssertThrowsError(try CommunityService.prepareImage(data: Data("not an image".utf8))) { error in
+            XCTAssertEqual(error as? CommunityServiceError, .unsupportedMedia)
+        }
+    }
+
+    func testCommunityImagePreparationProducesStillJpeg() throws {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 24, height: 12))
+        let source = renderer.image { context in
+            UIColor.systemBlue.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 24, height: 12))
+        }
+        let png = try XCTUnwrap(source.pngData())
+
+        let prepared = try CommunityService.prepareImage(data: png)
+
+        XCTAssertEqual(prepared.mimeType, "image/jpeg")
+        XCTAssertEqual(prepared.fileExtension, "jpg")
+        XCTAssertGreaterThan(prepared.width, 0)
+        XCTAssertGreaterThan(prepared.height, 0)
+        XCTAssertLessThanOrEqual(max(prepared.width, prepared.height), 2048)
+        XCTAssertEqual(Double(prepared.width) / Double(prepared.height), 2.0, accuracy: 0.01)
+        XCTAssertLessThan(prepared.data.count, 8 * 1024 * 1024)
+    }
+
+    func testPrivacyManifestDeclaresCommunityDataWithoutTracking() throws {
+        let manifestURL = try XCTUnwrap(Bundle.main.url(forResource: "PrivacyInfo", withExtension: "xcprivacy"))
+        let manifest = try XCTUnwrap(NSDictionary(contentsOf: manifestURL) as? [String: Any])
+
+        XCTAssertEqual(manifest["NSPrivacyTracking"] as? Bool, false)
+
+        let collectedTypes = try XCTUnwrap(manifest["NSPrivacyCollectedDataTypes"] as? [[String: Any]])
+            .compactMap { $0["NSPrivacyCollectedDataType"] as? String }
+
+        XCTAssertTrue(collectedTypes.contains("NSPrivacyCollectedDataTypeEmailAddress"))
+        XCTAssertTrue(collectedTypes.contains("NSPrivacyCollectedDataTypeUserID"))
+        XCTAssertTrue(collectedTypes.contains("NSPrivacyCollectedDataTypeOtherUserContent"))
+        XCTAssertTrue(collectedTypes.contains("NSPrivacyCollectedDataTypePhotosorVideos"))
     }
 
     /// Provenance integrity: a confident claim carries a source; a weak claim

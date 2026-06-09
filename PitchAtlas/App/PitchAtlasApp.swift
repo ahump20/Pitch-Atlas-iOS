@@ -7,14 +7,20 @@ struct PitchAtlasApp: App {
     @State private var store = PitchStore()
     /// The gyroscope feed for the foil rake, shared across surfaces.
     @State private var motion = MotionProvider()
+    /// Supabase auth/session state for community actions.
+    @State private var auth = AuthSessionStore()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environment(store)
                 .environment(motion)
+                .environment(auth)
                 .preferredColorScheme(.dark)
-                .task { motion.start() }
+                .task {
+                    motion.start()
+                    await auth.start()
+                }
                 .onChange(of: scenePhase) { _, phase in
                     // The gyro is a hardware resource: run it only while the app
                     // is active, release it on background/inactive. start() guards
@@ -25,7 +31,7 @@ struct PitchAtlasApp: App {
     }
 }
 
-/// The canonical tab enum — also the target for `pitchatlas://` deep links (wired later).
+/// The canonical tab enum and target for `pitchatlas://` deep links.
 enum AppTab: String, CaseIterable, Identifiable {
     case atlas, index, grips, craftsmen, sources
 
@@ -55,6 +61,7 @@ enum AppTab: String, CaseIterable, Identifiable {
 
 struct RootView: View {
     @Environment(PitchStore.self) private var store
+    @Environment(AuthSessionStore.self) private var auth
     @State private var router = DeepLinkRouter()
 
     /// DEBUG-only launch override so QA can open straight to a tab; production always starts on Atlas.
@@ -87,7 +94,10 @@ struct RootView: View {
                 .tag(AppTab.sources)
         }
         .tint(PitchAtlasTheme.cyan)
-        .onOpenURL { url in router.handle(url, store: store) }
+        .onOpenURL { url in
+            auth.handle(url: url)
+            router.handle(url, store: store)
+        }
         .task { applyDebugLaunch() }
     }
 
@@ -111,5 +121,6 @@ struct RootView: View {
 #Preview {
     RootView()
         .environment(PitchStore())
+        .environment(AuthSessionStore())
         .preferredColorScheme(.dark)
 }
