@@ -93,6 +93,46 @@ struct GripFilmCard: View {
     }
 }
 
+// MARK: - Real photo as the specimen face
+
+/// A real grip photo in the film card's chrome — the face wherever photography
+/// is on file but no footage is. Same hierarchy, one rung down.
+struct GripStillCard: View {
+    let photo: VisualReference
+    var height: CGFloat = 420
+    var showsCaption: Bool = true
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
+            BundledImage(src: photo.src, alt: photo.alt)
+                .frame(height: height)
+                .frame(maxWidth: .infinity)
+                .clipShape(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous)
+                        .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+                )
+
+            if showsCaption {
+                Text(photo.caption)
+                    .font(PitchAtlasTheme.hanken(13))
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            HStack(spacing: PitchAtlasSpacing.xs) {
+                SectionLabel(text: "From the hand", color: PitchAtlasTheme.cyanDeep, size: 8)
+                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
+                if let attribution = photo.attribution {
+                    SectionLabel(text: attribution, color: PitchAtlasTheme.ink3, size: 8)
+                }
+            }
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Grip photo. \(photo.alt) \(photo.caption)")
+    }
+}
+
 // MARK: - Looping player plumbing
 
 private struct LoopingClipView: UIViewRepresentable {

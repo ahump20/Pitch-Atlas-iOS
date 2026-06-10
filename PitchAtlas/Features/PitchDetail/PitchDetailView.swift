@@ -16,6 +16,12 @@ struct PitchDetailView: View {
     private var display: PitchDisplay { entry.display }
     private var physics: PhysicsReference { canonical.physics }
 
+    /// The photo that carries the hero when no film is on file. The grip lab
+    /// below skips it so the same frame never renders twice on one screen.
+    private var heroPhoto: VisualReference? {
+        canonical.gripFilm == nil ? canonical.gripImages?.first : nil
+    }
+
     var body: some View {
         ZStack {
             PitchAtlasTheme.void.ignoresSafeArea()
@@ -30,9 +36,10 @@ struct PitchDetailView: View {
                     if let voice = canonical.voice { voiceQuote(voice) }
                     if !entry.masterVariants.isEmpty { mastersLedger }
                     communityPreview
-                    // When real footage carries the hero, the drawn specimen
-                    // files down here beside the seam-geometry record.
-                    if canonical.gripFilm != nil { specimenCard }
+                    // When real footage or photography carries the hero, the
+                    // drawn specimen files down here beside the seam-geometry
+                    // record.
+                    if canonical.gripFilm != nil || heroPhoto != nil { specimenCard }
                     seamGeometry
                 }
                 .padding(PitchAtlasSpacing.lg)
@@ -62,10 +69,12 @@ struct PitchDetailView: View {
                 .font(PitchAtlasTheme.newsreaderItalic(17))
                 .foregroundStyle(PitchAtlasTheme.bone2)
 
-            // The specimen face: real footage when it exists, the drawn
-            // SeamBall only where nothing real is on file.
+            // The specimen face: real footage first, then real photography,
+            // the drawn SeamBall only where nothing real is on file.
             if let film = canonical.gripFilm {
                 GripFilmCard(film: film)
+            } else if let photo = heroPhoto {
+                GripStillCard(photo: photo)
             } else {
                 specimenCard
             }
@@ -202,11 +211,13 @@ struct PitchDetailView: View {
                 .foregroundStyle(PitchAtlasTheme.ink3)
                 .fixedSize(horizontal: false, vertical: true)
 
-            // First-party grip photography, if any.
-            if let images = canonical.gripImages, !images.isEmpty {
+            // First-party grip photography — minus the frame already carrying
+            // the hero, so nothing renders twice.
+            let labPhotos = (canonical.gripImages ?? []).filter { $0 != heroPhoto }
+            if !labPhotos.isEmpty {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
                     SectionLabel(text: "FROM THE HAND", size: 9)
-                    ForEach(Array(images.enumerated()), id: \.offset) { _, photo in
+                    ForEach(Array(labPhotos.enumerated()), id: \.offset) { _, photo in
                         GripPhotoTile(photo: photo)
                     }
                 }

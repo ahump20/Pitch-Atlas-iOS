@@ -45,8 +45,55 @@ const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources] = await 
   imp('sources.ts'),
 ])
 
+/*
+  Film mapping at the boundary. The web models a looping grip video as GripClip
+  (mp4/webm/poster/alt/caption); the iOS app models it as GripFilm — a
+  rights-carrying VisualReference for the clip plus the poster still. Mapping
+  here keeps both shapes single-sourced from the web data. kind/rights/
+  attribution are first-party by construction, exactly like the photos from the
+  same shoot; capturedAt rides in from the entry's own photo record.
+*/
+type AnyRecord = Record<string, unknown>
+
+function filmFor(entry: AnyRecord): AnyRecord | undefined {
+  const c = entry.clip as AnyRecord | undefined
+  if (!c) return undefined
+  const photos = (entry.photos as AnyRecord[] | undefined) ?? []
+  return {
+    clip: {
+      caption: c.caption ?? c.alt,
+      src: c.mp4,
+      alt: c.alt,
+      kind: 'first-party',
+      rights: 'original',
+      attribution: 'Austin H.',
+      capturedAt: photos[0]?.capturedAt,
+    },
+    poster: c.poster,
+  }
+}
+
+const gripEntries = (grips.AUSTIN_GRIPS as AnyRecord[]).map((e) => {
+  const { clip: _clip, ...rest } = e
+  const film = filmFor(e)
+  return film ? { ...rest, film } : rest
+})
+
+// A filed specimen carries the film of the grip-library entry whose photos it
+// already shares (the join the pitch files make through gripPhotosFor).
+const filmedLibrary = (grips.AUSTIN_GRIPS as AnyRecord[]).filter((g) => g.clip && g.specimenSlug)
+const pitchEntries = (pitches.PITCHES as AnyRecord[]).map((p) => {
+  const canonical = p.canonical as AnyRecord
+  const images = (canonical.gripImages as AnyRecord[] | undefined) ?? []
+  const lib = filmedLibrary.find((g) =>
+    images.some((img) => typeof img.src === 'string' && (img.src as string).includes(`/grips/${g.id}-`)),
+  )
+  if (!lib) return p
+  return { ...p, canonical: { ...canonical, gripFilm: filmFor(lib) } }
+})
+
 const bundles: Record<string, unknown> = {
-  'pitches.json': pitches.PITCHES,
+  'pitches.json': pitchEntries,
   'repertoire.json': { families: repertoire.REPERTOIRE_FAMILIES, entries: repertoire.REPERTOIRE },
   'craftsmen.json': craftsmen.CRAFTSMEN,
   'lost-pitches.json': { tiers: lost.LOST_PITCH_TIERS, entries: lost.LOST_PITCHES },
@@ -57,7 +104,7 @@ const bundles: Record<string, unknown> = {
     commandNote: grips.GRIP_LIBRARY_COMMAND_NOTE,
     attackPlan: grips.ATTACK_PLAN,
     proofLimit: grips.GRIP_PHOTO_PROOF_LIMIT,
-    entries: grips.AUSTIN_GRIPS,
+    entries: gripEntries,
   },
   'sources.json': sources.allSources(),
 }

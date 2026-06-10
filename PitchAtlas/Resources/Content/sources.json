@@ -1657,5 +1657,59 @@
     "label": "BVM Sports — Teagan Kavan on her five-pitch arsenal (rise ball primary, change, drop)",
     "url": "https://bvmsports.com/2026/05/21/texas-softball-pitcher-teagan-kavan-on-her-5-pitch-arsenal-nike-getting-called-out-by-her-coach/",
     "retrievedAt": "2026-06-07"
+  },
+  {
+    "id": "bref-gibson",
+    "label": "Baseball-Reference, Bob Gibson — the full record",
+    "url": "https://www.baseball-reference.com/players/g/gibsobo01.shtml",
+    "retrievedAt": "2026-06-10"
+  },
+  {
+    "id": "bref-ryan",
+    "label": "Baseball-Reference, Nolan Ryan — the full record",
+    "url": "https://www.baseball-reference.com/players/r/ryanno01.shtml",
+    "retrievedAt": "2026-06-10"
+  },
+  {
+    "id": "bref-clemens",
+    "label": "Baseball-Reference, Roger Clemens — the full record",
+    "url": "https://www.baseball-reference.com/players/c/clemero02.shtml",
+    "retrievedAt": "2026-06-10"
+  },
+  {
+    "id": "bref-maddux",
+    "label": "Baseball-Reference, Greg Maddux — the full record",
+    "url": "https://www.baseball-reference.com/players/m/maddugr01.shtml",
+    "retrievedAt": "2026-06-10"
+  },
+  {
+    "id": "bref-santana",
+    "label": "Baseball-Reference, Johan Santana — the full record",
+    "url": "https://www.baseball-reference.com/players/s/santajo02.shtml",
+    "retrievedAt": "2026-06-10"
+  },
+  {
+    "id": "bref-skenes",
+    "label": "Baseball-Reference, Paul Skenes — the full record",
+    "url": "https://www.baseball-reference.com/players/s/skenepa01.shtml",
+    "retrievedAt": "2026-06-10"
+  },
+  {
+    "id": "bref-niekro",
+    "label": "Baseball-Reference, Phil Niekro — the full record",
+    "url": "https://www.baseball-reference.com/players/n/niekrph01.shtml",
+    "retrievedAt": "2026-06-10"
+  },
+  {
+    "id": "bref-hubbell",
+    "label": "Baseball-Reference, Carl Hubbell — the full record",
+    "url": "https://www.baseball-reference.com/players/h/hubbeca01.shtml",
+    "retrievedAt": "2026-06-10"
+  },
+  {
+    "id": "bref-hamels",
+    "label": "Baseball-Reference, Cole Hamels — the full record",
+    "url": "https://www.baseball-reference.com/players/h/hamelco01.shtml",
+    "retrievedAt": "2026-06-10"
   }
 ]

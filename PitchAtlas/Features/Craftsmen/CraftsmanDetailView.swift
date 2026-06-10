@@ -34,8 +34,8 @@ struct CraftsmanDetailView: View {
                         edgeCard(edge)
                     }
 
-                    if !craftsman.recordNumbers.isEmpty {
-                        numbersSection
+                    if !craftsman.recordProse.isEmpty || !craftsman.recordNumbers.isEmpty {
+                        recordSection
                     }
 
                     if let quote = craftsman.quote {
@@ -131,15 +131,58 @@ struct CraftsmanDetailView: View {
         .accessibilityElement(children: .combine)
     }
 
-    // MARK: - Numbers
+    // MARK: - The record
 
-    private var numbersSection: some View {
+    /// Craft over numbers: the record reads as sourced prose, with the full
+    /// statistical ledger linked at the source of record instead of restated
+    /// as a stat grid. Legacy labeled numbers still render for older bundles.
+    private var recordSection: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "The Record")
-            VStack(spacing: PitchAtlasSpacing.sm) {
-                ForEach(Array(craftsman.recordNumbers.enumerated()), id: \.offset) { index, number in
-                    GaugeView(label: number.label, claim: number.claim, accent: index == 0)
+
+            if craftsman.recordProse.isEmpty {
+                VStack(spacing: PitchAtlasSpacing.sm) {
+                    ForEach(Array(craftsman.recordNumbers.enumerated()), id: \.offset) { index, number in
+                        GaugeView(label: number.label, claim: number.claim, accent: index == 0)
+                    }
                 }
+            } else {
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+                    ForEach(Array(craftsman.recordProse.enumerated()), id: \.offset) { _, entry in
+                        ClaimText(claim: entry, valueFont: PitchAtlasTheme.hanken(16))
+                    }
+                }
+                .leatherPress()
+            }
+
+            if let links = craftsman.recordLinks, !links.isEmpty {
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
+                    ForEach(links) { link in
+                        recordLinkRow(link)
+                    }
+                }
+            }
+        }
+    }
+
+    private func recordLinkRow(_ link: RecordLink) -> some View {
+        Group {
+            if let url = URL(string: link.url) {
+                Link(destination: url) {
+                    HStack(spacing: PitchAtlasSpacing.xs) {
+                        Image(systemName: "arrow.up.right.square")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(PitchAtlasTheme.cyan)
+                        Text(link.label)
+                            .font(PitchAtlasTheme.hanken(14))
+                            .foregroundStyle(PitchAtlasTheme.cyan)
+                            .multilineTextAlignment(.leading)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer(minLength: 0)
+                    }
+                    .frame(minHeight: 44)
+                }
+                .accessibilityLabel("Opens in browser. \(link.label)")
             }
         }
     }

@@ -108,10 +108,10 @@ struct LostPitchDetailView: View {
 
     @ViewBuilder
     private var numbers: some View {
-        if !pitch.numbers.isEmpty {
+        if !pitch.recordEntries.isEmpty {
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
                 SectionLabel(text: "What the record gives back", size: 9)
-                ForEach(Array(pitch.numbers.enumerated()), id: \.offset) { _, item in
+                ForEach(Array(pitch.recordEntries.enumerated()), id: \.offset) { _, item in
                     GaugeView(label: item.label, claim: item.claim)
                 }
             }

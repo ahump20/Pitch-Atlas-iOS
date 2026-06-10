@@ -307,6 +307,25 @@ struct CanonicalPitchRecord: Codable, Hashable, Identifiable {
     let gripFilm: GripFilm?
 }
 
+extension CanonicalPitchRecord {
+    /// The best real still on file: the film's poster frame (carrying the
+    /// film's own rights record), else the first grip photo. Nil when only the
+    /// drawn ball exists — surfaces fall back to the SeamBall, never a faked
+    /// image.
+    var realStill: VisualReference? {
+        if let film = gripFilm {
+            return VisualReference(caption: film.clip.caption, src: film.poster,
+                                   alt: film.clip.alt, kind: film.clip.kind,
+                                   rights: film.clip.rights,
+                                   attribution: film.clip.attribution,
+                                   source: film.clip.source,
+                                   capturedAt: film.clip.capturedAt,
+                                   view: film.clip.view)
+        }
+        return gripImages?.first
+    }
+}
+
 struct PitchMotion: Codable, Hashable {
     let spinAxis: Vec3
     let forceLabel: String
@@ -341,6 +360,7 @@ struct MasterVariantRecord: Codable, Hashable {
     let pitcher: String
     let context: String
     let verifiedPro: Bool
+    let record: [LabeledClaim]?
     let numbers: [LabeledClaim]?
     let distinction: Claim?
     let accolades: [LabeledClaim]?
@@ -348,7 +368,7 @@ struct MasterVariantRecord: Codable, Hashable {
     let rights: RightsStatus
     let safety: SafetyFlag?
 
-    var recordNumbers: [LabeledClaim] { numbers ?? accolades ?? [] }
+    var recordNumbers: [LabeledClaim] { record ?? numbers ?? accolades ?? [] }
 }
 
 struct CommunityVariantPreview: Codable, Hashable {
@@ -454,6 +474,15 @@ enum CraftsmanKind: String, Codable, Hashable, CaseIterable {
     }
 }
 
+/// An external "full record" pointer — the craft-over-numbers redesign sends
+/// readers to the source of record instead of restating a stat grid.
+struct RecordLink: Codable, Hashable, Identifiable {
+    let id: String
+    let label: String
+    let url: String
+    let retrievedAt: String?
+}
+
 struct Craftsman: Codable, Hashable, Identifiable {
     let slug: String
     let name: String
@@ -467,12 +496,17 @@ struct Craftsman: Codable, Hashable, Identifiable {
     let intro: String
     let signature: Claim
     let mentalEdge: Claim?
+    /// The record as sourced prose (current web shape).
+    let record: [Claim]?
+    /// Legacy labeled stat lines (pre craft-over-numbers bundles).
     let numbers: [LabeledClaim]?
     let biography: [LabeledClaim]?
+    let recordLinks: [RecordLink]?
     let quote: Claim?
     let legendNote: Claim?
     let rights: RightsStatus
     var id: String { slug }
+    var recordProse: [Claim] { record ?? [] }
     var recordNumbers: [LabeledClaim] { numbers ?? biography ?? [] }
 }
 
@@ -532,10 +566,13 @@ struct LostPitch: Codable, Hashable, Identifiable {
     let intro: String
     let what: Claim
     let whyLost: Claim
-    let numbers: [LabeledClaim]
+    /// "record" is the current web key; "numbers" the legacy one.
+    let record: [LabeledClaim]?
+    let numbers: [LabeledClaim]?
     let quote: Claim?
     let rights: RightsStatus
     var id: String { slug }
+    var recordEntries: [LabeledClaim] { record ?? numbers ?? [] }
 }
 
 struct LostPitchesRoot: Codable, Hashable {

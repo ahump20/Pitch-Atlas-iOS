@@ -107,7 +107,20 @@ struct AtlasView: View {
                     ForEach(store.pitches) { entry in
                         NavigationLink(value: entry) {
                             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                                SeamBall(motion: entry.motion, size: 110)
+                                // The owner's real hand fronts the tile where a
+                                // still is on file; the drawn ball is the fallback.
+                                if let still = entry.canonical.realStill {
+                                    BundledImage(src: still.src, alt: still.alt)
+                                        .frame(height: 110)
+                                        .frame(maxWidth: .infinity)
+                                        .clipShape(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous)
+                                                .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+                                        )
+                                } else {
+                                    SeamBall(motion: entry.motion, size: 110)
+                                }
                                 HStack(spacing: PitchAtlasSpacing.xs) {
                                     FamilyDot(color: entry.canonical.family.accent)
                                     Text(entry.display.shortName)

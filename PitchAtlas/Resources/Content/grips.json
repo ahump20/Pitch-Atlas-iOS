@@ -42,12 +42,6 @@
       "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "Two fingers on the ball, and the four-seam should be a dead giveaway. The fingertips cross the seam slightly — the very ends of the pads catching across it, not riding parallel to it. There is barely any pressure on it at all, and that is why it leaves clean and true. It is the bread and butter of everything: the easiest pitch to place in the zone and the most consistent pitch in the game.",
       "movement": "My best pitch, and the one I had pinpoint command of — it went straight and I could put it anywhere in the zone. The life came late: it tended to explode into the glove at the very last second. That last-second hop is the carry the four-seam is known for — the eye reads it as rising when it is really just falling less than expected.",
-      "clip": {
-        "mp4": "/grips/four-seam-grip.mp4",
-        "webm": "/grips/four-seam-grip.webm",
-        "poster": "/grips/four-seam-grip-poster.webp",
-        "alt": "A looping close-up of Austin's four-seam grip: two fingertips laid across the seam, the ball held out toward the camera."
-      },
       "photos": [
         {
           "src": "/grips/four-seam-7163.webp",
@@ -62,7 +56,7 @@
         {
           "src": "/grips/four-seam-7164.webp",
           "view": "thumb",
-          "caption": "From underneath — the thumb on smooth leather, centered below the two top fingers.",
+          "caption": "From underneath: the thumb on smooth leather, centered below the two top fingers.",
           "alt": "The underside of a four-seam grip, the thumb supporting the ball centered below the two top fingers.",
           "kind": "first-party",
           "rights": "original",
@@ -82,9 +76,9 @@
       ],
       "film": {
         "clip": {
-          "src": "/grips/four-seam-grip.mp4",
           "caption": "The grip in motion: ball turned to the camera with index and middle fingertips riding the wide horseshoe, thumb seated underneath.",
-          "alt": "Looping video of a right hand presenting a four-seam fastball grip to the camera, two fingertips crossing the horseshoe seam with the thumb underneath.",
+          "src": "/grips/four-seam-grip.mp4",
+          "alt": "A looping close-up of Austin's four-seam grip: two fingertips laid across the seam, the ball held out toward the camera.",
           "kind": "first-party",
           "rights": "original",
           "attribution": "Austin H.",
@@ -104,17 +98,11 @@
       "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "Two fingers on the ball again, but here they line up with the seams like the ball is running down a train track — both fingers riding along the narrow seams instead of crossing them. That is the tell that separates it from the four-seam.",
       "movement": "The second pitch I mastered. I lived with it in on the hands to right-handed hitters, because it had explosive late tail — it ran arm-side at the very last second, right in on a righty.",
-      "clip": {
-        "mp4": "/grips/two-seam-grip.mp4",
-        "webm": "/grips/two-seam-grip.webm",
-        "poster": "/grips/two-seam-grip-poster.webp",
-        "alt": "A looping close-up of Austin's two-seam grip: two fingers running along the narrow seams like train tracks."
-      },
       "photos": [
         {
           "src": "/grips/two-seam-7166.webp",
           "view": "top",
-          "caption": "Two fingers running along the narrow seams — the train-track look that names the pitch.",
+          "caption": "Two fingers running along the narrow seams, the train-track look that names the pitch.",
           "alt": "A hand gripping a baseball two-seam style, index and middle fingers running along the two narrow parallel seams.",
           "kind": "first-party",
           "rights": "original",
@@ -144,9 +132,9 @@
       ],
       "film": {
         "clip": {
-          "src": "/grips/two-seam-grip.mp4",
           "caption": "The grip in motion: fingertips running with the narrow seams, the ball rolled so the finger pads show on the laces.",
-          "alt": "Looping video of a right hand presenting a two-seam fastball grip, fingers laid along the close seams.",
+          "src": "/grips/two-seam-grip.mp4",
+          "alt": "A looping close-up of Austin's two-seam grip: two fingers running along the narrow seams like train tracks.",
           "kind": "first-party",
           "rights": "original",
           "attribution": "Austin H.",
@@ -166,12 +154,6 @@
       "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "Two fingers lined up and cornered against the seam, with no other pressure on the ball but the thumb. The grip is so distinct you do not even need to see the release slot to know it is a 12-6 — the fingers tucked tight to one seam give it away.",
       "movement": "A genuine 12-6 when it was working: it came in with real loop and then fell off the table at the last second. The down-mover in my mix — more loop than the changeup, and a sharper drop.",
-      "clip": {
-        "mp4": "/grips/twelve-six-grip.mp4",
-        "webm": "/grips/twelve-six-grip.webm",
-        "poster": "/grips/twelve-six-grip-poster.webp",
-        "alt": "A looping close-up of Austin's 12-6 curveball grip: two fingers tucked together and cornered against one seam."
-      },
       "photos": [
         {
           "src": "/grips/twelve-six-7170.webp",
@@ -186,7 +168,7 @@
         {
           "src": "/grips/twelve-six-7169.webp",
           "view": "side",
-          "caption": "From the side — the fingers pinched to the seam, thumb braced underneath.",
+          "caption": "From the side: the fingers pinched to the seam, thumb braced underneath.",
           "alt": "A side view of a 12-6 curveball grip, two fingers against the seam with the thumb under the ball.",
           "kind": "first-party",
           "rights": "original",
@@ -206,9 +188,9 @@
       ],
       "film": {
         "clip": {
-          "src": "/grips/twelve-six-grip.mp4",
           "caption": "Setting the grip at the waist: the hand works the ball until the middle finger finds the long seam and the thumb rolls underneath.",
-          "alt": "Looping video of two hands setting a curveball grip at waist height, middle finger hunting the long seam before the hands come set.",
+          "src": "/grips/twelve-six-grip.mp4",
+          "alt": "A looping close-up of Austin's 12-6 curveball grip: two fingers tucked together and cornered against one seam.",
           "kind": "first-party",
           "rights": "original",
           "attribution": "Austin H.",
@@ -242,7 +224,7 @@
         {
           "src": "/grips/splitter-7177.webp",
           "view": "top",
-          "caption": "Top-down — the gap between the two fingers is the whole pitch.",
+          "caption": "Top-down: the gap between the two fingers is the whole pitch.",
           "alt": "A top view of a split-finger grip, two fingers spread apart over the ball.",
           "kind": "first-party",
           "rights": "original",
@@ -276,7 +258,7 @@
         {
           "src": "/grips/palmball-7179.webp",
           "view": "top",
-          "caption": "Four fingers laid together across the top of the ball, seated deep toward the palm — the football-change smother.",
+          "caption": "Four fingers laid together across the top of the ball, seated deep toward the palm. The football-change smother.",
           "alt": "A hand gripping a baseball with all four fingers together across the top, the football change or palmball grip.",
           "kind": "first-party",
           "rights": "original",
@@ -306,12 +288,6 @@
       "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "Three fingers set very close together across the ball. Same idea as the football change, just a touch less hand on it — more fingers than a fastball means more surface and more drag, so it leaves softer than the arm speed says it should.",
       "movement": "My fourth pitch, and one I threw a lot in games. It came in looking like a fastball and dropped with less break than the curve — not as sharp or as consistent, but it sold the fastball look right up until it died.",
-      "clip": {
-        "mp4": "/grips/three-finger-change-grip.mp4",
-        "webm": "/grips/three-finger-change-grip.webm",
-        "poster": "/grips/three-finger-change-grip-poster.webp",
-        "alt": "A looping close-up of Austin's three-finger changeup grip: three fingers set close together across the top of the ball."
-      },
       "photos": [
         {
           "src": "/grips/three-finger-change-7174.webp",
@@ -346,9 +322,9 @@
       ],
       "film": {
         "clip": {
+          "caption": "Three fingers laid across the ball and extended to the camera. The face of the changeup a hitter never gets to read.",
           "src": "/grips/three-finger-change-grip.mp4",
-          "caption": "Three fingers laid across the ball and extended to the camera — the face of the changeup a hitter never gets to read.",
-          "alt": "Looping video of a right hand extending a three-finger changeup grip toward the camera, three fingers across the top of the ball.",
+          "alt": "A looping close-up of Austin's three-finger changeup grip: three fingers set close together across the top of the ball.",
           "kind": "first-party",
           "rights": "original",
           "attribution": "Austin H.",

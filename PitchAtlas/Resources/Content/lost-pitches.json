@@ -49,7 +49,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "The bat-throwing batter",
           "claim": {
@@ -122,7 +122,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "Buck O'Neil's verdict",
           "claim": {
@@ -194,7 +194,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "Malarcher's description",
           "claim": {
@@ -254,7 +254,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "No-windup, two arm slots",
           "claim": {
@@ -325,7 +325,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "The line",
           "claim": {
@@ -385,7 +385,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "Where he learned it",
           "claim": {
@@ -445,7 +445,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "The 1924 on-field standoff",
           "claim": {
@@ -506,7 +506,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "2020: major-league status restored",
           "claim": {
@@ -581,7 +581,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "Repertoire as described",
           "claim": {
@@ -642,7 +642,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "How the fastball read",
           "claim": {
@@ -703,7 +703,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "Breakout season run prevention",
           "claim": {
@@ -764,7 +764,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "Pitch mix as described",
           "claim": {
@@ -826,7 +826,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "The name's meaning",
           "claim": {
@@ -885,7 +885,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "numbers": [
+      "record": [
         {
           "label": "Attestation",
           "claim": {
@@ -947,7 +947,7 @@
         "confidence": "reputable-analysis",
         "note": "Wikipedia relays writer Joe Posnanski's read that the differently-named pitches were essentially all fastballs; shipped as analysis, not as a confirmed mechanical inventory."
       },
-      "numbers": [
+      "record": [
         {
           "label": "Claimed pitch count",
           "claim": {

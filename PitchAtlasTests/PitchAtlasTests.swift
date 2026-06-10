@@ -75,6 +75,54 @@ final class PitchAtlasTests: XCTestCase {
         }
     }
 
+    /// The web's craft-over-numbers rename (`numbers` → `record`) must carry
+    /// through decode. A key rename that Codable silently absorbs as nil would
+    /// strip every craftsman and lost-pitch record section without failing a
+    /// decode — this pins the records as present, not just decodable.
+    func testRecordSectionsSurviveKeyRenames() {
+        let store = PitchStore()
+        // The gyroball legend is record-less by design (its content is the
+        // myth-vs-physics note); every true craftsman carries a record.
+        for craftsman in store.craftsmen where craftsman.kind == .craftsman {
+            XCTAssertFalse(craftsman.recordProse.isEmpty && craftsman.recordNumbers.isEmpty,
+                           "craftsman \(craftsman.slug) decoded with no record")
+        }
+        for pitch in store.lostPitches.entries {
+            XCTAssertFalse(pitch.recordEntries.isEmpty,
+                           "lost pitch \(pitch.slug) decoded with no record entries")
+        }
+    }
+
+    /// The owner's grip photography: every photo referenced by the content must
+    /// resolve to a real bundled image and carry first-party/original rights.
+    /// Counts pin the 17 labeled stills (12 on specimens, 17 in the library) so
+    /// a dropped bundle file or dead reference fails loudly.
+    func testGripPhotographyIsBundledAndRightsClean() {
+        let store = PitchStore()
+
+        let specimenPhotos = store.pitches.flatMap { $0.canonical.gripImages ?? [] }
+        let libraryPhotos = store.grips.entries.flatMap(\.photos)
+        XCTAssertEqual(specimenPhotos.count, 12, "four-seam, two-seam, twelve-six, splitter carry 3 photos each")
+        XCTAssertEqual(libraryPhotos.count, 17, "the grip library carries all 17 labeled stills")
+
+        for photo in specimenPhotos + libraryPhotos {
+            XCTAssertNotNil(BundledImage.load(photo.src),
+                            "photo missing from bundle: \(photo.src)")
+            XCTAssertEqual(photo.kind, .firstParty)
+            XCTAssertEqual(photo.rights, .original)
+            XCTAssertFalse(photo.alt.isEmpty)
+        }
+
+        // The real-still ladder: a film's poster fronts it, else the first
+        // photo, and every still it returns resolves in the bundle.
+        let stills = store.pitches.compactMap { $0.canonical.realStill }
+        XCTAssertEqual(stills.count, 4, "four specimens carry a real still face")
+        for still in stills {
+            XCTAssertNotNil(BundledImage.load(still.src),
+                            "real still missing from bundle: \(still.src)")
+        }
+    }
+
     func testSupabaseConfigUsesPitchAtlasProject() {
         XCTAssertEqual(SupabaseConfig.projectURL.absoluteString, "https://cloeoulvrrfcbitrjpso.supabase.co")
         XCTAssertEqual(SupabaseConfig.authRedirectURL.absoluteString, "pitchatlas://auth-callback")

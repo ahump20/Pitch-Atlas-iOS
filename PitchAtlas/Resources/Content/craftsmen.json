@@ -40,79 +40,37 @@
         "url": "https://en.wikipedia.org/wiki/Bob_Gibson",
         "retrievedAt": "2026-06-05"
       },
-      "confidence": "pitcher-own-words"
+      "confidence": "secondhand-attributed"
     },
-    "biography": [
+    "record": [
       {
-        "label": "ERA (1968)",
-        "claim": {
-          "value": "1.12",
-          "source": {
-            "id": "gibson-hof-1968",
-            "label": "National Baseball Hall of Fame, Gibson's 1968 season",
-            "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
-            "retrievedAt": "2026-06-05",
-            "season": "1968"
-          },
-          "confidence": "official-data",
-          "note": "The lowest live-ball-era ERA for a qualifier; it helped trigger the mound being lowered for 1969."
-        }
+        "value": "The summer of 1968 is the file. He allowed earned runs at the stingiest rate any starter has managed in the live-ball era, won twenty-two games and finished thirteen of them as shutouts, and was so thoroughly unhittable that the league lowered the mound the following spring — partly because of him.",
+        "source": {
+          "id": "gibson-hof-1968",
+          "label": "National Baseball Hall of Fame, Gibson's 1968 season",
+          "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
+          "retrievedAt": "2026-06-05",
+          "season": "1968"
+        },
+        "confidence": "official-data"
       },
       {
-        "label": "Record (1968)",
-        "claim": {
-          "value": "22-9",
-          "source": {
-            "id": "gibson-hof-1968",
-            "label": "National Baseball Hall of Fame, Gibson's 1968 season",
-            "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
-            "retrievedAt": "2026-06-05",
-            "season": "1968"
-          },
-          "confidence": "official-data"
-        }
-      },
+        "value": "That October he opened the World Series by striking out seventeen Tigers, still the record for a single Series game, and froze Willie Horton on the back-up slider for the last of them.",
+        "source": {
+          "id": "gibson-cbs-backup",
+          "label": "CBS Sports, Bob Gibson's back-up slider",
+          "url": "https://www.cbssports.com/mlb/news/gif-bob-gibsons-back-up-slider/",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "official-data"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "Strikeouts (1968)",
-        "claim": {
-          "value": "268",
-          "source": {
-            "id": "gibson-hof-1968",
-            "label": "National Baseball Hall of Fame, Gibson's 1968 season",
-            "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
-            "retrievedAt": "2026-06-05",
-            "season": "1968"
-          },
-          "confidence": "official-data"
-        }
-      },
-      {
-        "label": "Shutouts (1968)",
-        "claim": {
-          "value": "13",
-          "source": {
-            "id": "gibson-hof-1968",
-            "label": "National Baseball Hall of Fame, Gibson's 1968 season",
-            "url": "https://baseballhall.org/discover/inside-pitch/gibson-completes-fantastic-1968-season-with-NL-MVP-honors",
-            "retrievedAt": "2026-06-05",
-            "season": "1968"
-          },
-          "confidence": "official-data"
-        }
-      },
-      {
-        "label": "World Series Game 1 K (1968)",
-        "claim": {
-          "value": "17",
-          "source": {
-            "id": "gibson-cbs-backup",
-            "label": "CBS Sports, Bob Gibson's back-up slider",
-            "url": "https://www.cbssports.com/mlb/news/gif-bob-gibsons-back-up-slider/",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data",
-          "note": "A single-game World Series record, vs. Detroit; the last strikeout came on the back-up slider."
-        }
+        "id": "bref-gibson",
+        "label": "Baseball-Reference, Bob Gibson — the full record",
+        "url": "https://www.baseball-reference.com/players/g/gibsobo01.shtml",
+        "retrievedAt": "2026-06-10"
       }
     ],
     "rights": "original"
@@ -160,75 +118,34 @@
       "confidence": "pitcher-own-words",
       "note": "To Tony Kornheiser, on his conviction-first approach."
     },
-    "biography": [
+    "record": [
       {
-        "label": "Career strikeouts",
-        "claim": {
-          "value": "5,714",
-          "source": {
-            "id": "ryan-hof",
-            "label": "National Baseball Hall of Fame, Nolan Ryan",
-            "url": "https://baseballhall.org/hall-of-famers/ryan-nolan",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data",
-          "note": "The MLB record, 839 ahead of the runner-up."
-        }
+        "value": "Nobody has struck out more hitters, and nobody is close — the career total sits more than eight hundred clear of the runner-up, piled up across twenty-seven seasons from 1966 to 1993. The seven no-hitters are also the record. The seventh came at forty-four.",
+        "source": {
+          "id": "ryan-hof",
+          "label": "National Baseball Hall of Fame, Nolan Ryan",
+          "url": "https://baseballhall.org/hall-of-famers/ryan-nolan",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "official-data"
       },
       {
-        "label": "No-hitters",
-        "claim": {
-          "value": "7",
-          "source": {
-            "id": "ryan-hof",
-            "label": "National Baseball Hall of Fame, Nolan Ryan",
-            "url": "https://baseballhall.org/hall-of-famers/ryan-nolan",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data",
-          "note": "The MLB record; the seventh came at age 44."
-        }
-      },
+        "value": "The same refusal that built the strikeout record built the walk record: he holds the career mark for both, the cost of three decades of never giving a hitter the pitch he wanted.",
+        "source": {
+          "id": "ryan-almanac",
+          "label": "Baseball Almanac, Nolan Ryan career register",
+          "url": "https://www.baseball-almanac.com/players/player.php?p=ryanno01",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "official-data"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "Seasons pitched",
-        "claim": {
-          "value": "27",
-          "source": {
-            "id": "ryan-hof",
-            "label": "National Baseball Hall of Fame, Nolan Ryan",
-            "url": "https://baseballhall.org/hall-of-famers/ryan-nolan",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data",
-          "note": "1966 to 1993."
-        }
-      },
-      {
-        "label": "Career record",
-        "claim": {
-          "value": "324-292",
-          "source": {
-            "id": "ryan-almanac",
-            "label": "Baseball Almanac, Nolan Ryan career register",
-            "url": "https://www.baseball-almanac.com/players/player.php?p=ryanno01",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data"
-        }
-      },
-      {
-        "label": "Career walks",
-        "claim": {
-          "value": "2,795",
-          "source": {
-            "id": "ryan-almanac",
-            "label": "Baseball Almanac, Nolan Ryan career register",
-            "url": "https://www.baseball-almanac.com/players/player.php?p=ryanno01",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data",
-          "note": "Also the MLB record: the trade-off of never throwing to contact."
-        }
+        "id": "bref-ryan",
+        "label": "Baseball-Reference, Nolan Ryan — the full record",
+        "url": "https://www.baseball-reference.com/players/r/ryanno01.shtml",
+        "retrievedAt": "2026-06-10"
       }
     ],
     "rights": "original"
@@ -276,76 +193,46 @@
       "confidence": "pitcher-own-words",
       "note": "Said in 1990 with the Red Sox, on his game-day persona."
     },
-    "biography": [
+    "record": [
       {
-        "label": "Career wins",
-        "claim": {
-          "value": "354",
-          "source": {
-            "id": "clemens-wiki",
-            "label": "Wikipedia, Roger Clemens",
-            "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data"
-        }
+        "value": "Seven Cy Young Awards, still the record — the first in 1986, the last in 2004, a span long enough to be two careers. The win and strikeout totals underneath them rank with the deepest the game has recorded.",
+        "source": {
+          "id": "clemens-wiki",
+          "label": "Wikipedia, Roger Clemens",
+          "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "official-data"
       },
       {
-        "label": "Career strikeouts",
-        "claim": {
-          "value": "4,672",
-          "source": {
-            "id": "clemens-wiki",
-            "label": "Wikipedia, Roger Clemens",
-            "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data"
-        }
+        "value": "The first twenty-strikeout game ever pitched in nine innings was his: April 29, 1986, against Seattle, without walking a man.",
+        "source": {
+          "id": "clemens-sabr-1986",
+          "label": "SABR Games Project, April 29, 1986: Clemens strikes out 20",
+          "url": "https://sabr.org/gamesproj/game/april-29-1986-roger-clemens-becomes-first-pitcher-to-strike-out-20-in-nine-innings/",
+          "retrievedAt": "2026-06-05",
+          "season": "1986"
+        },
+        "confidence": "official-data"
       },
       {
-        "label": "Cy Young Awards",
-        "claim": {
-          "value": "7",
-          "source": {
-            "id": "clemens-wiki",
-            "label": "Wikipedia, Roger Clemens",
-            "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data",
-          "note": "1986, 1987, 1991, 1997, 1998, 2001, 2004. A record."
-        }
-      },
+        "value": "A decade later he did it again — September 18, 1996, in Detroit, his last win in a Red Sox uniform. He is still the only pitcher with two.",
+        "source": {
+          "id": "clemens-mlb-1996",
+          "label": "MLB.com Cut4, Clemens strikes out 20 Tigers",
+          "url": "https://www.mlb.com/cut4/roger-clemens-strikes-out-20-tigers/c-150116768",
+          "retrievedAt": "2026-06-05",
+          "season": "1996"
+        },
+        "confidence": "official-data"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "20-K game, April 29, 1986",
-        "claim": {
-          "value": "20 K, 0 BB, vs. Seattle",
-          "source": {
-            "id": "clemens-sabr-1986",
-            "label": "SABR Games Project, April 29, 1986: Clemens strikes out 20",
-            "url": "https://sabr.org/gamesproj/game/april-29-1986-roger-clemens-becomes-first-pitcher-to-strike-out-20-in-nine-innings/",
-            "retrievedAt": "2026-06-05",
-            "season": "1986"
-          },
-          "confidence": "official-data",
-          "note": "The first nine-inning 20-strikeout game in MLB history."
-        }
-      },
-      {
-        "label": "20-K game, Sept 18, 1996",
-        "claim": {
-          "value": "20 K, 0 BB, vs. Detroit",
-          "source": {
-            "id": "clemens-mlb-1996",
-            "label": "MLB.com Cut4, Clemens strikes out 20 Tigers",
-            "url": "https://www.mlb.com/cut4/roger-clemens-strikes-out-20-tigers/c-150116768",
-            "retrievedAt": "2026-06-05",
-            "season": "1996"
-          },
-          "confidence": "official-data",
-          "note": "Tied his own record; his last win in a Red Sox uniform."
-        }
+        "id": "bref-clemens",
+        "label": "Baseball-Reference, Roger Clemens — the full record",
+        "url": "https://www.baseball-reference.com/players/c/clemero02.shtml",
+        "retrievedAt": "2026-06-10"
       }
     ],
     "rights": "original"
@@ -392,74 +279,34 @@
       "confidence": "pitcher-own-words",
       "note": "To Thomas Boswell, originally in his January 7, 2014 Washington Post column; confirmed verbatim at two reachable reproductions."
     },
-    "biography": [
+    "record": [
       {
-        "label": "Career wins",
-        "claim": {
-          "value": "355",
-          "source": {
-            "id": "maddux-wiki",
-            "label": "Wikipedia, Greg Maddux",
-            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis"
-        }
+        "value": "Four Cy Young Awards in a row, 1992 through 1995, a run only one other pitcher has matched — and he won them in the loudest hitting era of the modern game, on placement rather than power. The career wins cleared three hundred fifty; the strikeouts cleared three thousand; the walks never came.",
+        "source": {
+          "id": "maddux-wiki",
+          "label": "Wikipedia, Greg Maddux",
+          "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "Career ERA",
-        "claim": {
-          "value": "3.16",
-          "source": {
-            "id": "maddux-wiki",
-            "label": "Wikipedia, Greg Maddux",
-            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis"
-        }
-      },
+        "value": "Eighteen Gold Gloves, the most by any player at any position. The fielding was the same craft as the pitching: one motion, finished balanced, ready for what came back.",
+        "source": {
+          "id": "maddux-wiki",
+          "label": "Wikipedia, Greg Maddux",
+          "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "Career strikeouts",
-        "claim": {
-          "value": "3,371",
-          "source": {
-            "id": "maddux-wiki",
-            "label": "Wikipedia, Greg Maddux",
-            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis",
-          "note": "On a fastball that, late in his career, traded power for placement."
-        }
-      },
-      {
-        "label": "Cy Young Awards",
-        "claim": {
-          "value": "4 (consecutive)",
-          "source": {
-            "id": "maddux-wiki",
-            "label": "Wikipedia, Greg Maddux",
-            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis",
-          "note": "1992 through 1995, a feat matched by only one other pitcher."
-        }
-      },
-      {
-        "label": "Gold Gloves",
-        "claim": {
-          "value": "18",
-          "source": {
-            "id": "maddux-wiki",
-            "label": "Wikipedia, Greg Maddux",
-            "url": "https://en.wikipedia.org/wiki/Greg_Maddux",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The most by any player at any position."
-        }
+        "id": "bref-maddux",
+        "label": "Baseball-Reference, Greg Maddux — the full record",
+        "url": "https://www.baseball-reference.com/players/m/maddugr01.shtml",
+        "retrievedAt": "2026-06-10"
       }
     ],
     "rights": "original"
@@ -507,46 +354,24 @@
       "confidence": "pitcher-own-words",
       "note": "On developing the changeup at Triple-A Edmonton in 2002."
     },
-    "biography": [
+    "record": [
       {
-        "label": "ERA (2004, unanimous Cy Young)",
-        "claim": {
-          "value": "2.61",
-          "source": {
-            "id": "santana-twinsalmanac",
-            "label": "The Twins Almanac, Johan Santana",
-            "url": "https://twinsalmanac.com/johansantana/",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Led the majors; won the AL Cy Young unanimously."
-        }
-      },
+        "value": "Two Cy Young Awards, 2004 and 2006, both unanimous — the writers could not find a reason to split a vote either year. Both seasons he led the league in run prevention and piled up strikeouts behind a fastball nobody feared and a changeup everybody did.",
+        "source": {
+          "id": "santana-twinsalmanac",
+          "label": "The Twins Almanac, Johan Santana",
+          "url": "https://twinsalmanac.com/johansantana/",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "Strikeouts (2004)",
-        "claim": {
-          "value": "265",
-          "source": {
-            "id": "santana-twinsalmanac",
-            "label": "The Twins Almanac, Johan Santana",
-            "url": "https://twinsalmanac.com/johansantana/",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis"
-        }
-      },
-      {
-        "label": "ERA (2006, unanimous Cy Young)",
-        "claim": {
-          "value": "2.77",
-          "source": {
-            "id": "santana-twinsalmanac",
-            "label": "The Twins Almanac, Johan Santana",
-            "url": "https://twinsalmanac.com/johansantana/",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis"
-        }
+        "id": "bref-santana",
+        "label": "Baseball-Reference, Johan Santana — the full record",
+        "url": "https://www.baseball-reference.com/players/s/santajo02.shtml",
+        "retrievedAt": "2026-06-10"
       }
     ],
     "rights": "original"
@@ -595,64 +420,46 @@
       "confidence": "pitcher-own-words",
       "note": "To ESPN, on how completely his career rested on the one pitch."
     },
-    "biography": [
+    "record": [
       {
-        "label": "Career strikeouts",
-        "claim": {
-          "value": "2,202",
-          "source": {
-            "id": "wainwright-bref",
-            "label": "Baseball-Reference, Adam Wainwright",
-            "url": "https://www.baseball-reference.com/players/w/wainwad01.shtml",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data",
-          "note": "All with the Cardinals; the 2,000th came on the curve in 2021."
-        }
+        "value": "Eighteen seasons, one uniform. He won two hundred games as a Cardinal and struck out more than two thousand hitters without ever throwing a pitch for anyone else — he and Bob Gibson are the only two arms to collect that many strikeouts entirely in St. Louis.",
+        "source": {
+          "id": "wainwright-bref",
+          "label": "Baseball-Reference, Adam Wainwright",
+          "url": "https://www.baseball-reference.com/players/w/wainwad01.shtml",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "official-data"
       },
       {
-        "label": "Career wins",
-        "claim": {
-          "value": "200",
-          "source": {
-            "id": "wainwright-bref",
-            "label": "Baseball-Reference, Adam Wainwright",
-            "url": "https://www.baseball-reference.com/players/w/wainwad01.shtml",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data",
-          "note": "Plus two Gold Gloves, three All-Star selections, and four top-three Cy Young finishes, all in St. Louis."
-        }
+        "value": "The signature at-bat came first: a rookie closing Game 7 of the 2006 NLCS, bases loaded, two outs, Carlos Beltran looking — and the curveball froze him for the pennant.",
+        "source": {
+          "id": "wainwright-nlcs-wiki",
+          "label": "Wikipedia, 2006 National League Championship Series",
+          "url": "https://en.wikipedia.org/wiki/2006_National_League_Championship_Series",
+          "retrievedAt": "2026-06-05",
+          "season": "2006"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "The Beltran strikeout",
-        "claim": {
-          "value": "NLCS Game 7, 2006",
-          "source": {
-            "id": "wainwright-nlcs-wiki",
-            "label": "Wikipedia, 2006 National League Championship Series",
-            "url": "https://en.wikipedia.org/wiki/2006_National_League_Championship_Series",
-            "retrievedAt": "2026-06-05",
-            "season": "2006"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Rookie Wainwright froze Carlos Beltran on a 0-2 curve, bases loaded and two outs, to clinch the pennant and send St. Louis to the World Series."
-        }
-      },
+        "value": "Fifteen years later, the two-thousandth strikeout came on the same pitch. The curve, again, in 2021.",
+        "source": {
+          "id": "wainwright-2000-stlredbirds",
+          "label": "STLRedbirds.com, September 23, 2021: Adam Wainwright throws his 2,000th strikeout",
+          "url": "https://www.stlredbirds.com/2023/03/18/september-23-2021-adam-wainwright-throws-his-2000th-strikeout/",
+          "retrievedAt": "2026-06-05",
+          "season": "2021"
+        },
+        "confidence": "reputable-analysis"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "2,000th strikeout",
-        "claim": {
-          "value": "on the curve, 2021",
-          "source": {
-            "id": "wainwright-2000-stlredbirds",
-            "label": "STLRedbirds.com, September 23, 2021: Adam Wainwright throws his 2,000th strikeout",
-            "url": "https://www.stlredbirds.com/2023/03/18/september-23-2021-adam-wainwright-throws-his-2000th-strikeout/",
-            "retrievedAt": "2026-06-05",
-            "season": "2021"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The 85th pitcher to reach 2,000; with Bob Gibson, the only two to collect all 2,000 as Cardinals."
-        }
+        "id": "wainwright-bref",
+        "label": "Baseball-Reference, Adam Wainwright",
+        "url": "https://www.baseball-reference.com/players/w/wainwad01.shtml",
+        "retrievedAt": "2026-06-05"
       }
     ],
     "rights": "original"
@@ -702,21 +509,25 @@
       },
       "confidence": "pitcher-own-words"
     },
-    "biography": [
+    "record": [
       {
-        "label": "NL Rookie of the Year",
-        "claim": {
-          "value": "2024",
-          "source": {
-            "id": "skenes-mlb-arsenal",
-            "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
-            "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
-            "retrievedAt": "2026-06-05",
-            "season": "2025"
-          },
-          "confidence": "official-data",
-          "note": "In his debut season, after reaching the majors that spring."
-        }
+        "value": "He reached the majors in the spring of 2024 and was the National League Rookie of the Year by fall — the record so far is short because the career is, and the splinker is the reason everyone expects the file to grow.",
+        "source": {
+          "id": "skenes-mlb-arsenal",
+          "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
+          "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
+          "retrievedAt": "2026-06-05",
+          "season": "2025"
+        },
+        "confidence": "official-data"
+      }
+    ],
+    "recordLinks": [
+      {
+        "id": "bref-skenes",
+        "label": "Baseball-Reference, Paul Skenes — the full record",
+        "url": "https://www.baseball-reference.com/players/s/skenepa01.shtml",
+        "retrievedAt": "2026-06-10"
       }
     ],
     "rights": "original"
@@ -754,75 +565,34 @@
       "confidence": "reputable-analysis",
       "note": "The \"ultimate gamer\" characterization is Murphy's, via FanGraphs; the longevity records are from Wikipedia and the Hall of Fame."
     },
-    "biography": [
+    "record": [
       {
-        "label": "Career wins-losses",
-        "claim": {
-          "value": "318-274",
-          "source": {
-            "id": "niekro-hof",
-            "label": "National Baseball Hall of Fame, Phil Niekro",
-            "url": "https://baseballhall.org/hall-of-famers/niekro-phil",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Confirmed by the Hall of Fame and Wikipedia."
-        }
+        "value": "Three hundred wins and three thousand strikeouts on a pitch most pitchers will not trust for an inning, and a Hall of Fame induction in 1997 — he is still the only knuckleballer ever to clear three hundred.",
+        "source": {
+          "id": "niekro-hof",
+          "label": "National Baseball Hall of Fame, Phil Niekro",
+          "url": "https://baseballhall.org/hall-of-famers/niekro-phil",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "Career strikeouts",
-        "claim": {
-          "value": "3,342",
-          "source": {
-            "id": "niekro-hof",
-            "label": "National Baseball Hall of Fame, Phil Niekro",
-            "url": "https://baseballhall.org/hall-of-famers/niekro-phil",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis"
-        }
-      },
+        "value": "Nobody who started in the live-ball era pitched more innings. At forty-six he became the oldest man ever to throw a shutout, a record that stood for nearly a quarter century until Jamie Moyer finally passed it.",
+        "source": {
+          "id": "niekro-wiki",
+          "label": "Wikipedia, Phil Niekro",
+          "url": "https://en.wikipedia.org/wiki/Phil_Niekro",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "Innings pitched",
-        "claim": {
-          "value": "5,404.1",
-          "source": {
-            "id": "niekro-wiki",
-            "label": "Wikipedia, Phil Niekro",
-            "url": "https://en.wikipedia.org/wiki/Phil_Niekro",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The most of any pitcher who started in the post-1920 live-ball era."
-        }
-      },
-      {
-        "label": "Oldest to throw a shutout",
-        "claim": {
-          "value": "46 years, 188 days",
-          "source": {
-            "id": "niekro-wiki",
-            "label": "Wikipedia, Phil Niekro",
-            "url": "https://en.wikipedia.org/wiki/Phil_Niekro",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "A record until Jamie Moyer (47 years, 170 days) in May 2010."
-        }
-      },
-      {
-        "label": "Hall of Fame",
-        "claim": {
-          "value": "Inducted 1997",
-          "source": {
-            "id": "niekro-hof",
-            "label": "National Baseball Hall of Fame, Phil Niekro",
-            "url": "https://baseballhall.org/hall-of-famers/niekro-phil",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The only knuckleballer to win 300+ games."
-        }
+        "id": "bref-niekro",
+        "label": "Baseball-Reference, Phil Niekro — the full record",
+        "url": "https://www.baseball-reference.com/players/n/niekrph01.shtml",
+        "retrievedAt": "2026-06-10"
       }
     ],
     "quote": {
@@ -869,75 +639,45 @@
       },
       "confidence": "reputable-analysis"
     },
-    "biography": [
+    "record": [
       {
-        "label": "1934 All-Star Game",
-        "claim": {
-          "value": "5 straight strikeouts",
-          "source": {
-            "id": "hubbell-asg-sabr",
-            "label": "SABR Games Project, July 10, 1934: Carl Hubbell strikes out five Hall of Famers in a row",
-            "url": "https://sabr.org/gamesproj/game/july-10-1934-carl-hubbell-strikes-out-five-hall-of-famers-in-a-row-at-all-star-game/",
-            "retrievedAt": "2026-06-06",
-            "season": "1934"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Ruth, Gehrig, Foxx, Simmons, and Cronin in succession, after a leadoff single and a walk left two on with nobody out."
-        }
+        "value": "The 1934 All-Star Game is the legend: Ruth, Gehrig, Foxx, Simmons, and Cronin — five Hall of Famers, struck out in succession, after a single and a walk had put two men on with nobody out.",
+        "source": {
+          "id": "hubbell-asg-sabr",
+          "label": "SABR Games Project, July 10, 1934: Carl Hubbell strikes out five Hall of Famers in a row",
+          "url": "https://sabr.org/gamesproj/game/july-10-1934-carl-hubbell-strikes-out-five-hall-of-famers-in-a-row-at-all-star-game/",
+          "retrievedAt": "2026-06-06",
+          "season": "1934"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "Career wins-losses",
-        "claim": {
-          "value": "253-154",
-          "source": {
-            "id": "hubbell-wiki",
-            "label": "Wikipedia, Carl Hubbell",
-            "url": "https://en.wikipedia.org/wiki/Carl_Hubbell",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis"
-        }
+        "value": "The career around the legend held up its end: two MVP awards, the second of them the first unanimous MVP the National League ever produced.",
+        "source": {
+          "id": "hubbell-wiki",
+          "label": "Wikipedia, Carl Hubbell",
+          "url": "https://en.wikipedia.org/wiki/Carl_Hubbell",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "Career ERA",
-        "claim": {
-          "value": "2.98",
-          "source": {
-            "id": "hubbell-hof",
-            "label": "National Baseball Hall of Fame, Carl Hubbell",
-            "url": "https://baseballhall.org/hall-of-famers/hubbell-carl",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis"
-        }
-      },
+        "value": "Across 1936 and 1937 he won twenty-four decisions in a row, a streak no pitcher has touched since.",
+        "source": {
+          "id": "hubbell-hof",
+          "label": "National Baseball Hall of Fame, Carl Hubbell",
+          "url": "https://baseballhall.org/hall-of-famers/hubbell-carl",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "Consecutive wins",
-        "claim": {
-          "value": "24",
-          "source": {
-            "id": "hubbell-hof",
-            "label": "National Baseball Hall of Fame, Carl Hubbell",
-            "url": "https://baseballhall.org/hall-of-famers/hubbell-carl",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "An all-time record, 16 in 1936 and 8 in 1937."
-        }
-      },
-      {
-        "label": "NL MVP",
-        "claim": {
-          "value": "1933 and 1936",
-          "source": {
-            "id": "hubbell-wiki",
-            "label": "Wikipedia, Carl Hubbell",
-            "url": "https://en.wikipedia.org/wiki/Carl_Hubbell",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "In 1936 (26-6) he was the first-ever unanimous NL MVP."
-        }
+        "id": "bref-hubbell",
+        "label": "Baseball-Reference, Carl Hubbell — the full record",
+        "url": "https://www.baseball-reference.com/players/h/hubbeca01.shtml",
+        "retrievedAt": "2026-06-10"
       }
     ],
     "quote": {
@@ -985,77 +725,55 @@
       },
       "confidence": "reputable-analysis"
     },
-    "biography": [
+    "record": [
       {
-        "label": "Career saves",
-        "claim": {
-          "value": "652",
-          "source": {
-            "id": "rivera-hof",
-            "label": "National Baseball Hall of Fame, Mariano Rivera",
-            "url": "https://baseballhall.org/hall-of-famers/rivera-mariano",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The all-time record."
-        }
+        "value": "He retired with more saves than any pitcher who ever lived, collected across nineteen seasons of throwing one pitch the whole league knew was coming.",
+        "source": {
+          "id": "rivera-hof",
+          "label": "National Baseball Hall of Fame, Mariano Rivera",
+          "url": "https://baseballhall.org/hall-of-famers/rivera-mariano",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "Career ERA+",
-        "claim": {
-          "value": "205",
-          "source": {
-            "id": "rivera-bref",
-            "label": "Baseball-Reference, Mariano Rivera",
-            "url": "https://www.baseball-reference.com/players/r/riverma01.shtml",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The best all-time among pitchers with 1,000+ innings; career ERA 2.21."
-        }
+        "value": "Among every arm with a thousand career innings, nobody has allowed earned runs at a stingier lifetime rate relative to his leagues.",
+        "source": {
+          "id": "rivera-bref",
+          "label": "Baseball-Reference, Mariano Rivera",
+          "url": "https://www.baseball-reference.com/players/r/riverma01.shtml",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "Postseason ERA",
-        "claim": {
-          "value": "0.70",
-          "source": {
-            "id": "rivera-wiki",
-            "label": "Wikipedia, Mariano Rivera",
-            "url": "https://en.wikipedia.org/wiki/Mariano_Rivera",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The lowest in MLB history, over 141 postseason innings, with 42 postseason saves."
-        }
+        "value": "October sharpened him instead of breaking him: five World Series titles, a Series MVP, and the lowest postseason run-prevention mark the game has ever recorded, held across more than a hundred and forty pressure innings.",
+        "source": {
+          "id": "rivera-wiki",
+          "label": "Wikipedia, Mariano Rivera",
+          "url": "https://en.wikipedia.org/wiki/Mariano_Rivera",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "World Series titles",
-        "claim": {
-          "value": "5",
-          "source": {
-            "id": "rivera-wiki",
-            "label": "Wikipedia, Mariano Rivera",
-            "url": "https://en.wikipedia.org/wiki/Mariano_Rivera",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "1996, 1998-2000, 2009; World Series MVP in 1999."
-        }
-      },
+        "value": "When the Hall of Fame ballot came due, every writer said yes. The first unanimous election in the history of the vote.",
+        "source": {
+          "id": "rivera-bbwaa",
+          "label": "BBWAA, Rivera, Halladay, Martinez and Mussina elected to the Hall of Fame",
+          "url": "https://bbwaa.com/19-hof/",
+          "retrievedAt": "2026-06-06",
+          "season": "2019"
+        },
+        "confidence": "reputable-analysis"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "Hall of Fame vote",
-        "claim": {
-          "value": "425 of 425 (100%)",
-          "source": {
-            "id": "rivera-bbwaa",
-            "label": "BBWAA, Rivera, Halladay, Martinez and Mussina elected to the Hall of Fame",
-            "url": "https://bbwaa.com/19-hof/",
-            "retrievedAt": "2026-06-06",
-            "season": "2019"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The first player ever elected unanimously, breaking Ken Griffey Jr.'s prior record."
-        }
+        "id": "rivera-bref",
+        "label": "Baseball-Reference, Mariano Rivera",
+        "url": "https://www.baseball-reference.com/players/r/riverma01.shtml",
+        "retrievedAt": "2026-06-06"
       }
     ],
     "quote": {
@@ -1106,62 +824,45 @@
       },
       "confidence": "reputable-analysis"
     },
-    "biography": [
+    "record": [
       {
-        "label": "2008 postseason",
-        "claim": {
-          "value": "4-0, 1.80 ERA",
-          "source": {
-            "id": "hamels-espn-2008",
-            "label": "ESPN, Phillies pitcher Hamels earns World Series MVP",
-            "url": "https://www.espn.com/mlb/playoffs2008/news/story?id=3671956",
-            "retrievedAt": "2026-06-06",
-            "season": "2008"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Across five starts; NLCS MVP and World Series MVP, a rare double."
-        }
+        "value": "October 2008 is the headline: five starts, four wins, no losses, and a month so steady he took the NLCS MVP and the World Series MVP in the same postseason — a double almost nobody has managed.",
+        "source": {
+          "id": "hamels-espn-2008",
+          "label": "ESPN, Phillies pitcher Hamels earns World Series MVP",
+          "url": "https://www.espn.com/mlb/playoffs2008/news/story?id=3671956",
+          "retrievedAt": "2026-06-06",
+          "season": "2008"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "Career strikeouts",
-        "claim": {
-          "value": "2,560",
-          "source": {
-            "id": "hamels-statmuse",
-            "label": "StatMuse, Cole Hamels career stats",
-            "url": "https://www.statmuse.com/mlb/player/cole-hamels-24707/career-stats",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis"
-        }
+        "value": "The career around the championship was long and quietly relentless: fifteen seasons and more than twenty-five hundred strikeouts, most of them set up by the same changeup.",
+        "source": {
+          "id": "hamels-statmuse",
+          "label": "StatMuse, Cole Hamels career stats",
+          "url": "https://www.statmuse.com/mlb/player/cole-hamels-24707/career-stats",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
       },
       {
-        "label": "Career wins-losses",
-        "claim": {
-          "value": "163-122",
-          "source": {
-            "id": "hamels-statmuse",
-            "label": "StatMuse, Cole Hamels career stats",
-            "url": "https://www.statmuse.com/mlb/player/cole-hamels-24707/career-stats",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "With a 3.43 ERA over 2,698 innings."
-        }
-      },
+        "value": "Four All-Star selections, and run prevention comfortably better than the leagues he pitched in for a decade and a half.",
+        "source": {
+          "id": "hamels-fangraphs-jaws",
+          "label": "FanGraphs, JAWS and the 2026 Hall of Fame Ballot: Cole Hamels (Jay Jaffe)",
+          "url": "https://blogs.fangraphs.com/jaws-and-the-2026-hall-of-fame-ballot-cole-hamels/",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
+      }
+    ],
+    "recordLinks": [
       {
-        "label": "Career WAR",
-        "claim": {
-          "value": "59.0",
-          "source": {
-            "id": "hamels-fangraphs-jaws",
-            "label": "FanGraphs, JAWS and the 2026 Hall of Fame Ballot: Cole Hamels (Jay Jaffe)",
-            "url": "https://blogs.fangraphs.com/jaws-and-the-2026-hall-of-fame-ballot-cole-hamels/",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "123 ERA+; a four-time All-Star."
-        }
+        "id": "bref-hamels",
+        "label": "Baseball-Reference, Cole Hamels — the full record",
+        "url": "https://www.baseball-reference.com/players/h/hamelco01.shtml",
+        "retrievedAt": "2026-06-10"
       }
     ],
     "quote": {
@@ -1223,7 +924,6 @@
       "confidence": "reputable-analysis",
       "note": "Two independent tracking-era studies reached the same conclusion from different samples. Both are kept here rather than merged."
     },
-    "biography": [],
     "rights": "original"
   }
 ]
