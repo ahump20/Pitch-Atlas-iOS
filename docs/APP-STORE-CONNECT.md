@@ -1,12 +1,18 @@
 # Pitch Atlas App Store Connect Pack
 
-> **Status 2026-06-10:** v1.0 (build 2) was archived from `main` @ `4c523af` and uploaded to
-> App Store Connect via `xcodebuild -exportArchive` (automatic signing, "Upload succeeded",
-> processing on Apple's side). Build 2 supersedes build 1: it carries the owner's grip films
-> and photography as the specimen faces (home masthead, rail, detail heroes, grip library)
-> plus the content re-sync from the web source. What remains is the App Store Connect web
-> side only: paste this pack into the v1.0 version page, attach screenshots, complete
-> privacy labels, **select build 2**, and press Submit for Review.
+> **Status 2026-06-10 (SUBMITTED):** v1.0 is **Waiting for Review with App Store Connect
+> build 3** — the grip-media binary archived from `main` @ `4c523af`. The original
+> submission (build 1, submitted 2026-06-09 12:13 AM) was removed from review and
+> resubmitted at 5:47 AM with build 3; App Store Connect confirmed "1 Item Submitted."
+> Nothing remains to do until Apple's review email arrives.
+>
+> **Build-number gotcha (why "build 2" became build 3):** `ExportOptions.plist` sets
+> `manageAppVersionAndBuildNumber = true`, so every upload auto-bumps the build number
+> above the highest already in App Store Connect, regardless of `CURRENT_PROJECT_VERSION`
+> (both local archives say CFBundleVersion 1). Today's 04:20 archive (pre-photography)
+> uploaded as ASC build 2; the 05:33 grip-media archive uploaded as ASC build 3. Builds
+> 1 and 2 are superseded — never attach them. Verified by content diff: build 3's bundle
+> has 3 `gripFilm` joins and 11 `recordLinks`; build 2's has zero.
 
 Use this as the paste source for the first iOS submission. It is scoped to the v1 binary: native SwiftUI, an offline bundled reference manual, plus an optional Supabase-backed community layer (sign-in, field notes, discussion posts, image uploads). The reference content works on first launch with no account and no network.
 
@@ -21,7 +27,7 @@ Use this as the paste source for the first iOS submission. It is scoped to the v
 - Platform: `iOS`
 - Device family: `iPhone`
 - Version: `1.0.0`
-- Build: `2` (or the monotonic number App Store Connect assigned it on upload)
+- Build: `3` (App Store Connect auto-assigns on upload — see the build-number gotcha above)
 
 ## Subtitle
 
