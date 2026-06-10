@@ -24,4 +24,15 @@ enum Haptics {
     static func lock() { impact(.rigid) }
     /// A filter chip toggle.
     static func toggle() { impact(.light) }
+
+    /// A community write that actually landed (note, post, report, block, delete).
+    /// Fires only after the server confirms — never on optimism.
+    static func success() {
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+    }
+    /// A community write that failed; the visible error carries the message,
+    /// the haptic just makes sure it isn't missed.
+    static func failure() {
+        UINotificationFeedbackGenerator().notificationOccurred(.error)
+    }
 }
