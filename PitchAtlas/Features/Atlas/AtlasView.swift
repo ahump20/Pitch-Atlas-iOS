@@ -29,7 +29,6 @@ struct AtlasView: View {
                     if !store.pitches.isEmpty { filedRail }
                     wings
                     provenanceLadder
-                    freshness
                 }
                 .padding(PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
@@ -178,43 +177,53 @@ struct AtlasView: View {
         .leatherPress()
     }
 
-    // MARK: Provenance ladder
+    // MARK: The grading scale (provenance ladder + freshness, on a card back)
 
+    /// The confidence model, printed where a real set prints its data: on the
+    /// cream card back. The five real tiers ARE the grades — no invented
+    /// grading vocabulary — and the freshness line closes the panel the way
+    /// fine print closes a physical card back.
     private var provenanceLadder: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "THE PROVENANCE LADDER")
-            ForEach(ladder, id: \.self) { tier in
-                HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
-                    ProvenanceDot(confidence: tier)
-                        .padding(.top, 3)
-                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                        Text(tier.label)
-                            .font(PitchAtlasTheme.martian(9))
-                            .tracking(1)
-                            .foregroundStyle(tier.tierColor)
-                        Text(tier.meaning)
-                            .font(PitchAtlasTheme.hanken(12))
-                            .foregroundStyle(PitchAtlasTheme.ink3)
-                            .fixedSize(horizontal: false, vertical: true)
+        CardBackPanel {
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+                CardBackRules(title: "The grading scale ★ sourced, not corrected")
+
+                ForEach(ladder, id: \.self) { tier in
+                    let ink = PitchAtlasTheme.cardbackColor(forConfidence: tier.rawValue)
+                    HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
+                        Circle()
+                            .fill(ink)
+                            .frame(width: 9, height: 9)
+                            .padding(.top, 3)
+                        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                            Text(tier.label)
+                                .font(PitchAtlasTheme.martian(9))
+                                .tracking(1)
+                                .foregroundStyle(ink)
+                            Text(tier.meaning)
+                                .font(PitchAtlasTheme.hanken(12))
+                                .foregroundStyle(PitchAtlasTheme.cardbackInk2)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    .padding(.bottom, PitchAtlasSpacing.xs)
+                    .overlay(alignment: .bottom) {
+                        Rectangle().fill(PitchAtlasTheme.cardbackLine).frame(height: 1)
                     }
                 }
+
+                // the card-back fine print: the computed freshness, never a fake "live"
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("SOURCES LAST CHECKED \(store.sourcesLastChecked.isEmpty ? "—" : store.sourcesLastChecked)")
+                        .font(PitchAtlasTheme.martian(8))
+                        .tracking(1)
+                        .foregroundStyle(PitchAtlasTheme.cardbackInk3)
+                    Text("Checked, not auto-refreshed.")
+                        .font(PitchAtlasTheme.hanken(11))
+                        .foregroundStyle(PitchAtlasTheme.cardbackInk3)
+                }
+                .padding(.top, PitchAtlasSpacing.xs)
             }
         }
-        .leatherPress()
-    }
-
-    // MARK: Freshness
-
-    private var freshness: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            SectionLabel(text: "SOURCES LAST CHECKED", size: 8)
-            Text(store.sourcesLastChecked.isEmpty ? "—" : store.sourcesLastChecked)
-                .font(PitchAtlasTheme.martian(10))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-            Text("Checked, not auto-refreshed.")
-                .font(PitchAtlasTheme.hanken(11))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

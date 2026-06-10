@@ -180,10 +180,10 @@ struct HairlineDivider: View {
 /// The Atlas masthead wordmark. Rather than paint the full 8-stop foil across the
 /// glyphs at once (an even "RGB strip"), this shows a metallic *slice* of the foil:
 /// the gradient is oversized and offset so only a band sits inside the letters,
-/// matching the web's `.rfx-holo` (background-size:300%). The slice rides the
-/// gyroscope so the wordmark shimmers as the phone tilts — the one move the web
-/// can only fake. Reduce Motion holds the slice still; the static slice still
-/// reads as foil, never a flat rainbow.
+/// matching the web's `.rfx-chrome-text`. The brushed-metal slice rides the
+/// gyroscope so the wordmark catches light as the phone tilts — the gold tin's
+/// real behavior, and the one move the web can only fake. Reduce Motion holds
+/// the slice still; the static slice still reads as machined metal.
 struct HoloWordmark: View {
     @Environment(MotionProvider.self) private var motion
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -196,15 +196,19 @@ struct HoloWordmark: View {
     }
 
     var body: some View {
+        // Type is set in metal, never in foil: the rainbow stays on the cards,
+        // where holographic refractors physically exist. The gyro still rakes
+        // light across the letters — brushed chrome answering a tilt is the
+        // gold tin's real behavior, so the motion keeps its referent.
         let rake = reduceMotion ? 0.0 : motion.roll
         let tip = reduceMotion ? 0.0 : motion.pitch
         glyphs
             .foregroundStyle(.clear)
             .lineSpacing(lineSpacing)
             .overlay {
-                PitchAtlasTheme.foil
-                    .scaleEffect(2.8)
-                    .offset(x: CGFloat(rake) * 90, y: CGFloat(tip) * 28)
+                PitchAtlasTheme.chrome
+                    .scaleEffect(2.2)
+                    .offset(x: CGFloat(rake) * 70, y: CGFloat(tip) * 22)
                     .animation(.easeOut(duration: 0.14), value: motion.roll)
                     .animation(.easeOut(duration: 0.14), value: motion.pitch)
                     .mask(glyphs.lineSpacing(lineSpacing))

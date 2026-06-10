@@ -3,37 +3,41 @@ import SwiftUI
 // =============================================================================
 // Pitch Atlas — SwiftUI Token Map
 // =============================================================================
-// Direct port of the web design system's *rendered* (void-tuned, dark) tokens.
-// Source of truth: the web repo's src/index.css (the refractor void remap).
-// Pattern: an enum of static tokens + Color(hex:) + Font.custom(relativeTo:) with
-// system fallbacks. Palette and typefaces are Pitch Atlas's own.
+// Direct port of the web design system's *rendered* tokens. Source of truth:
+// the web repo's src/index.css — now the CARD TABLE system (2026-06-10): a warm
+// Dugout Charcoal field (the table a fresh set is handled on; the Sluggers
+// system bans pure black), Pack Gold as the single chrome accent, collegiate
+// jewel inks on the family layer, and cream "card back" paper for data panels.
+// Pattern: an enum of static tokens + Color(hex:) + Font.custom(relativeTo:)
+// with system fallbacks. Palette and typefaces are Pitch Atlas's own.
 //
-// Dark only. The void is the frame, not decoration.
+// Dark only. The charcoal is the frame, not decoration.
 // =============================================================================
 
 enum PitchAtlasTheme {
 
     // MARK: - Surfaces
-    /// App background, every screen, sitewide.
-    static let void = Color(hex: 0x070509)
+    /// App background, every screen, sitewide — Dugout Charcoal, warm matte.
+    static let void = Color(hex: 0x1C1916)
     /// Raised content cards — the "leather-press" surface.
-    static let press = Color(hex: 0x15161A)
+    static let press = Color(hex: 0x221E18)
     /// Alternating panels, secondary card fill.
-    static let paper2 = Color(hex: 0x100C18)
+    static let paper2 = Color(hex: 0x26221C)
     /// Deepest insets, edge frames.
-    static let paper3 = Color(hex: 0x161120)
+    static let paper3 = Color(hex: 0x2E2922)
 
     // MARK: - Text
-    /// Primary text on void.
+    /// Primary text on the charcoal.
     static let bone = Color(hex: 0xF6F1E6)
-    /// Secondary text, captions — cool slate.
-    static let bone2 = Color(hex: 0xC2C7D6)
+    /// Secondary text, captions — warm dust (the cool slate died with the void).
+    static let bone2 = Color(hex: 0xC9C2B0)
     /// Muted / tertiary, hairlines, the "unverified" tier.
-    static let ink3 = Color(hex: 0x7C8294)
+    static let ink3 = Color(hex: 0x8A8576)
 
-    // MARK: - Accent (cyan is the ONLY interactive color)
-    static let cyan = Color(hex: 0x37D6FF)
-    static let cyanDeep = Color(hex: 0x1C8FD6)
+    // MARK: - Accent (Pack Gold is the ONLY interactive color; the token keeps
+    // its legacy name so every call site re-tones in place)
+    static let cyan = Color(hex: 0xE9C97A)
+    static let cyanDeep = Color(hex: 0xBD9849)
 
     // MARK: - Seam red (graphic / seam / banned-tier only — never body text on void)
     static let seamBright = Color(hex: 0xFF2D44)
@@ -43,17 +47,44 @@ enum PitchAtlasTheme {
     static let tealGlow = Color(hex: 0x1FB6A6)   // coach-observed
     static let amberBright = Color(hex: 0xFFC23C) // reputable-analysis
     static let sandBright = Color(hex: 0xCDBA8E)  // secondhand / community-firsthand
-    // pitcher-own-words -> cyan; unverified -> ink3
+    /// pitcher-own-words — its own powder tier color (matches the web), no longer
+    /// riding the interactive accent.
+    static let powder = Color(hex: 0x7FC6FF)
+    // unverified -> ink3
 
-    // MARK: - Pitch-family accents (index card dots)
-    static let lime = Color(hex: 0x7CFF52)   // offspeed
-    static let violet = Color(hex: 0x8A6BFF) // breaking
+    // MARK: - Pitch-family accents (index card dots) — collegiate jewel lifts
+    static let lime = Color(hex: 0x5FA27B)   // offspeed - varsity forest lift
+    static let violet = Color(hex: 0xB0606C) // breaking - letterman burgundy lift
+    static let navyLift = Color(hex: 0x5C84B8) // fastball - pennant navy lift
+
+    // MARK: - The cream card back (data panels print on paper, like a real card
+    // back: the ladder, the freshness line, the source ledger)
+    static let cardbackPaper = Color(hex: 0xF2E9D5)
+    static let cardbackPaper2 = Color(hex: 0xEAE0C8)
+    static let cardbackInk = Color(hex: 0x211D17)
+    static let cardbackInk2 = Color(hex: 0x4A443A)
+    static let cardbackInk3 = Color(hex: 0x6E675A)
+    static let cardbackLine = Color(hex: 0x211D17, opacity: 0.22)
+    static let cardbackNavy = Color(hex: 0x1F3A5F)
+    static let cardbackForest = Color(hex: 0x2F5D46)
+    static let cardbackBurgundy = Color(hex: 0x6E2B35)
+    static let cardbackGoldInk = Color(hex: 0x8A6B24)
+    /// cream-panel tier inks (the bright void dots fail contrast on paper)
+    static func cardbackColor(forConfidence raw: String) -> Color {
+        switch raw {
+        case "official-data": return Color(hex: 0x1E7A4A)
+        case "pitcher-own-words", "coach-observed": return Color(hex: 0x2C5A8C)
+        case "reputable-analysis": return Color(hex: 0x8A6118)
+        case "secondhand-attributed", "community-firsthand": return Color(hex: 0x6E5E3A)
+        default: return cardbackInk3
+        }
+    }
 
     // MARK: - Hairlines / texture
     /// The 1px card border — bone at 10%.
     static let machined = Color(hex: 0xF6F1E6, opacity: 0.10)
     /// Subtle dividers — bone2 at 14%.
-    static let navyLine = Color(hex: 0xC2C7D6, opacity: 0.14)
+    static let navyLine = Color(hex: 0xD8D1C0, opacity: 0.16)
 
     // MARK: - Gradients
     /// The holographic foil — refractor card borders, the diamond mark, holo wordmark.
@@ -83,6 +114,25 @@ enum PitchAtlasTheme {
             .init(color: Color(hex: 0x7A571F), location: 0.90),
         ],
         startPoint: .top, endPoint: .bottom
+    )
+
+    /// Brushed chrome — the wordmark's metal. Type is set in metal, never in
+    /// foil: rainbow foil only exists on cards, where holographic refractors
+    /// exist in the physical world. The gyro still rakes light across this —
+    /// brushed metal answering a tilt is the gold tin's behavior, not a screen
+    /// effect. Web origin: the --chrome gradient.
+    static let chrome = LinearGradient(
+        stops: [
+            .init(color: Color(hex: 0x26282D), location: 0.00),
+            .init(color: Color(hex: 0x5B616B), location: 0.14),
+            .init(color: Color(hex: 0xCFD4DB), location: 0.30),
+            .init(color: Color(hex: 0x878D97), location: 0.44),
+            .init(color: Color(hex: 0xEEF1F5), location: 0.56),
+            .init(color: Color(hex: 0x7D828C), location: 0.70),
+            .init(color: Color(hex: 0x43474E), location: 0.86),
+            .init(color: Color(hex: 0x1D1F23), location: 1.00),
+        ],
+        startPoint: .topLeading, endPoint: .bottomTrailing
     )
 
     // MARK: - Typography
@@ -118,7 +168,7 @@ enum PitchAtlasTheme {
     static func color(forConfidence raw: String) -> Color {
         switch raw {
         case "official-data": return okBright
-        case "pitcher-own-words": return cyan
+        case "pitcher-own-words": return powder
         case "coach-observed": return tealGlow
         case "reputable-analysis": return amberBright
         case "secondhand-attributed", "community-firsthand": return sandBright

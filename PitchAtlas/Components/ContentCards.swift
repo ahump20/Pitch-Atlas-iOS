@@ -225,14 +225,19 @@ struct RepertoireRow: View {
     }
 }
 
-// MARK: - Craftsman card (archive plate)
+// MARK: - Craftsman card (insert card)
 
-/// A craftsman hall card: specimen plate, name in Anton, era + signature pitch.
-/// A legend (the gyroball) is flagged, never shown as fact.
+/// A craftsman hall card, struck as a chase-card insert: the set number
+/// (C-01…) was already trading-card language, so the card finally dresses the
+/// part — a gold edge down the left rail like the physical card's frame, and
+/// the era worn as a rotated ink stamp, vintage side-rail style. The gyroball
+/// legend keeps its sand flag and trades the gold edge for the may-not-exist
+/// register: a dashed rail, never a solid one.
 struct CraftsmanCard: View {
     let craftsman: Craftsman
 
     private var isLegend: Bool { craftsman.kind == .legend }
+    private var railColor: Color { isLegend ? PitchAtlasTheme.sandBright : Color(hex: 0xCAA14A) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
@@ -258,12 +263,28 @@ struct CraftsmanCard: View {
             HStack(spacing: PitchAtlasSpacing.sm) {
                 SectionLabel(text: craftsman.signaturePitch, color: PitchAtlasTheme.cyan, size: 9)
                 Text(craftsman.era)
-                    .font(PitchAtlasTheme.martian(9))
+                    .font(PitchAtlasTheme.martian(8))
+                    .tracking(1.2)
                     .foregroundStyle(PitchAtlasTheme.ink3)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 3)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 3)
+                            .strokeBorder(PitchAtlasTheme.ink3.opacity(0.7), lineWidth: 1)
+                    )
+                    .rotationEffect(.degrees(-1))
             }
             .padding(.top, 2)
         }
         .leatherPress()
+        .overlay(alignment: .leading) {
+            // the insert's gold rail (dashed for the legend that may not exist)
+            RoundedRectangle(cornerRadius: 1.5)
+                .fill(railColor)
+                .frame(width: 3)
+                .padding(.vertical, 6)
+                .opacity(isLegend ? 0.65 : 0.9)
+        }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(craftsman.name), \(craftsman.signaturePitch), \(craftsman.era)\(isLegend ? ", legend, flagged" : "")")
     }
