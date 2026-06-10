@@ -79,7 +79,19 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
-      ]
+      ],
+      "film": {
+        "clip": {
+          "src": "/grips/four-seam-grip.mp4",
+          "caption": "The grip in motion: ball turned to the camera with index and middle fingertips riding the wide horseshoe, thumb seated underneath.",
+          "alt": "Looping video of a right hand presenting a four-seam fastball grip to the camera, two fingertips crossing the horseshoe seam with the thumb underneath.",
+          "kind": "first-party",
+          "rights": "original",
+          "attribution": "Austin H.",
+          "capturedAt": "2026-06-06"
+        },
+        "poster": "/grips/four-seam-grip-poster.webp"
+      }
     },
     {
       "id": "two-seam",
@@ -129,7 +141,19 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
-      ]
+      ],
+      "film": {
+        "clip": {
+          "src": "/grips/two-seam-grip.mp4",
+          "caption": "The grip in motion: fingertips running with the narrow seams, the ball rolled so the finger pads show on the laces.",
+          "alt": "Looping video of a right hand presenting a two-seam fastball grip, fingers laid along the close seams.",
+          "kind": "first-party",
+          "rights": "original",
+          "attribution": "Austin H.",
+          "capturedAt": "2026-06-06"
+        },
+        "poster": "/grips/two-seam-grip-poster.webp"
+      }
     },
     {
       "id": "twelve-six",
@@ -179,7 +203,19 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
-      ]
+      ],
+      "film": {
+        "clip": {
+          "src": "/grips/twelve-six-grip.mp4",
+          "caption": "Setting the grip at the waist: the hand works the ball until the middle finger finds the long seam and the thumb rolls underneath.",
+          "alt": "Looping video of two hands setting a curveball grip at waist height, middle finger hunting the long seam before the hands come set.",
+          "kind": "first-party",
+          "rights": "original",
+          "attribution": "Austin H.",
+          "capturedAt": "2026-06-06"
+        },
+        "poster": "/grips/twelve-six-grip-poster.webp"
+      }
     },
     {
       "id": "splitter",
@@ -307,7 +343,19 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
-      ]
+      ],
+      "film": {
+        "clip": {
+          "src": "/grips/three-finger-change-grip.mp4",
+          "caption": "Three fingers laid across the ball and extended to the camera — the face of the changeup a hitter never gets to read.",
+          "alt": "Looping video of a right hand extending a three-finger changeup grip toward the camera, three fingers across the top of the ball.",
+          "kind": "first-party",
+          "rights": "original",
+          "attribution": "Austin H.",
+          "capturedAt": "2026-06-06"
+        },
+        "poster": "/grips/three-finger-change-grip-poster.webp"
+      }
     },
     {
       "id": "circle-change",

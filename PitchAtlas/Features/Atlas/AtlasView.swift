@@ -54,19 +54,36 @@ struct AtlasView: View {
 
             if let featured = store.pitches.first {
                 NavigationLink(value: featured) {
-                    VStack(spacing: PitchAtlasSpacing.xs) {
-                        SeamBall(motion: featured.motion, size: 220)
-                            .frame(maxWidth: .infinity)
-                        Text(featured.canonical.name.uppercased())
-                            .font(PitchAtlasTheme.martian(10))
-                            .tracking(2)
-                            .foregroundStyle(PitchAtlasTheme.cyan)
-                        SectionLabel(text: "Tap the specimen", size: 10)
+                    // Real footage leads the masthead when the featured specimen
+                    // carries a film; the drawn ball is the fallback face.
+                    if let film = featured.canonical.gripFilm {
+                        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
+                            GripFilmCard(film: film, height: 380,
+                                         offersMotionControl: false, showsCaption: false)
+                            HStack {
+                                Text(featured.canonical.name.uppercased())
+                                    .font(PitchAtlasTheme.martian(10))
+                                    .tracking(2)
+                                    .foregroundStyle(PitchAtlasTheme.cyan)
+                                Spacer()
+                                SectionLabel(text: "Open the specimen", size: 10)
+                            }
+                        }
+                    } else {
+                        VStack(spacing: PitchAtlasSpacing.xs) {
+                            SeamBall(motion: featured.motion, size: 220)
+                                .frame(maxWidth: .infinity)
+                            Text(featured.canonical.name.uppercased())
+                                .font(PitchAtlasTheme.martian(10))
+                                .tracking(2)
+                                .foregroundStyle(PitchAtlasTheme.cyan)
+                            SectionLabel(text: "Tap the specimen", size: 10)
+                        }
+                        .padding(.vertical, PitchAtlasSpacing.md)
+                        .frame(maxWidth: .infinity)
+                        .leatherPress(padding: PitchAtlasSpacing.lg)
+                        .foilRake()
                     }
-                    .padding(.vertical, PitchAtlasSpacing.md)
-                    .frame(maxWidth: .infinity)
-                    .leatherPress(padding: PitchAtlasSpacing.lg)
-                    .foilRake()
                 }
                 .buttonStyle(.plain)
             }

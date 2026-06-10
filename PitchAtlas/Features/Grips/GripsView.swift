@@ -250,6 +250,12 @@ struct GripsView: View {
                 .padding(.top, PitchAtlasSpacing.xs2)
             }
 
+            // The film leads when one is on file — the owner's hand in motion.
+            if let film = entry.film {
+                GripFilmCard(film: film, height: 360)
+                    .padding(.top, PitchAtlasSpacing.xs)
+            }
+
             // Photos — or an honest "no photos on file" line, never a gray box.
             if entry.photos.isEmpty {
                 Text("Photos: \(entry.photoStatus ?? "none on file")")
@@ -299,6 +305,9 @@ struct GripsView: View {
         if !entry.note.isEmpty { parts.append(entry.note) }
         if let movement = entry.movement, !movement.isEmpty {
             parts.append("Movement. \(movement)")
+        }
+        if entry.film != nil {
+            parts.append("Grip film on file")
         }
         if entry.photos.isEmpty {
             parts.append("Photos: \(entry.photoStatus ?? "none on file")")

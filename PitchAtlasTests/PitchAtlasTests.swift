@@ -50,6 +50,31 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(store.sources.count, store.manifest.counts["sources.json"])
     }
 
+    /// The owner's grip films: every film referenced by the content must resolve
+    /// to a real bundled clip and poster, carry first-party/original rights, and
+    /// cover exactly the four grips that were filmed — no fabricated films, no
+    /// dead references.
+    func testGripFilmsAreBundledAndRightsClean() throws {
+        let store = PitchStore()
+
+        let specimenFilms = store.pitches.compactMap { $0.canonical.gripFilm }
+        let libraryFilms = store.grips.entries.compactMap(\.film)
+        XCTAssertEqual(specimenFilms.count, 3, "four-seam, two-seam, twelve-six carry films")
+        XCTAssertEqual(libraryFilms.count, 4, "the grip library carries all four films")
+
+        for film in specimenFilms + libraryFilms {
+            XCTAssertNotNil(GripFilmCard.bundledURL(for: film.clip.src),
+                            "clip missing from bundle: \(film.clip.src)")
+            XCTAssertNotNil(GripFilmCard.bundledURL(for: film.poster),
+                            "poster missing from bundle: \(film.poster)")
+            XCTAssertEqual(film.clip.kind, .firstParty)
+            XCTAssertEqual(film.clip.rights, .original)
+            XCTAssertNotNil(film.clip.attribution)
+            XCTAssertFalse(film.clip.caption.isEmpty)
+            XCTAssertFalse(film.clip.alt.isEmpty)
+        }
+    }
+
     func testSupabaseConfigUsesPitchAtlasProject() {
         XCTAssertEqual(SupabaseConfig.projectURL.absoluteString, "https://cloeoulvrrfcbitrjpso.supabase.co")
         XCTAssertEqual(SupabaseConfig.authRedirectURL.absoluteString, "pitchatlas://auth-callback")

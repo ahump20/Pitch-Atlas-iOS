@@ -30,6 +30,9 @@ struct PitchDetailView: View {
                     if let voice = canonical.voice { voiceQuote(voice) }
                     if !entry.masterVariants.isEmpty { mastersLedger }
                     communityPreview
+                    // When real footage carries the hero, the drawn specimen
+                    // files down here beside the seam-geometry record.
+                    if canonical.gripFilm != nil { specimenCard }
                     seamGeometry
                 }
                 .padding(PitchAtlasSpacing.lg)
@@ -59,21 +62,13 @@ struct PitchDetailView: View {
                 .font(PitchAtlasTheme.newsreaderItalic(17))
                 .foregroundStyle(PitchAtlasTheme.bone2)
 
-            // The native specimen.
-            VStack(spacing: PitchAtlasSpacing.xs) {
-                SeamBall(motion: entry.motion, size: 240)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, PitchAtlasSpacing.sm)
-                Text(entry.motion.forceLabel)
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1)
-                    .foregroundStyle(PitchAtlasTheme.cyan)
-                SectionLabel(text: humanize(entry.seam.accuracyLevel.rawValue), size: 8)
+            // The specimen face: real footage when it exists, the drawn
+            // SeamBall only where nothing real is on file.
+            if let film = canonical.gripFilm {
+                GripFilmCard(film: film)
+            } else {
+                specimenCard
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, PitchAtlasSpacing.lg)
-            .leatherPress(padding: PitchAtlasSpacing.lg)
-            .foilRake()
 
             BlazeInlineCompanionView(style: .pitch, mood: .chasing)
 
@@ -82,6 +77,25 @@ struct PitchDetailView: View {
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
         }
+    }
+
+    // MARK: Drawn specimen (SeamBall)
+
+    private var specimenCard: some View {
+        VStack(spacing: PitchAtlasSpacing.xs) {
+            SeamBall(motion: entry.motion, size: 240)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, PitchAtlasSpacing.sm)
+            Text(entry.motion.forceLabel)
+                .font(PitchAtlasTheme.martian(9))
+                .tracking(1)
+                .foregroundStyle(PitchAtlasTheme.cyan)
+            SectionLabel(text: humanize(entry.seam.accuracyLevel.rawValue), size: 8)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, PitchAtlasSpacing.lg)
+        .leatherPress(padding: PitchAtlasSpacing.lg)
+        .foilRake()
     }
 
     // MARK: Foundation gauges

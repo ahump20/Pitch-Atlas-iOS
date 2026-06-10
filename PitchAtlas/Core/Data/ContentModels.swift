@@ -226,6 +226,16 @@ struct VisualReference: Codable, Hashable {
     let view: GripView?
 }
 
+/// A first-party grip film: a short looping clip of the owner's hand working the
+/// grip, plus the still poster shown when motion is reduced or the clip is absent.
+/// The clip reuses VisualReference so films carry the same rights/attribution
+/// record photos do — nothing renders without that provenance.
+struct GripFilm: Codable, Hashable {
+    let clip: VisualReference
+    /// Bundled still (`/grips/<stem>-poster.webp`).
+    let poster: String
+}
+
 // MARK: - Pitch specimen (pitches.json → [PitchAtlasEntry])
 
 struct Vec3: Codable, Hashable {
@@ -294,6 +304,7 @@ struct CanonicalPitchRecord: Codable, Hashable, Identifiable {
     let voice: Claim?
     let rights: RightsStatus
     let gripImages: [VisualReference]?
+    let gripFilm: GripFilm?
 }
 
 struct PitchMotion: Codable, Hashable {
@@ -595,6 +606,7 @@ struct GripEntry: Codable, Hashable, Identifiable {
     let note: String
     let movement: String?
     let photos: [VisualReference]
+    let film: GripFilm?
     let repertoireId: String?
     /// e.g. "note-only" — free text, kept String.
     let photoStatus: String?
