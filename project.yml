@@ -9,9 +9,8 @@ options:
 settings:
   base:
     SWIFT_VERSION: "5.0"
-    # DEVELOPMENT_TEAM is intentionally not committed. Configure signing locally
-    # (Xcode › Signing & Capabilities) or in CI. Pitch Atlas ships under its own
-    # signing identity.
+    DEVELOPMENT_TEAM: CQNJJ423X3
+    CODE_SIGN_STYLE: Automatic
     MARKETING_VERSION: "1.0.0"
     CURRENT_PROJECT_VERSION: "1"
     SWIFT_STRICT_CONCURRENCY: minimal
@@ -61,6 +60,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pitchatlas.app
+        CODE_SIGN_ENTITLEMENTS: PitchAtlas/PitchAtlas.entitlements
         # PRODUCT_NAME stays "PitchAtlas" (no space) so TEST_HOST resolves; the
         # spaced, user-facing label is carried by CFBundleDisplayName above.
         TARGETED_DEVICE_FAMILY: "1"            # iPhone only (v1)

@@ -181,6 +181,7 @@ struct CommunityPanel: View {
                     Label("Submit field note", systemImage: "tray.and.arrow.up")
                 }
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
                 .disabled(fieldTweak.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
         } else {
@@ -215,6 +216,7 @@ struct CommunityPanel: View {
                     Label("Submit post", systemImage: "paperplane")
                 }
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
                 .disabled(postBody.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
         } else {
@@ -296,9 +298,11 @@ struct CommunityPanel: View {
             fieldTweak = ""
             fieldNote = ""
             actionMessage = "Field note submitted."
+            Haptics.success()
             await loadFieldNotes()
         } catch {
             actionMessage = error.localizedDescription
+            Haptics.failure()
         }
     }
 
@@ -323,9 +327,11 @@ struct CommunityPanel: View {
             preparedImage = nil
             selectedPhoto = nil
             actionMessage = "Post submitted."
+            Haptics.success()
             await loadDiscussion()
         } catch {
             actionMessage = error.localizedDescription
+            Haptics.failure()
         }
     }
 
@@ -333,8 +339,10 @@ struct CommunityPanel: View {
         do {
             try await service.reportFieldNote(id: id, reason: "reported from iOS")
             actionMessage = "Report filed."
+            Haptics.success()
         } catch {
             actionMessage = error.localizedDescription
+            Haptics.failure()
         }
     }
 
@@ -342,8 +350,10 @@ struct CommunityPanel: View {
         do {
             try await service.reportPost(id: id, reason: "reported from iOS")
             actionMessage = "Report filed."
+            Haptics.success()
         } catch {
             actionMessage = error.localizedDescription
+            Haptics.failure()
         }
     }
 
@@ -352,9 +362,11 @@ struct CommunityPanel: View {
         do {
             try await service.blockUser(blockerID: blockerID, blockedID: authorID)
             actionMessage = "User blocked."
+            Haptics.success()
             await reload()
         } catch {
             actionMessage = error.localizedDescription
+            Haptics.failure()
         }
     }
 

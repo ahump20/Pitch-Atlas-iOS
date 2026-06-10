@@ -33,7 +33,7 @@ struct PitchDetailView: View {
                     seamGeometry
                 }
                 .padding(PitchAtlasSpacing.lg)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle(display.shortName)
@@ -75,6 +75,8 @@ struct PitchDetailView: View {
             .leatherPress(padding: PitchAtlasSpacing.lg)
             .foilRake()
 
+            BlazeInlineCompanionView(style: .pitch, mood: .chasing)
+
             Text(display.heroIntro)
                 .font(PitchAtlasTheme.hanken(16))
                 .foregroundStyle(PitchAtlasTheme.bone)
@@ -92,15 +94,23 @@ struct PitchDetailView: View {
                 .foregroundStyle(PitchAtlasTheme.ink3)
                 .fixedSize(horizontal: false, vertical: true)
 
-            GaugeView(label: physics.primaryBreak.label,
-                      claim: physics.primaryBreak.claim,
-                      accent: physics.primaryBreak.accent ?? true)
+            if let shape = physics.shape {
+                GaugeView(label: "Shape", claim: shape, accent: true)
+            }
+
+            if let primary = physics.primaryBreak {
+                GaugeView(label: primary.label,
+                          claim: primary.claim,
+                          accent: primary.accent ?? true)
+            }
 
             if let secondary = physics.secondaryBreak {
                 GaugeView(label: secondary.label, claim: secondary.claim,
                           accent: secondary.accent ?? false)
             }
-            GaugeView(label: "Spin rate", claim: physics.spinRateRpm)
+            if let spinRate = physics.spinRateRpm {
+                GaugeView(label: "Spin rate", claim: spinRate)
+            }
             if let active = physics.activeSpinPct {
                 GaugeView(label: "Active spin", claim: active)
             }
@@ -299,7 +309,11 @@ struct PitchDetailView: View {
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
 
-            ForEach(Array(variant.numbers.enumerated()), id: \.offset) { i, number in
+            if let distinction = variant.distinction {
+                ClaimText(claim: distinction, valueFont: PitchAtlasTheme.hanken(14))
+            }
+
+            ForEach(Array(variant.recordNumbers.enumerated()), id: \.offset) { i, number in
                 GaugeView(label: number.label, claim: number.claim, accent: i == 0)
             }
 

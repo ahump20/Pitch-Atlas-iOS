@@ -29,7 +29,7 @@ struct IndexView: View {
                 }
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.md)
-                .padding(.bottom, PitchAtlasSpacing.xl4)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle("Index")
@@ -51,6 +51,7 @@ struct IndexView: View {
                 .font(PitchAtlasTheme.newsreaderItalic(17))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
+            BlazeInlineCompanionView(style: .search, mood: query.isEmpty ? .sniffing : .chasing)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)

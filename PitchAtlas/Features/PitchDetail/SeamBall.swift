@@ -6,7 +6,8 @@ import SwiftUI
 // Draws the baseball seam from the SAME closed-form figure-eight the web ships
 // (x = 2 sin t + sin 3t ; y = 2 cos t − cos 3t ; z = 2√2 cos 2t), normalized to
 // the ball, then projected to the catcher's eye. The spin axis orients the seam;
-// the break arrow is derived from the sourced motion (never stored, never faked).
+// the break arrow is a schematic cue from sourced shape language, never a fake
+// measured break value.
 // Labeled a seam-informed schematic, because that is what it is.
 //
 // This is the bundled Reduce Motion specimen and the pitch-detail ball surface.
@@ -79,23 +80,45 @@ struct SeamBall: View {
     /// In-plane orientation of the spin axis (radians).
     private var axisAngle: Double { atan2(motion.spinAxis.y, motion.spinAxis.x) }
 
-    /// Catcher's-eye break direction. Vertical from IVB, horizontal from the dir.
-    private var breakAngle: Double {
-        let horiz: Double
+    /// Catcher's-eye movement direction. Prefer measured values if an older bundle
+    /// carries them; otherwise use the current qualitative shape fields.
+    private var breakVector: (horizontal: Double, vertical: Double) {
+        let direction: Double
         switch motion.horizontalDir {
-        case .armSide: horiz = 1
-        case .gloveSide: horiz = -1
-        case .none: horiz = 0
+        case .armSide: direction = 1
+        case .gloveSide: direction = -1
+        case .none: direction = 0
         }
-        let vert = motion.ivbInches  // + rides above, − drops
-        return atan2(vert, horiz * max(motion.horizontalInches, 0.001))
+
+        if let ivb = motion.ivbInches, let horizontal = motion.horizontalInches {
+            return (direction * max(horizontal, 0.001), ivb)
+        }
+
+        let vertical: Double
+        switch motion.verticalShape ?? .flat {
+        case .ride: vertical = 0.85
+        case .flat: vertical = 0.0
+        case .drop: vertical = -0.85
+        }
+
+        return (direction * 0.85, vertical)
+    }
+
+    /// Catcher's-eye break direction.
+    private var breakAngle: Double {
+        let vector = breakVector
+        return atan2(vector.vertical, vector.horizontal == 0 ? 0.001 : vector.horizontal)
     }
 
     private var breakMagnitude: CGFloat {
-        let mag = (motion.ivbInches * motion.ivbInches
-                   + motion.horizontalInches * motion.horizontalInches).squareRoot()
-        // normalize against a generous 24" envelope, clamp to the ball
-        return CGFloat(min(max(mag / 24.0, 0.15), 0.85))
+        if let ivb = motion.ivbInches, let horizontal = motion.horizontalInches {
+            let mag = (ivb * ivb + horizontal * horizontal).squareRoot()
+            return CGFloat(min(max(mag / 24.0, 0.15), 0.85))
+        }
+
+        let vector = breakVector
+        let mag = (vector.vertical * vector.vertical + vector.horizontal * vector.horizontal).squareRoot()
+        return CGFloat(min(max(mag / 1.4, 0.25), 0.65))
     }
 
     var body: some View {
@@ -126,6 +149,12 @@ struct SeamBall: View {
                     .fill(PitchAtlasTheme.cyan)
                     .frame(width: 12, height: 12)
                     .shadow(color: PitchAtlasTheme.cyan.opacity(0.8), radius: 6)
+            } else if motion.indeterminateBreak == true {
+                Circle()
+                    .stroke(PitchAtlasTheme.cyan,
+                            style: StrokeStyle(lineWidth: 2.2, lineCap: .round, dash: [4, 6]))
+                    .frame(width: size * 0.46, height: size * 0.46)
+                    .shadow(color: PitchAtlasTheme.cyan.opacity(0.45), radius: 6)
             } else {
                 BreakArrow(angle: breakAngle, magnitude: breakMagnitude,
                            color: PitchAtlasTheme.cyan, radius: size / 2)
@@ -141,9 +170,17 @@ struct SeamBall: View {
         parts.append(motion.forceLabel)
         if motion.gyro == true {
             parts.append("Gyro-dominant: the spin points toward the catcher.")
+        } else if motion.indeterminateBreak == true {
+            parts.append("Movement cue: indeterminate flutter, shown without measured inches.")
         } else {
-            let v = motion.ivbInches >= 0 ? "rides" : "drops"
-            parts.append("Induced vertical break \(v) \(abs(Int(motion.ivbInches.rounded()))) inches; horizontal \(Int(motion.horizontalInches.rounded())) inches \(motion.horizontalDir == .armSide ? "arm-side" : motion.horizontalDir == .gloveSide ? "glove-side" : "")")
+            let vertical = motion.verticalShape?.label ?? "flat"
+            let horizontal: String
+            switch motion.horizontalDir {
+            case .armSide: horizontal = "arm-side"
+            case .gloveSide: horizontal = "glove-side"
+            case .none: horizontal = "no horizontal cue"
+            }
+            parts.append("Schematic movement cue: \(vertical), \(horizontal). No measured inches shown.")
         }
         return parts.joined(separator: " ")
     }

@@ -18,6 +18,7 @@ import SwiftUI
 
 struct AboutView: View {
     @Environment(PitchStore.self) private var store
+    @AppStorage(BlazeMotionSettings.appStorageKey) private var blazeCompanionEnabled = BlazeMotionSettings.defaultEnabled
 
     var body: some View {
         ZStack {
@@ -29,12 +30,13 @@ struct AboutView: View {
                     whatThisIsCard
                     provenanceModelCard
                     honestyCard
+                    companionSettingCard
                     footer
                     statusNote
                 }
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.lg)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle("About")
@@ -58,6 +60,28 @@ struct AboutView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("About. Pitch Atlas. Sourced, not corrected.")
+    }
+
+    // MARK: - Settings
+
+    private var companionSettingCard: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+            SectionLabel(text: "Preferences")
+            Toggle(isOn: $blazeCompanionEnabled) {
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                    Text("Show Blaze companion")
+                        .font(PitchAtlasTheme.hankenMedium(15))
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                    Text("A small field-manual dog in the margin. Reduced Motion keeps her still.")
+                        .font(PitchAtlasTheme.hanken(13))
+                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .tint(PitchAtlasTheme.cyan)
+        }
+        .leatherPress()
+        .accessibilityElement(children: .contain)
     }
 
     // MARK: - What this is

@@ -32,7 +32,7 @@ struct AtlasView: View {
                     freshness
                 }
                 .padding(PitchAtlasSpacing.lg)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle("Atlas")
@@ -70,6 +70,8 @@ struct AtlasView: View {
                 }
                 .buttonStyle(.plain)
             }
+
+            BlazeInlineCompanionView(style: .atlas, mood: .sniffing)
 
             Text("How every pitch is gripped and thrown. The index, filed specimens, grip library, craftsmen, and lost pitches are bundled with sources; community opens when you sign in.")
                 .font(PitchAtlasTheme.hanken(16))

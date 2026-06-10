@@ -24,7 +24,7 @@ struct LearnView: View {
                 }
                 .padding(.horizontal, PitchAtlasSpacing.md)
                 .padding(.top, PitchAtlasSpacing.md)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle("Learn")

@@ -84,6 +84,7 @@ struct GripsView: View {
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            BlazeInlineCompanionView(style: .grips, mood: .sniffing)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)

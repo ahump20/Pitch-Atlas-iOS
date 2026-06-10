@@ -19,6 +19,7 @@ enum PitchAtlasSpacing {
     static let xl4: CGFloat = 48
     static let xl5: CGFloat = 64
     static let xl6: CGFloat = 80
+    static let tabBarClearance: CGFloat = 96
 }
 
 enum PitchAtlasRadius {

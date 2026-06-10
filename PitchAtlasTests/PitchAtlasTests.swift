@@ -122,10 +122,19 @@ final class PitchAtlasTests: XCTestCase {
     /// Gather the headline claims on a pitch for the provenance check.
     private func claims(in entry: PitchAtlasEntry) -> [Claim] {
         var out: [Claim] = [entry.canonical.grip, entry.canonical.mechanics,
-                            entry.physics.teaching, entry.physics.spinAxis,
-                            entry.physics.spinRateRpm, entry.physics.primaryBreak.claim]
+                            entry.physics.teaching, entry.physics.spinAxis]
         out.append(contentsOf: entry.canonical.gripDetails)
+        if let shape = entry.physics.shape { out.append(shape) }
+        if let spinRate = entry.physics.spinRateRpm { out.append(spinRate) }
+        if let primaryBreak = entry.physics.primaryBreak { out.append(primaryBreak.claim) }
+        if let secondaryBreak = entry.physics.secondaryBreak { out.append(secondaryBreak.claim) }
+        if let activeSpin = entry.physics.activeSpinPct { out.append(activeSpin) }
         if let voice = entry.canonical.voice { out.append(voice) }
+        for variant in entry.masterVariants {
+            if let distinction = variant.distinction { out.append(distinction) }
+            out.append(contentsOf: variant.recordNumbers.map(\.claim))
+            if let quote = variant.quote { out.append(quote) }
+        }
         return out
     }
 }

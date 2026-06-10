@@ -30,6 +30,7 @@ struct AccountView: View {
             Button("Delete", role: .destructive) {
                 Task {
                     deleteFinished = await auth.deleteAccount()
+                    if deleteFinished { Haptics.success() } else { Haptics.failure() }
                 }
             }
         } message: {

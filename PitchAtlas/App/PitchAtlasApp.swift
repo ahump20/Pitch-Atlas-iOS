@@ -77,19 +77,29 @@ struct RootView: View {
     var body: some View {
         @Bindable var router = router
         TabView(selection: $router.selection) {
-            NavigationStack(path: $router.atlasPath) { AtlasView() }
+            NavigationStack(path: $router.atlasPath) {
+                tabRoot(.atlas) { AtlasView() }
+            }
                 .tabItem { Label(AppTab.atlas.title, systemImage: AppTab.atlas.systemImage) }
                 .tag(AppTab.atlas)
-            NavigationStack(path: $router.indexPath) { IndexView() }
+            NavigationStack(path: $router.indexPath) {
+                tabRoot(.index) { IndexView() }
+            }
                 .tabItem { Label(AppTab.index.title, systemImage: AppTab.index.systemImage) }
                 .tag(AppTab.index)
-            NavigationStack(path: $router.gripsPath) { GripsView() }
+            NavigationStack(path: $router.gripsPath) {
+                tabRoot(.grips) { GripsView() }
+            }
                 .tabItem { Label(AppTab.grips.title, systemImage: AppTab.grips.systemImage) }
                 .tag(AppTab.grips)
-            NavigationStack(path: $router.craftsmenPath) { CraftsmenView() }
+            NavigationStack(path: $router.craftsmenPath) {
+                tabRoot(.craftsmen) { CraftsmenView() }
+            }
                 .tabItem { Label(AppTab.craftsmen.title, systemImage: AppTab.craftsmen.systemImage) }
                 .tag(AppTab.craftsmen)
-            NavigationStack(path: $router.sourcesPath) { SourcesView() }
+            NavigationStack(path: $router.sourcesPath) {
+                tabRoot(.sources) { SourcesView() }
+            }
                 .tabItem { Label(AppTab.sources.title, systemImage: AppTab.sources.systemImage) }
                 .tag(AppTab.sources)
         }
@@ -99,6 +109,13 @@ struct RootView: View {
             router.handle(url, store: store)
         }
         .task { applyDebugLaunch() }
+    }
+
+    private func tabRoot<Content: View>(_ tab: AppTab, @ViewBuilder content: () -> Content) -> some View {
+        content()
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                BlazeCompanionView(selectedTab: tab)
+            }
     }
 
     /// DEBUG-only: push a detail straight from a launch env so QA can screenshot it
