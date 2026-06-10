@@ -1,10 +1,12 @@
 # Pitch Atlas App Store Connect Pack
 
-> **Status 2026-06-10:** v1.0 (build 1) was archived from `main` @ `5072a16` and uploaded to
-> App Store Connect via `xcodebuild -exportArchive` (automatic signing, upload accepted,
-> "Uploaded PitchAtlas"). The binary is processing on Apple's side. What remains is the
-> App Store Connect web side only: paste this pack into the v1.0 version page, attach
-> screenshots, complete privacy labels, and press Submit for Review.
+> **Status 2026-06-10:** v1.0 (build 2) was archived from `main` @ `4c523af` and uploaded to
+> App Store Connect via `xcodebuild -exportArchive` (automatic signing, "Upload succeeded",
+> processing on Apple's side). Build 2 supersedes build 1: it carries the owner's grip films
+> and photography as the specimen faces (home masthead, rail, detail heroes, grip library)
+> plus the content re-sync from the web source. What remains is the App Store Connect web
+> side only: paste this pack into the v1.0 version page, attach screenshots, complete
+> privacy labels, **select build 2**, and press Submit for Review.
 
 Use this as the paste source for the first iOS submission. It is scoped to the v1 binary: native SwiftUI, an offline bundled reference manual, plus an optional Supabase-backed community layer (sign-in, field notes, discussion posts, image uploads). The reference content works on first launch with no account and no network.
 
@@ -19,7 +21,7 @@ Use this as the paste source for the first iOS submission. It is scoped to the v
 - Platform: `iOS`
 - Device family: `iPhone`
 - Version: `1.0.0`
-- Build: `1` or the next monotonic App Store Connect build number
+- Build: `2` (or the monotonic number App Store Connect assigned it on upload)
 
 ## Subtitle
 
