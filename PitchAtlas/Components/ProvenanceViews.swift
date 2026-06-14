@@ -141,8 +141,13 @@ struct GaugeView: View {
 // MARK: - Source row (the Sources screen)
 
 /// One entry on the Sources colophon: label, link, and the date it was checked.
+/// The whole point of the tab is "sourced, not corrected" — so the citation is a
+/// real, tappable link out to the source of record, not dead text you have to
+/// retype. A url that won't parse falls back to plain text rather than a broken tap.
 struct SourceRow: View {
     let source: Source
+
+    private var linkURL: URL? { URL(string: source.url) }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -150,11 +155,29 @@ struct SourceRow: View {
                 .font(PitchAtlasTheme.hankenMedium(14))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
-            Text(source.url)
-                .font(PitchAtlasTheme.martian(9))
-                .foregroundStyle(PitchAtlasTheme.cyanDeep)
-                .lineLimit(1)
-                .truncationMode(.middle)
+
+            if let linkURL {
+                Link(destination: linkURL) {
+                    HStack(spacing: PitchAtlasSpacing.xs2) {
+                        Image(systemName: "arrow.up.right.square")
+                            .font(.system(size: 11, weight: .semibold))
+                        Text(source.url)
+                            .font(PitchAtlasTheme.martian(9))
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                    }
+                    .foregroundStyle(PitchAtlasTheme.cyanDeep)
+                    .frame(minHeight: 44, alignment: .leading)
+                }
+                .accessibilityLabel("Opens in browser. \(source.label)")
+            } else {
+                Text(source.url)
+                    .font(PitchAtlasTheme.martian(9))
+                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+            }
+
             HStack(spacing: PitchAtlasSpacing.xs) {
                 Text("CHECKED \(source.retrievedAt)")
                     .font(PitchAtlasTheme.martian(8))
@@ -168,7 +191,5 @@ struct SourceRow: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(source.label), checked \(source.retrievedAt)")
     }
 }

@@ -30,6 +30,7 @@ struct IndexView: View {
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.md)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+                .emitsBlazeScrollProgress()
             }
         }
         .navigationTitle("Index")

@@ -92,9 +92,12 @@ struct SealMark: View {
 
 // MARK: - Four data-surface states
 
-/// Loading: a source-tagged skeleton, never a bare spinner.
+/// Loading: a source-tagged skeleton, never a bare spinner. The pulse is the one
+/// looping animation in the kit, so it stays gated by Reduce Motion — a person who
+/// asked for stillness gets a steady, legible skeleton, not a forever-breathing tile.
 struct LoadingTile: View {
     var label: String = "Loading"
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var pulse = false
 
     var body: some View {
@@ -107,9 +110,9 @@ struct LoadingTile: View {
             }
             SectionLabel(text: label, size: 9)
         }
-        .opacity(pulse ? 0.45 : 0.9)
-        .animation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true), value: pulse)
-        .onAppear { pulse = true }
+        .opacity(reduceMotion ? 0.7 : (pulse ? 0.45 : 0.9))
+        .animation(reduceMotion ? nil : .easeInOut(duration: 1.1).repeatForever(autoreverses: true), value: pulse)
+        .onAppear { if !reduceMotion { pulse = true } }
         .leatherPress()
         .accessibilityLabel("\(label)…")
     }

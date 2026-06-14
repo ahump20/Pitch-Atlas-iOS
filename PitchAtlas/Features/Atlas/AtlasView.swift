@@ -25,6 +25,10 @@ struct AtlasView: View {
                     masthead
                     if case .failed(let msg) = store.status {
                         ErrorStateView(reason: msg)
+                    } else if store.pitches.isEmpty {
+                        // Four-state honesty: a legitimately empty bundle says so,
+                        // rather than leaving the rail silently absent.
+                        EmptyStateView(message: "No filed specimens shipped in this build yet. The index, grips, and craftsmen are still here.")
                     }
                     if !store.pitches.isEmpty { filedRail }
                     wings
@@ -32,6 +36,7 @@ struct AtlasView: View {
                 }
                 .padding(PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+                .emitsBlazeScrollProgress()
             }
         }
         .navigationTitle("Atlas")
@@ -85,6 +90,9 @@ struct AtlasView: View {
                     }
                 }
                 .buttonStyle(.plain)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Open the featured specimen, \(featured.canonical.name)")
+                .accessibilityAddTraits(.isButton)
             }
 
             BlazeInlineCompanionView(style: .atlas, mood: .sniffing)
@@ -132,9 +140,13 @@ struct AtlasView: View {
                             .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.tile)
                         }
                         .buttonStyle(.plain)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("Open specimen \(entry.display.specimenNo), \(entry.display.shortName)")
+                        .accessibilityAddTraits(.isButton)
                     }
                 }
                 .padding(.vertical, PitchAtlasSpacing.xs2)
+                .accessibilityLabel("Filed specimens, horizontally scrollable")
             }
         }
     }
@@ -212,12 +224,16 @@ struct AtlasView: View {
                     }
                 }
 
-                // the card-back fine print: the computed freshness, never a fake "live"
+                // the card-back fine print: the computed freshness, never a fake
+                // "live". A missing date says so plainly — a bare dash hides the gap.
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("SOURCES LAST CHECKED \(store.sourcesLastChecked.isEmpty ? "—" : store.sourcesLastChecked)")
+                    Text(store.sourcesLastChecked.isEmpty
+                         ? "SOURCES LAST-CHECKED DATE NOT RECORDED IN THIS BUILD"
+                         : "SOURCES LAST CHECKED \(store.sourcesLastChecked)")
                         .font(PitchAtlasTheme.martian(8))
                         .tracking(1)
                         .foregroundStyle(PitchAtlasTheme.cardbackInk3)
+                        .fixedSize(horizontal: false, vertical: true)
                     Text("Checked, not auto-refreshed.")
                         .font(PitchAtlasTheme.hanken(11))
                         .foregroundStyle(PitchAtlasTheme.cardbackInk3)

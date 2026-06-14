@@ -1,5 +1,31 @@
 import SwiftUI
 
+/// Wraps a tab's content with the bottom companion and the shared scroll-tracking
+/// controller. As an ancestor of both the scroll (inside `content`) and the inset
+/// companion, it is the one place that can read the scroll's emitted metrics and
+/// feed the companion — the hand-off the old per-view @State controller never got.
+struct TabScaffold<Content: View>: View {
+    let tab: AppTab
+    @ViewBuilder var content: Content
+    @State private var companion = BlazeCompanionController()
+
+    var body: some View {
+        GeometryReader { outer in
+            content
+                .coordinateSpace(name: BlazeScrollSpace.name)
+                .onPreferenceChange(BlazeScrollMetricsKey.self) { metrics in
+                    let span = max(1, metrics.contentHeight - outer.size.height)
+                    let scrolled = max(0, -metrics.contentTop)
+                    companion.update(progress: min(1, scrolled / span))
+                }
+                .safeAreaInset(edge: .bottom, spacing: 0) {
+                    BlazeCompanionView(selectedTab: tab)
+                }
+        }
+        .environment(companion)
+    }
+}
+
 struct BlazeCompanionView: View {
     let selectedTab: AppTab
     var seriousFlow = false
@@ -7,7 +33,7 @@ struct BlazeCompanionView: View {
     @AppStorage(BlazeMotionSettings.appStorageKey) private var enabled = BlazeMotionSettings.defaultEnabled
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @State private var controller = BlazeCompanionController()
+    @Environment(BlazeCompanionController.self) private var controller
 
     var body: some View {
         let baseMood = BlazeMood.mood(for: selectedTab, seriousFlow: seriousFlow)
@@ -43,9 +69,6 @@ struct BlazeCompanionView: View {
             .frame(height: BlazeMotionSettings.companionBandHeight)
             .allowsHitTesting(false)
             .accessibilityHidden(true)
-            .onPreferenceChange(ScrollProgressPreferenceKey.self) { next in
-                controller.update(progress: next)
-            }
         }
     }
 }
@@ -55,5 +78,6 @@ struct BlazeCompanionView: View {
         PitchAtlasTheme.void.ignoresSafeArea()
         BlazeCompanionView(selectedTab: .atlas)
     }
+    .environment(BlazeCompanionController())
     .preferredColorScheme(.dark)
 }

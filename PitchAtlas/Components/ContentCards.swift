@@ -148,12 +148,27 @@ struct BundledImage: View {
         }
     }
 
+    /// Decoded-image cache. `UIImage(contentsOfFile:)` re-reads and re-decodes the
+    /// webp from disk on every call, and a SwiftUI view body can run many times per
+    /// scroll. Bundled art is immutable, so a decode is cacheable forever — keyed by
+    /// the resolved bundle path. NSCache sheds entries automatically under memory
+    /// pressure, so this never becomes the thing that gets the app jetsammed.
+    private static let cache: NSCache<NSString, UIImage> = {
+        let c = NSCache<NSString, UIImage>()
+        c.countLimit = 80
+        return c
+    }()
+
     static func load(_ src: String) -> UIImage? {
         let file = (src as NSString).lastPathComponent
         let stem = (file as NSString).deletingPathExtension
         let ext = (file as NSString).pathExtension.isEmpty ? "webp" : (file as NSString).pathExtension
         guard let url = Bundle.main.url(forResource: stem, withExtension: ext) else { return nil }
-        return UIImage(contentsOfFile: url.path)
+        let key = url.path as NSString
+        if let cached = cache.object(forKey: key) { return cached }
+        guard let image = UIImage(contentsOfFile: url.path) else { return nil }
+        cache.setObject(image, forKey: key)
+        return image
     }
 }
 
@@ -161,6 +176,10 @@ struct BundledImage: View {
 /// "not tracked data" honesty tag the Grip Library leans on.
 struct GripPhotoTile: View {
     let photo: VisualReference
+
+    /// Only real, loadable photography earns the tap-to-zoom affordance — never the
+    /// seal fallback (there's nothing to get closer to).
+    private var hasImage: Bool { BundledImage.load(photo.src) != nil }
 
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
@@ -172,6 +191,18 @@ struct GripPhotoTile: View {
                     RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous)
                         .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
                 )
+                .overlay(alignment: .topTrailing) {
+                    if hasImage {
+                        Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(PitchAtlasTheme.bone)
+                            .padding(6)
+                            .background(.black.opacity(0.4), in: Circle())
+                            .padding(PitchAtlasSpacing.xs)
+                            .accessibilityHidden(true)
+                    }
+                }
+                .modifier(OptionalZoom(enabled: hasImage, src: photo.src, alt: photo.alt, caption: photo.caption))
 
             Text(photo.caption)
                 .font(PitchAtlasTheme.hanken(13))
@@ -206,7 +237,8 @@ struct RepertoireRow: View {
                     Text(aka.joined(separator: " · "))
                         .font(PitchAtlasTheme.hanken(11))
                         .foregroundStyle(PitchAtlasTheme.ink3)
-                        .lineLimit(1)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
             Spacer(minLength: PitchAtlasSpacing.xs)
@@ -221,7 +253,19 @@ struct RepertoireRow: View {
         .padding(.horizontal, PitchAtlasSpacing.md)
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(entry.name), \(entry.status.displayLabel)\(entry.filedSlug != nil ? ", filed specimen" : "")")
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityAddTraits(.isButton)
+    }
+
+    /// The aliases are load-bearing for pitch identity but get truncated to one line
+    /// on screen; VoiceOver announces the full list so they are never silently lost.
+    private var accessibilityLabel: String {
+        var parts = [entry.name, entry.status.displayLabel]
+        if let aka = entry.aka, !aka.isEmpty {
+            parts.append("also known as \(aka.joined(separator: ", "))")
+        }
+        if entry.filedSlug != nil { parts.append("filed specimen available") }
+        return parts.joined(separator: ", ")
     }
 }
 

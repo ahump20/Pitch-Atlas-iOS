@@ -50,7 +50,11 @@ struct GripsView: View {
 
     private var populated: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
+            // LazyVStack so the heavy grip entries — each can carry a looping
+            // AVPlayer film card and several decoded webp photos — instantiate only
+            // as they scroll into view, instead of all ~dozen building (and spinning
+            // up players) at once on first paint.
+            LazyVStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                 masthead
                 honestyBanner
                 arsenalCard
@@ -62,6 +66,7 @@ struct GripsView: View {
                 }
             }
             .padding(PitchAtlasSpacing.lg)
+            .emitsBlazeScrollProgress()
         }
     }
 

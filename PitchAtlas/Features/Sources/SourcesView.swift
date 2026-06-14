@@ -54,6 +54,7 @@ struct SourcesView: View {
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+                .emitsBlazeScrollProgress()
             }
         }
         .navigationTitle("Sources")

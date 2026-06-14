@@ -251,7 +251,10 @@ struct CommunityPanel: View {
         } label: {
             Image(systemName: "ellipsis.circle")
                 .foregroundStyle(PitchAtlasTheme.ink3)
+                .frame(minWidth: 44, minHeight: 44)
         }
+        .accessibilityLabel("More actions")
+        .accessibilityHint("Report or block this contributor")
         .disabled(!auth.isSignedIn)
     }
 

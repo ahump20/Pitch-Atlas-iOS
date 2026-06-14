@@ -76,9 +76,41 @@ private struct BreakArrow: View {
 struct SeamBall: View {
     let motion: PitchMotion
     var size: CGFloat = 220
+    /// Seam-anchored finger contacts to mark on the specimen. Empty by default so
+    /// the small rail/Atlas balls stay clean; the large detail specimen passes the
+    /// pitch's real `fingerPlacement` so a reader can see where the hand sits.
+    var contacts: [SeamAnchoredPoint] = []
 
     /// In-plane orientation of the spin axis (radians).
     private var axisAngle: Double { atan2(motion.spinAxis.y, motion.spinAxis.x) }
+
+    /// Project a seam parameter (0…1 around the figure-eight) to a screen point on
+    /// the drawn seam — the SAME closed-form + in-plane rotation SeamShape uses, so
+    /// a contact dot always lands exactly on the rendered seam line.
+    private func seamPoint(at seamT: Double) -> CGPoint {
+        let r = size / 2 * 0.92
+        let c = CGPoint(x: size / 2, y: size / 2)
+        let t = seamT * 2 * .pi
+        let x = 2 * sin(t) + sin(3 * t)
+        let y = 2 * cos(t) - cos(3 * t)
+        let z = 2 * 2.0.squareRoot() * cos(2 * t)
+        let len = (x * x + y * y + z * z).squareRoot()
+        let nx = x / len
+        let ny = y / len
+        let rx = nx * cos(axisAngle) - ny * sin(axisAngle)
+        let ry = nx * sin(axisAngle) + ny * cos(axisAngle)
+        return CGPoint(x: c.x + CGFloat(rx) * r, y: c.y - CGFloat(ry) * r)
+    }
+
+    private func fingerInitial(_ finger: Finger) -> String {
+        switch finger {
+        case .index: return "1"
+        case .middle: return "2"
+        case .ring: return "3"
+        case .pinky: return "4"
+        case .thumb: return "T"
+        }
+    }
 
     /// Catcher's-eye movement direction. Prefer measured values if an older bundle
     /// carries them; otherwise use the current qualitative shape fields.
@@ -159,10 +191,29 @@ struct SeamBall: View {
                 BreakArrow(angle: breakAngle, magnitude: breakMagnitude,
                            color: PitchAtlasTheme.cyan, radius: size / 2)
             }
+
+            // Finger contacts, numbered, sitting on the seam where the hand grips.
+            ForEach(Array(contacts.enumerated()), id: \.offset) { _, contact in
+                contactMarker(contact)
+                    .position(seamPoint(at: contact.seamT))
+            }
         }
         .frame(width: size, height: size)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityText)
+    }
+
+    /// A numbered finger pip: a dark disc so the seam reads under it, a gold ring,
+    /// and the finger's number/letter. Scaled to the ball so it works at 110 or 240.
+    private func contactMarker(_ contact: SeamAnchoredPoint) -> some View {
+        let dot = max(14, size * 0.085)
+        return Text(fingerInitial(contact.finger))
+            .font(PitchAtlasTheme.martian(max(8, size * 0.042)))
+            .foregroundStyle(PitchAtlasTheme.cyan)
+            .frame(width: dot, height: dot)
+            .background(Circle().fill(PitchAtlasTheme.void.opacity(0.82)))
+            .overlay(Circle().strokeBorder(PitchAtlasTheme.cyan, lineWidth: 1.5))
+            .shadow(color: PitchAtlasTheme.void.opacity(0.6), radius: 2)
     }
 
     private var accessibilityText: String {
@@ -181,6 +232,10 @@ struct SeamBall: View {
             case .none: horizontal = "no horizontal cue"
             }
             parts.append("Schematic movement cue: \(vertical), \(horizontal). No measured inches shown.")
+        }
+        if !contacts.isEmpty {
+            let placements = contacts.map { "\($0.label) on the seam" }.joined(separator: ", ")
+            parts.append("Finger placement: \(placements).")
         }
         return parts.joined(separator: " ")
     }
