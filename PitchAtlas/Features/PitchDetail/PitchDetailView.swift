@@ -12,6 +12,10 @@ import SwiftUI
 struct PitchDetailView: View {
     let entry: PitchAtlasEntry
 
+    /// Drives the grip-fact layout: at accessibility text sizes the fixed label
+    /// column can't hold "PRESSURE FINGER" without clipping, so the row stacks.
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     private var canonical: CanonicalPitchRecord { entry.canonical }
     private var display: PitchDisplay { entry.display }
     private var physics: PhysicsReference { canonical.physics }
@@ -92,9 +96,15 @@ struct PitchDetailView: View {
 
     private var specimenCard: some View {
         VStack(spacing: PitchAtlasSpacing.xs) {
-            SeamBall(motion: entry.motion, size: 240)
+            SeamBall(motion: entry.motion, size: 240, contacts: canonical.fingerPlacement)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, PitchAtlasSpacing.sm)
+
+            // Legend for the numbered pips on the seam — only when contacts exist.
+            if !canonical.fingerPlacement.isEmpty {
+                fingerLegend
+            }
+
             Text(entry.motion.forceLabel)
                 .font(PitchAtlasTheme.martian(9))
                 .tracking(1)
@@ -105,6 +115,30 @@ struct PitchDetailView: View {
         .padding(.vertical, PitchAtlasSpacing.lg)
         .leatherPress(padding: PitchAtlasSpacing.lg)
         .foilRake()
+    }
+
+    /// Maps the seam pips (1 index, 2 middle, 3 ring, 4 pinky, T thumb) to names so
+    /// the numbered dots on the specimen are legible. Pure derived data, no sourcing.
+    private var fingerLegend: some View {
+        let pips = canonical.fingerPlacement.map { contact -> String in
+            let n: String
+            switch contact.finger {
+            case .index: n = "1"
+            case .middle: n = "2"
+            case .ring: n = "3"
+            case .pinky: n = "4"
+            case .thumb: n = "T"
+            }
+            return "\(n) \(contact.label)"
+        }
+        return Text(pips.joined(separator: "   ·   "))
+            .font(PitchAtlasTheme.martian(8))
+            .tracking(0.5)
+            .foregroundStyle(PitchAtlasTheme.ink3)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.horizontal, PitchAtlasSpacing.sm)
+            .accessibilityHidden(true)
     }
 
     // MARK: Foundation gauges
@@ -225,17 +259,31 @@ struct PitchDetailView: View {
         }
     }
 
+    @ViewBuilder
     private func gripFact(_ label: String, _ value: String) -> some View {
-        HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
-            Text(label.uppercased())
-                .font(PitchAtlasTheme.martian(8))
-                .tracking(1)
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .frame(width: 96, alignment: .leading)
-            Text(value)
-                .font(PitchAtlasTheme.hanken(14))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .fixedSize(horizontal: false, vertical: true)
+        let labelText = Text(label.uppercased())
+            .font(PitchAtlasTheme.martian(8))
+            .tracking(1)
+            .foregroundStyle(PitchAtlasTheme.ink3)
+        let valueText = Text(value)
+            .font(PitchAtlasTheme.hanken(14))
+            .foregroundStyle(PitchAtlasTheme.bone)
+
+        if dynamicTypeSize.isAccessibilitySize {
+            // Stack at accessibility sizes so neither the label nor the value
+            // truncates inside a fixed column.
+            VStack(alignment: .leading, spacing: 2) {
+                labelText.fixedSize(horizontal: false, vertical: true)
+                valueText.fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        } else {
+            HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
+                labelText
+                    .frame(width: 96, alignment: .leading)
+                valueText
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
     }
 

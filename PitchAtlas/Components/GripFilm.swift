@@ -102,6 +102,8 @@ struct GripStillCard: View {
     var height: CGFloat = 420
     var showsCaption: Bool = true
 
+    private var hasImage: Bool { BundledImage.load(photo.src) != nil }
+
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
             BundledImage(src: photo.src, alt: photo.alt)
@@ -112,6 +114,18 @@ struct GripStillCard: View {
                     RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous)
                         .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
                 )
+                .overlay(alignment: .topTrailing) {
+                    if hasImage {
+                        Image(systemName: "arrow.up.left.and.arrow.down.right")
+                            .font(.system(size: 11, weight: .semibold))
+                            .foregroundStyle(PitchAtlasTheme.bone)
+                            .padding(6)
+                            .background(.black.opacity(0.4), in: Circle())
+                            .padding(PitchAtlasSpacing.xs)
+                            .accessibilityHidden(true)
+                    }
+                }
+                .modifier(OptionalZoom(enabled: hasImage, src: photo.src, alt: photo.alt, caption: photo.caption))
 
             if showsCaption {
                 Text(photo.caption)

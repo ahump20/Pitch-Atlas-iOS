@@ -25,11 +25,13 @@ The content lives in the **web repo** `~/code/Pitch-Atlas/src/data/` and is gene
 
 ## Architecture
 
-Native SwiftUI for the v1 binary: tab shell, searchable index, grip library, craftsmen hall, sources browser, and `SeamBall` specimens. State via `@Observable` + `@Environment` DI (no `ObservableObject`/Combine). Navigation: 5-tab `TabView` + per-tab `NavigationStack` + a `DeepLinkInbox` for `pitchatlas://` routes. The offline Three.js/WebView island is a v1.1 plan only; it is not part of the first submitted binary.
+Native SwiftUI: tab shell, searchable index, grip library, craftsmen hall, sources browser, and `SeamBall` specimens. State via `@Observable` + `@Environment` DI (no `ObservableObject`/Combine). Navigation: 5-tab `TabView` + per-tab `NavigationStack` + a `DeepLinkRouter` for `pitchatlas://` routes. The offline Three.js/WebView island is a later plan; it is not part of the binary. The Blaze companion rides each tab's scroll via a shared `BlazeCompanionController` injected by `TabScaffold` (the common ancestor of the scroll and the bottom-inset companion).
 
-## v1 scope (locked)
+## Shipped scope (community is in the binary)
 
-Reference manual only — **no login, no Supabase client, no accounts, no community in the binary.** This sidesteps Sign in with Apple (4.8), all UGC moderation (1.2), and in-app account deletion (5.1.1(v)) for the first review. Community/Field-Notes is an additive v2 on the already-live Supabase backend. Privacy label = "Data Not Collected". Free. iPhone only. See `docs/COMPLIANCE.md`.
+The binary is **no longer reference-only**. It ships the **Supabase community layer**: Sign in with Apple + email magic link, account view with in-app **account deletion** (5.1.1(v)), and per-pitch **Field Notes + Discussion** with the UGC-moderation pillars present — report, block, a 17+ age gate, and guidelines/media-terms acceptance (1.2). Reachable via Atlas → "Account and Safety". The reference manual (index, grips, craftsmen, sources, filed specimens) stays fully usable signed-out. iPhone only. See `docs/COMPLIANCE.md` and `docs/APP-REVIEW-NOTES.md`.
+
+**Open item for Austin to verify (not iOS-side):** blocked-user content hiding. The client inserts into `blocked_users` and reloads, but `CommunityService.fieldNotes`/`discussionPosts` don't filter blocked authors client-side — so hiding depends on **Supabase RLS** filtering blocked content server-side. Confirm that RLS is in place; if not, add a client-side filter or an RLS policy before relying on block for review.
 
 ## Build / release
 
