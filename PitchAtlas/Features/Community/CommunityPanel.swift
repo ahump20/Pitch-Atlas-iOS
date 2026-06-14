@@ -28,6 +28,7 @@ struct CommunityPanel: View {
     @State private var preparedImage: PreparedCommunityImage?
     @State private var actionMessage: String?
     @State private var signInEmail = ""
+    @State private var showGuidelines = false
 
     private var service: CommunityService { CommunityService(client: auth.client) }
     private var topicKey: String { "pitch:\(pitchSlug)" }
@@ -234,9 +235,22 @@ struct CommunityPanel: View {
                 .font(PitchAtlasTheme.hanken(13))
                 .foregroundStyle(PitchAtlasTheme.bone2)
 
+            Button {
+                showGuidelines = true
+            } label: {
+                Label("Read the community guidelines", systemImage: "doc.text")
+                    .font(PitchAtlasTheme.hanken(13))
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(PitchAtlasTheme.amberBright)
+            .accessibilityHint("Opens the community guidelines you are accepting")
+
             Toggle("I confirm I am 17 or older before posting or uploading", isOn: $ageConfirmed)
                 .font(PitchAtlasTheme.hanken(13))
                 .foregroundStyle(PitchAtlasTheme.bone2)
+        }
+        .sheet(isPresented: $showGuidelines) {
+            CommunityGuidelinesView()
         }
     }
 
