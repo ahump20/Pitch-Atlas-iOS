@@ -43,6 +43,11 @@ targets:
           - UIInterfaceOrientationPortrait
         # Export-compliance: no non-exempt encryption keeps TestFlight uploads moving.
         ITSAppUsesNonExemptEncryption: false
+        # Live device-motion (the gyro that rakes the holographic foil across the
+        # cards). Declared so the app is correct under iOS's expanding CoreMotion
+        # privacy enforcement — and so App Review on real hardware never hits a
+        # missing-usage-string termination. The feed never runs under Reduce Motion.
+        NSMotionUsageDescription: "Pitch Atlas reads device motion so the holographic foil on a card catches the light as you tilt your phone. Motion is used only for that on-screen effect and stops when Reduce Motion is on."
         # Bundled OFL typefaces (Resources/Fonts/*.ttf). Registered here so
         # Font.custom resolves the exact PostScript names the theme references.
         UIAppFonts:
