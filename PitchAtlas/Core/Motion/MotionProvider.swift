@@ -64,8 +64,10 @@ struct FoilRake: ViewModifier {
                     .allowsHitTesting(false)
             }
             .clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+            // Pure decoration: the holographic sheen carries no information, so it
+            // stays out of the VoiceOver tree (the card's own content speaks for it).
+            .accessibilityHidden(true)
         }
-        .accessibilityHidden(false)
     }
 }
 
