@@ -8,6 +8,11 @@ struct CommunityPanel: View {
         var id: String { rawValue }
     }
 
+    /// A user-facing status line with a tone, so a success reads as a success
+    /// (not in the warning color) and a real error reads as an error.
+    private enum ActionTone { case success, error }
+    private struct ActionMessage: Equatable { let text: String; let tone: ActionTone }
+
     @Environment(AuthSessionStore.self) private var auth
     @AppStorage("pa.community.guidelinesAccepted") private var guidelinesAccepted = false
     @AppStorage("pa.community.ageConfirmed") private var ageConfirmed = false
@@ -26,7 +31,10 @@ struct CommunityPanel: View {
     @State private var postBody = ""
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var preparedImage: PreparedCommunityImage?
-    @State private var actionMessage: String?
+    @State private var actionMessage: ActionMessage?
+    /// In-flight guard: blocks a second submit Task from spawning before the first
+    /// await returns, so a slow-network double-tap can't file two identical rows.
+    @State private var isSubmitting = false
     @State private var signInEmail = ""
     @State private var showGuidelines = false
 
@@ -54,14 +62,20 @@ struct CommunityPanel: View {
             }
 
             if let actionMessage {
-                Text(actionMessage)
-                    .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.amberBright)
-                    .fixedSize(horizontal: false, vertical: true)
+                Label(
+                    actionMessage.text,
+                    systemImage: actionMessage.tone == .success ? "checkmark.circle" : "exclamationmark.triangle"
+                )
+                .font(PitchAtlasTheme.hanken(13))
+                .foregroundStyle(actionMessage.tone == .success ? PitchAtlasTheme.okBright : PitchAtlasTheme.amberBright)
+                .fixedSize(horizontal: false, vertical: true)
             }
         }
         .leatherPress()
         .task(id: pitchSlug) { await reload() }
+        // Switching between Field Notes and Discussion clears a stale status line
+        // so a "submitted" note from one tab doesn't linger over the other.
+        .onChange(of: mode) { _, _ in actionMessage = nil }
     }
 
     private var header: some View {
@@ -183,7 +197,7 @@ struct CommunityPanel: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
-                .disabled(fieldTweak.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .disabled(isSubmitting || fieldTweak.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
         } else {
             contributionGate
@@ -218,7 +232,7 @@ struct CommunityPanel: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
-                .disabled(postBody.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .disabled(isSubmitting || postBody.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
         } else {
             contributionGate
@@ -299,6 +313,9 @@ struct CommunityPanel: View {
     }
 
     private func submitFieldNote() async {
+        guard !isSubmitting else { return }
+        isSubmitting = true
+        defer { isSubmitting = false }
         do {
             let note = NewFieldNote(
                 pitchSlug: pitchSlug,
@@ -314,51 +331,74 @@ struct CommunityPanel: View {
             try await service.submitFieldNote(note)
             fieldTweak = ""
             fieldNote = ""
-            actionMessage = "Field note submitted."
+            actionMessage = ActionMessage(text: "Field note submitted.", tone: .success)
             Haptics.success()
             await loadFieldNotes()
         } catch {
-            actionMessage = error.localizedDescription
+            actionMessage = ActionMessage(text: error.localizedDescription, tone: .error)
             Haptics.failure()
         }
     }
 
     private func submitDiscussionPost() async {
-        guard let userID = auth.userID else { return }
+        guard !isSubmitting, let userID = auth.userID else { return }
+        isSubmitting = true
+        defer { isSubmitting = false }
+
+        let postID = UUID().uuidString
+        let post = NewDiscussionPost(
+            id: postID,
+            topicKey: topicKey,
+            displayName: auth.displayName,
+            body: postBody.trimmingCharacters(in: .whitespacesAndNewlines),
+            parentID: nil
+        )
+
         do {
-            let postID = UUID().uuidString
-            let post = NewDiscussionPost(
-                id: postID,
-                topicKey: topicKey,
-                displayName: auth.displayName,
-                body: postBody.trimmingCharacters(in: .whitespacesAndNewlines),
-                parentID: nil
-            )
             try await service.submitPost(post)
-            if let preparedImage {
-                guard mediaTermsAccepted else { throw CommunityServiceError.unsupportedMedia }
-                try await service.acceptMediaTerms(userID: userID)
-                try await service.uploadImage(preparedImage, topicKey: topicKey, postID: postID, userID: userID)
-            }
-            postBody = ""
-            preparedImage = nil
-            selectedPhoto = nil
-            actionMessage = "Post submitted."
-            Haptics.success()
-            await loadDiscussion()
         } catch {
-            actionMessage = error.localizedDescription
+            // The post itself failed — keep the composer intact so the user can retry.
+            actionMessage = ActionMessage(text: error.localizedDescription, tone: .error)
             Haptics.failure()
+            return
         }
+
+        // The post is committed. Clear the composer NOW — capturing the pending
+        // image first — so a retry can't double-post the same body, and an image
+        // that fails to attach can never masquerade as a failed post.
+        let pendingImage = preparedImage
+        postBody = ""
+        preparedImage = nil
+        selectedPhoto = nil
+
+        if let pendingImage, mediaTermsAccepted {
+            do {
+                try await service.acceptMediaTerms(userID: userID)
+                try await service.uploadImage(pendingImage, topicKey: topicKey, postID: postID, userID: userID)
+                actionMessage = ActionMessage(text: "Post submitted.", tone: .success)
+            } catch {
+                // The post is already live; only the image didn't attach. Say so
+                // plainly — the old hard error here is what made people re-tap and
+                // double-post.
+                actionMessage = ActionMessage(
+                    text: "Post submitted — the image couldn't attach. You can add it to a new post.",
+                    tone: .success
+                )
+            }
+        } else {
+            actionMessage = ActionMessage(text: "Post submitted.", tone: .success)
+        }
+        Haptics.success()
+        await loadDiscussion()
     }
 
     private func reportFieldNote(_ id: String) async {
         do {
             try await service.reportFieldNote(id: id, reason: "reported from iOS")
-            actionMessage = "Report filed."
+            actionMessage = ActionMessage(text: "Report filed.", tone: .success)
             Haptics.success()
         } catch {
-            actionMessage = error.localizedDescription
+            actionMessage = ActionMessage(text: error.localizedDescription, tone: .error)
             Haptics.failure()
         }
     }
@@ -366,10 +406,10 @@ struct CommunityPanel: View {
     private func reportPost(_ id: String) async {
         do {
             try await service.reportPost(id: id, reason: "reported from iOS")
-            actionMessage = "Report filed."
+            actionMessage = ActionMessage(text: "Report filed.", tone: .success)
             Haptics.success()
         } catch {
-            actionMessage = error.localizedDescription
+            actionMessage = ActionMessage(text: error.localizedDescription, tone: .error)
             Haptics.failure()
         }
     }
@@ -378,11 +418,11 @@ struct CommunityPanel: View {
         guard let blockerID = auth.userID else { return }
         do {
             try await service.blockUser(blockerID: blockerID, blockedID: authorID)
-            actionMessage = "User blocked."
+            actionMessage = ActionMessage(text: "User blocked.", tone: .success)
             Haptics.success()
             await reload()
         } catch {
-            actionMessage = error.localizedDescription
+            actionMessage = ActionMessage(text: error.localizedDescription, tone: .error)
             Haptics.failure()
         }
     }
@@ -395,9 +435,9 @@ struct CommunityPanel: View {
                 throw CommunityServiceError.unsupportedMedia
             }
             preparedImage = try CommunityService.prepareImage(data: data)
-            actionMessage = "Image ready. Still images only."
+            actionMessage = ActionMessage(text: "Image ready. Still images only.", tone: .success)
         } catch {
-            actionMessage = error.localizedDescription
+            actionMessage = ActionMessage(text: error.localizedDescription, tone: .error)
         }
     }
 }

@@ -84,10 +84,17 @@ struct CommunityService {
             height: image.height
         )
 
-        try await client
-            .from("discussion_media")
-            .insert(row)
-            .execute()
+        do {
+            try await client
+                .from("discussion_media")
+                .insert(row)
+                .execute()
+        } catch {
+            // The file uploaded but its row didn't land — don't leave an orphan
+            // in storage. Best-effort cleanup, then surface the original failure.
+            _ = try? await client.storage.from("discussion-media").remove(paths: [path])
+            throw error
+        }
     }
 
     func reportFieldNote(id: String, reason: String?) async throws {
