@@ -15,6 +15,12 @@ final class AuthSessionStore {
     private(set) var accessToken: String?
     private(set) var isWorking = false
     var errorMessage: String?
+    /// Set to the address a magic link was just sent to, so the sign-in panel can
+    /// confirm "check your email" instead of leaving a successful tap looking like
+    /// nothing happened. Cleared when a new send starts or the user signs in.
+    private(set) var magicLinkSentTo: String?
+    private var lastMagicLinkAt: Date?
+    private let magicLinkCooldown: TimeInterval = 30
 
     private var authTask: Task<Void, Never>?
     private var pendingAppleNonce: String?
@@ -53,8 +59,19 @@ final class AuthSessionStore {
     }
 
     func sendMagicLink(email: String) async {
+        guard !isWorking else { return }
+        // Resend cooldown: a sign-in link is already in their inbox, so a second
+        // tap a moment later just spams them. Tell them, don't re-send.
+        if let last = lastMagicLinkAt {
+            let since = Date().timeIntervalSince(last)
+            if since < magicLinkCooldown {
+                errorMessage = "A link is already on its way. You can request another in \(Int(ceil(magicLinkCooldown - since)))s."
+                return
+            }
+        }
         isWorking = true
         errorMessage = nil
+        magicLinkSentTo = nil
         defer { isWorking = false }
 
         do {
@@ -62,6 +79,8 @@ final class AuthSessionStore {
                 email: email,
                 redirectTo: SupabaseConfig.authRedirectURL
             )
+            magicLinkSentTo = email
+            lastMagicLinkAt = Date()
         } catch {
             errorMessage = "Magic link failed: \(error.localizedDescription)"
         }
@@ -128,6 +147,8 @@ final class AuthSessionStore {
         do {
             var request = URLRequest(url: SupabaseConfig.functionsURL.appendingPathComponent("delete-account"))
             request.httpMethod = "POST"
+            // A flaky network must not leave the user staring at a spinner forever.
+            request.timeoutInterval = 30
             request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
             request.setValue(SupabaseConfig.publishableKey, forHTTPHeaderField: "apikey")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -166,6 +187,7 @@ final class AuthSessionStore {
         userID = session.map { String(describing: $0.user.id) }
         email = session?.user.email
         accessToken = session?.accessToken
+        if session != nil { magicLinkSentTo = nil }
     }
 
     private static func sha256(_ input: String) -> String {
@@ -184,7 +206,10 @@ final class AuthSessionStore {
             var randoms = [UInt8](repeating: 0, count: 16)
             let status = SecRandomCopyBytes(kSecRandomDefault, randoms.count, &randoms)
             if status != errSecSuccess {
-                fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(status).")
+                // SecRandomCopyBytes effectively never fails, but if it ever did,
+                // fall back to the system RNG (same secure source on Apple
+                // platforms) rather than crash a user in the middle of sign-in.
+                randoms = randoms.map { _ in UInt8.random(in: 0...255) }
             }
 
             randoms.forEach { random in

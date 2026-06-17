@@ -152,10 +152,17 @@ struct SignInPanel: View {
             Button {
                 Task { await auth.sendMagicLink(email: email.trimmingCharacters(in: .whitespacesAndNewlines)) }
             } label: {
-                Label("Send magic link", systemImage: "envelope")
+                Label(auth.isWorking ? "Sending…" : "Send magic link", systemImage: "envelope")
             }
             .buttonStyle(.borderedProminent)
             .disabled(email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking)
+
+            if let sentTo = auth.magicLinkSentTo {
+                Label("Check your email — we sent a sign-in link to \(sentTo). Open it on this device to finish.", systemImage: "checkmark.circle")
+                    .font(PitchAtlasTheme.hanken(13))
+                    .foregroundStyle(PitchAtlasTheme.okBright)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
             if let error = auth.errorMessage {
                 Text(error)
