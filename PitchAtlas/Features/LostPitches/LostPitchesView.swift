@@ -87,7 +87,9 @@ struct LostPitchesView: View {
         } else if store.lostPitches.entries.isEmpty {
             EmptyStateView(message: "This wing couldn't load.")
         } else {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+            // Lazy so the tier legend and each record card build only as they
+            // scroll into view, matching the grip library and the source ledger.
+            LazyVStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
                 if !store.lostPitches.tiers.isEmpty {
                     tierLegend
                 }

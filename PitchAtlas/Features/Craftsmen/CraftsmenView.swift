@@ -65,7 +65,9 @@ struct CraftsmenView: View {
         } else if store.craftsmen.isEmpty {
             EmptyStateView(message: "The hall couldn't load.")
         } else {
-            VStack(spacing: PitchAtlasSpacing.md) {
+            // Lazy so each plate (and its sourced prose) builds only as it scrolls
+            // into view, matching the grip library and the source ledger.
+            LazyVStack(spacing: PitchAtlasSpacing.md) {
                 ForEach(store.craftsmen) { craftsman in
                     NavigationLink(value: craftsman) {
                         CraftsmanCard(craftsman: craftsman)

@@ -189,9 +189,23 @@ final class LoopingPlayerUIView: UIView {
         playerLayer.player = player
         queue = player
         player.play()
+
+        // didMoveToWindow pauses a clip that scrolls off-screen, but a backgrounded
+        // app keeps its window attached — so without this, every visible loop keeps
+        // decoding behind the home screen. Pause on resign; resume only if the view
+        // is still on-screen when the app returns.
+        let center = NotificationCenter.default
+        center.addObserver(self, selector: #selector(appWillResignActive),
+                           name: UIApplication.willResignActiveNotification, object: nil)
+        center.addObserver(self, selector: #selector(appDidBecomeActive),
+                           name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
+    @objc private func appWillResignActive() { queue?.pause() }
+    @objc private func appDidBecomeActive() { if window != nil { queue?.play() } }
+
     func teardown() {
+        NotificationCenter.default.removeObserver(self)
         queue?.pause()
         looper = nil
         playerLayer.player = nil
