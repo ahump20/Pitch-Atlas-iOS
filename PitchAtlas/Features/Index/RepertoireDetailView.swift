@@ -35,7 +35,7 @@ struct RepertoireDetailView: View {
                     claimSection(label: "Grip", claim: entry.grip)
                     claimSection(label: "Movement", claim: entry.movement)
 
-                    if let velocity = entry.velocity, !velocity.isEmpty {
+                    if let velocity = entry.velocity {
                         velocitySection(velocity)
                     }
 
@@ -121,18 +121,15 @@ struct RepertoireDetailView: View {
 
     // MARK: - Velocity
 
-    private func velocitySection(_ velocity: String) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
+    private func velocitySection(_ velocity: Claim) -> some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "Velocity", size: 9)
-            Text(velocity)
-                .font(PitchAtlasTheme.newsreader(24))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .fixedSize(horizontal: false, vertical: true)
+            // ClaimText carries the figure with its tier dot + source, so a
+            // velocity can never render as an unsourced number.
+            ClaimText(claim: velocity, valueFont: PitchAtlasTheme.newsreader(24))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.panel)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Velocity, \(velocity)")
     }
 
     // MARK: - Relationship (alias / illusion / not-a-pitch)

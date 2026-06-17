@@ -38,10 +38,6 @@ struct SourceClaimLabel: View {
     let claim: Claim
     var showMeaning: Bool = false
 
-    private var isWeak: Bool {
-        claim.confidence == .unverified || claim.confidence == .secondhandAttributed
-    }
-
     var body: some View {
         HStack(alignment: .top, spacing: PitchAtlasSpacing.xs) {
             ProvenanceDot(confidence: claim.confidence)
@@ -61,7 +57,11 @@ struct SourceClaimLabel: View {
                         .lineLimit(2)
                 }
 
-                if let note = claim.note, isWeak || claim.source == nil {
+                // A weak claim's note is its required provenance; a confident,
+                // sourced claim's note is an editorial caveat. Either way it carries
+                // meaning — show it whenever it exists rather than silently dropping
+                // the caveat on well-sourced figures.
+                if let note = claim.note, !note.isEmpty {
                     Text(note)
                         .font(PitchAtlasTheme.newsreaderItalic(12))
                         .foregroundStyle(PitchAtlasTheme.ink3)
@@ -83,7 +83,7 @@ struct SourceClaimLabel: View {
     private var accessibilityText: String {
         var parts = [claim.confidence.label]
         if let s = claim.source { parts.append("source, \(s.label)") }
-        if let n = claim.note, isWeak || claim.source == nil { parts.append(n) }
+        if let n = claim.note, !n.isEmpty { parts.append(n) }
         return parts.joined(separator: ". ")
     }
 }
@@ -127,10 +127,20 @@ struct GaugeView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
             SectionLabel(text: label, size: 9)
-            Text(claim.value)
-                .font(PitchAtlasTheme.newsreader(accent ? 28 : 22))
-                .foregroundStyle(accent ? PitchAtlasTheme.cyan : PitchAtlasTheme.bone)
-                .fixedSize(horizontal: false, vertical: true)
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text(claim.value)
+                    .font(PitchAtlasTheme.newsreader(accent ? 28 : 22))
+                    .foregroundStyle(accent ? PitchAtlasTheme.cyan : PitchAtlasTheme.bone)
+                    .fixedSize(horizontal: false, vertical: true)
+                // An approximate gauge says so — same honesty ClaimText carries, so
+                // a rounded figure never reads as a measured one.
+                if claim.approximate == true {
+                    Text("approx.")
+                        .font(PitchAtlasTheme.martian(8))
+                        .tracking(0.5)
+                        .foregroundStyle(PitchAtlasTheme.ink3)
+                }
+            }
             SourceClaimLabel(claim: claim)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

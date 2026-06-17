@@ -452,7 +452,11 @@ struct RepertoireEntry: Codable, Hashable, Identifiable {
     let aka: [String]?
     let grip: Claim
     let movement: Claim
-    let velocity: String?
+    /// A sourced velocity, never a bare number. Velocity is the single figure the
+    /// doctrine most forbids fabricating, so it rides the Claim contract (tier +
+    /// source) like every other reading — the type makes an unsourced number
+    /// impossible to render. Optional: most index rows carry none.
+    let velocity: Claim?
     let relationship: Claim?
     let notableThrowers: String?
     let filedSlug: String?
