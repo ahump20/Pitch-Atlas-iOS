@@ -155,6 +155,68 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertLessThan(prepared.data.count, 8 * 1024 * 1024)
     }
 
+    func testNewFieldNoteEncodesLiveSupabaseValues() throws {
+        let note = NewFieldNote(
+            pitchSlug: "four-seam",
+            displayName: "Austin",
+            tweak: "Index finger rides the inside seam.",
+            playerLevel: .collegePlus,
+            armSlot: .threeQuarter,
+            intent: .addedVelocity,
+            claimedResultKind: .velocityGain,
+            claimedResultNote: "Firmer feel in catch play.",
+            sampleSize: 12,
+            evidenceURL: "https://example.com/session",
+            evidenceLabel: "Bullpen notes",
+            sourceTier: .communityFirsthand,
+            note: "Firsthand field note."
+        )
+
+        let data = try JSONEncoder().encode(note)
+        let object = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        let json = try XCTUnwrap(String(data: data, encoding: .utf8))
+
+        XCTAssertEqual(object["player_level"] as? String, "college-plus")
+        XCTAssertEqual(object["arm_slot"] as? String, "three-quarter")
+        XCTAssertEqual(object["intent"] as? String, "added-velocity")
+        XCTAssertEqual(object["claimed_result_kind"] as? String, "velocity-gain")
+        XCTAssertEqual(object["sample_size"] as? Int, 12)
+        XCTAssertEqual(object["evidence_label"] as? String, "Bullpen notes")
+        XCTAssertFalse(json.contains("adult"))
+        XCTAssertFalse(json.contains("not specified"))
+        XCTAssertFalse(json.contains("firsthand note"))
+        XCTAssertFalse(json.contains("self-reported"))
+    }
+
+    func testCommunityErrorMapperHidesRawDatabaseErrors() {
+        let duplicateBlock = NSError(
+            domain: "PostgREST",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "duplicate key value violates unique constraint \"blocked_users_pkey\""]
+        )
+        XCTAssertEqual(CommunityService.userMessage(for: duplicateBlock), "That contributor is already blocked.")
+
+        let constraint = NSError(
+            domain: "PostgREST",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "new row violates check constraint \"field_notes_player_level_check\""]
+        )
+        XCTAssertEqual(
+            CommunityService.userMessage(for: constraint),
+            "One field does not match the allowed choices. Review the form and try again."
+        )
+
+        let rateLimit = NSError(
+            domain: "PostgREST",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "rate_limit: too many posts in a short time"]
+        )
+        XCTAssertEqual(
+            CommunityService.userMessage(for: rateLimit),
+            "Too many community actions in a short time. Wait a bit and try again."
+        )
+    }
+
     func testPrivacyManifestDeclaresCommunityDataWithoutTracking() throws {
         let manifestURL = try XCTUnwrap(Bundle.main.url(forResource: "PrivacyInfo", withExtension: "xcprivacy"))
         let manifest = try XCTUnwrap(NSDictionary(contentsOf: manifestURL) as? [String: Any])

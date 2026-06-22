@@ -8,19 +8,118 @@ enum CommunityLoadState<Value> {
     case failed(String)
 }
 
+enum CommunityPlayerLevel: String, Codable, CaseIterable, Identifiable, Hashable {
+    case youth
+    case highSchool = "high-school"
+    case collegePlus = "college-plus"
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .youth: return "Youth"
+        case .highSchool: return "High school"
+        case .collegePlus: return "College and up"
+        }
+    }
+}
+
+enum CommunityArmSlot: String, Codable, CaseIterable, Identifiable, Hashable {
+    case overTheTop = "over-the-top"
+    case threeQuarter = "three-quarter"
+    case sidearm
+    case submarine
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .overTheTop: return "Over the top"
+        case .threeQuarter: return "Three-quarter"
+        case .sidearm: return "Sidearm"
+        case .submarine: return "Submarine"
+        }
+    }
+}
+
+enum CommunityPitchIntent: String, Codable, CaseIterable, Identifiable, Hashable {
+    case moreMovement = "more-movement"
+    case lessMovement = "less-movement"
+    case addedVelocity = "added-velocity"
+    case reducedVelocity = "reduced-velocity"
+    case betterCommand = "better-command"
+    case deception
+    case reduceStress = "reduce-stress"
+    case other
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .moreMovement: return "More movement"
+        case .lessMovement: return "Less movement"
+        case .addedVelocity: return "Firmer feel"
+        case .reducedVelocity: return "Softer feel"
+        case .betterCommand: return "Better command"
+        case .deception: return "More deception"
+        case .reduceStress: return "Less stress"
+        case .other: return "Something else"
+        }
+    }
+}
+
+enum CommunityClaimedResultKind: String, Codable, CaseIterable, Identifiable, Hashable {
+    case moreMovement = "more-movement"
+    case betterCommand = "better-command"
+    case velocityGain = "velocity-gain"
+    case reducedDiscomfort = "reduced-discomfort"
+    case inconsistent
+    case workedInBullpen = "worked-in-bullpen"
+    case workedInGame = "worked-in-game"
+    case noNoticeableChange = "no-noticeable-change"
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .moreMovement: return "More movement"
+        case .betterCommand: return "Better command"
+        case .velocityGain: return "Firmer result"
+        case .reducedDiscomfort: return "Less discomfort"
+        case .inconsistent: return "Inconsistent so far"
+        case .workedInBullpen: return "Worked in the bullpen"
+        case .workedInGame: return "Worked in a game"
+        case .noNoticeableChange: return "No noticeable change"
+        }
+    }
+}
+
+enum CommunitySourceTier: String, Codable, CaseIterable, Identifiable, Hashable {
+    case communityFirsthand = "community-firsthand"
+    case coachObserved = "coach-observed"
+    case reputableAnalysis = "reputable-analysis"
+    case secondhandAttributed = "secondhand-attributed"
+    case unverified
+
+    var id: String { rawValue }
+}
+
 struct CommunityFieldNote: Decodable, Identifiable, Hashable {
     let id: String
     let pitchSlug: String
     let authorID: String
     let displayName: String
     let tweak: String
-    let playerLevel: String
-    let armSlot: String
-    let intent: String
-    let claimedResultKind: String
+    let playerLevel: CommunityPlayerLevel
+    let armSlot: CommunityArmSlot
+    let intent: CommunityPitchIntent
+    let claimedResultKind: CommunityClaimedResultKind
     let claimedResultNote: String?
+    let sampleSize: Int?
+    let evidenceURL: String?
+    let evidenceLabel: String?
     let note: String?
-    let sourceTier: String
+    let sourceTier: CommunitySourceTier
     let createdAt: String
 
     enum CodingKeys: String, CodingKey {
@@ -34,6 +133,9 @@ struct CommunityFieldNote: Decodable, Identifiable, Hashable {
         case intent
         case claimedResultKind = "claimed_result_kind"
         case claimedResultNote = "claimed_result_note"
+        case sampleSize = "sample_size"
+        case evidenceURL = "evidence_url"
+        case evidenceLabel = "evidence_label"
         case note
         case sourceTier = "source_tier"
         case createdAt = "created_at"
@@ -48,6 +150,7 @@ struct DiscussionPost: Decodable, Identifiable, Hashable {
     let parentID: String?
     let body: String
     let createdAt: String
+    var media: [DiscussionMedia] = []
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -71,6 +174,8 @@ struct DiscussionMedia: Decodable, Identifiable, Hashable {
     let byteSize: Int
     let width: Int?
     let height: Int?
+    var signedURL: URL?
+    var signingError: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -90,11 +195,15 @@ struct NewFieldNote: Encodable {
     let pitchSlug: String
     let displayName: String
     let tweak: String
-    let playerLevel: String
-    let armSlot: String
-    let intent: String
-    let claimedResultKind: String
+    let playerLevel: CommunityPlayerLevel
+    let armSlot: CommunityArmSlot
+    let intent: CommunityPitchIntent
+    let claimedResultKind: CommunityClaimedResultKind
     let claimedResultNote: String?
+    let sampleSize: Int?
+    let evidenceURL: String?
+    let evidenceLabel: String?
+    let sourceTier: CommunitySourceTier
     let note: String?
 
     enum CodingKeys: String, CodingKey {
@@ -106,6 +215,10 @@ struct NewFieldNote: Encodable {
         case intent
         case claimedResultKind = "claimed_result_kind"
         case claimedResultNote = "claimed_result_note"
+        case sampleSize = "sample_size"
+        case evidenceURL = "evidence_url"
+        case evidenceLabel = "evidence_label"
+        case sourceTier = "source_tier"
         case note
     }
 }
@@ -164,13 +277,25 @@ struct CommunityReport: Encodable {
     }
 }
 
-struct BlockedUserInsert: Encodable {
-    let blockerID: String
+struct BlockedContributor: Decodable, Identifiable, Hashable {
     let blockedID: String
+    let displayName: String
+    let createdAt: String
 
     enum CodingKeys: String, CodingKey {
-        case blockerID = "blocker_id"
         case blockedID = "blocked_id"
+        case displayName = "display_name"
+        case createdAt = "created_at"
+    }
+
+    var id: String { blockedID }
+}
+
+struct BlockUserParams: Encodable {
+    let targetUser: String
+
+    enum CodingKeys: String, CodingKey {
+        case targetUser = "target_user"
     }
 }
 
@@ -182,7 +307,7 @@ struct MediaTermsInsert: Encodable {
     }
 }
 
-struct PreparedCommunityImage {
+struct PreparedCommunityImage: Equatable {
     let data: Data
     let mimeType: String
     let width: Int
