@@ -27,6 +27,14 @@ Use this as the paste source for the next iOS submission. It is scoped to the v1
 - Build: `5` repo baseline. Verify App Store Connect before archive; bump again
   if the live console already has build 5 or higher.
 
+## Canonical Xcode Project
+
+Archive and upload from `PitchAtlas.xcodeproj` in the main `Pitch-Atlas-iOS`
+repo/worktree only. The local skeleton at
+`/Users/AustinHumphrey/Pitch-Atlas-iOS-local-skeleton-20260608-221355/Pitch Atlas/Pitch Atlas.xcodeproj`
+is a prototype and is intentionally retargeted to `com.pitchatlas.local-skeleton`
+so it cannot collide with the production App Store bundle.
+
 ## Subtitle
 
 `A field manual for pitch craft`
