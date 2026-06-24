@@ -5,10 +5,11 @@
 > record and verify the current version state, highest processed build, privacy
 > labels, age rating, review notes, screenshots, and TestFlight groups.
 >
-> **Build-number rule:** the repo baseline is build 4 because earlier notes say
-> App Store Connect already processed build 3. If the live console already has
-> build 4 or higher, bump `CURRENT_PROJECT_VERSION` again before archive. Attach
-> only the build that was smoke-tested through TestFlight.
+> **Live upload check, 2026-06-24:** App Store Connect rejected a `1.0.0` /
+> build `4` upload because version `1.0` is already approved, build `4` already
+> exists on that closed train, and the `1.0` pre-release train no longer accepts
+> new builds. The next submission baseline is `1.0.1` / build `5`. Attach only
+> the build that was smoke-tested through TestFlight.
 
 Use this as the paste source for the next iOS submission. It is scoped to the v1 binary: native SwiftUI, an offline bundled reference manual, plus an optional Supabase-backed community layer (sign-in, field notes, discussion posts, image uploads). The reference content works on first launch with no account and no network.
 
@@ -22,9 +23,9 @@ Use this as the paste source for the next iOS submission. It is scoped to the v1
 - Pricing: `Free`
 - Platform: `iOS`
 - Device family: `iPhone`
-- Version: `1.0.0`
-- Build: `4` repo baseline. Verify App Store Connect before archive; bump again
-  if the live console already has build 4 or higher.
+- Version: `1.0.1`
+- Build: `5` repo baseline. Verify App Store Connect before archive; bump again
+  if the live console already has build 5 or higher.
 
 ## Subtitle
 
