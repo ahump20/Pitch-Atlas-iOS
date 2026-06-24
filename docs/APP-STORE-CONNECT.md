@@ -1,15 +1,22 @@
 # Pitch Atlas App Store Connect Pack
 
-> **Status 2026-06-24 (repo prep):** App Store Connect and TestFlight state is
-> not proven from this checkout. Before archive, open the live App Store Connect
-> record and verify the current version state, highest processed build, privacy
-> labels, age rating, review notes, screenshots, and TestFlight groups.
+> **Status 2026-06-24 (submitted):** App Store Connect API read-back confirms
+> version `1.0.1` / build `5` is selected for App Review and the App Store
+> version state is `WAITING_FOR_REVIEW`. Review submission
+> `9f380fc7-b3cd-4fa1-82b2-52ad52499c24` was submitted at
+> `2026-06-24T18:06:56.67Z`.
 >
 > **Live upload check, 2026-06-24:** App Store Connect rejected a `1.0.0` /
 > build `4` upload because version `1.0` is already approved, build `4` already
 > exists on that closed train, and the `1.0` pre-release train no longer accepts
-> new builds. The next submission baseline is `1.0.1` / build `5`. Attach only
-> the build that was smoke-tested through TestFlight.
+> new builds. The submitted train is `1.0.1` / build `5`; build processing is
+> `VALID`, `usesNonExemptEncryption` is `false`, and the build is attached to
+> the internal TestFlight group `Pitch Atlas Internal`.
+>
+> **Open proof item:** this run verified upload, processing, internal TestFlight
+> attachment, metadata, screenshots, selected build, and App Review submission
+> through the ASC API. It did not drive a physical TestFlight install on a tester
+> device from this shell.
 
 Use this as the paste source for the next iOS submission. It is scoped to the v1 binary: native SwiftUI, an offline bundled reference manual, plus an optional Supabase-backed community layer (sign-in, field notes, discussion posts, image uploads). The reference content works on first launch with no account and no network.
 
@@ -24,8 +31,8 @@ Use this as the paste source for the next iOS submission. It is scoped to the v1
 - Platform: `iOS`
 - Device family: `iPhone`
 - Version: `1.0.1`
-- Build: `5` repo baseline. Verify App Store Connect before archive; bump again
-  if the live console already has build 5 or higher.
+- Build: `5`, uploaded, processed `VALID`, selected for App Review, and attached
+  to `Pitch Atlas Internal` in TestFlight.
 
 ## Canonical Xcode Project
 
@@ -45,7 +52,7 @@ so it cannot collide with the production App Store bundle.
 
 `An offline field manual for how pitches are gripped, shaped, sourced, and understood.`
 
-87 characters.
+85 characters.
 
 ## Description
 
@@ -68,7 +75,7 @@ so it cannot collide with the production App Store bundle.
 
 `baseball,pitching,grips,pitches,spin,curveball,slider,changeup,fastball,sources`
 
-78 characters.
+79 characters.
 
 ## URLs
 

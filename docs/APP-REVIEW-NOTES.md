@@ -40,6 +40,7 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 ## Build Notes
 
 - Bundle ID: `com.pitchatlas.app`
+- Submitted build: `1.0.1` (`5`)
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
 - No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, video upload, or BSI dependency.
