@@ -130,6 +130,11 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertFalse(SupabaseConfig.publishableKey.lowercased().contains("service_role"))
     }
 
+    func testAppInfoPlistUsesReleaseBuildSettings() {
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, "1.0.1")
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "6")
+    }
+
     func testCommunityImagePreparationRejectsNonImages() {
         XCTAssertThrowsError(try CommunityService.prepareImage(data: Data("not an image".utf8))) { error in
             XCTAssertEqual(error as? CommunityServiceError, .unsupportedMedia)
@@ -186,6 +191,87 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertFalse(json.contains("not specified"))
         XCTAssertFalse(json.contains("firsthand note"))
         XCTAssertFalse(json.contains("self-reported"))
+    }
+
+    func testFieldNoteValidationMatchesLiveSupabaseConstraints() throws {
+        let note = try NewFieldNote.validated(
+            pitchSlug: "four-seam",
+            displayName: "  Austin  ",
+            tweak: "  Index finger rides the inside seam.  ",
+            playerLevel: .collegePlus,
+            armSlot: .threeQuarter,
+            intent: .addedVelocity,
+            claimedResultKind: .velocityGain,
+            claimedResultNote: "  Firmer feel.  ",
+            sampleSizeText: "12",
+            evidenceURL: " https://example.com/session ",
+            evidenceLabel: " Bullpen notes ",
+            sourceTier: .communityFirsthand,
+            note: " Firsthand field note. "
+        )
+
+        XCTAssertEqual(note.displayName, "Austin")
+        XCTAssertEqual(note.tweak, "Index finger rides the inside seam.")
+        XCTAssertEqual(note.claimedResultNote, "Firmer feel.")
+        XCTAssertEqual(note.sampleSize, 12)
+        XCTAssertEqual(note.evidenceURL, "https://example.com/session")
+        XCTAssertEqual(note.evidenceLabel, "Bullpen notes")
+        XCTAssertEqual(note.note, "Firsthand field note.")
+
+        XCTAssertThrowsError(try NewFieldNote.parsedSampleSize("100001")) { error in
+            XCTAssertEqual(error as? CommunityValidationError, .invalidSampleSize)
+        }
+        XCTAssertThrowsError(try NewFieldNote.validatedEvidenceURL("ftp://example.com/session")) { error in
+            XCTAssertEqual(error as? CommunityValidationError, .invalidEvidenceURL)
+        }
+        XCTAssertThrowsError(try NewFieldNote.validated(
+            pitchSlug: "four-seam",
+            displayName: "Austin",
+            tweak: String(repeating: "x", count: 161),
+            playerLevel: .collegePlus,
+            armSlot: .threeQuarter,
+            intent: .addedVelocity,
+            claimedResultKind: .velocityGain,
+            claimedResultNote: "",
+            sampleSizeText: "",
+            evidenceURL: "",
+            evidenceLabel: "",
+            sourceTier: .communityFirsthand,
+            note: ""
+        )) { error in
+            XCTAssertEqual(error as? CommunityValidationError, .valueTooLong(field: "Grip change or cue", max: 160))
+        }
+    }
+
+    func testDiscussionPostValidationTrimsAndRejectsBadBodies() throws {
+        let post = try NewDiscussionPost.validated(
+            id: "post-1",
+            topicKey: "pitch:four-seam",
+            displayName: "Austin",
+            body: "  This grip finally held through catch play.  ",
+            parentID: nil
+        )
+
+        XCTAssertEqual(post.body, "This grip finally held through catch play.")
+
+        XCTAssertThrowsError(try NewDiscussionPost.validated(
+            id: "post-2",
+            topicKey: "pitch:four-seam",
+            displayName: "Austin",
+            body: "   ",
+            parentID: nil
+        )) { error in
+            XCTAssertEqual(error as? CommunityServiceError, .invalidDiscussionPost("Add a post before submitting."))
+        }
+        XCTAssertThrowsError(try NewDiscussionPost.validated(
+            id: "post-3",
+            topicKey: "pitch:four-seam",
+            displayName: "Austin",
+            body: String(repeating: "x", count: 4001),
+            parentID: nil
+        )) { error in
+            XCTAssertEqual(error as? CommunityServiceError, .invalidDiscussionPost("Discussion posts must be 4000 characters or fewer."))
+        }
     }
 
     func testCommunityErrorMapperHidesRawDatabaseErrors() {

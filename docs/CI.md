@@ -51,14 +51,14 @@ xcodebuild -project PitchAtlas.xcodeproj -scheme PitchAtlas \
 
 ## Signing (the one human step)
 
-Signing is intentionally **not committed** (`project.yml` carries no
-`DEVELOPMENT_TEAM`). Set it once in Xcode → Signing & Capabilities (or as an
-Xcode Cloud environment setting) under the Apple Developer account Pitch Atlas
-ships from. Pitch Atlas ships under its own identity.
+The release target is configured for team `CQNJJ423X3` in `project.yml`. Archive
+and upload from the Apple Developer account Pitch Atlas ships from. Simulator
+tests may still pass `CODE_SIGNING_ALLOWED=NO`.
 
 ## Supabase Release Gate
 
-The live Supabase project has the iOS preflight migrations and `delete-account`
-function applied. The Supabase GitHub branch status still reports
+The live Supabase project has the iOS preflight migrations, `delete-account`
+function, and authenticated block RPCs (`block_user`, `unblock_user`,
+`my_blocked_users`) applied. The Supabase GitHub branch status still reports
 `MIGRATIONS_FAILED`, so do not rely on automatic Supabase branch/deploy behavior
 until that integration is repaired from `ahump20/Pitch-Atlas`.

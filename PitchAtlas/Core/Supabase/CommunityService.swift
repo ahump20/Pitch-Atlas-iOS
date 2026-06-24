@@ -207,6 +207,9 @@ struct CommunityService {
     }
 
     static func userMessage(for error: Error, fallback: String = "Could not save that just now. Try again.") -> String {
+        if let validationError = error as? CommunityValidationError {
+            return validationError.errorDescription ?? fallback
+        }
         if let communityError = error as? CommunityServiceError {
             return communityError.errorDescription ?? fallback
         }
@@ -253,6 +256,7 @@ enum CommunityServiceError: LocalizedError, Equatable {
     case unsupportedMedia
     case imageTooLarge
     case invalidFieldNote(String)
+    case invalidDiscussionPost(String)
 
     var errorDescription: String? {
         switch self {
@@ -261,6 +265,8 @@ enum CommunityServiceError: LocalizedError, Equatable {
         case .imageTooLarge:
             return "That image is too large after compression. Choose a smaller file."
         case .invalidFieldNote(let message):
+            return message
+        case .invalidDiscussionPost(let message):
             return message
         }
     }

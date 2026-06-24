@@ -500,21 +500,20 @@ struct CommunityPanel: View {
         isSubmitting = true
         defer { isSubmitting = false }
         do {
-            let sampleSize = try parsedSampleSize()
-            let note = NewFieldNote(
+            let note = try NewFieldNote.validated(
                 pitchSlug: pitchSlug,
                 displayName: auth.displayName,
-                tweak: fieldTweak.trimmingCharacters(in: .whitespacesAndNewlines),
+                tweak: fieldTweak,
                 playerLevel: fieldPlayerLevel,
                 armSlot: fieldArmSlot,
                 intent: fieldIntent,
                 claimedResultKind: fieldResultKind,
-                claimedResultNote: nilIfBlank(fieldResultNote),
-                sampleSize: sampleSize,
-                evidenceURL: nilIfBlank(fieldEvidenceURL),
-                evidenceLabel: nilIfBlank(fieldEvidenceLabel),
+                claimedResultNote: fieldResultNote,
+                sampleSizeText: fieldSampleSize,
+                evidenceURL: fieldEvidenceURL,
+                evidenceLabel: fieldEvidenceLabel,
                 sourceTier: .communityFirsthand,
-                note: nilIfBlank(fieldNote)
+                note: fieldNote
             )
             try await service.submitFieldNote(note)
             fieldTweak = ""
@@ -538,15 +537,15 @@ struct CommunityPanel: View {
         defer { isSubmitting = false }
 
         let postID = UUID().uuidString
-        let post = NewDiscussionPost(
-            id: postID,
-            topicKey: topicKey,
-            displayName: auth.displayName,
-            body: postBody.trimmingCharacters(in: .whitespacesAndNewlines),
-            parentID: nil
-        )
 
         do {
+            let post = try NewDiscussionPost.validated(
+                id: postID,
+                topicKey: topicKey,
+                displayName: auth.displayName,
+                body: postBody,
+                parentID: nil
+            )
             try await service.submitPost(post)
         } catch {
             // The post itself failed — keep the composer intact so the user can retry.
@@ -689,17 +688,4 @@ struct CommunityPanel: View {
         }
     }
 
-    private func parsedSampleSize() throws -> Int? {
-        let trimmed = fieldSampleSize.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return nil }
-        guard let value = Int(trimmed), (0...100_000).contains(value) else {
-            throw CommunityServiceError.invalidFieldNote("Sample size must be a number from 0 to 100000.")
-        }
-        return value
-    }
-
-    private func nilIfBlank(_ value: String) -> String? {
-        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        return trimmed.isEmpty ? nil : trimmed
-    }
 }

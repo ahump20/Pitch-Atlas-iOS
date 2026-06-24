@@ -58,36 +58,7 @@ struct AtlasView: View {
 
             if let featured = store.pitches.first {
                 NavigationLink(value: featured) {
-                    // Real footage leads the masthead when the featured specimen
-                    // carries a film; the drawn ball is the fallback face.
-                    if let film = featured.canonical.gripFilm {
-                        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                            GripFilmCard(film: film, height: 380,
-                                         offersMotionControl: false, showsCaption: false)
-                            HStack {
-                                Text(featured.canonical.name.uppercased())
-                                    .font(PitchAtlasTheme.martian(10))
-                                    .tracking(2)
-                                    .foregroundStyle(PitchAtlasTheme.cyan)
-                                Spacer()
-                                SectionLabel(text: "Open the specimen", size: 10)
-                            }
-                        }
-                    } else {
-                        VStack(spacing: PitchAtlasSpacing.xs) {
-                            SeamBall(motion: featured.motion, size: 220)
-                                .frame(maxWidth: .infinity)
-                            Text(featured.canonical.name.uppercased())
-                                .font(PitchAtlasTheme.martian(10))
-                                .tracking(2)
-                                .foregroundStyle(PitchAtlasTheme.cyan)
-                            SectionLabel(text: "Tap the specimen", size: 10)
-                        }
-                        .padding(.vertical, PitchAtlasSpacing.md)
-                        .frame(maxWidth: .infinity)
-                        .leatherPress(padding: PitchAtlasSpacing.lg)
-                        .foilRake()
-                    }
+                    PitchSpecimenCard(entry: featured, style: .hero)
                 }
                 .buttonStyle(.plain)
                 .accessibilityElement(children: .ignore)
@@ -97,7 +68,7 @@ struct AtlasView: View {
 
             BlazeInlineCompanionView(style: .atlas, mood: .sniffing)
 
-            Text("How every pitch is gripped and thrown. The index, filed specimens, grip library, craftsmen, and lost pitches are bundled with sources; community opens when you sign in.")
+            Text("How pitches are gripped and thrown. Sources stay visible. Community opens when you sign in.")
                 .font(PitchAtlasTheme.hanken(16))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
@@ -113,31 +84,8 @@ struct AtlasView: View {
                 HStack(spacing: PitchAtlasSpacing.md) {
                     ForEach(store.pitches) { entry in
                         NavigationLink(value: entry) {
-                            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                                // The owner's real hand fronts the tile where a
-                                // still is on file; the drawn ball is the fallback.
-                                if let still = entry.canonical.realStill {
-                                    BundledImage(src: still.src, alt: still.alt)
-                                        .frame(height: 110)
-                                        .frame(maxWidth: .infinity)
-                                        .clipShape(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous)
-                                                .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
-                                        )
-                                } else {
-                                    SeamBall(motion: entry.motion, size: 110)
-                                }
-                                HStack(spacing: PitchAtlasSpacing.xs) {
-                                    FamilyDot(color: entry.canonical.family.accent)
-                                    Text(entry.display.shortName)
-                                        .font(PitchAtlasTheme.hankenMedium(14))
-                                        .foregroundStyle(PitchAtlasTheme.bone)
-                                }
-                                SectionLabel(text: entry.display.specimenNo, color: PitchAtlasTheme.cyanDeep, size: 8)
-                            }
-                            .frame(width: 130, alignment: .leading)
-                            .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.tile)
+                            PitchSpecimenCard(entry: entry, style: .rail)
+                                .frame(width: 156, alignment: .leading)
                         }
                         .buttonStyle(.plain)
                         .accessibilityElement(children: .ignore)
