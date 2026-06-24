@@ -238,7 +238,7 @@ struct SignInPanel: View {
             .disabled(email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking)
 
             if let sentTo = auth.magicLinkSentTo {
-                Label("Check your email — we sent a sign-in link to \(sentTo). Open it on this device to finish.", systemImage: "checkmark.circle")
+                Label("Check your email. We sent a sign-in link to \(sentTo). Open it on this device to finish.", systemImage: "checkmark.circle")
                     .font(PitchAtlasTheme.hanken(13))
                     .foregroundStyle(PitchAtlasTheme.okBright)
                     .fixedSize(horizontal: false, vertical: true)

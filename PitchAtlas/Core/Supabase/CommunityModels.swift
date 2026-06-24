@@ -239,6 +239,159 @@ struct NewFieldNote: Encodable {
     }
 }
 
+enum CommunityValidationError: LocalizedError, Equatable {
+    case missingTweak
+    case invalidDisplayName
+    case valueTooLong(field: String, max: Int)
+    case invalidSampleSize
+    case invalidEvidenceURL
+
+    var errorDescription: String? {
+        switch self {
+        case .missingTweak:
+            return "Add the grip change or cue before filing."
+        case .invalidDisplayName:
+            return "Your display name must be 2 to 40 characters."
+        case .valueTooLong(let field, let max):
+            return "\(field) must be \(max) characters or fewer."
+        case .invalidSampleSize:
+            return "Sample size must be a number from 0 to 100000."
+        case .invalidEvidenceURL:
+            return "Evidence URL must start with http:// or https://."
+        }
+    }
+}
+
+enum CommunityFieldNoteLimits {
+    static let displayName = 40
+    static let tweak = 160
+    static let resultNote = 200
+    static let evidenceURL = 512
+    static let evidenceLabel = 80
+    static let note = 200
+    static let sampleSize = 0...100_000
+}
+
+extension NewFieldNote {
+    static func validated(
+        pitchSlug: String,
+        displayName: String,
+        tweak: String,
+        playerLevel: CommunityPlayerLevel,
+        armSlot: CommunityArmSlot,
+        intent: CommunityPitchIntent,
+        claimedResultKind: CommunityClaimedResultKind,
+        claimedResultNote: String,
+        sampleSizeText: String,
+        evidenceURL: String,
+        evidenceLabel: String,
+        sourceTier: CommunitySourceTier,
+        note: String
+    ) throws -> NewFieldNote {
+        let cleanDisplayName = try validatedDisplayName(displayName)
+        let cleanTweak = try requiredText(
+            tweak,
+            missing: .missingTweak,
+            field: "Grip change or cue",
+            max: CommunityFieldNoteLimits.tweak
+        )
+        let cleanResultNote = try optionalText(
+            claimedResultNote,
+            field: "Result detail",
+            max: CommunityFieldNoteLimits.resultNote
+        )
+        let cleanEvidenceLabel = try optionalText(
+            evidenceLabel,
+            field: "Evidence label",
+            max: CommunityFieldNoteLimits.evidenceLabel
+        )
+        let cleanEvidenceURL = try validatedEvidenceURL(evidenceURL)
+        let cleanNote = try optionalText(
+            note,
+            field: "Plain words note",
+            max: CommunityFieldNoteLimits.note
+        )
+        let sampleSize = try parsedSampleSize(sampleSizeText)
+
+        return NewFieldNote(
+            pitchSlug: pitchSlug,
+            displayName: cleanDisplayName,
+            tweak: cleanTweak,
+            playerLevel: playerLevel,
+            armSlot: armSlot,
+            intent: intent,
+            claimedResultKind: claimedResultKind,
+            claimedResultNote: cleanResultNote,
+            sampleSize: sampleSize,
+            evidenceURL: cleanEvidenceURL,
+            evidenceLabel: cleanEvidenceLabel,
+            sourceTier: sourceTier,
+            note: cleanNote
+        )
+    }
+
+    private static func validatedDisplayName(_ value: String) throws -> String {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard (2...CommunityFieldNoteLimits.displayName).contains(trimmed.count) else {
+            throw CommunityValidationError.invalidDisplayName
+        }
+        return trimmed
+    }
+
+    private static func requiredText(
+        _ value: String,
+        missing: CommunityValidationError,
+        field: String,
+        max: Int
+    ) throws -> String {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { throw missing }
+        guard trimmed.count <= max else {
+            throw CommunityValidationError.valueTooLong(field: field, max: max)
+        }
+        return trimmed
+    }
+
+    private static func optionalText(_ value: String, field: String, max: Int) throws -> String? {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        guard trimmed.count <= max else {
+            throw CommunityValidationError.valueTooLong(field: field, max: max)
+        }
+        return trimmed
+    }
+
+    static func parsedSampleSize(_ value: String) throws -> Int? {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        guard let parsed = Int(trimmed), CommunityFieldNoteLimits.sampleSize.contains(parsed) else {
+            throw CommunityValidationError.invalidSampleSize
+        }
+        return parsed
+    }
+
+    static func validatedEvidenceURL(_ value: String) throws -> String? {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        guard trimmed.count <= CommunityFieldNoteLimits.evidenceURL else {
+            throw CommunityValidationError.valueTooLong(
+                field: "Evidence URL",
+                max: CommunityFieldNoteLimits.evidenceURL
+            )
+        }
+        guard
+            let components = URLComponents(string: trimmed),
+            let scheme = components.scheme?.lowercased(),
+            (scheme == "http" || scheme == "https"),
+            let host = components.host,
+            !host.isEmpty
+        else {
+            throw CommunityValidationError.invalidEvidenceURL
+        }
+        return trimmed
+    }
+}
+
 struct NewDiscussionPost: Encodable {
     let id: String
     let topicKey: String
@@ -252,6 +405,36 @@ struct NewDiscussionPost: Encodable {
         case displayName = "display_name"
         case body
         case parentID = "parent_id"
+    }
+}
+
+enum DiscussionPostLimits {
+    static let body = 4000
+}
+
+extension NewDiscussionPost {
+    static func validated(
+        id: String,
+        topicKey: String,
+        displayName: String,
+        body: String,
+        parentID: String?
+    ) throws -> NewDiscussionPost {
+        let cleanBody = body.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleanBody.isEmpty else {
+            throw CommunityServiceError.invalidDiscussionPost("Add a post before submitting.")
+        }
+        guard cleanBody.count <= DiscussionPostLimits.body else {
+            throw CommunityServiceError.invalidDiscussionPost("Discussion posts must be 4000 characters or fewer.")
+        }
+
+        return NewDiscussionPost(
+            id: id,
+            topicKey: topicKey,
+            displayName: displayName.trimmingCharacters(in: .whitespacesAndNewlines),
+            body: cleanBody,
+            parentID: parentID
+        )
     }
 }
 

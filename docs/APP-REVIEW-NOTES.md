@@ -1,6 +1,6 @@
 # App Review Notes
 
-Paste into App Store Connect after replacing any build-specific placeholders.
+Paste into App Store Connect for build `1.0.1 (6)`.
 
 Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community features use Supabase only after sign-in.
 
@@ -8,7 +8,7 @@ Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped 
 
 1. Launch the app.
 2. Browse Atlas, Index, Grips, Craftsmen, and Sources without signing in.
-3. Open Atlas → Account and Safety to sign in with Apple or email magic link.
+3. Open Atlas, then Account and Safety, to sign in with Apple or email magic link.
 4. Open a pitch detail and scroll to Community.
 5. Accept the community guidelines and 17+ confirmation.
 6. Submit a Field Note or Discussion post.
@@ -20,7 +20,9 @@ Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped 
 ## Community Safety
 
 - Posting, reporting, blocking, image uploads, and account deletion require sign-in.
+- Reading community content is open so visitors can inspect public field notes before creating an account.
 - Community posts are user-submitted field notes, not measured claims.
+- Field-note inputs are validated against live Supabase limits before submission.
 - Reports are write-only for normal clients and can auto-hide content through backend policy/trigger rules.
 - Blocking hides community content both ways, prevents unsafe direct replies, and can be undone from Account and Safety.
 - Account deletion calls the JWT-protected Supabase `delete-account` Edge Function.
@@ -31,7 +33,7 @@ iOS v1 accepts still images only through PhotosPicker. There is no video upload,
 
 ## Privacy
 
-The app does not track users and does not include ads. It collects account email/user ID, user-written content, and uploaded still images only for app functionality and moderation/safety. App privacy labels should not say “Data Not Collected.”
+The app does not track users and does not include ads. It collects account email/user ID, user-written content, and uploaded still images only for app functionality and moderation/safety. App privacy labels should not say `Data Not Collected`.
 
 ## Native Value
 
@@ -40,7 +42,17 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 ## Build Notes
 
 - Bundle ID: `com.pitchatlas.app`
-- Submitted build: `1.0.1` (`5`)
+- Version: `1.0.1`
+- Build: `6`
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
 - No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, video upload, or BSI dependency.
+- Production Supabase block RPCs were applied on 2026-06-24 as migration `20260624194451 block_user_rpcs`.
+
+## Final Build Proof
+
+Build `1.0.1 (6)` was verified on the MacBook using Xcode's `My Mac` destination for the iOS Designed for iPad/iPhone runtime: 28 tests passed, 0 failed. The archive metadata resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `6`, and `ITSAppUsesNonExemptEncryption=false`.
+
+App Store Connect processed build `6` as `VALID`, attached it to app version `1.0.1`, and shows the fresh review submission `abc039da-c681-4cb7-85e0-a6a21e6841ba` as `WAITING_FOR_REVIEW`. Build `6` is also assigned to the internal TestFlight groups `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`.
+
+Screenshot proof and the required design critique are in `docs/review-evidence/2026-06-24-ios-screenshot-report.md`.

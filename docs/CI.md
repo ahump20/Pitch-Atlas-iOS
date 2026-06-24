@@ -58,16 +58,17 @@ xcodegen generate
 
 ## Signing (the one human step)
 
-Signing is intentionally **not committed** (`project.yml` carries no
-`DEVELOPMENT_TEAM`). Set it once in Xcode → Signing & Capabilities (or as an
-Xcode Cloud environment setting) under the Apple Developer account Pitch Atlas
-ships from. Pitch Atlas ships under its own identity.
+The release target is configured for team `CQNJJ423X3` in `project.yml`. Archive
+and upload from the Apple Developer account Pitch Atlas ships from. Simulator
+tests may still pass `CODE_SIGNING_ALLOWED=NO`.
 
 ## Supabase Release Gate
 
 Before a release upload, verify the live Supabase project, the iOS community RPCs,
 media upload/readback, blocked-content filtering, and the JWT-protected
-`delete-account` function. Also recheck Supabase branch/migration health from
-`ahump20/Pitch-Atlas`; prior release notes recorded `MIGRATIONS_FAILED`, so do
-not rely on automatic Supabase branch/deploy behavior if the live console still
-reports that state.
+`delete-account` function. For build `1.0.1 (6)`, the live project had the iOS
+preflight migrations, `delete-account`, and authenticated block RPCs
+(`block_user`, `unblock_user`, `my_blocked_users`) applied. Also recheck Supabase
+branch/migration health from `ahump20/Pitch-Atlas`; prior release notes recorded
+`MIGRATIONS_FAILED`, so do not rely on automatic Supabase branch/deploy behavior
+if the live console still reports that state.

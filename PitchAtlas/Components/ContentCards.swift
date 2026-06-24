@@ -219,6 +219,137 @@ struct GripPhotoTile: View {
     }
 }
 
+// MARK: - Pitch specimen card (foil front)
+
+struct PitchSpecimenCard: View {
+    enum Style {
+        case hero
+        case rail
+    }
+
+    let entry: PitchAtlasEntry
+    var style: Style = .hero
+
+    private var isHero: Bool { style == .hero }
+    private var mediaHeight: CGFloat { isHero ? 176 : 118 }
+    private var titleSize: CGFloat { isHero ? 29 : 17 }
+    private var padding: CGFloat { isHero ? PitchAtlasSpacing.md : PitchAtlasSpacing.sm }
+    private var cornerRadius: CGFloat { isHero ? PitchAtlasRadius.card : PitchAtlasRadius.tile }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: isHero ? PitchAtlasSpacing.sm : PitchAtlasSpacing.xs) {
+            HStack(alignment: .center, spacing: PitchAtlasSpacing.xs) {
+                SectionLabel(text: entry.display.specimenNo, color: PitchAtlasTheme.cyanDeep, size: isHero ? 9 : 7)
+                Spacer(minLength: PitchAtlasSpacing.xs)
+                Text(entry.canonical.family.label.uppercased())
+                    .font(PitchAtlasTheme.martian(isHero ? 8 : 7))
+                    .tracking(1.2)
+                    .foregroundStyle(entry.canonical.family.accent)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+            }
+
+            specimenMedia
+
+            nameplate
+
+            if isHero {
+                HStack(alignment: .firstTextBaseline, spacing: PitchAtlasSpacing.xs) {
+                    SectionLabel(text: entry.canonical.grip.confidence.label, color: PitchAtlasTheme.cyanDeep, size: 8)
+                    Spacer(minLength: PitchAtlasSpacing.xs)
+                    Text(entry.canonical.grip.source?.label ?? "Source gap visible")
+                        .font(PitchAtlasTheme.hanken(11))
+                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
+                }
+            }
+        }
+        .padding(padding)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(
+            RoundedRectangle(cornerRadius: max(cornerRadius - 5, 8), style: .continuous)
+                .fill(PitchAtlasTheme.void)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: max(cornerRadius - 5, 8), style: .continuous)
+                .strokeBorder(PitchAtlasTheme.bone.opacity(0.72), lineWidth: isHero ? 2 : 1.4)
+        )
+        .padding(isHero ? 6 : 4)
+        .background(
+            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                .fill(PitchAtlasTheme.foil)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                .strokeBorder(.black.opacity(0.55), lineWidth: 1)
+        )
+        .foilRake(radius: cornerRadius, intensity: isHero ? 0.9 : 0.55)
+        .shadow(color: .black.opacity(isHero ? 0.42 : 0.28), radius: isHero ? 18 : 10, x: 0, y: isHero ? 14 : 7)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
+    }
+
+    @ViewBuilder
+    private var specimenMedia: some View {
+        Group {
+            if isHero, let film = entry.canonical.gripFilm {
+                GripFilmCard(film: film, height: mediaHeight, offersMotionControl: false, showsCaption: false)
+            } else if let still = entry.canonical.realStill {
+                BundledImage(src: still.src, alt: still.alt)
+                    .frame(height: mediaHeight)
+                    .frame(maxWidth: .infinity)
+            } else {
+                SeamBall(motion: entry.motion, size: isHero ? 210 : 96)
+                    .frame(height: mediaHeight)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .background(
+            LinearGradient(
+                colors: [PitchAtlasTheme.paper3, PitchAtlasTheme.press],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
+        .clipShape(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous)
+                .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+        )
+    }
+
+    private var nameplate: some View {
+        HStack(spacing: PitchAtlasSpacing.xs) {
+            FamilyDot(color: entry.canonical.family.accent, size: isHero ? 9 : 7)
+            Text(entry.display.shortName.uppercased())
+                .font(PitchAtlasTheme.anton(titleSize))
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .antonSkew()
+                .lineLimit(isHero ? 2 : 1)
+                .minimumScaleFactor(0.62)
+            Spacer(minLength: PitchAtlasSpacing.xs)
+            if isHero {
+                BrandSealMark(size: 28, shadow: false)
+            }
+        }
+        .padding(.horizontal, isHero ? PitchAtlasSpacing.sm : PitchAtlasSpacing.xs)
+        .padding(.vertical, isHero ? PitchAtlasSpacing.xs : PitchAtlasSpacing.xs2)
+        .background(
+            RoundedRectangle(cornerRadius: PitchAtlasRadius.panel, style: .continuous)
+                .fill(.black.opacity(0.72))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: PitchAtlasRadius.panel, style: .continuous)
+                .strokeBorder(PitchAtlasTheme.bone.opacity(0.28), lineWidth: 1)
+        )
+    }
+
+    private var accessibilityLabel: String {
+        "\(entry.display.specimenNo). \(entry.display.shortName). \(entry.canonical.family.label). \(entry.canonical.grip.confidence.label)."
+    }
+}
+
 // MARK: - Pitch index card / repertoire row
 
 /// One row in the searchable index. Family dot + name + status pill, with a chevron
