@@ -86,10 +86,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "out-in-fingers",
         "fingerSpacing": "slight-spread",
         "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles stacked square behind the ball, in line with the target.",
+          "palmFacing": "Palm to the plate as the fingers come through the top."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited grip descriptions: index and middle pads laid across the horseshoe seam, thumb beneath on the leather. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "wiki-four-seam",
+            "label": "Wikipedia, Four-seam fastball",
+            "url": "https://en.wikipedia.org/wiki/Four-seam_fastball",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Corroborated across Wikipedia (Four-seam fastball), Wikipedia (Fastball), and eFastball."
+        },
         "thumbRole": "Thumb supports underneath, centered below the top two fingers.",
         "palmGapCue": "A little daylight stays between ball and palm so the ball leaves clean.",
         "releaseCue": "Let the index and middle pads roll the ball off the top with backspin.",
@@ -100,6 +116,10 @@
             "label": "Index pad",
             "seamT": 0.305,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 80,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Across the wide horseshoe seam",
             "pressureRole": "Guides the straight release",
             "cue": "Close to middle, not spread wide",
@@ -110,6 +130,10 @@
             "label": "Middle pad",
             "seamT": 0.355,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 98,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Across the wide horseshoe seam",
             "pressureRole": "Primary fastball pressure",
             "cue": "Flat pad across the seam",
@@ -120,6 +144,10 @@
             "label": "Thumb",
             "seamT": 0.83,
             "lift": 0,
+            "seamOffset": 0.05,
+            "azimuth": 55,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Under smooth leather, sometimes touching seam",
             "pressureRole": "Balances the ball under the finger pair",
             "cue": "Under the index-middle window",
@@ -440,10 +468,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "out-in-fingers",
         "fingerSpacing": "slight-spread",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles lined up with the narrow seam lanes, not across them.",
+          "palmFacing": "Palm to the plate, tilting a touch toward the arm side at release."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited grip description: index and middle riding the paired narrow seams like rails, thumb beneath. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "driveline-sinker",
+            "label": "Driveline Baseball, How to Throw a Sinker or Two-Seam Fastball",
+            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-sinker-or-two-seam-fastball/",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The along-seam lanes are the documented two-seam/sinker tell; one-seam variants differ."
+        },
         "thumbRole": "Thumb supports underneath and can sit slightly off-center.",
         "palmGapCue": "Held like a fastball: out in the fingers, not choked into the palm.",
         "releaseCue": "Throw fastball effort and let the along-seam contact tilt the axis.",
@@ -454,6 +498,10 @@
             "label": "Index seam",
             "seamT": 0.12,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": -25,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Runs along one narrow seam",
             "pressureRole": "Starts the arm-side bias",
             "cue": "Along the seam, not across it",
@@ -464,6 +512,10 @@
             "label": "Middle seam",
             "seamT": 0.17,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": -21,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Runs along the paired narrow seam",
             "pressureRole": "Pairs with index to guide run",
             "cue": "Same width as fastball",
@@ -474,6 +526,10 @@
             "label": "Thumb",
             "seamT": 0.62,
             "lift": 0,
+            "seamOffset": 0.05,
+            "azimuth": 50,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Under leather, slightly off-center",
             "pressureRole": "Balances control under the seam pair",
             "cue": "Do not pinch it tight",
@@ -782,10 +838,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "thumb",
         "ballDepth": "deep-in-hand",
         "fingerSpacing": "wide",
         "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles rolled toward the arm side so the circle shows the plate its rim.",
+          "palmFacing": "Palm turning slightly out — pronated — as the hand comes through."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: thumb and index closed into the OK circle on the inner side, middle and ring carrying the ball across the top, the whole hold deeper in the hand than a fastball. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-changeup",
+            "label": "MLB.com Statcast Glossary, Changeup (CH)",
+            "url": "https://www.mlb.com/glossary/pitch-types/changeup",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Circle size varies by hand; small hands often fit a three-finger or palm change better."
+        },
         "thumbRole": "Thumb curls toward the index to form the inside circle.",
         "palmGapCue": "The ball sits deeper than a fastball, closer to the palm.",
         "releaseCue": "Keep fastball arm speed and let the deeper grip take speed off.",
@@ -796,6 +868,11 @@
             "label": "Index circle",
             "seamT": 0.305,
             "lift": 0.02,
+            "seamOffset": -0.04,
+            "azimuth": 62,
+            "engagement": "inside",
+            "pinchesToward": "thumb",
+            "pressureTier": "light",
             "seamRelation": "Curls toward thumb on the inside of the ball",
             "pressureRole": "Forms the loose circle, not the main drive",
             "cue": "Circle, do not pinch",
@@ -806,16 +883,39 @@
             "label": "Middle top",
             "seamT": 0.355,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 78,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Across the top of the ball",
             "pressureRole": "Main top-finger control",
             "cue": "Fastball arm, deeper hold",
             "curl": 0.34
           },
           {
+            "finger": "ring",
+            "label": "Ring pad",
+            "seamT": 0.405,
+            "lift": 0.02,
+            "seamOffset": 0.02,
+            "azimuth": 74,
+            "engagement": "pad",
+            "pressureTier": "support",
+            "seamRelation": "Beside the middle, sharing the top of the ball",
+            "pressureRole": "Carries weight so the index can stay in the circle",
+            "cue": "Let it hold real weight",
+            "curl": 0.36
+          },
+          {
             "finger": "thumb",
             "label": "Thumb circle",
             "seamT": 0.86,
             "lift": 0,
+            "seamOffset": -0.02,
+            "azimuth": 50,
+            "engagement": "inside",
+            "pinchesToward": "index",
+            "pressureTier": "support",
             "seamRelation": "Meets the index on the inner side",
             "pressureRole": "Completes the OK circle",
             "cue": "Loose circle, palm side",
@@ -1100,10 +1200,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "side",
         "ballDepth": "deep-in-hand",
         "fingerSpacing": "touching",
         "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles up and slightly forward, the hand cocked to pull down the front.",
+          "palmFacing": "Palm toward the body at release as the wrist carries over the top."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited description: middle finger lined along a long seam as the engine, index resting beside it, thumb braced on the back seam as the opposing pressure. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "driveline-curveball",
+            "label": "Driveline Baseball, How to Throw a Curveball",
+            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-curveball/",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The straight-curve family; spike and knuckle variants change the index shape, not the middle-finger seam leverage."
+        },
         "thumbRole": "Thumb anchors the back seam under the middle finger.",
         "palmGapCue": "The ball can sit deeper than a fastball to load the pull-down feel.",
         "releaseCue": "Middle finger pulls down through the front of the ball to create topspin.",
@@ -1114,7 +1230,11 @@
             "label": "Middle seam",
             "seamT": 0.3,
             "lift": 0.02,
-            "seamRelation": "Leverages the seam for the pull-down",
+            "seamOffset": 0,
+            "azimuth": -14,
+            "engagement": "inside",
+            "pressureTier": "primary",
+            "seamRelation": "Lined along the seam, leveraging it for the pull-down",
             "pressureRole": "Primary curveball pressure",
             "cue": "This finger owns the pitch",
             "curl": 0.36
@@ -1124,6 +1244,10 @@
             "label": "Index light",
             "seamT": 0.255,
             "lift": 0.02,
+            "seamOffset": -0.03,
+            "azimuth": -30,
+            "engagement": "pad",
+            "pressureTier": "light",
             "seamRelation": "Rests beside the middle finger",
             "pressureRole": "Light guide or spiked variant",
             "cue": "Minimal pressure",
@@ -1134,7 +1258,11 @@
             "label": "Back thumb",
             "seamT": 0.8,
             "lift": 0,
-            "seamRelation": "Underneath on the back seam",
+            "seamOffset": 0,
+            "azimuth": 20,
+            "engagement": "inside",
+            "pressureTier": "support",
+            "seamRelation": "Braced underneath on the back seam",
             "pressureRole": "Opposes the middle-finger pull",
             "cue": "Anchor under the seam",
             "curl": 0.5
@@ -1505,10 +1633,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "side",
         "ballDepth": "neutral",
         "fingerSpacing": "touching",
         "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles turned toward the outer third, set to pull down the side.",
+          "palmFacing": "Palm rolling slightly glove-side at release — the football spiral."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited grip description: middle finger riding a long seam near the outer third, index alongside, the pair set to pull down the side of the ball. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "driveline-slider",
+            "label": "Driveline Baseball, How to Throw a Slider",
+            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-slider/",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The along-the-seam outer-third hold is what separates this from a cutter, which keeps a crossing four-seam anchor."
+        },
         "thumbRole": "Thumb supports underneath while the top fingers sit off-center.",
         "palmGapCue": "Firm but not buried; the ball needs room to slide off the side.",
         "releaseCue": "The fingers pull down the side so the ball spirals like a football.",
@@ -1519,6 +1663,10 @@
             "label": "Index off-center",
             "seamT": 0.4,
             "lift": 0.02,
+            "seamOffset": -0.03,
+            "azimuth": 30,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Close to middle, toward the outer third",
             "pressureRole": "Guides the off-center release",
             "cue": "Close, not wide",
@@ -1529,6 +1677,10 @@
             "label": "Middle seam",
             "seamT": 0.44,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 32,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Rides the seam near the outer third",
             "pressureRole": "Primary slider pressure",
             "cue": "Let it slide off this side",
@@ -1539,6 +1691,10 @@
             "label": "Thumb",
             "seamT": 0.74,
             "lift": 0,
+            "seamOffset": 0.04,
+            "azimuth": 45,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Underneath as support",
             "pressureRole": "Balances the off-center top fingers",
             "cue": "Support, do not squeeze",
@@ -1806,10 +1962,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "neutral",
         "fingerSpacing": "wide",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles spread into a wide V behind the ball, square to the target.",
+          "palmFacing": "Palm to the plate with a stiff wrist — fastball hand, deadened spin."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: index and middle split wide to opposite sides of the ball, pads riding the open leather outside the seam tracks, thumb centered beneath. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "wiki-splitter",
+            "label": "Wikipedia, Split-finger fastball",
+            "url": "https://en.wikipedia.org/wiki/Split-finger_fastball",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Outside the seams is the splitter tell; depth and spread vary with hand size, and short fingers genuinely struggle to hold it."
+        },
         "thumbRole": "Thumb supports underneath, centered between the two split fingers.",
         "palmGapCue": "The ball sits up between the split fingers, farther forward than a forkball.",
         "releaseCue": "Throw it like the fastball and let the wide split deaden the spin.",
@@ -1820,7 +1992,11 @@
             "label": "Index pad",
             "seamT": 0.265,
             "lift": 0.03,
-            "seamRelation": "Wedged to the outside of the ball",
+            "seamOffset": 0.1,
+            "azimuth": 18,
+            "engagement": "pad",
+            "pressureTier": "primary",
+            "seamRelation": "Wedged to the outside of the ball, off the seam tracks",
             "pressureRole": "Half of the wide split",
             "cue": "Split wide, fingers off the seams",
             "curl": 0.16
@@ -1830,7 +2006,11 @@
             "label": "Middle pad",
             "seamT": 0.43,
             "lift": 0.03,
-            "seamRelation": "Wedged to the opposite side",
+            "seamOffset": 0.1,
+            "azimuth": 18,
+            "engagement": "pad",
+            "pressureTier": "support",
+            "seamRelation": "Wedged to the opposite side, off the seam tracks",
             "pressureRole": "The other half of the split that kills the backspin",
             "cue": "As wide as the hand allows, stiff wrist",
             "curl": 0.16
@@ -1840,6 +2020,10 @@
             "label": "Thumb",
             "seamT": 0.83,
             "lift": 0,
+            "seamOffset": 0,
+            "azimuth": 55,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Under smooth leather, centered",
             "pressureRole": "Balances the ball between the split fingers",
             "cue": "Centered underneath",
@@ -2151,10 +2335,27 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "out-in-fingers",
         "fingerSpacing": "wide",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles opened into a shallow V along the narrow seam lanes.",
+          "palmFacing": "Palm to the plate at fastball intent; the split, not the wrist, takes the ride off."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited reporting: a light split laid on a two-seam orientation, fingers near the narrow lanes rather than wedged outside them, index pressure adding the tail. Schematic geometry from reporter paraphrase, not an athlete scan.",
+          "source": {
+            "id": "skenes-mlb-arsenal",
+            "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
+            "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
+            "retrievedAt": "2026-06-05",
+            "season": "2025"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Statcast has no splinker label; the grip detail is reporter paraphrase of Skenes, marked as such."
+        },
         "thumbRole": "Thumb supports underneath, centered between the lightly split fingers.",
         "palmGapCue": "A light two-seam split, the ball held shallow, not wedged deep between the fingers.",
         "releaseCue": "Fastball arm and full intent; the light split and index pressure add the sink and tail.",
@@ -2165,6 +2366,10 @@
             "label": "Index pad",
             "seamT": 0.3,
             "lift": 0.025,
+            "seamOffset": 0.05,
+            "azimuth": 12,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Lightly split on a two-seam orientation",
             "pressureRole": "Adds the arm-side tail with extra pressure",
             "cue": "Split, not wedged; press to tail",
@@ -2175,6 +2380,10 @@
             "label": "Middle pad",
             "seamT": 0.4,
             "lift": 0.025,
+            "seamOffset": 0.05,
+            "azimuth": 12,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Split off the index, held shallow",
             "pressureRole": "The other half of the light split",
             "cue": "Shallow split, not deep",
@@ -2185,6 +2394,10 @@
             "label": "Thumb",
             "seamT": 0.83,
             "lift": 0,
+            "seamOffset": 0,
+            "azimuth": 55,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Under smooth leather, centered",
             "pressureRole": "Balances the ball under the split fingers",
             "cue": "Centered underneath",
@@ -2464,10 +2677,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "side",
         "ballDepth": "neutral",
         "fingerSpacing": "touching",
         "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles carried around the outside of the ball, past where a slider sits.",
+          "palmFacing": "Palm staying on the side through release — the frisbee hand, not a pull-down."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: a slider hold carried further around the side, middle finger riding a seam on the outer third for sidespin. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-sweeper",
+            "label": "MLB.com Statcast Glossary, Sweeper (ST)",
+            "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The around-the-side posture is what tilts the gyro slider toward pure sidespin; spiked and two-seam variants differ."
+        },
         "thumbRole": "Thumb sits under and slightly around so the hand can stay on the side of the ball.",
         "palmGapCue": "Firm but free — the ball has to roll from the side, not be muscled down.",
         "releaseCue": "Sweep the fingers around the outside of the ball, like spinning a frisbee, instead of pulling straight down.",
@@ -2478,6 +2707,10 @@
             "label": "Index around the side",
             "seamT": 0.36,
             "lift": 0.02,
+            "seamOffset": -0.02,
+            "azimuth": 20,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Further around the ball than a slider",
             "pressureRole": "Sets the around-the-side path",
             "cue": "Get around it",
@@ -2488,6 +2721,10 @@
             "label": "Middle seam",
             "seamT": 0.4,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 22,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Rides a seam on the outer third",
             "pressureRole": "Primary sidespin pressure",
             "cue": "Spin it off the side",
@@ -2498,6 +2735,10 @@
             "label": "Thumb",
             "seamT": 0.72,
             "lift": 0,
+            "seamOffset": 0.05,
+            "azimuth": 40,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Under and around as support",
             "pressureRole": "Keeps the hand on the side of the ball",
             "cue": "Support, stay around",
@@ -2742,21 +2983,21 @@
       ],
       "fingerPlacement": [
         {
-          "seamT": 0,
+          "seamT": 0.3,
           "lift": 0.02,
           "label": "Index",
           "finger": "index",
-          "note": "On the leather, both fingers shifted slightly toward the glove side of the ball."
+          "note": "Across the horseshoe like a four-seam, both fingers shifted slightly toward the glove side of the ball."
         },
         {
-          "seamT": 0.06,
+          "seamT": 0.35,
           "lift": 0.02,
           "label": "Middle",
           "finger": "middle",
           "note": "Beside the index, carrying a touch more pressure to set the cut."
         },
         {
-          "seamT": 0.68,
+          "seamT": 0.83,
           "lift": 0,
           "label": "Thumb",
           "finger": "thumb",
@@ -2764,10 +3005,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "neutral",
         "fingerSpacing": "touching",
         "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Square behind the ball like the four-seam, nudged a hair glove-side.",
+          "palmFacing": "Palm to the plate — the shift in the grip, not the wrist, makes the cut."
+        },
+        "provenance": {
+          "value": "Finger placement solved as an off-center four-seam: pads still crossing the horseshoe seam, the pair displaced toward the glove side, middle finger carrying the pressure. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-cutter",
+            "label": "MLB.com Glossary — Cutter (FC)",
+            "url": "https://www.mlb.com/glossary/pitch-types/cutter",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "MLB.com: both fingers set toward one side of the ball; the cut comes from placement and a touch of supination, never a slider-style pull."
+        },
         "thumbRole": "Thumb stays centered underneath, as on the four-seam it is built from.",
         "palmGapCue": "Held like a fastball, not buried — the cut is from the grip, not from squeezing.",
         "releaseCue": "Throw it like a four-seam with a hair of supination — let the ball cut off the fingers rather than pulling down the side like a slider.",
@@ -2776,9 +3033,13 @@
           {
             "finger": "index",
             "label": "Index off-center",
-            "seamT": 0,
+            "seamT": 0.3,
             "lift": 0.02,
-            "seamRelation": "Shifted toward the glove side from a four-seam",
+            "seamOffset": -0.05,
+            "azimuth": 76,
+            "engagement": "pad",
+            "pressureTier": "support",
+            "seamRelation": "Across the horseshoe, shifted toward the glove side from a four-seam",
             "pressureRole": "Sets the off-center grip",
             "cue": "Just off center",
             "curl": 0.3
@@ -2786,9 +3047,13 @@
           {
             "finger": "middle",
             "label": "Middle pressure",
-            "seamT": 0.06,
+            "seamT": 0.35,
             "lift": 0.02,
-            "seamRelation": "Beside the index, slightly more pressure",
+            "seamOffset": -0.07,
+            "azimuth": 98,
+            "engagement": "pad",
+            "pressureTier": "primary",
+            "seamRelation": "Across the horseshoe beside the index, slightly more pressure",
             "pressureRole": "Drives the late cut",
             "cue": "Lead with this finger",
             "curl": 0.32
@@ -2796,8 +3061,12 @@
           {
             "finger": "thumb",
             "label": "Thumb",
-            "seamT": 0.68,
+            "seamT": 0.83,
             "lift": 0,
+            "seamOffset": 0.02,
+            "azimuth": 55,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Centered underneath",
             "pressureRole": "Fastball support",
             "cue": "Stay centered",
@@ -3062,10 +3331,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "out-in-fingers",
         "fingerSpacing": "touching",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles bent up and forward so only the nails meet the leather.",
+          "palmFacing": "Palm flat to the plate through a push release — no snap, no roll."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: index and middle fingernails dug in just behind a seam with the knuckles bent, thumb balancing beneath, the ball held off the palm. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-knuckleball",
+            "label": "MLB.com Statcast Glossary, Knuckleball (KN)",
+            "url": "https://www.mlb.com/glossary/pitch-types/knuckleball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Some throwers brace with bent knuckles instead of nails; the no-spin push is the constant."
+        },
         "thumbRole": "Thumb sits underneath for balance while the fingernails hold the ball off the palm.",
         "palmGapCue": "Ball held off the palm on the fingernails, never buried — the palm must not add spin.",
         "releaseCue": "Push the ball flat toward the plate and let it leave with as little rotation as possible. No wrist snap.",
@@ -3076,6 +3361,10 @@
             "label": "Index nail",
             "seamT": 0.06,
             "lift": 0.04,
+            "seamOffset": -0.03,
+            "azimuth": 70,
+            "engagement": "nail",
+            "pressureTier": "primary",
             "seamRelation": "Nail dug in behind a seam",
             "pressureRole": "Braces the ball to kill spin",
             "cue": "Dig the nail in",
@@ -3086,6 +3375,10 @@
             "label": "Middle nail",
             "seamT": 0.12,
             "lift": 0.04,
+            "seamOffset": -0.03,
+            "azimuth": 70,
+            "engagement": "nail",
+            "pressureTier": "support",
             "seamRelation": "Nail beside the index",
             "pressureRole": "Second brace point",
             "cue": "Push, do not spin",
@@ -3096,6 +3389,10 @@
             "label": "Thumb",
             "seamT": 0.7,
             "lift": 0,
+            "seamOffset": 0.04,
+            "azimuth": 50,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Underneath for balance",
             "pressureRole": "Stabilizes the no-spin push",
             "cue": "Balance underneath",
@@ -3343,10 +3640,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "deep-in-hand",
         "fingerSpacing": "wide",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles forced apart by the wedged ball, the fork riding to the finger bases.",
+          "palmFacing": "Palm to the plate until the wrist snaps down through release."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: the ball jammed to the base of the forked fingers, each riding the inside of its finger on the open leather outside the seams, visibly deeper than a splitter. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-forkball",
+            "label": "MLB.com Statcast Glossary, Forkball (FO)",
+            "url": "https://www.mlb.com/glossary/pitch-types/forkball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Splitter versus forkball is depth, not spread: the splitter rides the fingertips, the forkball is wedged to the knuckles."
+        },
         "thumbRole": "Thumb underneath supports a ball wedged deep against the base of the fingers.",
         "palmGapCue": "No gap — the ball is jammed all the way down between the forked fingers, deeper than a splitter.",
         "releaseCue": "Snap the wrist down as the ball squirts out from between the fingers; the deep grip kills the spin.",
@@ -3357,7 +3670,11 @@
             "label": "Index fork",
             "seamT": 0.18,
             "lift": 0,
-            "seamRelation": "Split wide, jammed deep",
+            "seamOffset": 0.13,
+            "azimuth": 15,
+            "engagement": "inside",
+            "pressureTier": "primary",
+            "seamRelation": "Split wide, jammed deep along the inside of the finger",
             "pressureRole": "One side of the deep fork",
             "cue": "Bury it deep",
             "curl": 0.2
@@ -3367,7 +3684,11 @@
             "label": "Middle fork",
             "seamT": 0.82,
             "lift": 0,
-            "seamRelation": "Split wider than a splitter",
+            "seamOffset": 0.13,
+            "azimuth": 15,
+            "engagement": "inside",
+            "pressureTier": "support",
+            "seamRelation": "Split wider than a splitter, wedged to the knuckles",
             "pressureRole": "Other side of the deep fork",
             "cue": "Wider than a split",
             "curl": 0.2
@@ -3377,6 +3698,10 @@
             "label": "Thumb",
             "seamT": 0.5,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 50,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Underneath as support",
             "pressureRole": "Holds the deep ball",
             "cue": "Support underneath",
@@ -3614,70 +3939,33 @@
           "note": "Paraphrased. The Sewell origin and the Maurice Van Robays \"nothing pitch\" naming are documented in The Hardball Times."
         }
       ],
-      "fingerPlacement": [
-        {
-          "seamT": 0.02,
-          "lift": 0,
-          "label": "Index",
-          "finger": "index",
-          "note": "Across the seams, as on a fastball or curve — the grip barely matters."
-        },
-        {
-          "seamT": 0.08,
-          "lift": 0,
-          "label": "Middle",
-          "finger": "middle",
-          "note": "Beside the index; the pitch is about the lob, not the grip."
-        },
-        {
-          "seamT": 0.66,
-          "lift": 0,
-          "label": "Thumb",
-          "finger": "thumb",
-          "note": "Underneath for control of a very slow release."
-        }
-      ],
+      "fingerPlacement": [],
       "gripModel": {
+        "status": "unfiled",
         "defaultView": "top",
         "ballDepth": "neutral",
         "fingerSpacing": "slight-spread",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "No canonical knuckle line — the hold is whatever the lob trusts.",
+          "palmFacing": "Up and under the ball through the slow, exaggerated release."
+        },
+        "provenance": {
+          "value": "No source supports one canonical eephus grip. The cited references describe an ordinary fastball or curve hold lobbed on a high arc — the pitch lives in the trajectory, not in the fingers.",
+          "source": {
+            "id": "mlb-glossary-eephus",
+            "label": "MLB.com Statcast Glossary, Eephus (EP)",
+            "url": "https://www.mlb.com/glossary/pitch-types/eephus",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "unverified",
+          "note": "The grip stays undrawn on purpose: any fingers placed here would be invented geometry, and this atlas does not invent. Read the release cue instead."
+        },
         "thumbRole": "Thumb underneath for control; the grip is ordinary because the arc, not the spin, is the pitch.",
         "palmGapCue": "Held loosely like a fastball or curve — almost any grip works.",
         "releaseCue": "Throw it on a high, exaggerated overhand arc with drastically reduced arm speed, aiming to peak well above the batter and drop in.",
         "visualCaveat": "Grip geometry is schematic and barely matters here; the eephus is defined by arc and timing, not grip.",
-        "contacts": [
-          {
-            "finger": "index",
-            "label": "Index",
-            "seamT": 0.02,
-            "lift": 0,
-            "seamRelation": "Across the seams",
-            "pressureRole": "Ordinary backspin grip",
-            "cue": "Any normal grip",
-            "curl": 0.3
-          },
-          {
-            "finger": "middle",
-            "label": "Middle",
-            "seamT": 0.08,
-            "lift": 0,
-            "seamRelation": "Beside the index",
-            "pressureRole": "Ordinary backspin grip",
-            "cue": "Lob it",
-            "curl": 0.3
-          },
-          {
-            "finger": "thumb",
-            "label": "Thumb",
-            "seamT": 0.66,
-            "lift": 0,
-            "seamRelation": "Underneath",
-            "pressureRole": "Controls a slow release",
-            "cue": "Stay under it",
-            "curl": 0.4
-          }
-        ]
+        "contacts": []
       },
       "mechanics": {
         "value": "It is lobbed in at a small fraction of fastball pace on a towering rainbow that climbs well above head height before dropping into the zone on a steep angle. It is a once-a-game weapon: it works on timing, not stuff, and a hitter who is ready for it can crush it.",

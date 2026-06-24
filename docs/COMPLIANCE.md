@@ -53,9 +53,11 @@ Verified:
 
 Still open:
 
-- Supabase GitHub branch status reports `MIGRATIONS_FAILED`. Do not rely on automatic Supabase branch/deploy behavior until this is repaired from the web/backend repo.
+- Supabase GitHub branch status reports `MIGRATIONS_FAILED` as of 2026-06-24. Preview status is `ACTIVE_HEALTHY`, but do not rely on automatic Supabase branch/deploy behavior until this is repaired from the web/backend repo.
 - Security advisors still warn about public GraphQL visibility for intentionally public community tables (`field_notes`, `discussion_posts`, `discussion_media`, `profiles`) and signed-in visibility for own-state tables. Keep those warnings reviewed before submission.
 - Leaked password protection remains disabled. If password sign-in is enabled in Supabase Auth, turn it on. If only Apple and magic link are enabled, document that no password credential is collected.
+- Supabase Auth redirect allowlist still needs dashboard proof for `https://pitch-atlas.com/*` and `pitchatlas://auth-callback`.
+- The iOS content model still has legacy optional numeric fields from the old motion schema. They must not be surfaced in v1.0.1 card UI; reconcile them against the web words-only schema before widening the native movement surfaces.
 
 ## App Store Metadata
 
