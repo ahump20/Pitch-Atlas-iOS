@@ -162,7 +162,12 @@ struct IndexView: View {
                     .buttonStyle(.plain)
                 }
             }
-            .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card)
+            .specimenCardFrame(
+                padding: PitchAtlasSpacing.xs,
+                radius: PitchAtlasRadius.card,
+                foilIntensity: 0.08,
+                foilFillOpacity: 0
+            )
         }
     }
 

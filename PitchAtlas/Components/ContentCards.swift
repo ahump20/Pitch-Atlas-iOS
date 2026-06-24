@@ -227,9 +227,10 @@ struct RepertoireRow: View {
     let entry: RepertoireEntry
 
     var body: some View {
-        HStack(spacing: PitchAtlasSpacing.sm) {
+        HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
             FamilyDot(color: entry.family.accent)
-            VStack(alignment: .leading, spacing: 3) {
+                .padding(.top, 5)
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
                 Text(entry.name)
                     .font(PitchAtlasTheme.hankenMedium(16))
                     .foregroundStyle(PitchAtlasTheme.bone)
@@ -240,21 +241,45 @@ struct RepertoireRow: View {
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                HStack(spacing: PitchAtlasSpacing.xs) {
+                    cardStrip(entry.family.label, color: entry.family.accent)
+                    cardStrip(entry.filedSlug == nil ? "Basic file" : "Filed specimen",
+                              color: entry.filedSlug == nil ? PitchAtlasTheme.ink3 : PitchAtlasTheme.cyanDeep)
+                }
             }
             Spacer(minLength: PitchAtlasSpacing.xs)
-            StatusPill(text: entry.status.displayLabel, tone: entry.status.tone)
-            if entry.filedSlug != nil {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+            VStack(alignment: .trailing, spacing: PitchAtlasSpacing.xs) {
+                StatusPill(text: entry.status.displayLabel, tone: entry.status.tone)
+                if entry.filedSlug != nil {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(PitchAtlasTheme.ink3)
+                }
             }
         }
         .padding(.vertical, PitchAtlasSpacing.sm)
         .padding(.horizontal, PitchAtlasSpacing.md)
+        .overlay(alignment: .leading) {
+            RoundedRectangle(cornerRadius: 2, style: .continuous)
+                .fill(entry.family.accent)
+                .frame(width: 2)
+                .padding(.vertical, PitchAtlasSpacing.sm)
+        }
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
         .accessibilityLabel(accessibilityLabel)
         .accessibilityAddTraits(.isButton)
+    }
+
+    private func cardStrip(_ text: String, color: Color) -> some View {
+        Text(text.uppercased())
+            .font(PitchAtlasTheme.martian(7))
+            .tracking(0.8)
+            .foregroundStyle(color)
+            .lineLimit(1)
+            .padding(.horizontal, 5)
+            .padding(.vertical, 2)
+            .background(PitchAtlasTheme.paper3.opacity(0.8), in: Capsule())
     }
 
     /// The aliases are load-bearing for pitch identity but get truncated to one line

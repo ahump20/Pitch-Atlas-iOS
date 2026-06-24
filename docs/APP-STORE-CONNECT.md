@@ -1,20 +1,24 @@
 # Pitch Atlas App Store Connect Pack
 
-> **Status 2026-06-10 (SUBMITTED):** v1.0 is **Waiting for Review with App Store Connect
-> build 3** — the grip-media binary archived from `main` @ `4c523af`. The original
-> submission (build 1, submitted 2026-06-09 12:13 AM) was removed from review and
-> resubmitted at 5:47 AM with build 3; App Store Connect confirmed "1 Item Submitted."
-> Nothing remains to do until Apple's review email arrives.
+> **Status 2026-06-24 (submitted):** App Store Connect API read-back confirms
+> version `1.0.1` / build `5` is selected for App Review and the App Store
+> version state is `WAITING_FOR_REVIEW`. Review submission
+> `9f380fc7-b3cd-4fa1-82b2-52ad52499c24` was submitted at
+> `2026-06-24T18:06:56.67Z`.
 >
-> **Build-number gotcha (why "build 2" became build 3):** `ExportOptions.plist` sets
-> `manageAppVersionAndBuildNumber = true`, so every upload auto-bumps the build number
-> above the highest already in App Store Connect, regardless of `CURRENT_PROJECT_VERSION`
-> (both local archives say CFBundleVersion 1). Today's 04:20 archive (pre-photography)
-> uploaded as ASC build 2; the 05:33 grip-media archive uploaded as ASC build 3. Builds
-> 1 and 2 are superseded — never attach them. Verified by content diff: build 3's bundle
-> has 3 `gripFilm` joins and 11 `recordLinks`; build 2's has zero.
+> **Live upload check, 2026-06-24:** App Store Connect rejected a `1.0.0` /
+> build `4` upload because version `1.0` is already approved, build `4` already
+> exists on that closed train, and the `1.0` pre-release train no longer accepts
+> new builds. The submitted train is `1.0.1` / build `5`; build processing is
+> `VALID`, `usesNonExemptEncryption` is `false`, and the build is attached to
+> the internal TestFlight group `Pitch Atlas Internal`.
+>
+> **Open proof item:** this run verified upload, processing, internal TestFlight
+> attachment, metadata, screenshots, selected build, and App Review submission
+> through the ASC API. It did not drive a physical TestFlight install on a tester
+> device from this shell.
 
-Use this as the paste source for the first iOS submission. It is scoped to the v1 binary: native SwiftUI, an offline bundled reference manual, plus an optional Supabase-backed community layer (sign-in, field notes, discussion posts, image uploads). The reference content works on first launch with no account and no network.
+Use this as the paste source for the next iOS submission. It is scoped to the v1 binary: native SwiftUI, an offline bundled reference manual, plus an optional Supabase-backed community layer (sign-in, field notes, discussion posts, image uploads). The reference content works on first launch with no account and no network.
 
 ## App Identity
 
@@ -26,8 +30,17 @@ Use this as the paste source for the first iOS submission. It is scoped to the v
 - Pricing: `Free`
 - Platform: `iOS`
 - Device family: `iPhone`
-- Version: `1.0.0`
-- Build: `3` (App Store Connect auto-assigns on upload — see the build-number gotcha above)
+- Version: `1.0.1`
+- Build: `5`, uploaded, processed `VALID`, selected for App Review, and attached
+  to `Pitch Atlas Internal` in TestFlight.
+
+## Canonical Xcode Project
+
+Archive and upload from `PitchAtlas.xcodeproj` in the main `Pitch-Atlas-iOS`
+repo/worktree only. The local skeleton at
+`/Users/AustinHumphrey/Pitch-Atlas-iOS-local-skeleton-20260608-221355/Pitch Atlas/Pitch Atlas.xcodeproj`
+is a prototype and is intentionally retargeted to `com.pitchatlas.local-skeleton`
+so it cannot collide with the production App Store bundle.
 
 ## Subtitle
 
@@ -39,7 +52,7 @@ Use this as the paste source for the first iOS submission. It is scoped to the v
 
 `An offline field manual for how pitches are gripped, shaped, sourced, and understood.`
 
-87 characters.
+85 characters.
 
 ## Description
 
@@ -54,15 +67,15 @@ Use this as the paste source for the first iOS submission. It is scoped to the v
 `- A grip library built from first-party grip photography and first-person notes.`
 `- Craftsmen and lost-pitches wings for the pitchers, pitch names, and techniques that shaped the language.`
 `- A sources browser so the reader can see where each claim came from.`
-`- An optional, free community layer: sign in to post field notes and discussion, with reporting and blocking built in.`
+`- An optional, free community layer: sign in to post field notes and discussion, attach still images, report content, block contributors, and delete your account.`
 
-`The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community posting.`
+`The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community actions: posting, reporting, blocking, uploads, and account deletion.`
 
 ## Keywords
 
 `baseball,pitching,grips,pitches,spin,curveball,slider,changeup,fastball,sources`
 
-78 characters.
+79 characters.
 
 ## URLs
 
@@ -70,7 +83,8 @@ Use this as the paste source for the first iOS submission. It is scoped to the v
 - Support URL: `https://pitch-atlas.com/support`
 - Privacy URL: `https://pitch-atlas.com/privacy`
 
-Current blocker: `https://pitch-atlas.com/privacy` must render publicly before submission. From the June 9, 2026 check, the homepage rendered, but `/privacy` returned an internal error.
+Pre-submit URL check: open the Marketing, Support, and Privacy URLs above from a
+logged-out browser. Do not submit if any page fails to render publicly.
 
 ## App Privacy
 
@@ -94,7 +108,10 @@ Truth table for the v1 binary:
 
 ## Age Rating
 
-Expected result: `4+` content, with the UGC questions answered honestly.
+Expected posture: answer the questionnaire honestly and let App Store Connect
+compute the rating. The reference content is baseball instruction; the community
+surface is gated by sign-in, guidelines acceptance, and a 17+ posting/upload
+confirmation.
 
 Questionnaire posture:
 
@@ -115,7 +132,7 @@ The project sets `ITSAppUsesNonExemptEncryption` to `false`, which matches the e
 
 Paste from `docs/APP-REVIEW-NOTES.md`, then add the current build proof:
 
-`This build was verified on an iPhone simulator before submission. It launches into the native Pitch Atlas tab shell and loads the bundled index/grip/source content with no account and no network. The optional community layer signs in through Supabase (Sign in with Apple supported) and supports posting, image upload, reporting, blocking, and account deletion. No analytics, no ads, no tracking, no WebView.`
+`This build was verified on an iPhone simulator before submission. It launches into the native Pitch Atlas tab shell and loads the bundled index/grip/source content with no account and no network. The optional community layer signs in through Supabase (Sign in with Apple supported) and supports field notes, discussion posts, still-image upload, reporting, contributor blocking/unblocking, and account deletion. No analytics, no ads, no tracking, no WebView.`
 
 If the reviewer needs a sign-in, provide a Supabase test account in the review notes credentials fields.
 
