@@ -1,6 +1,6 @@
 # App Review Notes
 
-Paste into App Store Connect for build `1.0.1 (7)`.
+Paste into App Store Connect for build `1.0.1 (8)`.
 
 Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community features use Supabase only after sign-in.
 
@@ -43,7 +43,7 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 - Bundle ID: `com.pitchatlas.app`
 - Version: `1.0.1`
-- Build: `6`
+- Build: `8`
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
 - No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, video upload, or BSI dependency.
@@ -51,8 +51,8 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 ## Final Build Proof
 
-Build `1.0.1 (7)` was verified on the MacBook with a clean iPhone 17 Pro simulator run: 28 tests passed, 0 failed. The signed Release iPhoneOS app metadata resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `7`, and `ITSAppUsesNonExemptEncryption=false`.
+Build `1.0.1 (8)` was verified on the MacBook with a clean iPhone 17 Pro simulator run: 28 tests passed, 0 failed. The signed Release iPhoneOS app metadata resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `8`, and `ITSAppUsesNonExemptEncryption=false`.
 
-Build `7` supersedes the earlier build `6` binary and should be attached to app version `1.0.1` after App Store Connect processing. Build `6` was previously `VALID`, attached to app version `1.0.1`, and assigned to the internal TestFlight groups `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`.
+Build `8` supersedes the earlier build `6` and build `7` binaries. App Store Connect readback on 2026-06-24 showed build `8` as `VALID`, attached to app version `1.0.1`, assigned to the internal TestFlight group `Pitch Atlas Internal Testers`, and submitted for App Review as `WAITING_FOR_REVIEW`.
 
 Screenshot proof and the required design critique are in `docs/review-evidence/2026-06-24-ios-screenshot-report.md`.

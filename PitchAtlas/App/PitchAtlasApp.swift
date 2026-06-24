@@ -41,19 +41,19 @@ struct PitchAtlasApp: App {
 private enum AppChromeAppearance {
     static func install() {
         let field = UIColor(red: 7.0 / 255.0, green: 5.0 / 255.0, blue: 9.0 / 255.0, alpha: 0.98)
-        let bone = UIColor(red: 242.0 / 255.0, green: 236.0 / 255.0, blue: 221.0 / 255.0, alpha: 1)
-        let bone2 = UIColor(red: 199.0 / 255.0, green: 190.0 / 255.0, blue: 168.0 / 255.0, alpha: 0.78)
-        let powder = UIColor(red: 108.0 / 255.0, green: 172.0 / 255.0, blue: 228.0 / 255.0, alpha: 1)
+        let bone = UIColor(red: 246.0 / 255.0, green: 241.0 / 255.0, blue: 230.0 / 255.0, alpha: 1)
+        let bone2 = UIColor(red: 201.0 / 255.0, green: 194.0 / 255.0, blue: 176.0 / 255.0, alpha: 0.78)
+        let cyan = UIColor(red: 55.0 / 255.0, green: 214.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
 
         let tab = UITabBarAppearance()
         tab.configureWithOpaqueBackground()
         tab.backgroundColor = field
-        tab.shadowColor = UIColor(red: 242.0 / 255.0, green: 236.0 / 255.0, blue: 221.0 / 255.0, alpha: 0.12)
+        tab.shadowColor = UIColor(red: 246.0 / 255.0, green: 241.0 / 255.0, blue: 230.0 / 255.0, alpha: 0.12)
         [tab.stackedLayoutAppearance, tab.inlineLayoutAppearance, tab.compactInlineLayoutAppearance].forEach { item in
             item.normal.iconColor = bone2
             item.normal.titleTextAttributes = [.foregroundColor: bone2]
-            item.selected.iconColor = powder
-            item.selected.titleTextAttributes = [.foregroundColor: powder]
+            item.selected.iconColor = cyan
+            item.selected.titleTextAttributes = [.foregroundColor: cyan]
         }
         UITabBar.appearance().standardAppearance = tab
         UITabBar.appearance().scrollEdgeAppearance = tab

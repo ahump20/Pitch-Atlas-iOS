@@ -2,31 +2,32 @@
 
 Date: 2026-06-24
 Device: iPhone 17 Pro simulator, iOS 26.5
-Build target: `com.pitchatlas.app`, version `1.0.1`, build floor `7`
-Capture method: XcodeBuildMCP `build_run_sim`, `snapshot_ui`, and `screenshot`
+Build target: `com.pitchatlas.app`, version `1.0.1`, build floor `8`
+Capture method: `./scripts/build.sh test`, `xcrun simctl install`, `xcrun simctl launch`, and `xcrun simctl io screenshot`
 
-Functional test proof: clean iPhone 17 Pro simulator run, 28 tests passed, 0 failed. Signed Release iPhoneOS metadata resolved to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `7`, and `ITSAppUsesNonExemptEncryption=false`.
-Submission proof: build `6` processed as `VALID`, attached to version `1.0.1`, assigned to internal TestFlight, and submitted for App Review as `WAITING_FOR_REVIEW`; build `7` supersedes it for the visual/loading fix.
+Functional test proof: clean iPhone 17 Pro simulator run, 28 tests passed, 0 failed. Signed Release iPhoneOS metadata resolved to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `8`, and `ITSAppUsesNonExemptEncryption=false`.
+Submission proof: build `8` processed as `VALID`, attached to version `1.0.1`, assigned to internal TestFlight, and submitted for App Review as `WAITING_FOR_REVIEW`.
 
 ## Brand Consistency Critique
 
-Reference files: no `mood.md`, `voice.md`, or `tokens.md` were present in the Pitch Atlas web repo. Critique used the rendered web design tokens in `src/index.css`, `docs/NORTHSTAR.md`, and the current live-brand seal instead.
+Reference files: no `mood.md`, `voice.md`, or `tokens.md` were present in the Pitch Atlas web repo. Critique used `docs/design-language.md`, the rendered web design tokens in `src/index.css`, and the current live-brand seal instead.
 
 Mood: pass. The loaded app surface now uses the web field language: cool near-black stage `#070509`, raised press panels, bone text, seam red, powder blue, chrome type, and controlled refractor edges. The supplied Sluggers card references are translated as collectible-card structure only: foil edge, inset frame, nameplate, specimen media, and stat-card posture. No outside layout, marks, characters, or copy are copied.
 
 Voice: pass. The first screen and loading frame keep the founder rule visible: `Sourced, not corrected.` Community/auth copy names what is available without fake posts, fake freshness, invented pitch values, or seeded activity.
 
-Token compliance: minor issue. iOS maps the web token family into `PitchAtlasTheme` and uses it across the main surfaces. The only deliberate native deviation is that `paper2` and `paper3` are dark structural colors in the app, while cream paper stays reserved for card backs and printed-data panels. If formal `tokens.md` lands later, reconcile that naming so native token names do not look like exact web aliases when they are platform mappings.
+Token compliance: pass. iOS maps the current web refractor token family into `PitchAtlasTheme`: void `#070509`, press `#221E18`, bone `#F6F1E6`, bone-2 `#C9C2B0`, cyan `#37D6FF`, seam-bright `#FF2D44`, and the same refractor foil sweep. The only deliberate native deviation is that `paper2` and `paper3` are dark structural colors in the app, while cream paper stays reserved for card backs and printed-data panels.
 
-Design critique decision: ship build `7` with this direction. The original black-screen failure and the off-brand loaded surface have been addressed by `LaunchLoadingGate`, `FieldBackdrop`, the web seal assets, darker app chrome, hidden-by-default Blaze companion, and specimen-card fronts. Remaining screenshot notes below are App Store crop polish, not blockers for the binary.
+Design critique decision: ship build `8` with this direction. The original black-screen failure and the off-brand loaded surface have been addressed by `LaunchLoadingGate`, `FieldBackdrop`, the web seal assets, darker app chrome, hidden-by-default Blaze companion, current refractor accent tokens, and specimen-card fronts. Remaining screenshot notes below are App Store crop polish, not blockers for the binary.
 
 ## Atlas Home
 
+Raw build-8 proof: `2026-06-24-build-8-atlas-home.jpg`
 Raw build-7 proof: `2026-06-24-build-7-atlas-home.jpg`
 Earlier raw proof: `2026-06-24-atlas-home.jpg`
 Annotated: `2026-06-24-atlas-home-annotated.jpg`
 
-Rendered state: verified from build `7`. The app opens into the native Atlas tab shell with `Pitch Atlas`, `Sourced, not corrected`, the featured Four-seam specimen card, visible first-party grip footage, the dark field background, and the five-tab bar.
+Rendered state: verified from build `8`. The app opens into the native Atlas tab shell with `Pitch Atlas`, `Sourced, not corrected`, the featured Four-seam specimen card, visible first-party grip footage, the dark field background, current cyan active tab, and the five-tab bar.
 
 Critique and remaining crop notes:
 

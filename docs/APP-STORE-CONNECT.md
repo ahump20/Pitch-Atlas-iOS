@@ -2,14 +2,14 @@
 
 Status: 2026-06-24 production submission for `com.pitchatlas.app`.
 
-Build `1.0.1 (7)` is the current release target. App Store Connect reported version `1.0` as previously approved/closed, rejected `1.0.0 (5)`, and accepted build `6` on 2026-06-24 before the final visual/loading pass. Build `7` supersedes build `6` for the next TestFlight/App Review binary.
+Build `1.0.1 (8)` is the submitted release target. App Store Connect reported version `1.0` as previously approved/closed, rejected `1.0.0 (5)`, and accepted build `6` on 2026-06-24 before the final visual/loading pass. Build `8` supersedes builds `6` and `7`.
 
 Verified 2026-06-24 through the App Store Connect API:
 
-- Build `6`: `VALID`, uploaded `2026-06-24T13:24:13-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`.
-- Build `7`: pending upload from commit `8064020` plus build-number bump.
-- App version `1.0.1`: currently submitted with build `6`; update to build `7` after processing.
-- Internal TestFlight: build `6` is in `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`; add build `7` after processing.
+- Build `8`: `VALID`, uploaded `2026-06-24T15:17:20-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`, delivery/build ID `d0b21f93-8605-42ec-8cfc-2e37a3fbb95e`.
+- App version `1.0.1`: `WAITING_FOR_REVIEW` with attached build `8`.
+- Review submission `2ff1c0bd-732e-43af-89a0-f42c0ece6ea6`: `WAITING_FOR_REVIEW`, submitted `2026-06-24T22:23:10.524Z`.
+- Internal TestFlight: build `8` is in `Pitch Atlas Internal` via all-build access and explicitly in `Pitch Atlas Internal Testers`.
 - External public-link TestFlight group was not changed.
 - Chrome UI verification was unavailable from Codex because the Chrome extension backend did not respond, so ASC state was verified through the official API instead.
 - This run did not drive a physical TestFlight install on a tester device from this shell.
@@ -25,7 +25,7 @@ Verified 2026-06-24 through the App Store Connect API:
 - Platform: `iOS`
 - Device family: `iPhone`
 - Version: `1.0.1`
-- Build: `6`
+- Build: `8`
 
 ## Canonical Xcode Project
 
@@ -108,7 +108,7 @@ Answer: uses only exempt encryption through standard HTTPS/ATS. `ITSAppUsesNonEx
 
 ## App Review Notes
 
-Paste from `docs/APP-REVIEW-NOTES.md`. It includes the final build, MacBook test, TestFlight, Supabase, and App Review proof for `1.0.1 (7)`.
+Paste from `docs/APP-REVIEW-NOTES.md`. It includes the final build, MacBook test, TestFlight, Supabase, and App Review proof for `1.0.1 (8)`.
 
 If reviewer credentials are required, provide a Supabase test account in the App Store Connect reviewer credentials fields only.
 
@@ -128,9 +128,9 @@ For every final screenshot report, verify the rendered state first, then include
 ## Release Gates
 
 - Production Supabase project `cloeoulvrrfcbitrjpso` exposes `block_user`, `unblock_user`, and `my_blocked_users` to authenticated clients.
-- Clean iPhone 17 Pro simulator testing passed: 28 tests, 0 failures. The signed Release iPhoneOS app resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `7`, and `ITSAppUsesNonExemptEncryption=false`.
-- App Store Connect build `6` is `VALID`, attached to app version `1.0.1`, and submitted for App Review. Build `7` must replace it after processing.
-- Internal TestFlight has build `6` in `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`; add build `7` after processing.
+- Clean iPhone 17 Pro simulator testing passed: 28 tests, 0 failures. The signed Release iPhoneOS app resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `8`, and `ITSAppUsesNonExemptEncryption=false`.
+- App Store Connect build `8` is `VALID`, attached to app version `1.0.1`, and submitted for App Review as `WAITING_FOR_REVIEW`.
+- Internal TestFlight has build `8` in `Pitch Atlas Internal` through all-build access and explicitly in `Pitch Atlas Internal Testers`.
 - The external public-link TestFlight group was not changed.
 
 ## Internal Brand Guardrail

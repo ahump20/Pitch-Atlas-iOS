@@ -4,9 +4,10 @@ import SwiftUI
 // Pitch Atlas — SwiftUI Token Map
 // =============================================================================
 // Direct port of the web design system's rendered tokens. Source of truth:
-// the web repo's src/index.css. Current public surface: cool near-black field,
-// seam red, powder blue, navy, bone, and controlled refractor foil. Cream lives
-// on card backs and printed-data panels, not as the app field.
+// the web repo's src/index.css refractor layer. Current public surface: cool
+// near-black field, cyan interaction, seam-bright red, bone, and controlled
+// refractor foil. Cream lives on card backs and printed-data panels, not as the
+// app field.
 // Pattern: an enum of static tokens + Color(hex:) + Font.custom(relativeTo:)
 // with system fallbacks. Palette and typefaces are Pitch Atlas's own.
 //
@@ -27,20 +28,20 @@ enum PitchAtlasTheme {
 
     // MARK: - Text
     /// Primary text on the field.
-    static let bone = Color(hex: 0xF2ECDD)
+    static let bone = Color(hex: 0xF6F1E6)
     /// Secondary text, captions.
-    static let bone2 = Color(hex: 0xC7BEA8)
+    static let bone2 = Color(hex: 0xC9C2B0)
     /// Muted / tertiary, hairlines, the "unverified" tier.
     static let ink3 = Color(hex: 0x8A8576)
 
     // MARK: - Accent
-    // Legacy names stay so call sites retone in place. These now map to the web
-    // powder-blue accent; seam red handles force/active emphasis.
-    static let cyan = Color(hex: 0x6CACE4)
-    static let cyanDeep = Color(hex: 0x4B92DB)
+    // Legacy names stay so call sites retone in place. These map to the web
+    // dark-scene interaction accent; powder remains a provenance tone below.
+    static let cyan = Color(hex: 0x37D6FF)
+    static let cyanDeep = Color(hex: 0x1C8FD6)
 
     // MARK: - Seam red (graphic / seam / banned-tier only — never body text on void)
-    static let seamBright = Color(hex: 0xC8102E)
+    static let seamBright = Color(hex: 0xFF2D44)
 
     // MARK: - Provenance ladder (the confidence tiers)
     static let okBright = Color(hex: 0x34E27E)   // official-data
@@ -82,9 +83,9 @@ enum PitchAtlasTheme {
 
     // MARK: - Hairlines / texture
     /// The 1px card border — bone at 12%.
-    static let machined = Color(hex: 0xF2ECDD, opacity: 0.12)
+    static let machined = Color(hex: 0xF6F1E6, opacity: 0.12)
     /// Subtle dividers — bone at 16%.
-    static let navyLine = Color(hex: 0xF2ECDD, opacity: 0.16)
+    static let navyLine = Color(hex: 0xF6F1E6, opacity: 0.16)
 
     // MARK: - Gradients
     /// The holographic foil — refractor card borders, the diamond mark, holo wordmark.
