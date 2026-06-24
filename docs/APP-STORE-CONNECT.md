@@ -1,24 +1,17 @@
 # Pitch Atlas App Store Connect Pack
 
-> **Status 2026-06-24 (submitted):** App Store Connect API read-back confirms
-> version `1.0.1` / build `5` is selected for App Review and the App Store
-> version state is `WAITING_FOR_REVIEW`. Review submission
-> `9f380fc7-b3cd-4fa1-82b2-52ad52499c24` was submitted at
-> `2026-06-24T18:06:56.67Z`.
->
-> **Live upload check, 2026-06-24:** App Store Connect rejected a `1.0.0` /
-> build `4` upload because version `1.0` is already approved, build `4` already
-> exists on that closed train, and the `1.0` pre-release train no longer accepts
-> new builds. The submitted train is `1.0.1` / build `5`; build processing is
-> `VALID`, `usesNonExemptEncryption` is `false`, and the build is attached to
-> the internal TestFlight group `Pitch Atlas Internal`.
->
-> **Open proof item:** this run verified upload, processing, internal TestFlight
-> attachment, metadata, screenshots, selected build, and App Review submission
-> through the ASC API. It did not drive a physical TestFlight install on a tester
-> device from this shell.
+Status: 2026-06-24 production submission for `com.pitchatlas.app`.
 
-Use this as the paste source for the next iOS submission. It is scoped to the v1 binary: native SwiftUI, an offline bundled reference manual, plus an optional Supabase-backed community layer (sign-in, field notes, discussion posts, image uploads). The reference content works on first launch with no account and no network.
+Build `1.0.1 (6)` is the current App Store Connect source of truth. App Store Connect reported version `1.0` as previously approved/closed, rejected `1.0.0 (5)`, and rejected build `5` as already uploaded on 2026-06-24. The stale build `5` review submission was removed, build `6` was attached to version `1.0.1`, and the fresh review submission `abc039da-c681-4cb7-85e0-a6a21e6841ba` is `WAITING_FOR_REVIEW`.
+
+Verified 2026-06-24 through the App Store Connect API:
+
+- Build `6`: `VALID`, uploaded `2026-06-24T13:24:13-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`.
+- App version `1.0.1`: `WAITING_FOR_REVIEW`, attached build ID `55a2225f-7813-4916-9edf-df038ed0d5ac`.
+- Internal TestFlight: build `6` is in `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`.
+- External public-link TestFlight group was not changed.
+- Chrome UI verification was unavailable from Codex because the Chrome extension backend did not respond, so ASC state was verified through the official API instead.
+- This run did not drive a physical TestFlight install on a tester device from this shell.
 
 ## App Identity
 
@@ -31,22 +24,15 @@ Use this as the paste source for the next iOS submission. It is scoped to the v1
 - Platform: `iOS`
 - Device family: `iPhone`
 - Version: `1.0.1`
-- Build: `5`, uploaded, processed `VALID`, selected for App Review, and attached
-  to `Pitch Atlas Internal` in TestFlight.
+- Build: `6`
 
 ## Canonical Xcode Project
 
-Archive and upload from `PitchAtlas.xcodeproj` in the main `Pitch-Atlas-iOS`
-repo/worktree only. The local skeleton at
-`/Users/AustinHumphrey/Pitch-Atlas-iOS-local-skeleton-20260608-221355/Pitch Atlas/Pitch Atlas.xcodeproj`
-is a prototype and is intentionally retargeted to `com.pitchatlas.local-skeleton`
-so it cannot collide with the production App Store bundle.
+Archive and upload from `PitchAtlas.xcodeproj` in the main `Pitch-Atlas-iOS` repo/worktree only. The local skeleton at `/Users/AustinHumphrey/Pitch-Atlas-iOS-local-skeleton-20260608-221355/Pitch Atlas/Pitch Atlas.xcodeproj` is a prototype and is intentionally retargeted to `com.pitchatlas.local-skeleton` so it cannot collide with the production App Store bundle.
 
 ## Subtitle
 
 `A field manual for pitch craft`
-
-30 characters.
 
 ## Promotional Text
 
@@ -56,20 +42,20 @@ so it cannot collide with the production App Store bundle.
 
 ## Description
 
-`Pitch Atlas is a native field manual for the craft of pitching. It explains how pitches are gripped, how they move, who made them famous, and how solid each claim is.`
+Pitch Atlas is a native field manual for the craft of pitching. It explains how pitches are gripped, how they move, who made them famous, and how solid each claim is.
 
-`The app is built around a simple rule: sourced, not corrected. A measured figure, a pitcher quote, a coach observation, and an unverified claim do not wear the same label. Every pitch read shows its evidence tier so the gap stays visible.`
+The app is built around a simple rule: sourced, not corrected. A measured figure, a pitcher quote, a coach observation, and an unverified claim do not wear the same label. Every pitch read shows its evidence tier so the gap stays visible.
 
-`Inside the app:`
+Inside the app:
 
-`- A searchable pitch index, from four-seams and sliders to lost pitches and banned doctored balls.`
-`- Native seam specimens with sourced motion cues and a seam-informed schematic.`
-`- A grip library built from first-party grip photography and first-person notes.`
-`- Craftsmen and lost-pitches wings for the pitchers, pitch names, and techniques that shaped the language.`
-`- A sources browser so the reader can see where each claim came from.`
-`- An optional, free community layer: sign in to post field notes and discussion, attach still images, report content, block contributors, and delete your account.`
+- A searchable pitch index, from four-seams and sliders to lost pitches and banned doctored balls.
+- Native seam specimens with sourced motion cues and seam-informed schematics.
+- A grip library built from first-party grip photography and first-person notes.
+- Craftsmen and lost-pitches wings for the pitchers, pitch names, and techniques that shaped the language.
+- A sources browser so the reader can see where each claim came from.
+- An optional, free community layer: sign in to post field notes and discussion, attach still images, report content, block contributors, and delete your account.
 
-`The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community actions: posting, reporting, blocking, uploads, and account deletion.`
+The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community actions: posting, reporting, blocking, uploads, and account deletion.
 
 ## Keywords
 
@@ -83,70 +69,68 @@ so it cannot collide with the production App Store bundle.
 - Support URL: `https://pitch-atlas.com/support`
 - Privacy URL: `https://pitch-atlas.com/privacy`
 
-Pre-submit URL check: open the Marketing, Support, and Privacy URLs above from a
-logged-out browser. Do not submit if any page fails to render publicly.
+Verified 2026-06-24: support and privacy routes return HTTP 200 through Cloudflare.
 
 ## App Privacy
 
-The binary collects data, so do NOT set `Data Not Collected`. Declare exactly what `PitchAtlas/Resources/PrivacyInfo.xcprivacy` declares — four collected data types, all linked to identity, none used for tracking, all for App Functionality:
+Do not set `Data Not Collected`. Match `PitchAtlas/Resources/PrivacyInfo.xcprivacy`.
 
-- **Email Address** — account sign-in (Supabase auth / Sign in with Apple relay).
-- **User ID** — the Supabase account identifier.
-- **Other User-Generated Content** — community field notes, discussion posts, reports.
-- **Photos or Videos** — still images the user chooses to attach (PhotosPicker, image-only; no video, no live camera capture).
+Collected data, all linked to identity, none used for tracking, all for App Functionality:
 
-Truth table for the v1 binary:
+- Email Address: account sign-in.
+- User ID: the Supabase account identifier.
+- Other User-Generated Content: field notes, discussion posts, reports.
+- Photos or Videos: still images the user chooses to attach.
 
-- Optional account. Sign-in is required only for community posting; the reference manual works logged out.
-- Sign in with Apple is supported (entitlement present).
+Truth table for this binary:
+
+- Optional account. Sign-in is required only for community posting, reporting, blocking, image uploads, and account deletion.
+- Sign in with Apple is supported.
 - No analytics SDK.
 - No advertising SDK.
-- No tracking (`NSPrivacyTracking` is false; no tracking domains).
-- User-generated content exists: community posts and image uploads, with report and block tooling and account deletion in-app.
-- Network requests occur only for the Supabase community/auth layer; the bundled reference content is fully offline.
-- Device motion is used only on-device for the foil rake and is not stored or transmitted.
+- No tracking.
+- No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, or video upload.
+- Device motion is used only on-device for the foil card effect and stops when Reduce Motion is enabled.
 
 ## Age Rating
 
-Expected posture: answer the questionnaire honestly and let App Store Connect
-compute the rating. The reference content is baseball instruction; the community
-surface is gated by sign-in, guidelines acceptance, and a 17+ posting/upload
-confirmation.
+Expected posture: answer the questionnaire honestly and let App Store Connect compute the rating. The reference content is baseball instruction; the community surface is gated by sign-in, guidelines acceptance, and a 17+ posting/upload confirmation.
 
-Questionnaire posture:
-
-- No violence.
-- No medical treatment advice.
-- No gambling.
-- No unrestricted web access.
-- **User-generated content: YES** — community posts and images, gated behind sign-in, with in-app reporting, user blocking, and account deletion (Guideline 1.2 moderation set).
-- Educational sports reference content plus a moderated community.
+- User-generated content: yes.
+- Posting and uploads require sign-in.
+- Reporting, blocking, guidelines, image terms, and in-app account deletion are present.
+- No gambling, unrestricted web access, camera capture, video upload, or medical treatment advice.
 
 ## Export Compliance
 
-Answer: uses encryption, exempt only (standard HTTPS/ATS for the Supabase calls; no custom encryption).
-
-The project sets `ITSAppUsesNonExemptEncryption` to `false`, which matches the exempt posture.
+Answer: uses only exempt encryption through standard HTTPS/ATS. `ITSAppUsesNonExemptEncryption` is false in the generated Info.plist.
 
 ## App Review Notes
 
-Paste from `docs/APP-REVIEW-NOTES.md`, then add the current build proof:
+Paste from `docs/APP-REVIEW-NOTES.md`. It includes the final build, MacBook test, TestFlight, Supabase, and App Review proof for `1.0.1 (6)`.
 
-`This build was verified on an iPhone simulator before submission. It launches into the native Pitch Atlas tab shell and loads the bundled index/grip/source content with no account and no network. The optional community layer signs in through Supabase (Sign in with Apple supported) and supports field notes, discussion posts, still-image upload, reporting, contributor blocking/unblocking, and account deletion. No analytics, no ads, no tracking, no WebView.`
-
-If the reviewer needs a sign-in, provide a Supabase test account in the review notes credentials fields.
+If reviewer credentials are required, provide a Supabase test account in the App Store Connect reviewer credentials fields only.
 
 ## Screenshots To Capture
 
-Required iPhone screenshot set:
+Required iPhone set:
 
-- Atlas home: shows `Pitch Atlas`, `Sourced, not corrected`, native specimen, and tab bar.
-- Pitch Index: shows search and family filters.
-- Pitch detail: shows native seam specimen, source badges, and grip/coaching sections.
-- Grip Library: shows first-party grip photography and `not tracked data` framing.
-- Sources: shows provenance/source browser.
+- Atlas home: card-style specimen, `Pitch Atlas`, `Sourced, not corrected`, and tab bar.
+- Pitch Index: search and family filters.
+- Pitch detail: native seam specimen, source badges, grip/coaching sections, and community surface.
+- Grip Library: first-party grip photography and `not tracked data` framing.
+- Sources: provenance/source browser.
+- Account and Safety: sign-in, safety notes, reports/blocks/account deletion path.
 
-Use iPhone 6.9-inch screenshots if App Store Connect asks for the current largest size. Add 6.5-inch only if App Store Connect does not auto-scale from the submitted set.
+For every final screenshot report, verify the rendered state first, then include annotated design/UX critique with at least 10 high-level fixes or improvements per image.
+
+## Release Gates
+
+- Production Supabase project `cloeoulvrrfcbitrjpso` exposes `block_user`, `unblock_user`, and `my_blocked_users` to authenticated clients.
+- Xcode `My Mac` testing for the Designed for iPad/iPhone runtime passed: 28 tests, 0 failures.
+- App Store Connect build `6` is `VALID`, attached to app version `1.0.1`, and submitted for App Review. The fresh review submission ID is `abc039da-c681-4cb7-85e0-a6a21e6841ba`, state `WAITING_FOR_REVIEW`.
+- Internal TestFlight has build `6` in `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`.
+- The external public-link TestFlight group was not changed.
 
 ## Internal Brand Guardrail
 
