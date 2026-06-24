@@ -14,17 +14,17 @@ Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped 
 6. Submit a Field Note or Discussion post.
 7. For image upload, accept image terms and choose a still image with PhotosPicker.
 8. Use the item menu to report content.
-9. Use the item menu to block a different contributor.
-10. Return to Account and Safety to view blocked contributors or delete the account.
+9. Use the item menu to block a different user, then review the private blocked list in Account and Safety.
+10. Return to Account and Safety to delete the account.
 
 ## Community Safety
 
 - Posting, reporting, blocking, image uploads, and account deletion require sign-in.
-- Reading community content is open so visitors can inspect the public field notes before creating an account.
-- Community posts are user-submitted field notes, not measured proof.
+- Reading community content is open so visitors can inspect public field notes before creating an account.
+- Community posts are user-submitted field notes, not measured claims.
 - Field-note inputs are validated against live Supabase limits before submission.
-- Reports are write-only for normal clients and can hide content through backend policy/trigger rules.
-- Blocking is handled by authenticated Supabase RPCs and hides community content in the app.
+- Reports are write-only for normal clients and can auto-hide content through backend policy/trigger rules.
+- Blocking hides community content both ways, prevents unsafe direct replies, and can be undone from Account and Safety.
 - Account deletion calls the JWT-protected Supabase `delete-account` Edge Function.
 
 ## Media
@@ -43,7 +43,7 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 - Bundle ID: `com.pitchatlas.app`
 - Version: `1.0.1`
-- Build floor: `6`
+- Build: `6`
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
 - No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, video upload, or BSI dependency.
@@ -51,7 +51,7 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 ## Final Build Proof
 
-Build `1.0.1 (6)` was verified on the MacBook using Xcode's `My Mac` destination for the iOS Designed for iPad/iPhone runtime: 26 tests passed, 0 failed. The archive metadata resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `6`, and `ITSAppUsesNonExemptEncryption=false`.
+Build `1.0.1 (6)` was verified on the MacBook using Xcode's `My Mac` destination for the iOS Designed for iPad/iPhone runtime: 28 tests passed, 0 failed. The archive metadata resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `6`, and `ITSAppUsesNonExemptEncryption=false`.
 
 App Store Connect processed build `6` as `VALID`, attached it to app version `1.0.1`, and shows the fresh review submission `abc039da-c681-4cb7-85e0-a6a21e6841ba` as `WAITING_FOR_REVIEW`. Build `6` is also assigned to the internal TestFlight groups `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`.
 

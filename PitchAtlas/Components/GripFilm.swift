@@ -52,6 +52,7 @@ struct GripFilmCard: View {
                 }
             }
         }
+        .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Grip film. \(film.clip.alt) \(film.clip.caption)")
     }
@@ -142,6 +143,7 @@ struct GripStillCard: View {
                 }
             }
         }
+        .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Grip photo. \(photo.alt) \(photo.caption)")
     }

@@ -274,6 +274,40 @@ final class PitchAtlasTests: XCTestCase {
         }
     }
 
+    func testFieldNoteMenusAvoidMedicalReviewLanguageButDecodeLiveValues() throws {
+        XCTAssertFalse(CommunityPitchIntent.allCases.contains(.reduceStress))
+        XCTAssertFalse(CommunityClaimedResultKind.allCases.contains(.reducedDiscomfort))
+
+        XCTAssertEqual(CommunityPitchIntent(rawValue: "reduce-stress")?.label, "Easier feel")
+        XCTAssertEqual(CommunityClaimedResultKind(rawValue: "reduced-discomfort")?.label, "Easier feel")
+    }
+
+    func testDiscussionMediaDecodesPublicReadGrantShape() throws {
+        let json = Data(
+            """
+            {
+              "id": "media-1",
+              "post_id": "post-1",
+              "storage_path": "user-1/media-1.jpg",
+              "kind": "image",
+              "width": 1200,
+              "height": 900
+            }
+            """.utf8
+        )
+
+        let media = try JSONDecoder().decode(DiscussionMedia.self, from: json)
+
+        XCTAssertEqual(media.id, "media-1")
+        XCTAssertEqual(media.postID, "post-1")
+        XCTAssertEqual(media.storagePath, "user-1/media-1.jpg")
+        XCTAssertEqual(media.kind, "image")
+        XCTAssertEqual(media.width, 1200)
+        XCTAssertEqual(media.height, 900)
+        XCTAssertNil(media.signedURL)
+        XCTAssertNil(media.signingError)
+    }
+
     func testCommunityErrorMapperHidesRawDatabaseErrors() {
         let duplicateBlock = NSError(
             domain: "PostgREST",
@@ -300,6 +334,16 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(
             CommunityService.userMessage(for: rateLimit),
             "Too many community actions in a short time. Wait a bit and try again."
+        )
+
+        let permanentAccount = NSError(
+            domain: "PostgREST",
+            code: 42501,
+            userInfo: [NSLocalizedDescriptionKey: "Permanent account required"]
+        )
+        XCTAssertEqual(
+            CommunityService.userMessage(for: permanentAccount),
+            "Use a permanent signed-in account before uploading images."
         )
     }
 

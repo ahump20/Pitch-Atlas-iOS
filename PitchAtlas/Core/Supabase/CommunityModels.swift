@@ -52,6 +52,18 @@ enum CommunityPitchIntent: String, Codable, CaseIterable, Identifiable, Hashable
     case reduceStress = "reduce-stress"
     case other
 
+    static var allCases: [CommunityPitchIntent] {
+        [
+            .moreMovement,
+            .lessMovement,
+            .addedVelocity,
+            .reducedVelocity,
+            .betterCommand,
+            .deception,
+            .other,
+        ]
+    }
+
     var id: String { rawValue }
 
     var label: String {
@@ -62,7 +74,7 @@ enum CommunityPitchIntent: String, Codable, CaseIterable, Identifiable, Hashable
         case .reducedVelocity: return "Softer feel"
         case .betterCommand: return "Better command"
         case .deception: return "More deception"
-        case .reduceStress: return "Less stress"
+        case .reduceStress: return "Easier feel"
         case .other: return "Something else"
         }
     }
@@ -78,6 +90,18 @@ enum CommunityClaimedResultKind: String, Codable, CaseIterable, Identifiable, Ha
     case workedInGame = "worked-in-game"
     case noNoticeableChange = "no-noticeable-change"
 
+    static var allCases: [CommunityClaimedResultKind] {
+        [
+            .moreMovement,
+            .betterCommand,
+            .velocityGain,
+            .inconsistent,
+            .workedInBullpen,
+            .workedInGame,
+            .noNoticeableChange,
+        ]
+    }
+
     var id: String { rawValue }
 
     var label: String {
@@ -85,7 +109,7 @@ enum CommunityClaimedResultKind: String, Codable, CaseIterable, Identifiable, Ha
         case .moreMovement: return "More movement"
         case .betterCommand: return "Better command"
         case .velocityGain: return "Firmer result"
-        case .reducedDiscomfort: return "Less discomfort"
+        case .reducedDiscomfort: return "Easier feel"
         case .inconsistent: return "Inconsistent so far"
         case .workedInBullpen: return "Worked in the bullpen"
         case .workedInGame: return "Worked in a game"
@@ -166,12 +190,8 @@ struct DiscussionPost: Decodable, Identifiable, Hashable {
 struct DiscussionMedia: Decodable, Identifiable, Hashable {
     let id: String
     let postID: String
-    let ownerID: String
-    let topicKey: String
     let storagePath: String
-    let mimeType: String
     let kind: String
-    let byteSize: Int
     let width: Int?
     let height: Int?
     var signedURL: URL?
@@ -180,12 +200,8 @@ struct DiscussionMedia: Decodable, Identifiable, Hashable {
     enum CodingKeys: String, CodingKey {
         case id
         case postID = "post_id"
-        case ownerID = "owner_id"
-        case topicKey = "topic_key"
         case storagePath = "storage_path"
-        case mimeType = "mime_type"
         case kind
-        case byteSize = "byte_size"
         case width
         case height
     }
@@ -479,14 +495,6 @@ struct BlockUserParams: Encodable {
 
     enum CodingKeys: String, CodingKey {
         case targetUser = "target_user"
-    }
-}
-
-struct MediaTermsInsert: Encodable {
-    let userID: String
-
-    enum CodingKeys: String, CodingKey {
-        case userID = "user_id"
     }
 }
 

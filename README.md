@@ -36,6 +36,6 @@ The bundled reference content is generated from the Pitch Atlas web repo and com
 
 ## Release Blockers
 
-- Supabase project is active and the iOS preflight migrations/functions are applied.
-- Supabase GitHub branch status still reports `MIGRATIONS_FAILED`; repair that integration before relying on automatic Supabase migration deploys.
-- Configure Apple Developer/App Store Connect for `com.pitchatlas.app`, Sign in with Apple, signing, Xcode Cloud release workflow, screenshots, privacy labels, and reviewer notes.
+- Verify the live Supabase project health, community RPCs, blocked-content behavior, media upload/readback, and `delete-account` before TestFlight.
+- Recheck Supabase branch/migration health from `ahump20/Pitch-Atlas`. Prior release notes recorded `MIGRATIONS_FAILED`; repair it if the live console still reports that.
+- Verify Apple Developer/App Store Connect for `com.pitchatlas.app`: Sign in with Apple, signing, Xcode Cloud release workflow, screenshots, privacy labels, age rating, reviewer notes, and the highest processed build.

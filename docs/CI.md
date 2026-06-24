@@ -4,11 +4,18 @@
 
 `.github/workflows/ios.yml` is the PR/main check. It installs XcodeGen, generates
 `PitchAtlas.xcodeproj`, builds the app with `xcodebuild`, then runs unit tests on
-an available iPhone simulator. Do not replace it with `swift build` / `swift test`;
+an available iPhone simulator with `build-for-testing` followed by
+`test-without-building` through `./scripts/build.sh test`. The wrapper shuts down
+all simulators before each Xcode launch step, waits for `simctl bootstatus -b`
+when the destination is pinned by simulator id, gives the test launch a bounded
+timeout, and restarts CoreSimulator once if the run stalls at "waiting for
+workers to materialize". Do not replace it with `swift build` / `swift test`;
 this app is not a SwiftPM executable package.
 
 `scripts/build.sh test` must fail when tests fail. The wrapper uses `pipefail`
-and only pipes through `xcpretty` when `xcpretty` exists.
+and only pipes through `xcpretty` when `xcpretty` exists. A retry is allowed only
+for the known Xcode simulator-launch timeout, not for compile errors or failed
+tests.
 
 ## Xcode Cloud
 
@@ -45,8 +52,8 @@ in `ci_scripts/` named `ci_post_clone.sh` runs after clone).
 
 ```bash
 xcodegen generate
-xcodebuild -project PitchAtlas.xcodeproj -scheme PitchAtlas \
-  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test
+./scripts/build.sh build
+./scripts/build.sh test
 ```
 
 ## Signing (the one human step)
@@ -57,8 +64,11 @@ tests may still pass `CODE_SIGNING_ALLOWED=NO`.
 
 ## Supabase Release Gate
 
-The live Supabase project has the iOS preflight migrations, `delete-account`
-function, and authenticated block RPCs (`block_user`, `unblock_user`,
-`my_blocked_users`) applied. The Supabase GitHub branch status still reports
+Before a release upload, verify the live Supabase project, the iOS community RPCs,
+media upload/readback, blocked-content filtering, and the JWT-protected
+`delete-account` function. For build `1.0.1 (6)`, the live project had the iOS
+preflight migrations, `delete-account`, and authenticated block RPCs
+(`block_user`, `unblock_user`, `my_blocked_users`) applied. Also recheck Supabase
+branch/migration health from `ahump20/Pitch-Atlas`; prior release notes recorded
 `MIGRATIONS_FAILED`, so do not rely on automatic Supabase branch/deploy behavior
-until that integration is repaired from `ahump20/Pitch-Atlas`.
+if the live console still reports that state.

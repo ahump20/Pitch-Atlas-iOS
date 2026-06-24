@@ -31,15 +31,9 @@ jobs:
 
       - name: Test
         run: |
-          set -o pipefail
           DESTINATION="$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ { print $2; exit }')"
           if [ -z "$DESTINATION" ]; then
             echo "No available iPhone simulator found"
             exit 1
           fi
-          xcodebuild test \
-            -scheme PitchAtlas \
-            -sdk iphonesimulator \
-            -destination "platform=iOS Simulator,id=${DESTINATION}" \
-            -derivedDataPath .build/DerivedData \
-            CODE_SIGNING_ALLOWED=NO
+          PA_TEST_DEST="platform=iOS Simulator,id=${DESTINATION}" ./scripts/build.sh test

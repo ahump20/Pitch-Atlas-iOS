@@ -58,7 +58,7 @@ struct FoilRake: ViewModifier {
                     .scaleEffect(2.0)
                     .offset(x: dx, y: dy)
                     .blendMode(.colorDodge)
-                    .opacity(0.16)
+                    .opacity(0.16 * intensity)
                     .animation(.easeOut(duration: 0.12), value: motion.roll)
                     .animation(.easeOut(duration: 0.12), value: motion.pitch)
                     .allowsHitTesting(false)

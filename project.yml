@@ -77,7 +77,6 @@ targets:
       testTargets:
         - PitchAtlasTests
       gatherCoverageData: true
-
   PitchAtlasTests:
     type: bundle.unit-test
     platform: iOS

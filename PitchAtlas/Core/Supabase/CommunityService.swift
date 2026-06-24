@@ -38,7 +38,7 @@ struct CommunityService {
 
         let mediaRows: [DiscussionMedia] = try await client
             .from("discussion_media")
-            .select("id, post_id, owner_id, topic_key, storage_path, mime_type, kind, byte_size, width, height")
+            .select("id, post_id, storage_path, kind, width, height")
             .in("post_id", values: postIDs.map { $0 as any PostgrestFilterValue })
             .execute()
             .value
@@ -69,11 +69,9 @@ struct CommunityService {
             .execute()
     }
 
-    func acceptMediaTerms(userID: String) async throws {
-        let row = MediaTermsInsert(userID: userID)
-        _ = try? await client
-            .from("discussion_media_terms")
-            .insert(row)
+    func acceptMediaTerms() async throws {
+        try await client
+            .rpc("accept_media_terms")
             .execute()
     }
 
@@ -217,6 +215,9 @@ struct CommunityService {
         let raw = "\(error.localizedDescription) \(String(describing: error))".lowercased()
         if raw.contains("auth_required") || raw.contains("jwt") || raw.contains("not authenticated") || raw.contains("permission denied") {
             return "Sign in before doing that."
+        }
+        if raw.contains("permanent account") {
+            return "Use a permanent signed-in account before uploading images."
         }
         if raw.contains("rate_limit") {
             return "Too many community actions in a short time. Wait a bit and try again."

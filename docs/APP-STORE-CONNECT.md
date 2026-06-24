@@ -2,7 +2,16 @@
 
 Status: 2026-06-24 production submission for `com.pitchatlas.app`.
 
-This pack is the App Store Connect source of truth for build **1.0.1 (6)**. The stale June 10 build-3 submission note is intentionally removed. App Store Connect reported version `1.0` as previously approved/closed, rejected `1.0.0 (5)`, and rejected build `5` as already uploaded on 2026-06-24. Build `6` was uploaded, processed as `VALID`, attached to version `1.0.1`, assigned to internal TestFlight groups, and submitted for App Review on 2026-06-24.
+Build `1.0.1 (6)` is the current App Store Connect source of truth. App Store Connect reported version `1.0` as previously approved/closed, rejected `1.0.0 (5)`, and rejected build `5` as already uploaded on 2026-06-24. The stale build `5` review submission was removed, build `6` was attached to version `1.0.1`, and the fresh review submission `abc039da-c681-4cb7-85e0-a6a21e6841ba` is `WAITING_FOR_REVIEW`.
+
+Verified 2026-06-24 through the App Store Connect API:
+
+- Build `6`: `VALID`, uploaded `2026-06-24T13:24:13-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`.
+- App version `1.0.1`: `WAITING_FOR_REVIEW`, attached build ID `55a2225f-7813-4916-9edf-df038ed0d5ac`.
+- Internal TestFlight: build `6` is in `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`.
+- External public-link TestFlight group was not changed.
+- Chrome UI verification was unavailable from Codex because the Chrome extension backend did not respond, so ASC state was verified through the official API instead.
+- This run did not drive a physical TestFlight install on a tester device from this shell.
 
 ## App Identity
 
@@ -15,7 +24,11 @@ This pack is the App Store Connect source of truth for build **1.0.1 (6)**. The 
 - Platform: `iOS`
 - Device family: `iPhone`
 - Version: `1.0.1`
-- Build floor: `6`
+- Build: `6`
+
+## Canonical Xcode Project
+
+Archive and upload from `PitchAtlas.xcodeproj` in the main `Pitch-Atlas-iOS` repo/worktree only. The local skeleton at `/Users/AustinHumphrey/Pitch-Atlas-iOS-local-skeleton-20260608-221355/Pitch Atlas/Pitch Atlas.xcodeproj` is a prototype and is intentionally retargeted to `com.pitchatlas.local-skeleton` so it cannot collide with the production App Store bundle.
 
 ## Subtitle
 
@@ -24,6 +37,8 @@ This pack is the App Store Connect source of truth for build **1.0.1 (6)**. The 
 ## Promotional Text
 
 `An offline field manual for how pitches are gripped, shaped, sourced, and understood.`
+
+85 characters.
 
 ## Description
 
@@ -40,11 +55,13 @@ Inside the app:
 - A sources browser so the reader can see where each claim came from.
 - An optional, free community layer: sign in to post field notes and discussion, attach still images, report content, block contributors, and delete your account.
 
-The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community posting and safety actions.
+The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community actions: posting, reporting, blocking, uploads, and account deletion.
 
 ## Keywords
 
 `baseball,pitching,grips,pitches,spin,curveball,slider,changeup,fastball,sources`
+
+79 characters.
 
 ## URLs
 
@@ -52,8 +69,7 @@ The full reference library is bundled inside the app, so it works on first launc
 - Support URL: `https://pitch-atlas.com/support`
 - Privacy URL: `https://pitch-atlas.com/privacy`
 
-Verified 2026-06-24: support and privacy routes return HTTP 200 through
-Cloudflare.
+Verified 2026-06-24: support and privacy routes return HTTP 200 through Cloudflare.
 
 ## App Privacy
 
@@ -78,7 +94,7 @@ Truth table for this binary:
 
 ## Age Rating
 
-Expected posture: educational sports reference with user-generated content disclosed honestly.
+Expected posture: answer the questionnaire honestly and let App Store Connect compute the rating. The reference content is baseball instruction; the community surface is gated by sign-in, guidelines acceptance, and a 17+ posting/upload confirmation.
 
 - User-generated content: yes.
 - Posting and uploads require sign-in.
@@ -91,7 +107,7 @@ Answer: uses only exempt encryption through standard HTTPS/ATS. `ITSAppUsesNonEx
 
 ## App Review Notes
 
-Paste from `docs/APP-REVIEW-NOTES.md`. It already includes the final build, MacBook test, TestFlight, Supabase, and App Review proof for `1.0.1 (6)`.
+Paste from `docs/APP-REVIEW-NOTES.md`. It includes the final build, MacBook test, TestFlight, Supabase, and App Review proof for `1.0.1 (6)`.
 
 If reviewer credentials are required, provide a Supabase test account in the App Store Connect reviewer credentials fields only.
 
@@ -111,10 +127,10 @@ For every final screenshot report, verify the rendered state first, then include
 ## Release Gates
 
 - Production Supabase project `cloeoulvrrfcbitrjpso` exposes `block_user`, `unblock_user`, and `my_blocked_users` to authenticated clients.
-- Xcode `My Mac` testing for the Designed for iPad/iPhone runtime passed: 26 tests, 0 failures.
+- Xcode `My Mac` testing for the Designed for iPad/iPhone runtime passed: 28 tests, 0 failures.
 - App Store Connect build `6` is `VALID`, attached to app version `1.0.1`, and submitted for App Review. The fresh review submission ID is `abc039da-c681-4cb7-85e0-a6a21e6841ba`, state `WAITING_FOR_REVIEW`.
-- Internal TestFlight has build `6` in `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`. The external public-link group was not changed.
-- Chrome UI verification was unavailable from Codex because the Chrome extension backend did not respond, so App Store Connect state was verified through the official API instead.
+- Internal TestFlight has build `6` in `Pitch Atlas Internal` and `Pitch Atlas Internal Testers`.
+- The external public-link TestFlight group was not changed.
 
 ## Internal Brand Guardrail
 

@@ -43,18 +43,20 @@ All are linked to the user and used for app functionality/community safety. Trac
 
 ## Backend Release Gate
 
-Verified:
+Verify before submission:
 
 - Supabase project `cloeoulvrrfcbitrjpso` is active.
-- `ios_app_store_preflight` migration applied.
-- `ios_app_store_grant_cleanup` migration applied.
+- iOS community RPCs are present: `block_user`, `unblock_user`, and `my_blocked_users`.
+- Field notes use the live enum values and reject invalid rows.
+- Discussion media can upload, insert metadata, sign for readback, report, and stop serving after hide/delete.
+- Blocking hides content both ways and prevents direct replies.
 - `delete-account` Edge Function is active with `verify_jwt = true`.
-- `public.is_admin()` is no longer executable by anon/authenticated roles.
+- `public.is_admin()` is not executable by anon/authenticated roles.
 
-Still open:
+Open checks:
 
-- Supabase GitHub branch status reports `MIGRATIONS_FAILED`. Do not rely on automatic Supabase branch/deploy behavior until this is repaired from the web/backend repo.
-- Security advisors still warn about public GraphQL visibility for intentionally public community tables (`field_notes`, `discussion_posts`, `discussion_media`, `profiles`) and signed-in visibility for own-state tables. Keep those warnings reviewed before submission.
+- Recheck Supabase GitHub branch/migration health from the web/backend repo. Prior release notes recorded `MIGRATIONS_FAILED`; do not rely on automatic Supabase branch/deploy behavior if the live console still reports that.
+- Review security advisors for intentionally public community reads (`field_notes`, `discussion_posts`, `discussion_media`, `profiles`) and signed-in own-state tables before submission.
 - Leaked password protection remains disabled. If password sign-in is enabled in Supabase Auth, turn it on. If only Apple and magic link are enabled, document that no password credential is collected.
 
 ## App Store Metadata

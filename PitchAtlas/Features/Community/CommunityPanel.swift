@@ -561,7 +561,7 @@ struct CommunityPanel: View {
 
         if let pendingImage, mediaTermsAccepted {
             do {
-                try await service.acceptMediaTerms(userID: userID)
+                try await service.acceptMediaTerms()
                 try await service.uploadImage(pendingImage, topicKey: topicKey, postID: postID, userID: userID)
                 preparedImage = nil
                 selectedPhoto = nil
@@ -648,7 +648,7 @@ struct CommunityPanel: View {
         isSubmitting = true
         defer { isSubmitting = false }
         do {
-            try await service.acceptMediaTerms(userID: userID)
+            try await service.acceptMediaTerms()
             try await service.uploadImage(retry.image, topicKey: topicKey, postID: retry.postID, userID: userID)
             preparedImage = nil
             selectedPhoto = nil

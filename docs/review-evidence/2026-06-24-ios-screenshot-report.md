@@ -5,7 +5,7 @@ Device: iPhone 17 Pro simulator, iOS 26.5
 Build target: `com.pitchatlas.app`, version `1.0.1`, build floor `6`
 Capture method: XcodeBuildMCP `build_run_sim`, `snapshot_ui`, and `screenshot`
 
-Functional test proof: Xcode `My Mac` destination for the iOS Designed for iPad/iPhone runtime, 26 tests passed, 0 failed.
+Functional test proof: Xcode `My Mac` destination for the iOS Designed for iPad/iPhone runtime, 28 tests passed, 0 failed.
 Submission proof: App Store Connect build `6` processed as `VALID`, attached to version `1.0.1`, assigned to internal TestFlight, and submitted for App Review as `WAITING_FOR_REVIEW`.
 
 ## Atlas Home
