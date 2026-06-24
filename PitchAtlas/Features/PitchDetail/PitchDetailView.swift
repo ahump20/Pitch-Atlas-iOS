@@ -113,8 +113,7 @@ struct PitchDetailView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, PitchAtlasSpacing.lg)
-        .leatherPress(padding: PitchAtlasSpacing.lg)
-        .foilRake()
+        .specimenCardFrame(padding: PitchAtlasSpacing.lg, foilIntensity: 0.82)
     }
 
     /// Maps the seam pips (1 index, 2 middle, 3 ring, 4 pinky, T thumb) to names so

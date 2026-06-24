@@ -47,11 +47,72 @@ struct LeatherPress: ViewModifier {
     }
 }
 
+/// The specimen surface: a leather-press card with a refractor edge and inset
+/// print rules. This borrows the physical-card language without copying any
+/// outside card layout.
+struct SpecimenCardFrame: ViewModifier {
+    var padding: CGFloat
+    var radius: CGFloat
+    var foilIntensity: Double
+    var foilFillOpacity: Double
+
+    func body(content: Content) -> some View {
+        content
+            .padding(padding)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(
+                ZStack {
+                    RoundedRectangle(cornerRadius: radius, style: .continuous)
+                        .fill(PitchAtlasTheme.press)
+                    RoundedRectangle(cornerRadius: radius, style: .continuous)
+                        .fill(PitchAtlasTheme.foil)
+                        .opacity(foilFillOpacity)
+                        .blendMode(.screen)
+                }
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: radius, style: .continuous)
+                    .strokeBorder(PitchAtlasTheme.foil, lineWidth: 1.5)
+                    .opacity(0.78)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: max(2, radius - 6), style: .continuous)
+                    .inset(by: 6)
+                    .strokeBorder(PitchAtlasTheme.bone.opacity(0.20), lineWidth: 1)
+            )
+            .overlay(alignment: .bottom) {
+                Rectangle()
+                    .fill(PitchAtlasTheme.foil)
+                    .frame(height: 2)
+                    .opacity(0.52)
+                    .padding(.horizontal, radius)
+                    .padding(.bottom, 5)
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+            .foilRake(radius: radius, intensity: foilIntensity)
+    }
+}
+
 extension View {
     /// Wrap content as a leather-press card.
     func leatherPress(padding: CGFloat = PitchAtlasSpacing.md,
                       radius: CGFloat = PitchAtlasRadius.card) -> some View {
         modifier(LeatherPress(padding: padding, radius: radius))
+    }
+
+    /// Wrap content as a foil-edged specimen card.
+    func specimenCardFrame(padding: CGFloat = PitchAtlasSpacing.md,
+                           radius: CGFloat = PitchAtlasRadius.card,
+                           foilIntensity: Double = 0.75,
+                           foilFillOpacity: Double = 0.055) -> some View {
+        modifier(SpecimenCardFrame(
+            padding: padding,
+            radius: radius,
+            foilIntensity: foilIntensity,
+            foilFillOpacity: foilFillOpacity
+        ))
     }
 }
 

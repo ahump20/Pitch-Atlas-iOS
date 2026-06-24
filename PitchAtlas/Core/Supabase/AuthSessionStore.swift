@@ -82,7 +82,7 @@ final class AuthSessionStore {
             magicLinkSentTo = email
             lastMagicLinkAt = Date()
         } catch {
-            errorMessage = "Magic link failed: \(error.localizedDescription)"
+            errorMessage = "Magic link failed. Check the address and try again."
         }
     }
 
@@ -119,7 +119,7 @@ final class AuthSessionStore {
             )
             apply(session: session)
         } catch {
-            errorMessage = "Apple sign-in failed: \(error.localizedDescription)"
+            errorMessage = "Apple sign-in failed. Try again from the Apple button."
         }
     }
 
@@ -130,7 +130,7 @@ final class AuthSessionStore {
             try await client.auth.signOut()
             apply(session: nil)
         } catch {
-            errorMessage = "Sign out failed: \(error.localizedDescription)"
+            errorMessage = "Sign out failed. Try again."
         }
     }
 
@@ -154,11 +154,12 @@ final class AuthSessionStore {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = Data("{}".utf8)
 
-            let (data, response) = try await URLSession.shared.data(for: request)
+            let (_, response) = try await URLSession.shared.data(for: request)
             let status = (response as? HTTPURLResponse)?.statusCode ?? 0
             if !(200..<300).contains(status) {
-                let body = String(data: data, encoding: .utf8) ?? "no response body"
-                errorMessage = "Delete account failed (\(status)): \(body)"
+                errorMessage = status == 401
+                    ? "Sign in again before deleting this account."
+                    : "Delete account failed. Try again, or use Support if it keeps failing."
                 return false
             }
 
@@ -166,7 +167,7 @@ final class AuthSessionStore {
             apply(session: nil)
             return true
         } catch {
-            errorMessage = "Delete account failed: \(error.localizedDescription)"
+            errorMessage = "Delete account failed. Check your connection and try again."
             return false
         }
     }
@@ -175,7 +176,7 @@ final class AuthSessionStore {
         guard authTask == nil else { return }
         authTask = Task { [weak self] in
             guard let self else { return }
-            for await (_, session) in await client.auth.authStateChanges {
+            for await (_, session) in client.auth.authStateChanges {
                 await MainActor.run {
                     self.apply(session: session)
                 }

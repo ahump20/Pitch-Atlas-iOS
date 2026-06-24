@@ -1,20 +1,16 @@
 # Pitch Atlas App Store Connect Pack
 
-> **Status 2026-06-10 (SUBMITTED):** v1.0 is **Waiting for Review with App Store Connect
-> build 3** — the grip-media binary archived from `main` @ `4c523af`. The original
-> submission (build 1, submitted 2026-06-09 12:13 AM) was removed from review and
-> resubmitted at 5:47 AM with build 3; App Store Connect confirmed "1 Item Submitted."
-> Nothing remains to do until Apple's review email arrives.
+> **Status 2026-06-24 (repo prep):** App Store Connect and TestFlight state is
+> not proven from this checkout. Before archive, open the live App Store Connect
+> record and verify the current version state, highest processed build, privacy
+> labels, age rating, review notes, screenshots, and TestFlight groups.
 >
-> **Build-number gotcha (why "build 2" became build 3):** `ExportOptions.plist` sets
-> `manageAppVersionAndBuildNumber = true`, so every upload auto-bumps the build number
-> above the highest already in App Store Connect, regardless of `CURRENT_PROJECT_VERSION`
-> (both local archives say CFBundleVersion 1). Today's 04:20 archive (pre-photography)
-> uploaded as ASC build 2; the 05:33 grip-media archive uploaded as ASC build 3. Builds
-> 1 and 2 are superseded — never attach them. Verified by content diff: build 3's bundle
-> has 3 `gripFilm` joins and 11 `recordLinks`; build 2's has zero.
+> **Build-number rule:** the repo baseline is build 4 because earlier notes say
+> App Store Connect already processed build 3. If the live console already has
+> build 4 or higher, bump `CURRENT_PROJECT_VERSION` again before archive. Attach
+> only the build that was smoke-tested through TestFlight.
 
-Use this as the paste source for the first iOS submission. It is scoped to the v1 binary: native SwiftUI, an offline bundled reference manual, plus an optional Supabase-backed community layer (sign-in, field notes, discussion posts, image uploads). The reference content works on first launch with no account and no network.
+Use this as the paste source for the next iOS submission. It is scoped to the v1 binary: native SwiftUI, an offline bundled reference manual, plus an optional Supabase-backed community layer (sign-in, field notes, discussion posts, image uploads). The reference content works on first launch with no account and no network.
 
 ## App Identity
 
@@ -27,7 +23,8 @@ Use this as the paste source for the first iOS submission. It is scoped to the v
 - Platform: `iOS`
 - Device family: `iPhone`
 - Version: `1.0.0`
-- Build: `3` (App Store Connect auto-assigns on upload — see the build-number gotcha above)
+- Build: `4` repo baseline. Verify App Store Connect before archive; bump again
+  if the live console already has build 4 or higher.
 
 ## Subtitle
 
@@ -54,9 +51,9 @@ Use this as the paste source for the first iOS submission. It is scoped to the v
 `- A grip library built from first-party grip photography and first-person notes.`
 `- Craftsmen and lost-pitches wings for the pitchers, pitch names, and techniques that shaped the language.`
 `- A sources browser so the reader can see where each claim came from.`
-`- An optional, free community layer: sign in to post field notes and discussion, with reporting and blocking built in.`
+`- An optional, free community layer: sign in to post field notes and discussion, attach still images, report content, block contributors, and delete your account.`
 
-`The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community posting.`
+`The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community actions: posting, reporting, blocking, uploads, and account deletion.`
 
 ## Keywords
 
@@ -70,7 +67,8 @@ Use this as the paste source for the first iOS submission. It is scoped to the v
 - Support URL: `https://pitch-atlas.com/support`
 - Privacy URL: `https://pitch-atlas.com/privacy`
 
-Current blocker: `https://pitch-atlas.com/privacy` must render publicly before submission. From the June 9, 2026 check, the homepage rendered, but `/privacy` returned an internal error.
+Pre-submit URL check: open the Marketing, Support, and Privacy URLs above from a
+logged-out browser. Do not submit if any page fails to render publicly.
 
 ## App Privacy
 
@@ -94,7 +92,10 @@ Truth table for the v1 binary:
 
 ## Age Rating
 
-Expected result: `4+` content, with the UGC questions answered honestly.
+Expected posture: answer the questionnaire honestly and let App Store Connect
+compute the rating. The reference content is baseball instruction; the community
+surface is gated by sign-in, guidelines acceptance, and a 17+ posting/upload
+confirmation.
 
 Questionnaire posture:
 
@@ -115,7 +116,7 @@ The project sets `ITSAppUsesNonExemptEncryption` to `false`, which matches the e
 
 Paste from `docs/APP-REVIEW-NOTES.md`, then add the current build proof:
 
-`This build was verified on an iPhone simulator before submission. It launches into the native Pitch Atlas tab shell and loads the bundled index/grip/source content with no account and no network. The optional community layer signs in through Supabase (Sign in with Apple supported) and supports posting, image upload, reporting, blocking, and account deletion. No analytics, no ads, no tracking, no WebView.`
+`This build was verified on an iPhone simulator before submission. It launches into the native Pitch Atlas tab shell and loads the bundled index/grip/source content with no account and no network. The optional community layer signs in through Supabase (Sign in with Apple supported) and supports field notes, discussion posts, still-image upload, reporting, contributor blocking/unblocking, and account deletion. No analytics, no ads, no tracking, no WebView.`
 
 If the reviewer needs a sign-in, provide a Supabase test account in the review notes credentials fields.
 

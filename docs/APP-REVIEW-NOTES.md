@@ -14,7 +14,7 @@ Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped 
 6. Submit a Field Note or Discussion post.
 7. For image upload, accept image terms and choose a still image with PhotosPicker.
 8. Use the item menu to report content.
-9. Use the item menu to block a different user.
+9. Use the item menu to block a different user, then review the private blocked list in Account and Safety.
 10. Return to Account and Safety to delete the account.
 
 ## Community Safety
@@ -22,7 +22,7 @@ Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped 
 - Posting, reporting, blocking, image uploads, and account deletion require sign-in.
 - Community posts are user-submitted field notes, not measured claims.
 - Reports are write-only for normal clients and can auto-hide content through backend policy/trigger rules.
-- Blocking hides community content both ways and prevents unsafe direct replies.
+- Blocking hides community content both ways, prevents unsafe direct replies, and can be undone from Account and Safety.
 - Account deletion calls the JWT-protected Supabase `delete-account` Edge Function.
 
 ## Media
@@ -43,5 +43,3 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
 - No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, video upload, or BSI dependency.
-
-Open blocker before submission: Supabase GitHub branch status still reports `MIGRATIONS_FAILED`. The live project has the iOS preflight migrations and `delete-account` function applied, but automatic Supabase branch/deploy health must be repaired before relying on it for release operations.

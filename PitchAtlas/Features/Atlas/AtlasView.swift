@@ -85,8 +85,7 @@ struct AtlasView: View {
                         }
                         .padding(.vertical, PitchAtlasSpacing.md)
                         .frame(maxWidth: .infinity)
-                        .leatherPress(padding: PitchAtlasSpacing.lg)
-                        .foilRake()
+                        .specimenCardFrame(padding: PitchAtlasSpacing.lg, foilIntensity: 0.82)
                     }
                 }
                 .buttonStyle(.plain)
