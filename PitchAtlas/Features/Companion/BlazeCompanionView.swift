@@ -75,7 +75,7 @@ struct BlazeCompanionView: View {
 
 #Preview {
     ZStack {
-        PitchAtlasTheme.void.ignoresSafeArea()
+        FieldBackdrop()
         BlazeCompanionView(selectedTab: .atlas)
     }
     .environment(BlazeCompanionController())

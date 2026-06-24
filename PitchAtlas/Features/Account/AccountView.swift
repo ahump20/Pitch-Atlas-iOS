@@ -14,7 +14,7 @@ struct AccountView: View {
 
     var body: some View {
         ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
+            FieldBackdrop()
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     masthead
@@ -49,11 +49,16 @@ struct AccountView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "Account and Safety")
-            Text("PITCH ATLAS")
-                .font(PitchAtlasTheme.anton(42))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .antonSkew()
+            HStack(alignment: .center, spacing: PitchAtlasSpacing.sm) {
+                BrandSealMark(size: 48)
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                    SectionLabel(text: "Account and Safety", color: PitchAtlasTheme.powder)
+                    Text("PITCH ATLAS")
+                        .font(PitchAtlasTheme.anton(38))
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                        .antonSkew()
+                }
+            }
             Text("The field manual is readable without an account. Posting, reports, blocks, uploads, and account deletion require sign-in.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone2)

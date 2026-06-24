@@ -22,7 +22,7 @@ struct CraftsmanDetailView: View {
 
     var body: some View {
         ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
+            FieldBackdrop()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {

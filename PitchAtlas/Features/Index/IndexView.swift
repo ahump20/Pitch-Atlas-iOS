@@ -18,7 +18,7 @@ struct IndexView: View {
 
     var body: some View {
         ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
+            FieldBackdrop()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
@@ -42,7 +42,7 @@ struct IndexView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "The Pitch Index")
+            SectionLabel(text: "The Pitch Index", color: PitchAtlasTheme.powder)
             Text("INDEX")
                 .font(PitchAtlasTheme.anton(54))
                 .foregroundStyle(PitchAtlasTheme.bone)

@@ -14,7 +14,7 @@ struct LearnView: View {
 
     var body: some View {
         ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
+            FieldBackdrop()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
@@ -38,7 +38,7 @@ struct LearnView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "THE FIELD MANUAL")
+            SectionLabel(text: "THE FIELD MANUAL", color: PitchAtlasTheme.powder)
             Text("LEARN")
                 .font(PitchAtlasTheme.anton(48))
                 .foregroundStyle(PitchAtlasTheme.bone)

@@ -3,11 +3,10 @@ import SwiftUI
 // =============================================================================
 // Pitch Atlas — SwiftUI Token Map
 // =============================================================================
-// Direct port of the web design system's *rendered* tokens. Source of truth:
-// the web repo's src/index.css — now the CARD TABLE system (2026-06-10): a warm
-// Dugout Charcoal field (the table a fresh set is handled on; the Sluggers
-// system bans pure black), Pack Gold as the single chrome accent, collegiate
-// jewel inks on the family layer, and cream "card back" paper for data panels.
+// Direct port of the web design system's rendered tokens. Source of truth:
+// the web repo's src/index.css. Current public surface: cool near-black field,
+// seam red, powder blue, navy, bone, and controlled refractor foil. Cream lives
+// on card backs and printed-data panels, not as the app field.
 // Pattern: an enum of static tokens + Color(hex:) + Font.custom(relativeTo:)
 // with system fallbacks. Palette and typefaces are Pitch Atlas's own.
 //
@@ -17,45 +16,46 @@ import SwiftUI
 enum PitchAtlasTheme {
 
     // MARK: - Surfaces
-    /// App background, every screen, sitewide — Dugout Charcoal, warm matte.
-    static let void = Color(hex: 0x1C1916)
+    /// App background, every screen, sitewide — the web's cool black field.
+    static let void = Color(hex: 0x070509)
     /// Raised content cards — the "leather-press" surface.
     static let press = Color(hex: 0x221E18)
     /// Alternating panels, secondary card fill.
-    static let paper2 = Color(hex: 0x26221C)
+    static let paper2 = Color(hex: 0x141016)
     /// Deepest insets, edge frames.
-    static let paper3 = Color(hex: 0x2E2922)
+    static let paper3 = Color(hex: 0x0C2340)
 
     // MARK: - Text
-    /// Primary text on the charcoal.
-    static let bone = Color(hex: 0xF6F1E6)
-    /// Secondary text, captions — warm dust (the cool slate died with the void).
-    static let bone2 = Color(hex: 0xC9C2B0)
+    /// Primary text on the field.
+    static let bone = Color(hex: 0xF2ECDD)
+    /// Secondary text, captions.
+    static let bone2 = Color(hex: 0xC7BEA8)
     /// Muted / tertiary, hairlines, the "unverified" tier.
     static let ink3 = Color(hex: 0x8A8576)
 
-    // MARK: - Accent (Pack Gold is the ONLY interactive color; the token keeps
-    // its legacy name so every call site re-tones in place)
-    static let cyan = Color(hex: 0xE9C97A)
-    static let cyanDeep = Color(hex: 0xBD9849)
+    // MARK: - Accent
+    // Legacy names stay so call sites retone in place. These now map to the web
+    // powder-blue accent; seam red handles force/active emphasis.
+    static let cyan = Color(hex: 0x6CACE4)
+    static let cyanDeep = Color(hex: 0x4B92DB)
 
     // MARK: - Seam red (graphic / seam / banned-tier only — never body text on void)
-    static let seamBright = Color(hex: 0xFF2D44)
+    static let seamBright = Color(hex: 0xC8102E)
 
     // MARK: - Provenance ladder (the confidence tiers)
     static let okBright = Color(hex: 0x34E27E)   // official-data
-    static let tealGlow = Color(hex: 0x1FB6A6)   // coach-observed
+    static let tealGlow = Color(hex: 0x00A2A0)   // coach-observed
     static let amberBright = Color(hex: 0xFFC23C) // reputable-analysis
-    static let sandBright = Color(hex: 0xCDBA8E)  // secondhand / community-firsthand
+    static let sandBright = Color(hex: 0x8A7A5E)  // secondhand / community-firsthand
     /// pitcher-own-words — its own powder tier color (matches the web), no longer
     /// riding the interactive accent.
-    static let powder = Color(hex: 0x7FC6FF)
+    static let powder = Color(hex: 0x6CACE4)
     // unverified -> ink3
 
     // MARK: - Pitch-family accents (index card dots) — collegiate jewel lifts
-    static let lime = Color(hex: 0x5FA27B)   // offspeed - varsity forest lift
-    static let violet = Color(hex: 0xB0606C) // breaking - letterman burgundy lift
-    static let navyLift = Color(hex: 0x5C84B8) // fastball - pennant navy lift
+    static let lime = Color(hex: 0x2E7D55)   // offspeed - field green
+    static let violet = Color(hex: 0xA92A22) // breaking - seam-burgundy
+    static let navyLift = Color(hex: 0x15406E) // fastball - lifted navy
 
     // MARK: - The cream card back (data panels print on paper, like a real card
     // back: the ladder, the freshness line, the source ledger)
@@ -81,10 +81,10 @@ enum PitchAtlasTheme {
     }
 
     // MARK: - Hairlines / texture
-    /// The 1px card border — bone at 10%.
-    static let machined = Color(hex: 0xF6F1E6, opacity: 0.10)
-    /// Subtle dividers — bone2 at 14%.
-    static let navyLine = Color(hex: 0xD8D1C0, opacity: 0.16)
+    /// The 1px card border — bone at 12%.
+    static let machined = Color(hex: 0xF2ECDD, opacity: 0.12)
+    /// Subtle dividers — bone at 16%.
+    static let navyLine = Color(hex: 0xF2ECDD, opacity: 0.16)
 
     // MARK: - Gradients
     /// The holographic foil — refractor card borders, the diamond mark, holo wordmark.

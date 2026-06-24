@@ -8,12 +8,76 @@ import SwiftUI
 // reserved for chrome (tab/nav); content is always leather-press, never frosted.
 // =============================================================================
 
+// MARK: - Field background
+
+/// Shared app field: the web's cool black stage with faint rule lines and controlled
+/// powder/seam light. It keeps large surfaces from falling back to flat brown.
+struct FieldBackdrop: View {
+    var body: some View {
+        ZStack {
+            PitchAtlasTheme.void
+            LinearGradient(
+                colors: [
+                    PitchAtlasTheme.paper3.opacity(0.24),
+                    .clear,
+                    PitchAtlasTheme.press.opacity(0.18),
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            RadialGradient(
+                colors: [
+                    PitchAtlasTheme.powder.opacity(0.11),
+                    .clear,
+                ],
+                center: .topTrailing,
+                startRadius: 0,
+                endRadius: 360
+            )
+            RadialGradient(
+                colors: [
+                    PitchAtlasTheme.seamBright.opacity(0.055),
+                    .clear,
+                ],
+                center: .bottomLeading,
+                startRadius: 18,
+                endRadius: 330
+            )
+            FieldRuleMesh()
+                .opacity(0.10)
+        }
+        .ignoresSafeArea()
+    }
+}
+
+private struct FieldRuleMesh: View {
+    var body: some View {
+        Canvas { context, size in
+            let step: CGFloat = 28
+            var path = Path()
+            var x: CGFloat = 0
+            while x <= size.width {
+                path.move(to: CGPoint(x: x, y: 0))
+                path.addLine(to: CGPoint(x: x, y: size.height))
+                x += step
+            }
+            var y: CGFloat = 0
+            while y <= size.height {
+                path.move(to: CGPoint(x: 0, y: y))
+                path.addLine(to: CGPoint(x: size.width, y: y))
+                y += step
+            }
+            context.stroke(path, with: .color(PitchAtlasTheme.bone.opacity(0.12)), lineWidth: 0.5)
+        }
+    }
+}
+
 // MARK: - Section label (the Martian eyebrow)
 
 /// All-caps tracked micro-label. The "stamp" that heads a section or card.
 struct SectionLabel: View {
     let text: String
-    var color: Color = PitchAtlasTheme.ink3
+    var color: Color = PitchAtlasTheme.bone2
     var size: CGFloat = 10
 
     var body: some View {
@@ -37,8 +101,33 @@ struct LeatherPress: ViewModifier {
             .padding(padding)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
-                RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .fill(PitchAtlasTheme.press)
+                ZStack {
+                    RoundedRectangle(cornerRadius: radius, style: .continuous)
+                        .fill(PitchAtlasTheme.press)
+                    RoundedRectangle(cornerRadius: radius, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    PitchAtlasTheme.paper2.opacity(0.72),
+                                    PitchAtlasTheme.press.opacity(0.12),
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                    RoundedRectangle(cornerRadius: radius, style: .continuous)
+                        .fill(
+                            RadialGradient(
+                                colors: [
+                                    PitchAtlasTheme.powder.opacity(0.10),
+                                    .clear,
+                                ],
+                                center: .topTrailing,
+                                startRadius: 0,
+                                endRadius: 240
+                            )
+                        )
+                }
             )
             .overlay(
                 RoundedRectangle(cornerRadius: radius, style: .continuous)
@@ -63,17 +152,29 @@ struct SpecimenCardFrame: ViewModifier {
             .background(
                 ZStack {
                     RoundedRectangle(cornerRadius: radius, style: .continuous)
-                        .fill(PitchAtlasTheme.press)
+                        .fill(Color(hex: 0x0B0805))
                     RoundedRectangle(cornerRadius: radius, style: .continuous)
                         .fill(PitchAtlasTheme.foil)
-                        .opacity(foilFillOpacity)
+                        .opacity(max(0.02, foilFillOpacity * 0.65))
                         .blendMode(.screen)
+                    RoundedRectangle(cornerRadius: radius, style: .continuous)
+                        .fill(
+                            RadialGradient(
+                                colors: [
+                                    PitchAtlasTheme.powder.opacity(0.16),
+                                    .clear,
+                                ],
+                                center: .top,
+                                startRadius: 0,
+                                endRadius: 260
+                            )
+                        )
                 }
             )
             .overlay(
                 RoundedRectangle(cornerRadius: radius, style: .continuous)
                     .strokeBorder(PitchAtlasTheme.foil, lineWidth: 1.5)
-                    .opacity(0.78)
+                    .opacity(0.48)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: max(2, radius - 6), style: .continuous)
@@ -84,7 +185,7 @@ struct SpecimenCardFrame: ViewModifier {
                 Rectangle()
                     .fill(PitchAtlasTheme.foil)
                     .frame(height: 2)
-                    .opacity(0.52)
+                    .opacity(0.38)
                     .padding(.horizontal, radius)
                     .padding(.bottom, 5)
                     .allowsHitTesting(false)
@@ -118,6 +219,27 @@ extension View {
 
 // MARK: - Seal mark (the vector brand fallback)
 
+struct BrandSealMark: View {
+    var size: CGFloat = 72
+    var shadow: Bool = true
+
+    var body: some View {
+        Image("BrandSeal")
+            .resizable()
+            .interpolation(.high)
+            .scaledToFit()
+            .frame(width: size, height: size)
+            .clipShape(RoundedRectangle(cornerRadius: size * 0.20, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: size * 0.20, style: .continuous)
+                    .strokeBorder(PitchAtlasTheme.bone.opacity(0.18), lineWidth: 1)
+            )
+            .shadow(color: shadow ? PitchAtlasTheme.seamBright.opacity(0.18) : .clear,
+                    radius: 18, x: 0, y: 8)
+            .accessibilityHidden(true)
+    }
+}
+
 /// The seam S-curve, drawn so a missing photo shows a brand mark, never a gray box.
 struct SeamArc: Shape {
     func path(in rect: CGRect) -> Path {
@@ -138,7 +260,7 @@ struct SealMark: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 5, style: .continuous)
-                .stroke(PitchAtlasTheme.ink3.opacity(0.8), lineWidth: 1.5)
+                .stroke(PitchAtlasTheme.bone2.opacity(0.7), lineWidth: 1.5)
                 .frame(width: size * 0.62, height: size * 0.62)
                 .rotationEffect(.degrees(45))
             SeamArc()
@@ -165,7 +287,7 @@ struct LoadingTile: View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             ForEach(0..<3, id: \.self) { i in
                 RoundedRectangle(cornerRadius: 4, style: .continuous)
-                    .fill(PitchAtlasTheme.machined)
+                    .fill(i == 0 ? PitchAtlasTheme.powder.opacity(0.22) : PitchAtlasTheme.machined)
                     .frame(height: 14)
                     .frame(maxWidth: i == 2 ? 180 : .infinity)
             }
@@ -191,7 +313,7 @@ struct ErrorStateView: View {
 
     var body: some View {
         VStack(spacing: PitchAtlasSpacing.sm) {
-            SealMark(size: 52)
+            BrandSealMark(size: 58)
             Text(title)
                 .font(PitchAtlasTheme.newsreader(18))
                 .foregroundStyle(PitchAtlasTheme.bone)
@@ -214,7 +336,7 @@ struct EmptyStateView: View {
 
     var body: some View {
         VStack(spacing: PitchAtlasSpacing.sm) {
-            SealMark(size: 44)
+            BrandSealMark(size: 50)
             Text(message)
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone2)

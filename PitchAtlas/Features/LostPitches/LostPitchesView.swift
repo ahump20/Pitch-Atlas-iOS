@@ -15,7 +15,7 @@ struct LostPitchesView: View {
 
     var body: some View {
         ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
+            FieldBackdrop()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
@@ -37,7 +37,7 @@ struct LostPitchesView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "Lost Pitches")
+            SectionLabel(text: "Lost Pitches", color: PitchAtlasTheme.powder)
 
             Text("LOST")
                 .font(PitchAtlasTheme.anton(56))

@@ -14,7 +14,7 @@ struct CraftsmenView: View {
 
     var body: some View {
         ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
+            FieldBackdrop()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
@@ -37,7 +37,7 @@ struct CraftsmenView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "The Craftsmen")
+            SectionLabel(text: "The Craftsmen", color: PitchAtlasTheme.powder)
 
             Text("CRAFTSMEN")
                 .font(PitchAtlasTheme.anton(48))

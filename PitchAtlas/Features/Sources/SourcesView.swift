@@ -41,7 +41,7 @@ struct SourcesView: View {
 
     var body: some View {
         ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
+            FieldBackdrop()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
@@ -65,7 +65,7 @@ struct SourcesView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "Provenance")
+            SectionLabel(text: "Provenance", color: PitchAtlasTheme.powder)
             Text("SOURCES")
                 .font(PitchAtlasTheme.anton(52))
                 .foregroundStyle(PitchAtlasTheme.bone)

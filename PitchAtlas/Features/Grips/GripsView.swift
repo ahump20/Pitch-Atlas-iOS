@@ -16,7 +16,7 @@ struct GripsView: View {
 
     var body: some View {
         ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
+            FieldBackdrop()
 
             content
         }
@@ -74,7 +74,7 @@ struct GripsView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "The Grip Library")
+            SectionLabel(text: "The Grip Library", color: PitchAtlasTheme.powder)
 
             Text("GRIPS")
                 .font(PitchAtlasTheme.anton(56))

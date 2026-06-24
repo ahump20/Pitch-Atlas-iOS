@@ -19,7 +19,7 @@ struct AtlasView: View {
 
     var body: some View {
         ZStack {
-            PitchAtlasTheme.void.ignoresSafeArea()
+            FieldBackdrop()
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     masthead
@@ -47,46 +47,47 @@ struct AtlasView: View {
     // MARK: Masthead
 
     private var masthead: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "THE FIELD MANUAL", color: PitchAtlasTheme.cyanDeep)
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+            HStack(alignment: .center, spacing: PitchAtlasSpacing.sm) {
+                BrandSealMark(size: 62)
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                    SectionLabel(text: "THE LIVING FIELD MANUAL", color: PitchAtlasTheme.powder)
+                    Text("Sourced, not corrected.")
+                        .font(PitchAtlasTheme.newsreaderItalic(18))
+                        .foregroundStyle(PitchAtlasTheme.bone2)
+                }
+            }
 
-            HoloWordmark(text: "PITCH\nATLAS", size: 56)
-
-            Text("Sourced, not corrected.")
-                .font(PitchAtlasTheme.newsreaderItalic(19))
-                .foregroundStyle(PitchAtlasTheme.bone2)
+            HoloWordmark(text: "PITCH\nATLAS", size: 48, lineSpacing: -8)
+                .padding(.leading, PitchAtlasSpacing.sm)
 
             if let featured = store.pitches.first {
                 NavigationLink(value: featured) {
                     // Real footage leads the masthead when the featured specimen
                     // carries a film; the drawn ball is the fallback face.
-                    if let film = featured.canonical.gripFilm {
-                        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                            GripFilmCard(film: film, height: 380,
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+                        if let film = featured.canonical.gripFilm {
+                            GripFilmCard(film: film, height: 286,
                                          offersMotionControl: false, showsCaption: false)
-                            HStack {
-                                Text(featured.canonical.name.uppercased())
-                                    .font(PitchAtlasTheme.martian(10))
-                                    .tracking(2)
-                                    .foregroundStyle(PitchAtlasTheme.cyan)
-                                Spacer()
-                                SectionLabel(text: "Open the specimen", size: 10)
-                            }
-                        }
-                    } else {
-                        VStack(spacing: PitchAtlasSpacing.xs) {
+                        } else {
                             SeamBall(motion: featured.motion, size: 220)
                                 .frame(maxWidth: .infinity)
+                        }
+                        HStack(alignment: .firstTextBaseline) {
                             Text(featured.canonical.name.uppercased())
                                 .font(PitchAtlasTheme.martian(10))
                                 .tracking(2)
-                                .foregroundStyle(PitchAtlasTheme.cyan)
-                            SectionLabel(text: "Tap the specimen", size: 10)
+                                .foregroundStyle(PitchAtlasTheme.bone)
+                            Spacer(minLength: PitchAtlasSpacing.sm)
+                            SectionLabel(text: "Open specimen", color: PitchAtlasTheme.powder, size: 9)
                         }
-                        .padding(.vertical, PitchAtlasSpacing.md)
-                        .frame(maxWidth: .infinity)
-                        .specimenCardFrame(padding: PitchAtlasSpacing.lg, foilIntensity: 0.82)
                     }
+                    .padding(.vertical, PitchAtlasSpacing.xs2)
+                    .frame(maxWidth: .infinity)
+                    .specimenCardFrame(padding: PitchAtlasSpacing.sm,
+                                       radius: PitchAtlasRadius.card,
+                                       foilIntensity: 0.74,
+                                       foilFillOpacity: 0.035)
                 }
                 .buttonStyle(.plain)
                 .accessibilityElement(children: .ignore)
@@ -98,7 +99,7 @@ struct AtlasView: View {
 
             Text("How every pitch is gripped and thrown. The index, filed specimens, grip library, craftsmen, and lost pitches are bundled with sources; community opens when you sign in.")
                 .font(PitchAtlasTheme.hanken(16))
-                .foregroundStyle(PitchAtlasTheme.bone)
+                .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }

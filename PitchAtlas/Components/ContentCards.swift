@@ -134,7 +134,7 @@ struct BundledImage: View {
             ZStack {
                 PitchAtlasTheme.paper2
                 VStack(spacing: PitchAtlasSpacing.xs) {
-                    SealMark(size: 40)
+                    BrandSealMark(size: 40, shadow: false)
                     Text(alt)
                         .font(PitchAtlasTheme.hanken(11))
                         .foregroundStyle(PitchAtlasTheme.ink3)

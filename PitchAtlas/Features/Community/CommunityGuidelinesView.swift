@@ -12,7 +12,7 @@ struct CommunityGuidelinesView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                PitchAtlasTheme.void.ignoresSafeArea()
+                FieldBackdrop()
                 ScrollView {
                     VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                         masthead

@@ -11,65 +11,68 @@ struct BlazeInlineCompanionView: View {
     let style: BlazeInlineStyle
     let mood: BlazeMood
 
+    @AppStorage(BlazeMotionSettings.appStorageKey) private var enabled = BlazeMotionSettings.defaultEnabled
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var patted = false
 
     var body: some View {
-        Button {
-            Haptics.soft()
-            guard !reduceMotion else { return }
-            withAnimation(.interpolatingSpring(stiffness: 220, damping: 16)) {
-                patted = true
-            }
-            Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(760))
-                withAnimation(.easeOut(duration: 0.18)) {
-                    patted = false
+        if enabled {
+            Button {
+                Haptics.soft()
+                guard !reduceMotion else { return }
+                withAnimation(.interpolatingSpring(stiffness: 220, damping: 16)) {
+                    patted = true
                 }
-            }
-        } label: {
-            ZStack(alignment: .bottomLeading) {
-                routeMark
-                    .opacity(0.62)
-                    .offset(x: 72, y: -7)
-
-                dottedRail
-                    .padding(.leading, 68)
-                    .padding(.trailing, 12)
-                    .padding(.bottom, 16)
-
-                BaseballChaseRailView(mood: mood, progress: patted ? 0.82 : progress, reduceMotion: reduceMotion)
-                    .frame(width: 180, height: 32)
-                    .offset(x: 56, y: -4)
-                    .opacity(0.72)
-
-                BlazeDogView(mood: patted ? .caught : mood, reduceMotion: reduceMotion)
-                    .scaleEffect(patted ? CGSize(width: 1.06, height: 0.94) : CGSize(width: 1, height: 1), anchor: .bottom)
-                    .rotationEffect(patted && !reduceMotion ? .degrees(-6) : .zero)
-                    .offset(y: patted ? -4 : 0)
-
-                if patted {
-                    Text("arf")
-                        .font(PitchAtlasTheme.martian(8))
-                        .tracking(1)
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                        .padding(.horizontal, 7)
-                        .padding(.vertical, 4)
-                        .background(
-                            Capsule()
-                                .fill(PitchAtlasTheme.void.opacity(0.88))
-                                .overlay(Capsule().stroke(PitchAtlasTheme.bone.opacity(0.3), lineWidth: 1))
-                        )
-                        .offset(x: 50, y: -36)
-                        .transition(.scale.combined(with: .opacity))
+                Task { @MainActor in
+                    try? await Task.sleep(for: .milliseconds(760))
+                    withAnimation(.easeOut(duration: 0.18)) {
+                        patted = false
+                    }
                 }
+            } label: {
+                ZStack(alignment: .bottomLeading) {
+                    routeMark
+                        .opacity(0.62)
+                        .offset(x: 72, y: -7)
+
+                    dottedRail
+                        .padding(.leading, 68)
+                        .padding(.trailing, 12)
+                        .padding(.bottom, 16)
+
+                    BaseballChaseRailView(mood: mood, progress: patted ? 0.82 : progress, reduceMotion: reduceMotion)
+                        .frame(width: 180, height: 32)
+                        .offset(x: 56, y: -4)
+                        .opacity(0.72)
+
+                    BlazeDogView(mood: patted ? .caught : mood, reduceMotion: reduceMotion)
+                        .scaleEffect(patted ? CGSize(width: 1.06, height: 0.94) : CGSize(width: 1, height: 1), anchor: .bottom)
+                        .rotationEffect(patted && !reduceMotion ? .degrees(-6) : .zero)
+                        .offset(y: patted ? -4 : 0)
+
+                    if patted {
+                        Text("arf")
+                            .font(PitchAtlasTheme.martian(8))
+                            .tracking(1)
+                            .foregroundStyle(PitchAtlasTheme.bone)
+                            .padding(.horizontal, 7)
+                            .padding(.vertical, 4)
+                            .background(
+                                Capsule()
+                                    .fill(PitchAtlasTheme.void.opacity(0.88))
+                                    .overlay(Capsule().stroke(PitchAtlasTheme.bone.opacity(0.3), lineWidth: 1))
+                            )
+                            .offset(x: 50, y: -36)
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                }
+                .frame(height: 62)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
             }
-            .frame(height: 62)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(Rectangle())
+            .buttonStyle(.plain)
+            .accessibilityLabel("Pat Blaze")
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Pat Blaze")
     }
 
     private var progress: Double {

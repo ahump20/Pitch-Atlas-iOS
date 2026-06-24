@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 @main
 struct PitchAtlasApp: App {
@@ -10,24 +11,63 @@ struct PitchAtlasApp: App {
     /// Supabase auth/session state for community actions.
     @State private var auth = AuthSessionStore()
 
+    init() {
+        AppChromeAppearance.install()
+    }
+
     var body: some Scene {
         WindowGroup {
-            RootView()
-                .environment(store)
-                .environment(motion)
-                .environment(auth)
-                .preferredColorScheme(.dark)
-                .task {
-                    motion.start()
-                    await auth.start()
-                }
-                .onChange(of: scenePhase) { _, phase in
-                    // The gyro is a hardware resource: run it only while the app
-                    // is active, release it on background/inactive. start() guards
-                    // on isDeviceMotionActive, so re-activation re-arms identically.
-                    phase == .active ? motion.start() : motion.stop()
-                }
+            LaunchLoadingGate {
+                RootView()
+                    .environment(store)
+                    .environment(motion)
+                    .environment(auth)
+                    .preferredColorScheme(.dark)
+                    .task {
+                        motion.start()
+                        await auth.start()
+                    }
+                    .onChange(of: scenePhase) { _, phase in
+                        // The gyro is a hardware resource: run it only while the app
+                        // is active, release it on background/inactive. start() guards
+                        // on isDeviceMotionActive, so re-activation re-arms identically.
+                        phase == .active ? motion.start() : motion.stop()
+                    }
+            }
         }
+    }
+}
+
+private enum AppChromeAppearance {
+    static func install() {
+        let field = UIColor(red: 7.0 / 255.0, green: 5.0 / 255.0, blue: 9.0 / 255.0, alpha: 0.98)
+        let bone = UIColor(red: 242.0 / 255.0, green: 236.0 / 255.0, blue: 221.0 / 255.0, alpha: 1)
+        let bone2 = UIColor(red: 199.0 / 255.0, green: 190.0 / 255.0, blue: 168.0 / 255.0, alpha: 0.78)
+        let powder = UIColor(red: 108.0 / 255.0, green: 172.0 / 255.0, blue: 228.0 / 255.0, alpha: 1)
+
+        let tab = UITabBarAppearance()
+        tab.configureWithOpaqueBackground()
+        tab.backgroundColor = field
+        tab.shadowColor = UIColor(red: 242.0 / 255.0, green: 236.0 / 255.0, blue: 221.0 / 255.0, alpha: 0.12)
+        [tab.stackedLayoutAppearance, tab.inlineLayoutAppearance, tab.compactInlineLayoutAppearance].forEach { item in
+            item.normal.iconColor = bone2
+            item.normal.titleTextAttributes = [.foregroundColor: bone2]
+            item.selected.iconColor = powder
+            item.selected.titleTextAttributes = [.foregroundColor: powder]
+        }
+        UITabBar.appearance().standardAppearance = tab
+        UITabBar.appearance().scrollEdgeAppearance = tab
+        UITabBar.appearance().isTranslucent = false
+
+        let nav = UINavigationBarAppearance()
+        nav.configureWithOpaqueBackground()
+        nav.backgroundColor = field
+        nav.shadowColor = .clear
+        nav.titleTextAttributes = [.foregroundColor: bone]
+        nav.largeTitleTextAttributes = [.foregroundColor: bone]
+        UINavigationBar.appearance().standardAppearance = nav
+        UINavigationBar.appearance().scrollEdgeAppearance = nav
+        UINavigationBar.appearance().compactAppearance = nav
     }
 }
 
@@ -103,7 +143,10 @@ struct RootView: View {
                 .tabItem { Label(AppTab.sources.title, systemImage: AppTab.sources.systemImage) }
                 .tag(AppTab.sources)
         }
-        .tint(PitchAtlasTheme.cyan)
+        .tint(PitchAtlasTheme.powder)
+        .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar, .tabBar)
+        .toolbarBackground(.visible, for: .navigationBar, .tabBar)
+        .toolbarColorScheme(.dark, for: .navigationBar, .tabBar)
         .onOpenURL { url in
             auth.handle(url: url)
             router.handle(url, store: store)
