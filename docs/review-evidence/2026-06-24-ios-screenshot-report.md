@@ -2,20 +2,33 @@
 
 Date: 2026-06-24
 Device: iPhone 17 Pro simulator, iOS 26.5
-Build target: `com.pitchatlas.app`, version `1.0.1`, build floor `6`
+Build target: `com.pitchatlas.app`, version `1.0.1`, build floor `7`
 Capture method: XcodeBuildMCP `build_run_sim`, `snapshot_ui`, and `screenshot`
 
-Functional test proof: Xcode `My Mac` destination for the iOS Designed for iPad/iPhone runtime, 28 tests passed, 0 failed.
-Submission proof: App Store Connect build `6` processed as `VALID`, attached to version `1.0.1`, assigned to internal TestFlight, and submitted for App Review as `WAITING_FOR_REVIEW`.
+Functional test proof: clean iPhone 17 Pro simulator run, 28 tests passed, 0 failed. Signed Release iPhoneOS metadata resolved to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `7`, and `ITSAppUsesNonExemptEncryption=false`.
+Submission proof: build `6` processed as `VALID`, attached to version `1.0.1`, assigned to internal TestFlight, and submitted for App Review as `WAITING_FOR_REVIEW`; build `7` supersedes it for the visual/loading fix.
+
+## Brand Consistency Critique
+
+Reference files: no `mood.md`, `voice.md`, or `tokens.md` were present in the Pitch Atlas web repo. Critique used the rendered web design tokens in `src/index.css`, `docs/NORTHSTAR.md`, and the current live-brand seal instead.
+
+Mood: pass. The loaded app surface now uses the web field language: cool near-black stage `#070509`, raised press panels, bone text, seam red, powder blue, chrome type, and controlled refractor edges. The supplied Sluggers card references are translated as collectible-card structure only: foil edge, inset frame, nameplate, specimen media, and stat-card posture. No outside layout, marks, characters, or copy are copied.
+
+Voice: pass. The first screen and loading frame keep the founder rule visible: `Sourced, not corrected.` Community/auth copy names what is available without fake posts, fake freshness, invented pitch values, or seeded activity.
+
+Token compliance: minor issue. iOS maps the web token family into `PitchAtlasTheme` and uses it across the main surfaces. The only deliberate native deviation is that `paper2` and `paper3` are dark structural colors in the app, while cream paper stays reserved for card backs and printed-data panels. If formal `tokens.md` lands later, reconcile that naming so native token names do not look like exact web aliases when they are platform mappings.
+
+Design critique decision: ship build `7` with this direction. The original black-screen failure and the off-brand loaded surface have been addressed by `LaunchLoadingGate`, `FieldBackdrop`, the web seal assets, darker app chrome, hidden-by-default Blaze companion, and specimen-card fronts. Remaining screenshot notes below are App Store crop polish, not blockers for the binary.
 
 ## Atlas Home
 
-Raw: `2026-06-24-atlas-home.jpg`
+Raw build-7 proof: `2026-06-24-build-7-atlas-home.jpg`
+Earlier raw proof: `2026-06-24-atlas-home.jpg`
 Annotated: `2026-06-24-atlas-home-annotated.jpg`
 
-Rendered state: verified. The app opens into the native Atlas tab shell with `Pitch Atlas`, `Sourced, not corrected`, the featured Four-seam specimen card, visible first-party grip footage, and the five-tab bar.
+Rendered state: verified from build `7`. The app opens into the native Atlas tab shell with `Pitch Atlas`, `Sourced, not corrected`, the featured Four-seam specimen card, visible first-party grip footage, the dark field background, and the five-tab bar.
 
-Critique and fixes:
+Critique and remaining crop notes:
 
 1. Header is readable, but the top safe-area stack is tall for an App Store crop.
 2. The `Pitch Atlas` title has strong voice, but the split display type spends too much of the first screen before the core artifact appears.
@@ -35,7 +48,7 @@ Annotated: `2026-06-24-pitch-detail-four-seam-annotated.jpg`
 
 Rendered state: verified. The restored pitch detail shows `Four-seam`, a native back button, `FOUR-SEAM FASTBALL`, first-party grip media, a source caption, and the global tab shell.
 
-Critique and fixes:
+Critique and remaining crop notes:
 
 1. The back button is obvious, but it is visually heavy on a narrow viewport.
 2. The small navigation title repeats the large heading below. This is acceptable, but the hierarchy could be tighter.
@@ -55,7 +68,7 @@ Annotated: `2026-06-24-index-annotated.jpg`
 
 Rendered state: verified. The Index tab shows the native title, pitch-index intro, search field, family filter chips, fastball section, and pitch rows with aliases, status badges, and disclosure arrows.
 
-Critique and fixes:
+Critique and remaining crop notes:
 
 1. The navigation title is stable and platform-native.
 2. The `INDEX` heading is punchy, but it delays the utility surface.
@@ -75,7 +88,7 @@ Annotated: `2026-06-24-grips-annotated.jpg`
 
 Rendered state: verified. The Grips tab shows the founder-voice grip thesis, `not tracked data` disclaimer, Arsenal section, and the five-tab bar.
 
-Critique and fixes:
+Critique and remaining crop notes:
 
 1. The native navigation title is clean.
 2. `GRIPS` has strong brand voice and fits the app.
@@ -95,7 +108,7 @@ Annotated: `2026-06-24-sources-annotated.jpg`
 
 Rendered state: verified. The Sources tab shows `Sources`, the checked date `2026-06-10`, `Checked, not auto-refreshed`, and the provenance ladder.
 
-Critique and fixes:
+Critique and remaining crop notes:
 
 1. The native title keeps orientation clear.
 2. `SOURCES` is legible and brand-right.
@@ -115,7 +128,7 @@ Annotated: `2026-06-24-account-safety-annotated.jpg`
 
 Rendered state: verified. The Account route shows the logged-out account posture, Sign in with Apple, email magic-link input, disabled send button, community rules, blocked-contributor privacy note, and visible tab shell.
 
-Critique and fixes:
+Critique and remaining crop notes:
 
 1. The back button gives a clear return path.
 2. The native route title is platform-fit.

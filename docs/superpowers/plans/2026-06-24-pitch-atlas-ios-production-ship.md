@@ -4,7 +4,7 @@
 - Ship a new production `com.pitchatlas.app` build to App Store Connect, TestFlight, and App Review.
 - Work from the isolated release worktree on `codex/ios-release-hardening-20260622`.
 - Treat production Supabase, simulator proof, App Store metadata, screenshots, and critique as release gates.
-- Executed on 2026-06-24: build `1.0.1 (6)` is uploaded, `VALID`, attached to App Review, assigned to internal TestFlight, and submitted as `WAITING_FOR_REVIEW`.
+- Executed on 2026-06-24: build `1.0.1 (7)` supersedes the earlier build `6` visual pass and is the next App Store Connect upload target.
 
 ## Tasks
 1. Completed: verified App Store Connect, TestFlight, branch, and build-number state before upload.
@@ -13,7 +13,7 @@
 4. Completed: added Pitch Atlas collectible-card polish without copying the supplied reference cards.
 5. Completed: refreshed build number, release docs, App Review notes, privacy posture, and screenshot requirements.
 6. Completed: ran MacBook iOS-runtime tests, simulator launch proof, screenshots, and annotated design critique.
-7. Completed: uploaded build `6`, distributed to internal TestFlight, and submitted for App Review.
+7. In progress: upload build `7`, distribute to internal TestFlight, and attach it to App Review.
 
 ## Gates
 - No fake pitch metrics, fake freshness, fake posts, or third-party marks.
