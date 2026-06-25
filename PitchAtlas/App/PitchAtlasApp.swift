@@ -163,6 +163,10 @@ struct RootView: View {
             router.selection = .atlas
             router.atlasPath.append(entry)
         }
+        if env["PA_ACCOUNT"] == "1" {
+            router.selection = .atlas
+            router.atlasPath.append(AtlasUtilityRoute.account)
+        }
         if let slug = env["PA_CRAFTSMAN"], let craftsman = store.craftsman(slug: slug) {
             router.selection = .craftsmen
             router.craftsmenPath.append(craftsman)

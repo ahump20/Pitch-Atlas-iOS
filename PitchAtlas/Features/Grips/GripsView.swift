@@ -32,6 +32,7 @@ struct GripsView: View {
             ScrollView {
                 ErrorStateView(reason: msg)
                     .padding(PitchAtlasSpacing.lg)
+                    .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         } else if store.grips.entries.isEmpty {
             ScrollView {
@@ -40,6 +41,7 @@ struct GripsView: View {
                     EmptyStateView(message: "The grip library couldn't load.")
                 }
                 .padding(PitchAtlasSpacing.lg)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         } else {
             populated
@@ -57,6 +59,7 @@ struct GripsView: View {
             LazyVStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                 masthead
                 honestyBanner
+                gripThumbnailRail
                 arsenalCard
                 commandCard
                 attackPlanCard
@@ -66,6 +69,7 @@ struct GripsView: View {
                 }
             }
             .padding(PitchAtlasSpacing.lg)
+            .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             .emitsBlazeScrollProgress()
         }
     }
@@ -84,9 +88,9 @@ struct GripsView: View {
 
             if !store.grips.intro.isEmpty {
                 Text(store.grips.intro)
-                    .font(PitchAtlasTheme.newsreader(18))
+                    .font(PitchAtlasTheme.newsreader(16))
                     .foregroundStyle(PitchAtlasTheme.bone2)
-                    .lineSpacing(2)
+                    .lineSpacing(1)
                     .fixedSize(horizontal: false, vertical: true)
             }
             BlazeInlineCompanionView(style: .grips, mood: .sniffing)
@@ -94,6 +98,23 @@ struct GripsView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("The Grip Library. Grips. \(store.grips.intro)")
+    }
+
+    private var gripThumbnailRail: some View {
+        let entries = Array(store.grips.entries.prefix(5))
+        return VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+            SectionLabel(text: "First-party grip files", color: PitchAtlasTheme.powder)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: PitchAtlasSpacing.sm) {
+                    ForEach(entries) { entry in
+                        CompactGripThumbnail(entry: entry)
+                    }
+                }
+                .padding(.vertical, PitchAtlasSpacing.xs2)
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("First-party grip files, horizontally scrollable")
     }
 
     // MARK: - Honesty banner (proof limit, shown once near the top)
@@ -322,5 +343,57 @@ struct GripsView: View {
         if !entry.proofLimit.isEmpty { parts.append("Proof limit. \(entry.proofLimit)") }
         parts.append(entry.claimTier.label)
         return parts.joined(separator: ". ")
+    }
+}
+
+private struct CompactGripThumbnail: View {
+    let entry: GripEntry
+
+    private var thumbnail: (src: String, alt: String)? {
+        if let film = entry.film {
+            return (film.poster, film.clip.alt)
+        }
+        if let photo = entry.photos.first {
+            return (photo.src, photo.alt)
+        }
+        return nil
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
+            Group {
+                if let thumbnail {
+                    BundledImage(src: thumbnail.src, alt: thumbnail.alt)
+                } else {
+                    ZStack {
+                        PitchAtlasTheme.paper2
+                        SealMark(size: 42)
+                    }
+                }
+            }
+            .frame(width: 126, height: 92)
+            .clipShape(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous).stroke(PitchAtlasTheme.machined))
+
+            Text(entry.label)
+                .font(PitchAtlasTheme.hankenMedium(12))
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+
+            HStack(spacing: PitchAtlasSpacing.xs2) {
+                FamilyDot(color: entry.family.accent, size: 6)
+                Text("NOT TRACKED DATA")
+                    .font(PitchAtlasTheme.martian(7))
+                    .tracking(0.6)
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+            }
+        }
+        .frame(width: 126, alignment: .leading)
+        .padding(PitchAtlasSpacing.xs)
+        .background(PitchAtlasTheme.paper2.opacity(0.9), in: RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous).stroke(PitchAtlasTheme.machined))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(entry.label). First-party grip file. Not tracked data.")
     }
 }

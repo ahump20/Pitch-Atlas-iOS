@@ -11,6 +11,19 @@ import SwiftUI
 extension ClaimConfidence {
     /// The tier color, routed through the single source of truth in the theme.
     var tierColor: Color { PitchAtlasTheme.color(forConfidence: rawValue) }
+
+    /// Numeric tier marker for places where color cannot carry meaning alone.
+    var tierNumber: Int {
+        switch self {
+        case .officialData: return 1
+        case .pitcherOwnWords: return 2
+        case .coachObserved: return 3
+        case .reputableAnalysis: return 4
+        case .secondhandAttributed: return 5
+        case .communityFirsthand: return 6
+        case .unverified: return 7
+        }
+    }
 }
 
 // MARK: - Provenance dot
@@ -30,6 +43,40 @@ struct ProvenanceDot: View {
     }
 }
 
+// MARK: - Provenance tier badge
+
+/// A color + text tier marker. Used where the tiny dot alone would make
+/// provenance color-only.
+struct ProvenanceTierBadge: View {
+    let confidence: ClaimConfidence
+    var showsLabel: Bool = true
+    var size: CGFloat = 9
+
+    var body: some View {
+        HStack(spacing: PitchAtlasSpacing.xs2) {
+            Text("T\(confidence.tierNumber)")
+                .font(PitchAtlasTheme.martian(size))
+                .tracking(0.8)
+                .foregroundStyle(PitchAtlasTheme.void)
+                .padding(.horizontal, 5)
+                .padding(.vertical, 2)
+                .background(confidence.tierColor, in: RoundedRectangle(cornerRadius: 4, style: .continuous))
+
+            ProvenanceDot(confidence: confidence, size: max(7, size - 1))
+
+            if showsLabel {
+                Text(confidence.label.uppercased())
+                    .font(PitchAtlasTheme.martian(size))
+                    .tracking(0.9)
+                    .foregroundStyle(confidence.tierColor)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Tier \(confidence.tierNumber), \(confidence.label)")
+    }
+}
+
 // MARK: - Source / claim label
 
 /// A claim's provenance line: tier dot + tier label + the source (or, for a weak
@@ -40,14 +87,8 @@ struct SourceClaimLabel: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: PitchAtlasSpacing.xs) {
-            ProvenanceDot(confidence: claim.confidence)
-                .padding(.top, 3)
-
             VStack(alignment: .leading, spacing: 2) {
-                Text(claim.confidence.label.uppercased())
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.2)
-                    .foregroundStyle(claim.confidence.tierColor)
+                ProvenanceTierBadge(confidence: claim.confidence, size: 8)
 
                 if let source = claim.source {
                     Text(source.label)
@@ -81,7 +122,7 @@ struct SourceClaimLabel: View {
     }
 
     private var accessibilityText: String {
-        var parts = [claim.confidence.label]
+        var parts = ["Tier \(claim.confidence.tierNumber)", claim.confidence.label]
         if let s = claim.source { parts.append("source, \(s.label)") }
         if let n = claim.note, !n.isEmpty { parts.append(n) }
         return parts.joined(separator: ". ")
@@ -189,14 +230,14 @@ struct SourceRow: View {
             }
 
             HStack(spacing: PitchAtlasSpacing.xs) {
-                Text("CHECKED \(source.retrievedAt)")
+                Text("CONTENT CHECKED \(source.retrievedAt)")
                     .font(PitchAtlasTheme.martian(8))
-                    .tracking(1)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .tracking(0.8)
+                    .foregroundStyle(PitchAtlasTheme.bone2)
                 if let season = source.season {
                     Text("· \(season)")
                         .font(PitchAtlasTheme.martian(8))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.bone2)
                 }
             }
         }

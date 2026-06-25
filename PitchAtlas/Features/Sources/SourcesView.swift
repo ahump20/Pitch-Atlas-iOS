@@ -86,7 +86,7 @@ struct SourcesView: View {
     private var freshnessCard: some View {
         let checked = store.sourcesLastChecked
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "Sources last checked")
+            SectionLabel(text: "Content checked")
             if checked.isEmpty {
                 Text("Not recorded in this build.")
                     .font(PitchAtlasTheme.hanken(14))
@@ -104,8 +104,8 @@ struct SourcesView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
             checked.isEmpty
-                ? "Sources last checked. Not recorded in this build. Checked, not auto-refreshed."
-                : "Sources last checked \(checked). Checked, not auto-refreshed."
+                ? "Content checked. Not recorded in this build. Checked, not auto-refreshed."
+                : "Content checked \(checked). Checked, not auto-refreshed."
         )
     }
 
@@ -126,22 +126,17 @@ struct SourcesView: View {
 
     private func ladderRow(_ tier: ClaimConfidence) -> some View {
         HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
-            ProvenanceDot(confidence: tier)
-                .padding(.top, 4)
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                Text(tier.label.uppercased())
-                    .font(PitchAtlasTheme.martian(10))
-                    .tracking(1.4)
-                    .foregroundStyle(tier.tierColor)
+                ProvenanceTierBadge(confidence: tier, size: 9)
                 Text(tier.meaning)
-                    .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .font(PitchAtlasTheme.hanken(14))
+                    .foregroundStyle(PitchAtlasTheme.bone2)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(tier.label). \(tier.meaning)")
+        .accessibilityLabel("Tier \(tier.tierNumber). \(tier.label). \(tier.meaning)")
     }
 
     // MARK: - Honest tally (computed from the store)

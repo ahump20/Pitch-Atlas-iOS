@@ -44,7 +44,8 @@ struct CommunityPanel: View {
     @State private var actionMessage: ActionMessage?
     @State private var undoBlock: BlockUndo?
     @State private var pendingMediaRetry: PendingMediaRetry?
-    @State private var hiddenAuthorIDs: Set<String> = []
+    @State private var blockedAuthorIDs: Set<String> = []
+    @State private var blockedAuthorsConfirmed = false
     /// In-flight guard: blocks a second submit Task from spawning before the first
     /// await returns, so a slow-network double-tap can't file two identical rows.
     @State private var isSubmitting = false
@@ -54,6 +55,10 @@ struct CommunityPanel: View {
     private var service: CommunityService { CommunityService(client: auth.client) }
     private var topicKey: String { "pitch:\(pitchSlug)" }
     private var canContribute: Bool { auth.isSignedIn && guidelinesAccepted && ageConfirmed }
+    private var reloadKey: String { "\(pitchSlug)|\(auth.userID ?? "signed-out")" }
+    private var blockedAuthorsUnavailableMessage: String {
+        "Community posts are hidden until blocked contributors can be checked."
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
@@ -67,11 +72,59 @@ struct CommunityPanel: View {
 
             switch mode {
             case .notes:
-                fieldNotesList
-                fieldNoteComposer
+                CommunityFieldNotesList(
+                    state: notesState,
+                    pitchName: pitchName,
+                    currentUserID: auth.userID,
+                    onReport: { note in Task { await reportFieldNote(note.id) } },
+                    onBlock: { authorID, displayName in Task { await block(authorID, displayName: displayName) } }
+                )
+                if canContribute {
+                    CommunityFieldNoteComposer(
+                        tweak: $fieldTweak,
+                        note: $fieldNote,
+                        resultNote: $fieldResultNote,
+                        sampleSize: $fieldSampleSize,
+                        evidenceLabel: $fieldEvidenceLabel,
+                        evidenceURL: $fieldEvidenceURL,
+                        playerLevel: $fieldPlayerLevel,
+                        armSlot: $fieldArmSlot,
+                        intent: $fieldIntent,
+                        resultKind: $fieldResultKind,
+                        isSubmitting: isSubmitting,
+                        onSubmit: { Task { await submitFieldNote() } }
+                    )
+                } else {
+                    contributionGate
+                }
             case .discussion:
-                discussionList
-                discussionComposer
+                CommunityDiscussionList(
+                    state: postsState,
+                    pitchName: pitchName,
+                    currentUserID: auth.userID,
+                    onReport: { post in Task { await reportPost(post.id) } },
+                    onBlock: { authorID, displayName in Task { await block(authorID, displayName: displayName) } }
+                )
+                if canContribute {
+                    CommunityDiscussionComposer(
+                        bodyText: $postBody,
+                        selectedPhoto: $selectedPhoto,
+                        preparedImage: $preparedImage,
+                        mediaTermsAccepted: $mediaTermsAccepted,
+                        hasPendingMediaRetry: pendingMediaRetry != nil,
+                        isSubmitting: isSubmitting,
+                        onPreparePhoto: { item in Task { await preparePhoto(item) } },
+                        onRemovePreparedImage: {
+                            preparedImage = nil
+                            selectedPhoto = nil
+                            pendingMediaRetry = nil
+                        },
+                        onRetryMedia: { Task { await retryPendingMedia() } },
+                        onSubmit: { Task { await submitDiscussionPost() } }
+                    )
+                } else {
+                    contributionGate
+                }
             }
 
             if let actionMessage {
@@ -96,7 +149,7 @@ struct CommunityPanel: View {
             }
         }
         .leatherPress()
-        .task(id: pitchSlug) { await reload() }
+        .task(id: reloadKey) { await reload() }
         // Switching between Field Notes and Discussion clears a stale status line
         // so a "submitted" note from one tab doesn't linger over the other.
         .onChange(of: mode) { _, _ in
@@ -116,225 +169,6 @@ struct CommunityPanel: View {
                 .font(PitchAtlasTheme.newsreaderItalic(12))
                 .foregroundStyle(PitchAtlasTheme.ink3)
                 .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-
-    @ViewBuilder
-    private var fieldNotesList: some View {
-        switch notesState {
-        case .idle, .loading:
-            LoadingTile(label: "Loading field notes")
-        case .empty:
-            EmptyStateView(message: "No field notes have been filed for \(pitchName) yet. Reading is open; posting requires sign-in.")
-        case .failed(let reason):
-            ErrorStateView(title: "Field notes unavailable", reason: reason)
-        case .loaded(let notes):
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                ForEach(notes) { note in
-                    communityNoteCard(note)
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private var discussionList: some View {
-        switch postsState {
-        case .idle, .loading:
-            LoadingTile(label: "Loading discussion")
-        case .empty:
-            EmptyStateView(message: "No discussion posts have been filed for \(pitchName) yet. Pitch Atlas never seeds fake posts.")
-        case .failed(let reason):
-            ErrorStateView(title: "Discussion unavailable", reason: reason)
-        case .loaded(let posts):
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                ForEach(posts) { post in
-                    discussionPostCard(post)
-                }
-            }
-        }
-    }
-
-    private func communityNoteCard(_ note: CommunityFieldNote) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(note.displayName)
-                        .font(PitchAtlasTheme.hankenMedium(14))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                    SectionLabel(text: note.sourceTier.rawValue, size: 8)
-                }
-                Spacer()
-                safetyMenu(authorID: note.authorID, displayName: note.displayName) {
-                    Task { await reportFieldNote(note.id) }
-                }
-            }
-
-            Text(note.tweak)
-                .font(PitchAtlasTheme.newsreader(18))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .fixedSize(horizontal: false, vertical: true)
-
-            if let detail = note.note, !detail.isEmpty {
-                Text(detail)
-                    .font(PitchAtlasTheme.hanken(14))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("\(note.playerLevel.label) · \(note.armSlot.label) · \(note.intent.label)")
-                Text("Result: \(note.claimedResultKind.label)")
-                if let sample = note.sampleSize {
-                    Text("Sample: \(sample)")
-                }
-                if let label = note.evidenceLabel, !label.isEmpty {
-                    Text("Evidence: \(label)")
-                }
-            }
-            .font(PitchAtlasTheme.hanken(12))
-            .foregroundStyle(PitchAtlasTheme.ink3)
-            .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(PitchAtlasSpacing.sm)
-        .background(PitchAtlasTheme.void, in: RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous).stroke(PitchAtlasTheme.machined))
-    }
-
-    private func discussionPostCard(_ post: DiscussionPost) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            HStack(alignment: .top) {
-                Text(post.displayName)
-                    .font(PitchAtlasTheme.hankenMedium(14))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                Spacer()
-                safetyMenu(authorID: post.authorID, displayName: post.displayName) {
-                    Task { await reportPost(post.id) }
-                }
-            }
-            Text(post.body)
-                .font(PitchAtlasTheme.hanken(15))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
-            if !post.media.isEmpty {
-                mediaGallery(post.media)
-            }
-        }
-        .padding(PitchAtlasSpacing.sm)
-        .background(PitchAtlasTheme.void, in: RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous).stroke(PitchAtlasTheme.machined))
-    }
-
-    @ViewBuilder
-    private var fieldNoteComposer: some View {
-        if canContribute {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                SectionLabel(text: "File a note")
-                TextField("Grip change or cue", text: $fieldTweak, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-
-                Picker("Player level", selection: $fieldPlayerLevel) {
-                    ForEach(CommunityPlayerLevel.allCases) { level in
-                        Text(level.label).tag(level)
-                    }
-                }
-                .pickerStyle(.menu)
-
-                Picker("Arm slot", selection: $fieldArmSlot) {
-                    ForEach(CommunityArmSlot.allCases) { slot in
-                        Text(slot.label).tag(slot)
-                    }
-                }
-                .pickerStyle(.menu)
-
-                Picker("Intent", selection: $fieldIntent) {
-                    ForEach(CommunityPitchIntent.allCases) { intent in
-                        Text(intent.label).tag(intent)
-                    }
-                }
-                .pickerStyle(.menu)
-
-                Picker("Result", selection: $fieldResultKind) {
-                    ForEach(CommunityClaimedResultKind.allCases) { result in
-                        Text(result.label).tag(result)
-                    }
-                }
-                .pickerStyle(.menu)
-
-                TextField("Result detail (optional)", text: $fieldResultNote, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-                TextField("Sample size (optional)", text: $fieldSampleSize)
-                    .keyboardType(.numberPad)
-                    .textFieldStyle(.roundedBorder)
-                TextField("Evidence label (optional)", text: $fieldEvidenceLabel)
-                    .textFieldStyle(.roundedBorder)
-                TextField("Evidence URL (optional)", text: $fieldEvidenceURL)
-                    .keyboardType(.URL)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .textFieldStyle(.roundedBorder)
-                TextField("What happened, in plain words", text: $fieldNote, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-                Button {
-                    Task { await submitFieldNote() }
-                } label: {
-                    Label("Submit field note", systemImage: "tray.and.arrow.up")
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .disabled(isSubmitting || fieldTweak.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-            }
-        } else {
-            contributionGate
-        }
-    }
-
-    @ViewBuilder
-    private var discussionComposer: some View {
-        if canContribute {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                SectionLabel(text: "Post")
-                TextField("Add a sourced, firsthand note", text: $postBody, axis: .vertical)
-                    .textFieldStyle(.roundedBorder)
-
-                Toggle("I accept the image upload terms", isOn: $mediaTermsAccepted)
-                    .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-
-                PhotosPicker(selection: $selectedPhoto, matching: .images) {
-                    Label(preparedImage == nil ? "Attach image" : "Replace image", systemImage: "photo")
-                }
-                .buttonStyle(.bordered)
-                .disabled(!mediaTermsAccepted)
-                .onChange(of: selectedPhoto) { _, item in
-                    Task { await preparePhoto(item) }
-                }
-
-                if let preparedImage {
-                    attachmentPreview(preparedImage)
-                }
-
-                if pendingMediaRetry != nil {
-                    Button {
-                        Task { await retryPendingMedia() }
-                    } label: {
-                        Label("Retry image upload", systemImage: "arrow.clockwise")
-                    }
-                    .buttonStyle(.bordered)
-                    .disabled(isSubmitting || !mediaTermsAccepted)
-                }
-
-                Button {
-                    Task { await submitDiscussionPost() }
-                } label: {
-                    Label("Submit post", systemImage: "paperplane")
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .disabled(isSubmitting || postBody.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-            }
-        } else {
-            contributionGate
         }
     }
 
@@ -367,117 +201,49 @@ struct CommunityPanel: View {
         }
     }
 
-    private func mediaGallery(_ media: [DiscussionMedia]) -> some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: PitchAtlasSpacing.sm) {
-                ForEach(media) { item in
-                    mediaTile(item)
-                }
-            }
-        }
-        .accessibilityLabel("Attached media")
-    }
-
-    private func mediaTile(_ item: DiscussionMedia) -> some View {
-        Group {
-            if let url = item.signedURL {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView()
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    case .failure:
-                        Label("Media unavailable", systemImage: "photo")
-                            .font(PitchAtlasTheme.hanken(12))
-                            .foregroundStyle(PitchAtlasTheme.ink3)
-                    @unknown default:
-                        EmptyView()
-                    }
-                }
-            } else {
-                Label(item.signingError ?? "Media unavailable", systemImage: "photo")
-                    .font(PitchAtlasTheme.hanken(12))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
-                    .multilineTextAlignment(.center)
-            }
-        }
-        .frame(width: 150, height: 108)
-        .clipShape(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous).stroke(PitchAtlasTheme.machined))
-        .accessibilityLabel(item.signedURL == nil ? "Attached media unavailable" : "Attached image")
-    }
-
-    private func attachmentPreview(_ image: PreparedCommunityImage) -> some View {
-        HStack(alignment: .center, spacing: PitchAtlasSpacing.sm) {
-            if let uiImage = UIImage(data: image.data) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 72, height: 54)
-                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            } else {
-                Image(systemName: "photo")
-                    .frame(width: 72, height: 54)
-                    .background(PitchAtlasTheme.void, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-            }
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Image ready")
-                    .font(PitchAtlasTheme.hankenMedium(13))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                Text("\(image.width)x\(image.height) · \(ByteCountFormatter.string(fromByteCount: Int64(image.data.count), countStyle: .file))")
-                    .font(PitchAtlasTheme.hanken(12))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
-            }
-            Spacer()
-            Button {
-                preparedImage = nil
-                selectedPhoto = nil
-                pendingMediaRetry = nil
-            } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .imageScale(.large)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("Remove attached image")
-        }
-        .padding(PitchAtlasSpacing.sm)
-        .background(PitchAtlasTheme.void, in: RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous).stroke(PitchAtlasTheme.machined))
-    }
-
-    private func safetyMenu(authorID: String, displayName: String, reportAction: @escaping () -> Void) -> some View {
-        Menu {
-            Button("Report") { reportAction() }
-            if let userID = auth.userID, userID != authorID {
-                Button("Block user", role: .destructive) {
-                    Task { await block(authorID, displayName: displayName) }
-                }
-            }
-        } label: {
-            Image(systemName: "ellipsis.circle")
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .frame(minWidth: 44, minHeight: 44)
-        }
-        .accessibilityLabel("More actions")
-        .accessibilityHint("Report or block this contributor")
-        .disabled(!auth.isSignedIn)
-    }
-
     private func reload() async {
+        guard await refreshBlockedAuthors() else { return }
         async let notes: Void = loadFieldNotes()
         async let posts: Void = loadDiscussion()
         _ = await (notes, posts)
     }
 
+    private func refreshBlockedAuthors() async -> Bool {
+        guard auth.isSignedIn else {
+            blockedAuthorIDs = []
+            blockedAuthorsConfirmed = true
+            return true
+        }
+        do {
+            let contributors = try await service.blockedContributors()
+            blockedAuthorIDs = Set(contributors.map(\.blockedID))
+            blockedAuthorsConfirmed = true
+            return true
+        } catch {
+            blockedAuthorIDs = []
+            blockedAuthorsConfirmed = false
+            let message = CommunityService.userMessage(
+                for: error,
+                fallback: blockedAuthorsUnavailableMessage
+            )
+            notesState = .failed(message)
+            postsState = .failed(message)
+            if actionMessage == nil {
+                actionMessage = ActionMessage(text: message, tone: .error)
+            }
+            return false
+        }
+    }
+
     private func loadFieldNotes() async {
+        guard blockedAuthorsConfirmed else {
+            notesState = .failed(blockedAuthorsUnavailableMessage)
+            return
+        }
         notesState = .loading
         do {
             let rows = try await service.fieldNotes(pitchSlug: pitchSlug)
-            let visibleRows = rows.filter { !hiddenAuthorIDs.contains($0.authorID) }
+            let visibleRows = CommunityVisibilityFilter(blockedAuthorIDs: blockedAuthorIDs).fieldNotes(rows)
             notesState = visibleRows.isEmpty ? .empty : .loaded(visibleRows)
         } catch {
             notesState = .failed(CommunityService.userMessage(for: error, fallback: "Could not load field notes just now. Try again."))
@@ -485,10 +251,14 @@ struct CommunityPanel: View {
     }
 
     private func loadDiscussion() async {
+        guard blockedAuthorsConfirmed else {
+            postsState = .failed(blockedAuthorsUnavailableMessage)
+            return
+        }
         postsState = .loading
         do {
             let rows = try await service.discussionPosts(topicKey: topicKey)
-            let visibleRows = rows.filter { !hiddenAuthorIDs.contains($0.authorID) }
+            let visibleRows = CommunityVisibilityFilter(blockedAuthorIDs: blockedAuthorIDs).discussionPosts(rows)
             postsState = visibleRows.isEmpty ? .empty : .loaded(visibleRows)
         } catch {
             postsState = .failed(CommunityService.userMessage(for: error, fallback: "Could not load the discussion just now. Try again."))
@@ -612,7 +382,7 @@ struct CommunityPanel: View {
     private func block(_ authorID: String, displayName: String) async {
         do {
             try await service.blockUser(blockedID: authorID)
-            hiddenAuthorIDs.insert(authorID)
+            blockedAuthorIDs.insert(authorID)
             hideAuthor(authorID)
             undoBlock = BlockUndo(authorID: authorID, displayName: displayName)
             actionMessage = ActionMessage(text: "Contributor blocked.", tone: .success)
@@ -627,7 +397,7 @@ struct CommunityPanel: View {
     private func unblock(_ authorID: String) async {
         do {
             try await service.unblockUser(blockedID: authorID)
-            hiddenAuthorIDs.remove(authorID)
+            blockedAuthorIDs.remove(authorID)
             undoBlock = nil
             actionMessage = ActionMessage(text: "Contributor unblocked.", tone: .success)
             Haptics.success()

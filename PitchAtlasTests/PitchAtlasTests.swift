@@ -132,7 +132,7 @@ final class PitchAtlasTests: XCTestCase {
 
     func testAppInfoPlistUsesReleaseBuildSettings() {
         XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, "1.0.1")
-        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "8")
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "9")
     }
 
     func testCommunityImagePreparationRejectsNonImages() {
@@ -306,6 +306,68 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(media.height, 900)
         XCTAssertNil(media.signedURL)
         XCTAssertNil(media.signingError)
+    }
+
+    func testCommunityVisibilityFilterHidesBlockedAuthorsClientSide() {
+        let keepNote = CommunityFieldNote(
+            id: "note-keep",
+            pitchSlug: "four-seam",
+            authorID: "author-keep",
+            displayName: "Austin",
+            tweak: "Index finger rides the seam.",
+            playerLevel: .collegePlus,
+            armSlot: .threeQuarter,
+            intent: .betterCommand,
+            claimedResultKind: .workedInBullpen,
+            claimedResultNote: nil,
+            sampleSize: nil,
+            evidenceURL: nil,
+            evidenceLabel: nil,
+            note: nil,
+            sourceTier: .communityFirsthand,
+            createdAt: "2026-06-24T00:00:00Z"
+        )
+        let blockedNote = CommunityFieldNote(
+            id: "note-blocked",
+            pitchSlug: "four-seam",
+            authorID: "author-blocked",
+            displayName: "Blocked",
+            tweak: "Hidden cue.",
+            playerLevel: .collegePlus,
+            armSlot: .threeQuarter,
+            intent: .betterCommand,
+            claimedResultKind: .workedInBullpen,
+            claimedResultNote: nil,
+            sampleSize: nil,
+            evidenceURL: nil,
+            evidenceLabel: nil,
+            note: nil,
+            sourceTier: .communityFirsthand,
+            createdAt: "2026-06-24T00:01:00Z"
+        )
+        let keepPost = DiscussionPost(
+            id: "post-keep",
+            topicKey: "pitch:four-seam",
+            authorID: "author-keep",
+            displayName: "Austin",
+            parentID: nil,
+            body: "Visible post.",
+            createdAt: "2026-06-24T00:00:00Z"
+        )
+        let blockedPost = DiscussionPost(
+            id: "post-blocked",
+            topicKey: "pitch:four-seam",
+            authorID: "author-blocked",
+            displayName: "Blocked",
+            parentID: nil,
+            body: "Hidden post.",
+            createdAt: "2026-06-24T00:01:00Z"
+        )
+
+        let filter = CommunityVisibilityFilter(blockedAuthorIDs: ["author-blocked"])
+
+        XCTAssertEqual(filter.fieldNotes([keepNote, blockedNote]).map(\.id), ["note-keep"])
+        XCTAssertEqual(filter.discussionPosts([keepPost, blockedPost]).map(\.id), ["post-keep"])
     }
 
     func testCommunityErrorMapperHidesRawDatabaseErrors() {

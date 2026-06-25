@@ -108,8 +108,9 @@ struct StatusPill: View {
             .foregroundStyle(tone)
             .padding(.horizontal, 7)
             .padding(.vertical, 3)
+            .background(PitchAtlasTheme.paper2.opacity(0.95), in: Capsule())
             .overlay(
-                Capsule().strokeBorder(tone.opacity(0.5), lineWidth: 1)
+                Capsule().strokeBorder(tone.opacity(0.7), lineWidth: 1)
             )
             .accessibilityLabel(text)
     }
@@ -231,19 +232,22 @@ struct PitchSpecimenCard: View {
     var style: Style = .hero
 
     private var isHero: Bool { style == .hero }
-    private var mediaHeight: CGFloat { isHero ? 176 : 118 }
-    private var titleSize: CGFloat { isHero ? 29 : 17 }
+    private var mediaHeight: CGFloat { isHero ? 148 : 118 }
+    private var titleSize: CGFloat { isHero ? 28 : 17 }
     private var padding: CGFloat { isHero ? PitchAtlasSpacing.md : PitchAtlasSpacing.sm }
     private var cornerRadius: CGFloat { isHero ? PitchAtlasRadius.card : PitchAtlasRadius.tile }
 
     var body: some View {
         VStack(alignment: .leading, spacing: isHero ? PitchAtlasSpacing.sm : PitchAtlasSpacing.xs) {
             HStack(alignment: .center, spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: entry.display.specimenNo, color: PitchAtlasTheme.cyanDeep, size: isHero ? 9 : 7)
+                Text(isHero ? "SPECIMEN \(entry.display.specimenNo)" : entry.display.specimenNo)
+                    .font(PitchAtlasTheme.martian(isHero ? 10 : 7))
+                    .tracking(isHero ? 1 : 0.8)
+                    .foregroundStyle(PitchAtlasTheme.cyan)
                 Spacer(minLength: PitchAtlasSpacing.xs)
                 Text(entry.canonical.family.label.uppercased())
-                    .font(PitchAtlasTheme.martian(isHero ? 8 : 7))
-                    .tracking(1.2)
+                    .font(PitchAtlasTheme.martian(isHero ? 9 : 7))
+                    .tracking(isHero ? 1 : 0.9)
                     .foregroundStyle(entry.canonical.family.accent)
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
@@ -254,15 +258,7 @@ struct PitchSpecimenCard: View {
             nameplate
 
             if isHero {
-                HStack(alignment: .firstTextBaseline, spacing: PitchAtlasSpacing.xs) {
-                    SectionLabel(text: entry.canonical.grip.confidence.label, color: PitchAtlasTheme.cyanDeep, size: 8)
-                    Spacer(minLength: PitchAtlasSpacing.xs)
-                    Text(entry.canonical.grip.source?.label ?? "Source gap visible")
-                        .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
-                }
+                heroProvenance
             }
         }
         .padding(padding)
@@ -288,6 +284,29 @@ struct PitchSpecimenCard: View {
         .shadow(color: .black.opacity(isHero ? 0.42 : 0.28), radius: isHero ? 18 : 10, x: 0, y: isHero ? 14 : 7)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
+    }
+
+    private var heroProvenance: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+            HStack(alignment: .center, spacing: PitchAtlasSpacing.xs) {
+                ProvenanceTierBadge(confidence: entry.canonical.grip.confidence, showsLabel: false, size: 8)
+                Text(entry.canonical.grip.source?.label ?? "Source gap visible")
+                    .font(PitchAtlasTheme.hankenMedium(12))
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+            }
+
+            HStack(spacing: PitchAtlasSpacing.xs2) {
+                Image(systemName: "arrow.up.right.circle")
+                    .font(.system(size: 13, weight: .semibold))
+                Text("OPEN SPECIMEN")
+                    .font(PitchAtlasTheme.martian(8))
+                    .tracking(0.9)
+            }
+            .foregroundStyle(PitchAtlasTheme.cyan)
+            .accessibilityHidden(true)
+        }
     }
 
     @ViewBuilder
@@ -367,15 +386,15 @@ struct RepertoireRow: View {
                     .foregroundStyle(PitchAtlasTheme.bone)
                 if let aka = entry.aka, !aka.isEmpty {
                     Text(aka.joined(separator: " · "))
-                        .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
-                        .lineLimit(2)
+                        .font(PitchAtlasTheme.hanken(12))
+                        .foregroundStyle(PitchAtlasTheme.bone2)
+                        .lineLimit(3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 HStack(spacing: PitchAtlasSpacing.xs) {
                     cardStrip(entry.family.label, color: entry.family.accent)
                     cardStrip(entry.filedSlug == nil ? "Basic file" : "Filed specimen",
-                              color: entry.filedSlug == nil ? PitchAtlasTheme.ink3 : PitchAtlasTheme.cyanDeep)
+                              color: entry.filedSlug == nil ? PitchAtlasTheme.bone2 : PitchAtlasTheme.cyanDeep)
                 }
             }
             Spacer(minLength: PitchAtlasSpacing.xs)
@@ -410,7 +429,8 @@ struct RepertoireRow: View {
             .lineLimit(1)
             .padding(.horizontal, 5)
             .padding(.vertical, 2)
-            .background(PitchAtlasTheme.paper3.opacity(0.8), in: Capsule())
+            .background(PitchAtlasTheme.paper2.opacity(0.95), in: Capsule())
+            .overlay(Capsule().strokeBorder(color.opacity(0.55), lineWidth: 0.75))
     }
 
     /// The aliases are load-bearing for pitch identity but get truncated to one line

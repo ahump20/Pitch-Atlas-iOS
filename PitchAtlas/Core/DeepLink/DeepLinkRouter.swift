@@ -1,6 +1,10 @@
 import SwiftUI
 import Observation
 
+enum AtlasUtilityRoute: Hashable {
+    case account
+}
+
 // =============================================================================
 // DeepLinkRouter — pitchatlas:// routing
 // =============================================================================

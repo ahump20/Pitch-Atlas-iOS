@@ -490,6 +490,18 @@ struct BlockedContributor: Decodable, Identifiable, Hashable {
     var id: String { blockedID }
 }
 
+struct CommunityVisibilityFilter: Equatable {
+    let blockedAuthorIDs: Set<String>
+
+    func fieldNotes(_ rows: [CommunityFieldNote]) -> [CommunityFieldNote] {
+        rows.filter { !blockedAuthorIDs.contains($0.authorID) }
+    }
+
+    func discussionPosts(_ rows: [DiscussionPost]) -> [DiscussionPost] {
+        rows.filter { !blockedAuthorIDs.contains($0.authorID) }
+    }
+}
+
 struct BlockUserParams: Encodable {
     let targetUser: String
 

@@ -21,7 +21,7 @@ struct AtlasView: View {
         ZStack {
             FieldBackdrop()
             ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
                     masthead
                     if case .failed(let msg) = store.status {
                         ErrorStateView(reason: msg)
@@ -42,24 +42,30 @@ struct AtlasView: View {
         .navigationTitle("Atlas")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }
+        .navigationDestination(for: AtlasUtilityRoute.self) { route in
+            switch route {
+            case .account:
+                AccountView()
+            }
+        }
     }
 
     // MARK: Masthead
 
     private var masthead: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             HStack(alignment: .center, spacing: PitchAtlasSpacing.sm) {
-                BrandSealMark(size: 62)
+                BrandSealMark(size: 50)
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    SectionLabel(text: "THE LIVING FIELD MANUAL", color: PitchAtlasTheme.powder)
+                    SectionLabel(text: "THE LIVING FIELD MANUAL", color: PitchAtlasTheme.powder, size: 9)
                     Text("Sourced, not corrected.")
-                        .font(PitchAtlasTheme.newsreaderItalic(18))
+                        .font(PitchAtlasTheme.newsreaderItalic(16))
                         .foregroundStyle(PitchAtlasTheme.bone2)
                 }
             }
 
-            HoloWordmark(text: "PITCH\nATLAS", size: 48, lineSpacing: -8)
-                .padding(.leading, PitchAtlasSpacing.sm)
+            HoloWordmark(text: "PITCH\nATLAS", size: 40, lineSpacing: -7)
+                .padding(.leading, PitchAtlasSpacing.xs)
 
             if let featured = store.pitches.first {
                 NavigationLink(value: featured) {
@@ -71,12 +77,12 @@ struct AtlasView: View {
                 .accessibilityAddTraits(.isButton)
             }
 
-            BlazeInlineCompanionView(style: .atlas, mood: .sniffing)
-
             Text("How pitches are gripped and thrown. Sources stay visible. Community opens when you sign in.")
-                .font(PitchAtlasTheme.hanken(16))
+                .font(PitchAtlasTheme.hanken(14))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
+
+            BlazeInlineCompanionView(style: .atlas, mood: .sniffing)
         }
     }
 

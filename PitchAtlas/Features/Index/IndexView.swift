@@ -21,7 +21,7 @@ struct IndexView: View {
             FieldBackdrop()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
                     masthead
                     searchField
                     familyChips
@@ -44,12 +44,12 @@ struct IndexView: View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
             SectionLabel(text: "The Pitch Index", color: PitchAtlasTheme.powder)
             Text("INDEX")
-                .font(PitchAtlasTheme.anton(54))
+                .font(PitchAtlasTheme.anton(48))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
                 .padding(.vertical, 2)
-            Text("Every pitch a coach, a pitcher, or the tracking taxonomy would call a pitch — honestly labeled.")
-                .font(PitchAtlasTheme.newsreaderItalic(17))
+            Text("Search the pitch names, aliases, and filed specimens. Every row keeps its status visible.")
+                .font(PitchAtlasTheme.newsreaderItalic(16))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
             BlazeInlineCompanionView(style: .search, mood: query.isEmpty ? .sniffing : .chasing)
@@ -107,7 +107,7 @@ struct IndexView: View {
                     family = nil
                 }
                 ForEach(store.repertoire.families) { info in
-                    FilterChip(label: info.label,
+                    FilterChip(label: chipLabel(for: info),
                                dot: info.family.accent,
                                selected: family == info.family) {
                         Haptics.toggle()
@@ -208,6 +208,16 @@ struct IndexView: View {
         return "No pitches match \(trimmed)."
     }
 
+    private func chipLabel(for info: RepertoireFamilyInfo) -> String {
+        switch info.family {
+        case .fastball: return "Fastballs"
+        case .breaking: return "Breakers"
+        case .offspeed: return "Offspeed"
+        case .specialty: return "Special"
+        case .banned: return "Banned"
+        }
+    }
+
     private struct FamilyGroup {
         let info: RepertoireFamilyInfo
         let entries: [RepertoireEntry]
@@ -229,11 +239,11 @@ private struct FilterChip: View {
             HStack(spacing: PitchAtlasSpacing.xs) {
                 if let dot { FamilyDot(color: dot, size: 6) }
                 Text(label.uppercased())
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.2)
+                    .font(PitchAtlasTheme.martian(8))
+                    .tracking(0.8)
                     .foregroundStyle(selected ? PitchAtlasTheme.void : PitchAtlasTheme.bone2)
             }
-            .padding(.horizontal, PitchAtlasSpacing.sm)
+            .padding(.horizontal, 10)
             .padding(.vertical, PitchAtlasSpacing.xs)
             .background(
                 RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)

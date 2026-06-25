@@ -23,7 +23,7 @@ struct AccountView: View {
                     links
                 }
                 .padding(PitchAtlasSpacing.lg)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle("Account")
@@ -53,8 +53,8 @@ struct AccountView: View {
                 BrandSealMark(size: 48)
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
                     SectionLabel(text: "Account and Safety", color: PitchAtlasTheme.powder)
-                    Text("PITCH ATLAS")
-                        .font(PitchAtlasTheme.anton(38))
+                    Text("ACCOUNT & SAFETY")
+                        .font(PitchAtlasTheme.anton(30))
                         .foregroundStyle(PitchAtlasTheme.bone)
                         .antonSkew()
                 }
@@ -103,17 +103,31 @@ struct AccountView: View {
     private var safety: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "Community rules")
-            Text("Post your own experience only. No minors in uploads. No copyrighted media. No abusive, unsafe, or medical-advice claims. Reports can hide content before review.")
-                .font(PitchAtlasTheme.hanken(14))
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
+                safetyRule("Post your own experience only.")
+                safetyRule("No minors, copyrighted media, abusive content, unsafe claims, or medical advice.")
+                safetyRule("Reports can hide content before review.")
+            }
+            Label("Blocking hides community content both ways. Your blocked list is private to this signed-in account.", systemImage: "hand.raised.fill")
+                .font(PitchAtlasTheme.hankenMedium(13))
                 .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
-            Text("Blocking hides community content both ways. The list below is private to your signed-in account.")
-                .font(PitchAtlasTheme.newsreaderItalic(14))
-                .foregroundStyle(PitchAtlasTheme.ink3)
                 .fixedSize(horizontal: false, vertical: true)
             blockedContributorsSection
         }
         .leatherPress()
+    }
+
+    private func safetyRule(_ text: String) -> some View {
+        HStack(alignment: .top, spacing: PitchAtlasSpacing.xs) {
+            Image(systemName: "checkmark.seal")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(PitchAtlasTheme.okBright)
+                .padding(.top, 2)
+            Text(text)
+                .font(PitchAtlasTheme.hanken(14))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 
     @ViewBuilder
@@ -220,22 +234,39 @@ struct SignInPanel: View {
             .signInWithAppleButtonStyle(.white)
             .frame(height: 46)
 
-            TextField("Email for magic link", text: $email)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                Text("Email for magic link")
+                    .font(PitchAtlasTheme.hankenMedium(13))
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+                ZStack(alignment: .leading) {
+                    if email.isEmpty {
+                        Text("you@example.com")
+                            .font(PitchAtlasTheme.hanken(16))
+                            .foregroundStyle(PitchAtlasTheme.ink3)
+                            .allowsHitTesting(false)
+                    }
+                    TextField("", text: $email)
+                        .keyboardType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .tint(PitchAtlasTheme.cyan)
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                        .accessibilityLabel("Email for magic link")
+                }
                 .padding(12)
                 .background(PitchAtlasTheme.void, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(PitchAtlasTheme.machined))
-                .foregroundStyle(PitchAtlasTheme.bone)
+            }
 
             Button {
                 Task { await auth.sendMagicLink(email: email.trimmingCharacters(in: .whitespacesAndNewlines)) }
             } label: {
-                Label(auth.isWorking ? "Sending…" : "Send magic link", systemImage: "envelope")
+                Label(magicLinkButtonTitle, systemImage: auth.isWorking ? "hourglass" : "envelope")
             }
             .buttonStyle(.borderedProminent)
-            .disabled(email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking)
+            .tint(canSendMagicLink ? PitchAtlasTheme.cyanDeep : PitchAtlasTheme.paper3)
+            .foregroundStyle(canSendMagicLink ? PitchAtlasTheme.bone : PitchAtlasTheme.bone2)
+            .disabled(!canSendMagicLink)
 
             if let sentTo = auth.magicLinkSentTo {
                 Label("Check your email. We sent a sign-in link to \(sentTo). Open it on this device to finish.", systemImage: "checkmark.circle")
@@ -251,5 +282,15 @@ struct SignInPanel: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
+    }
+
+    private var canSendMagicLink: Bool {
+        !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !auth.isWorking
+    }
+
+    private var magicLinkButtonTitle: String {
+        if auth.isWorking { return "Sending..." }
+        if email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return "Enter email to send link" }
+        return "Send magic link"
     }
 }
