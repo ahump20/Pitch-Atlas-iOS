@@ -55,6 +55,9 @@ struct PitchDetailView: View {
                 .padding(PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                Color.clear.frame(height: PitchAtlasSpacing.xl)
+            }
         }
         .navigationTitle(display.shortName)
         .navigationBarTitleDisplayMode(.inline)
