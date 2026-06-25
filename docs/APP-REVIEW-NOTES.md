@@ -29,6 +29,15 @@ Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped 
 
 iOS v1 accepts still images only through PhotosPicker. There is no video upload, GIF upload, live camera capture, or camera permission.
 
+## Embedded teaching clips
+
+Three of the twelve filed-specimen screens (four-seam, two-seam, slider, circle-change) show one short, credited teaching clip embedded from TikTok using TikTok's own official player (`https://www.tiktok.com/player/v1/<id>`) inside a `WKWebView` — the same public embed any website uses. These are supplementary teaching references; the app is fully usable without them, and every other surface is native SwiftUI.
+
+- Each clip is credited to the original creator on-screen, with a "Watch on TikTok" button that opens the original post.
+- Nothing is downloaded, re-encoded, or re-hosted. TikTok serves the video from its own player; the app bundles no clip file. (Rights record: web repo `docs/MEDIA-LEDGER.md`, rows T1–T3.)
+- No autoplay: the player shows its cover frame and the user taps play.
+- This is the only `WKWebView` in the app and its only third-party embed. It is not a web wrapper — navigation, content, and provenance rendering are all native.
+
 ## Privacy
 
 The app does not track users and does not include ads. It collects account email/user ID, user-written content, and uploaded still images only for app functionality and moderation/safety. App privacy labels should not say “Data Not Collected.”
@@ -47,7 +56,7 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 - User-reported submitted build: build 3, submitted 2026-06-09, awaiting App Review. I did not verify App Store Connect status in this pass.
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
-- No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, video upload, or BSI dependency.
+- No Firebase, Appwrite, CloudKit, push notifications, camera capture, video upload, or BSI dependency. The only `WKWebView` is the credited TikTok teaching-clip embed described under **Embedded teaching clips** above — there is no app-content webview or web wrapper.
 
 ## Return Wave Checks, 2026-06-24
 

@@ -12,6 +12,9 @@ import SwiftUI
 struct PitchDetailView: View {
     let entry: PitchAtlasEntry
 
+    /// The bundled-content store, for the teaching clip filed against this slug.
+    @Environment(PitchStore.self) private var store
+
     /// Drives the grip-fact layout: at accessibility text sizes the fixed label
     /// column can't hold "PRESSURE FINGER" without clipping, so the row stacks.
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -38,6 +41,9 @@ struct PitchDetailView: View {
                     if let guide = entry.guide { coaching(guide) }
                     mechanics
                     if let voice = canonical.voice { voiceQuote(voice) }
+                    if let clip = store.teachingClip(slug: entry.slug) {
+                        TeachingClipCard(clip: clip, accent: canonical.family.accent)
+                    }
                     if !entry.masterVariants.isEmpty { mastersLedger }
                     communityPreview
                     // When real footage or photography carries the hero, the

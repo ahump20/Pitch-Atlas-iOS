@@ -662,6 +662,34 @@ struct GripsFile: Codable, Hashable {
     let entries: [GripEntry]
 }
 
+// MARK: - Teaching clips (teaching-clips.json → [TeachingClip])
+
+/// A credited teaching post (TikTok) embedded on a filed specimen by slug. The app
+/// embeds the platform's OWN player and links out — embed-or-link, never rehost; no
+/// media file ships. A sourced pointer to what the post teaches, never a measured
+/// claim. `slugs` lets one clip serve several specimens (Ryan → four-seam + two-seam).
+struct TeachingClip: Codable, Hashable, Identifiable {
+    let id: String
+    /// "tiktok" today; kept String so a future platform can't brick the decode.
+    let platform: String
+    let videoId: String
+    let author: String
+    let authorUrl: String
+    let url: String
+    let caption: String
+    let title: String
+    let lede: String
+    let slugs: [String]
+    let retrievedAt: String
+
+    /// TikTok's official player URL the WebView embeds. No autoplay; chrome trimmed.
+    var playerURL: URL? {
+        URL(string: "https://www.tiktok.com/player/v1/\(videoId)?rel=0&description=0&music_info=0")
+    }
+    /// The canonical post — the credited "watch at source" outbound link.
+    var postURL: URL? { URL(string: url) }
+}
+
 // MARK: - Manifest (manifest.json)
 
 /// The build index. `counts` keys carry dots/hyphens (filenames), so it must be a

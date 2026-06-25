@@ -29,6 +29,7 @@ final class PitchStore {
     let knowledge: [KnowledgeWing]
     let grips: GripsFile
     let sources: [Source]
+    let teachingClips: [TeachingClip]
     let manifest: ContentManifest
     let status: Status
 
@@ -59,6 +60,7 @@ final class PitchStore {
                                                                          sequenceNote: "", sequence: []),
                                               proofLimit: "", entries: []))
         self.sources = load("sources", [Source].self, fallback: [])
+        self.teachingClips = load("teaching-clips", [TeachingClip].self, fallback: [])
 
         self.status = problems.isEmpty ? .ready : .failed(problems.joined(separator: " | "))
     }
@@ -96,4 +98,10 @@ final class PitchStore {
     func wing(slug: String) -> KnowledgeWing? { knowledge.first { $0.slug == slug } }
     func repertoireEntry(id: String) -> RepertoireEntry? { repertoire.entries.first { $0.id == id } }
     func gripEntry(id: String) -> GripEntry? { grips.entries.first { $0.id == id } }
+
+    /// The teaching clip filed against a specimen slug, if any. One clip may serve
+    /// several slugs (Ryan → four-seam + two-seam), mirroring the web's lookup.
+    func teachingClip(slug: String) -> TeachingClip? {
+        teachingClips.first { $0.slugs.contains(slug) }
+    }
 }

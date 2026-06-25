@@ -34,6 +34,7 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertFalse(store.knowledge.isEmpty, "no knowledge wings decoded")
         XCTAssertFalse(store.grips.entries.isEmpty, "no grips decoded")
         XCTAssertFalse(store.sources.isEmpty, "no sources decoded")
+        XCTAssertFalse(store.teachingClips.isEmpty, "no teaching clips decoded")
     }
 
     /// Drift guard: decoded record counts must match the build manifest. If the
@@ -48,6 +49,29 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(store.knowledge.count, store.manifest.counts["knowledge.json"])
         XCTAssertEqual(store.grips.entries.count, store.manifest.counts["grips.json"])
         XCTAssertEqual(store.sources.count, store.manifest.counts["sources.json"])
+        XCTAssertEqual(store.teachingClips.count, store.manifest.counts["teaching-clips.json"])
+    }
+
+    /// Teaching clips embed the platform's own player and link out — embed-or-link,
+    /// never rehost. Every clip must carry a video id, an https outbound post URL,
+    /// and at least one slug that resolves to a filed specimen, so a clip can never
+    /// reference a missing pitch or ship a half-built embed. No media file is
+    /// bundled: the player is served remotely by TikTok.
+    func testTeachingClipsAreWellFormedAndResolveToSpecimens() {
+        let store = PitchStore()
+        let specimenSlugs = Set(store.pitches.map(\.slug))
+        for clip in store.teachingClips {
+            XCTAssertFalse(clip.videoId.isEmpty, "\(clip.id): empty video id")
+            XCTAssertFalse(clip.title.isEmpty, "\(clip.id): empty title")
+            XCTAssertFalse(clip.lede.isEmpty, "\(clip.id): empty lede")
+            XCTAssertNotNil(clip.playerURL, "\(clip.id): no player URL")
+            XCTAssertEqual(clip.postURL?.scheme, "https", "\(clip.id): outbound link must be https")
+            XCTAssertFalse(clip.slugs.isEmpty, "\(clip.id): files against no specimen")
+            for slug in clip.slugs {
+                XCTAssertTrue(specimenSlugs.contains(slug),
+                              "\(clip.id): slug \(slug) has no filed specimen")
+            }
+        }
     }
 
     /// The owner's grip films: every film referenced by the content must resolve
