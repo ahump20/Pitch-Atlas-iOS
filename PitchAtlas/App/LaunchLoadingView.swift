@@ -43,18 +43,19 @@ struct LaunchLoadingView: View {
         ZStack {
             FieldBackdrop()
             FieldRules()
-                .opacity(0.18)
+                .opacity(0.08)
                 .ignoresSafeArea()
 
-            VStack(spacing: PitchAtlasSpacing.lg) {
-                BrandSealMark(size: 118)
+            VStack(spacing: PitchAtlasSpacing.md) {
+                BrandSealMark(size: 142)
                     .scaleEffect(reduceMotion ? 1 : (sweep ? 1.015 : 0.985))
                     .animation(reduceMotion ? nil : .easeInOut(duration: 1.2).repeatForever(autoreverses: true),
                                value: sweep)
+                    .padding(.bottom, PitchAtlasSpacing.xs)
 
                 VStack(spacing: PitchAtlasSpacing.xs) {
                     Text("PITCH ATLAS")
-                        .font(PitchAtlasTheme.anton(34))
+                        .font(PitchAtlasTheme.anton(38))
                         .foregroundStyle(PitchAtlasTheme.bone)
                         .antonSkew()
                         .accessibilityAddTraits(.isHeader)
@@ -65,9 +66,11 @@ struct LaunchLoadingView: View {
                 }
 
                 LoadingRule()
-                    .frame(width: 184)
+                    .frame(width: 220)
+                    .padding(.top, PitchAtlasSpacing.sm)
             }
             .padding(.horizontal, PitchAtlasSpacing.xl)
+            .offset(y: -12)
         }
         .onAppear { if !reduceMotion { sweep = true } }
         .accessibilityElement(children: .combine)
@@ -99,31 +102,38 @@ private struct FieldRules: View {
 
 private struct LoadingRule: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var position: CGFloat = -0.9
+    @State private var isAtEnd = false
 
     var body: some View {
-        ZStack(alignment: .leading) {
-            Capsule()
-                .fill(PitchAtlasTheme.bone.opacity(0.16))
-                .frame(height: 2)
-            Capsule()
-                .fill(
-                    LinearGradient(
-                        colors: [
-                            PitchAtlasTheme.seamBright,
-                            PitchAtlasTheme.powder,
-                            PitchAtlasTheme.bone,
-                        ],
-                        startPoint: .leading,
-                        endPoint: .trailing
+        GeometryReader { proxy in
+            let dashWidth = min(max(proxy.size.width * 0.34, 64), 84)
+            let travel = max(proxy.size.width - dashWidth, 0)
+
+            ZStack(alignment: .leading) {
+                Capsule()
+                    .fill(PitchAtlasTheme.bone.opacity(0.16))
+                    .frame(height: 2)
+                Capsule()
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                PitchAtlasTheme.seamBright,
+                                PitchAtlasTheme.cyan,
+                                PitchAtlasTheme.bone,
+                            ],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
                     )
-                )
-                .frame(width: 64, height: 2)
-                .offset(x: reduceMotion ? 60 : position * 160)
-                .animation(reduceMotion ? nil : .easeInOut(duration: 1.1).repeatForever(autoreverses: true),
-                           value: position)
+                    .frame(width: dashWidth, height: 2)
+                    .offset(x: reduceMotion ? travel * 0.5 : (isAtEnd ? travel : 0))
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 1.1).repeatForever(autoreverses: true),
+                               value: isAtEnd)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         }
-        .onAppear { if !reduceMotion { position = 0.9 } }
+        .frame(height: 8)
+        .onAppear { if !reduceMotion { isAtEnd = true } }
         .accessibilityHidden(true)
     }
 }

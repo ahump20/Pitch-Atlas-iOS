@@ -2,11 +2,11 @@
 
 Date: 2026-06-24
 Device: iPhone 17 Pro simulator, iOS 26.5
-Build target: `com.pitchatlas.app`, version `1.0.1`, build floor `8`
+Build target: `com.pitchatlas.app`, version `1.0.1`, build `9`
 Capture method: `./scripts/build.sh test`, `xcrun simctl install`, `xcrun simctl launch`, and `xcrun simctl io screenshot`
 
-Functional test proof: clean iPhone 17 Pro simulator run, 28 tests passed, 0 failed. Signed Release iPhoneOS metadata resolved to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `8`, and `ITSAppUsesNonExemptEncryption=false`.
-Submission proof: build `8` processed as `VALID`, attached to version `1.0.1`, assigned to internal TestFlight, and submitted for App Review as `WAITING_FOR_REVIEW`.
+Functional test proof: clean iPhone 17 Pro simulator run, 28 tests passed, 0 failed. Signed Release iPhoneOS metadata resolved to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `9`, and `ITSAppUsesNonExemptEncryption=false`.
+Submission proof: build `9` processed as `VALID`, attached to version `1.0.1`, assigned to internal TestFlight, and submitted for App Review as `WAITING_FOR_REVIEW`.
 
 ## Brand Consistency Critique
 
@@ -18,16 +18,17 @@ Voice: pass. The first screen and loading frame keep the founder rule visible: `
 
 Token compliance: pass. iOS maps the current web refractor token family into `PitchAtlasTheme`: void `#070509`, press `#221E18`, bone `#F6F1E6`, bone-2 `#C9C2B0`, cyan `#37D6FF`, seam-bright `#FF2D44`, and the same refractor foil sweep. The only deliberate native deviation is that `paper2` and `paper3` are dark structural colors in the app, while cream paper stays reserved for card backs and printed-data panels.
 
-Design critique decision: ship build `8` with this direction. The original black-screen failure and the off-brand loaded surface have been addressed by `LaunchLoadingGate`, `FieldBackdrop`, the web seal assets, darker app chrome, hidden-by-default Blaze companion, current refractor accent tokens, and specimen-card fronts. Remaining screenshot notes below are App Store crop polish, not blockers for the binary.
+Design critique decision: ship build `9` with this direction. The original black-screen failure, dented loading baseball, and off-brand loaded surface have been addressed by `LaunchLoadingGate`, `FieldBackdrop`, the corrected clean baseball seal assets, darker app chrome, hidden-by-default Blaze companion, current refractor accent tokens, and specimen-card fronts. Remaining screenshot notes below are App Store crop polish, not blockers for the binary.
 
 ## Atlas Home
 
+Raw build-9 proof: `2026-06-24-build-9-atlas-home.jpg`
 Raw build-8 proof: `2026-06-24-build-8-atlas-home.jpg`
 Raw build-7 proof: `2026-06-24-build-7-atlas-home.jpg`
 Earlier raw proof: `2026-06-24-atlas-home.jpg`
 Annotated: `2026-06-24-atlas-home-annotated.jpg`
 
-Rendered state: verified from build `8`. The app opens into the native Atlas tab shell with `Pitch Atlas`, `Sourced, not corrected`, the featured Four-seam specimen card, visible first-party grip footage, the dark field background, current cyan active tab, and the five-tab bar.
+Rendered state: verified from build `9`. The app opens into the native Atlas tab shell with `Pitch Atlas`, `Sourced, not corrected`, the featured Four-seam specimen card, visible first-party grip footage, the cooler dark field background, current cyan active tab, and the five-tab bar.
 
 Critique and remaining crop notes:
 

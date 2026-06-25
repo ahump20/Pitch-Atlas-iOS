@@ -18,33 +18,42 @@ struct FieldBackdrop: View {
             PitchAtlasTheme.void
             LinearGradient(
                 colors: [
-                    PitchAtlasTheme.paper3.opacity(0.24),
+                    Color(hex: 0x16121F).opacity(0.30),
                     .clear,
-                    PitchAtlasTheme.press.opacity(0.18),
+                    PitchAtlasTheme.void,
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
             RadialGradient(
                 colors: [
-                    PitchAtlasTheme.powder.opacity(0.11),
+                    PitchAtlasTheme.cyan.opacity(0.095),
                     .clear,
                 ],
-                center: .topTrailing,
+                center: .topLeading,
                 startRadius: 0,
+                endRadius: 340
+            )
+            RadialGradient(
+                colors: [
+                    PitchAtlasTheme.seamBright.opacity(0.06),
+                    .clear,
+                ],
+                center: .bottomLeading,
+                startRadius: 24,
                 endRadius: 360
             )
             RadialGradient(
                 colors: [
-                    PitchAtlasTheme.seamBright.opacity(0.055),
+                    PitchAtlasTheme.violet.opacity(0.045),
                     .clear,
                 ],
-                center: .bottomLeading,
-                startRadius: 18,
-                endRadius: 330
+                center: .topTrailing,
+                startRadius: 0,
+                endRadius: 320
             )
             FieldRuleMesh()
-                .opacity(0.10)
+                .opacity(0.20)
         }
         .ignoresSafeArea()
     }
@@ -53,21 +62,17 @@ struct FieldBackdrop: View {
 private struct FieldRuleMesh: View {
     var body: some View {
         Canvas { context, size in
-            let step: CGFloat = 28
-            var path = Path()
+            let step: CGFloat = 22
             var x: CGFloat = 0
             while x <= size.width {
-                path.move(to: CGPoint(x: x, y: 0))
-                path.addLine(to: CGPoint(x: x, y: size.height))
+                var y: CGFloat = 0
+                while y <= size.height {
+                    let rect = CGRect(x: x, y: y, width: 1.2, height: 1.2)
+                    context.fill(Path(ellipseIn: rect), with: .color(PitchAtlasTheme.bone.opacity(0.18)))
+                    y += step
+                }
                 x += step
             }
-            var y: CGFloat = 0
-            while y <= size.height {
-                path.move(to: CGPoint(x: 0, y: y))
-                path.addLine(to: CGPoint(x: size.width, y: y))
-                y += step
-            }
-            context.stroke(path, with: .color(PitchAtlasTheme.bone.opacity(0.12)), lineWidth: 0.5)
         }
     }
 }
