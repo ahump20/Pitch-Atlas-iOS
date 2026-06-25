@@ -14,6 +14,14 @@ Version target: 1.0.1 (9)
 - Sources: `docs/review-evidence/build-9-screenshots/sources.png`
 - Account/Safety: `docs/review-evidence/build-9-screenshots/account-safety.png`
 
+## App Store Connect Status
+
+Preview copy was refreshed through the App Store Connect API on 2026-06-25 for
+version `1.0.1`, which still read back as `WAITING_FOR_REVIEW`. Screenshot
+replacement was attempted with these Build 9 captures, but Apple returned
+`STATE_ERROR`: screenshots cannot be created while the app screenshots resource
+is waiting for review. The submitted five-image screenshot set remains intact.
+
 ## Critique Checks
 
 - Atlas: seal, title, and featured specimen should read above the tab bar.

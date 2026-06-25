@@ -2,6 +2,12 @@
 
 Status: 2026-06-24 production submission for `com.pitchatlas.app`.
 
+Preview copy refreshed through the App Store Connect API on 2026-06-25 while version
+`1.0.1` was still `WAITING_FOR_REVIEW`. Screenshot replacement with the Build 9
+captures was attempted, but Apple returned `STATE_ERROR`: screenshots cannot be
+created while the app screenshots resource is waiting for review. The existing
+submitted screenshots remain intact.
+
 Build `1.0.1 (8)` is the submitted release target. App Store Connect reported version `1.0` as previously approved/closed, rejected `1.0.0 (5)`, and accepted build `6` on 2026-06-24 before the final visual/loading pass. Build `8` supersedes builds `6` and `7`.
 
 Verified 2026-06-24 through the App Store Connect API:
@@ -37,26 +43,32 @@ Archive and upload from `PitchAtlas.xcodeproj` in the main `Pitch-Atlas-iOS` rep
 
 ## Promotional Text
 
-`An offline field manual for how pitches are gripped, shaped, sourced, and understood.`
+`Grips, seam tells, source tiers, and pitch craft, with no fake movement numbers.`
 
-85 characters.
+80 characters.
+
+## What's New
+
+`Pitch cards read faster, first-party grip photos appear earlier, source tiers now show text labels, Index rows scan cleaner, and Account and Safety language is easier to follow.`
+
+177 characters.
 
 ## Description
 
-Pitch Atlas is a native field manual for the craft of pitching. It explains how pitches are gripped, how they move, who made them famous, and how solid each claim is.
+Pitch Atlas is a native field manual for the craft of pitching. It starts with the hand on the ball: seams, fingertips, thumb pressure, release feel, and the hitter's clock.
 
-The app is built around a simple rule: sourced, not corrected. A measured figure, a pitcher quote, a coach observation, and an unverified claim do not wear the same label. Every pitch read shows its evidence tier so the gap stays visible.
+The app is built around one rule: sourced, not corrected. A measured claim, a pitcher account, a coach read, and a thin historical note do not wear the same label. Pitch Atlas keeps that gap visible.
 
 Inside the app:
 
-- A searchable pitch index, from four-seams and sliders to lost pitches and banned doctored balls.
-- Native seam specimens with sourced motion cues and seam-informed schematics.
-- A grip library built from first-party grip photography and first-person notes.
-- Craftsmen and lost-pitches wings for the pitchers, pitch names, and techniques that shaped the language.
-- A sources browser so the reader can see where each claim came from.
-- An optional, free community layer: sign in to post field notes and discussion, attach still images, report content, block contributors, and delete your account.
+- A searchable index from four-seams and sliders to splitters, sweepers, lost pitches, and doctored-ball lore.
+- Native pitch cards with seam-informed specimens, movement language, family labels, and source tiers.
+- A grip library built from first-party photographs and first-person notes, clearly marked as grip evidence rather than tracked pitch data.
+- Craftsmen and lost-pitches sections for the people, pitch names, and teaching lines that shaped the craft.
+- A sources browser that shows where the claims came from and when the content was checked.
+- Optional community field notes for signed-in users, with reporting, blocking, still-image uploads, and account deletion.
 
-The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community actions: posting, reporting, blocking, uploads, and account deletion.
+Most of the reference library is bundled for first launch. An account is only needed for community actions. No ads. No tracking. No fake spin numbers.
 
 ## Keywords
 
@@ -114,14 +126,22 @@ If reviewer credentials are required, provide a Supabase test account in the App
 
 ## Screenshots To Capture
 
-Required iPhone set:
+Build 9 internal evidence captures:
 
-- Atlas home: card-style specimen, `Pitch Atlas`, `Sourced, not corrected`, and tab bar.
-- Pitch Index: search and family filters.
-- Pitch detail: native seam specimen, source badges, grip/coaching sections, and community surface.
-- Grip Library: first-party grip photography and `not tracked data` framing.
-- Sources: provenance/source browser.
-- Account and Safety: sign-in, safety notes, reports/blocks/account deletion path.
+- `docs/review-evidence/build-9-screenshots/atlas-home.png`
+- `docs/review-evidence/build-9-screenshots/pitch-detail-four-seam.png`
+- `docs/review-evidence/build-9-screenshots/index.png`
+- `docs/review-evidence/build-9-screenshots/grips.png`
+- `docs/review-evidence/build-9-screenshots/sources.png`
+- `docs/review-evidence/build-9-screenshots/account-safety.png`
+
+These six Build 9 files are internal evidence only for now. They are `1206 x 2622`,
+the Apple-accepted 6.3-inch iPhone portrait size for iPhone 17 Pro / iPhone 16 Pro
+class devices.
+
+Live App Store Connect screenshot set: still the submitted five-image set. It
+stays that way until the version leaves `WAITING_FOR_REVIEW` or the submission is
+intentionally removed from review and replaced.
 
 For every final screenshot report, verify the rendered state first, then include annotated design/UX critique with at least 10 high-level fixes or improvements per image.
 
