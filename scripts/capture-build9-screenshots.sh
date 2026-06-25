@@ -99,7 +99,6 @@ Version target: 1.0.1 (9)
 - Grips: no-fake-data disclaimer remains high and first-party grip thumbnails appear early.
 - Sources: tier numbers accompany dots, source rows say content checked, and labels are readable.
 - Account/Safety: email label is visible, disabled magic-link state is clear, and safety notes scan.
-
 REPORT
 
 printf 'Screenshot report: %s\n' "$REPORT_PATH"

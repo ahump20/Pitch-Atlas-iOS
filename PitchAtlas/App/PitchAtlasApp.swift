@@ -159,14 +159,19 @@ struct RootView: View {
     private func applyDebugLaunch() {
         #if DEBUG
         let env = ProcessInfo.processInfo.environment
-        if let slug = env["PA_PITCH"], let entry = store.pitch(slug: slug) {
-            router.selection = .atlas
-            router.atlasPath.append(entry)
-        }
+
         if env["PA_ACCOUNT"] == "1" {
             router.selection = .atlas
             router.atlasPath.append(AtlasUtilityRoute.account)
+            return
         }
+
+        if let slug = env["PA_PITCH"], let entry = store.pitch(slug: slug) {
+            router.selection = .atlas
+            router.atlasPath.append(entry)
+            return
+        }
+
         if let slug = env["PA_CRAFTSMAN"], let craftsman = store.craftsman(slug: slug) {
             router.selection = .craftsmen
             router.craftsmenPath.append(craftsman)
