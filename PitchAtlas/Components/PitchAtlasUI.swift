@@ -366,6 +366,155 @@ struct HairlineDivider: View {
     }
 }
 
+// MARK: - Native form surfaces
+
+/// Visible form label. Placeholders give examples; this label names the field.
+struct PitchFormLabel: View {
+    let text: String
+    var required: Bool = false
+
+    init(_ text: String, required: Bool = false) {
+        self.text = text
+        self.required = required
+    }
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: PitchAtlasSpacing.xs) {
+            SectionLabel(text: text, color: PitchAtlasTheme.bone2, size: 9)
+            if required {
+                Text("Required")
+                    .font(PitchAtlasTheme.martian(8))
+                    .tracking(0.7)
+                    .foregroundStyle(PitchAtlasTheme.amberBright)
+            }
+        }
+        .accessibilityElement(children: .combine)
+    }
+}
+
+struct PitchFormCaption: View {
+    let text: String
+    var color: Color = PitchAtlasTheme.ink3
+
+    var body: some View {
+        Text(text)
+            .font(PitchAtlasTheme.hanken(12))
+            .foregroundStyle(color)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+private struct PitchTextFieldSurface: ViewModifier {
+    var minHeight: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .padding(.horizontal, PitchAtlasSpacing.sm)
+            .padding(.vertical, 10)
+            .frame(minHeight: minHeight, alignment: .topLeading)
+            .background(
+                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
+                    .fill(PitchAtlasTheme.void.opacity(0.96))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
+                    .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+            )
+            .tint(PitchAtlasTheme.cyan)
+    }
+}
+
+extension View {
+    func pitchTextFieldSurface(minHeight: CGFloat = 48) -> some View {
+        modifier(PitchTextFieldSurface(minHeight: minHeight))
+    }
+}
+
+struct PitchMenuField<Selection: Hashable, Content: View>: View {
+    let label: String
+    let selectedText: String
+    @Binding var selection: Selection
+    @ViewBuilder let content: () -> Content
+
+    init(
+        _ label: String,
+        selectedText: String,
+        selection: Binding<Selection>,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
+        self.label = label
+        self.selectedText = selectedText
+        self._selection = selection
+        self.content = content
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+            PitchFormLabel(label)
+            Picker(selection: $selection) {
+                content()
+            } label: {
+                HStack(spacing: PitchAtlasSpacing.sm) {
+                    Text(selectedText)
+                        .font(PitchAtlasTheme.hankenMedium(14))
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer(minLength: PitchAtlasSpacing.xs)
+                    Image(systemName: "chevron.up.chevron.down")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(PitchAtlasTheme.cyan)
+                        .accessibilityHidden(true)
+                }
+                .padding(.horizontal, PitchAtlasSpacing.sm)
+                .padding(.vertical, 10)
+                .frame(minHeight: 46)
+                .background(
+                    RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
+                        .fill(PitchAtlasTheme.void.opacity(0.96))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
+                        .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+                )
+            }
+            .pickerStyle(.menu)
+            .tint(PitchAtlasTheme.bone)
+        }
+    }
+}
+
+struct PitchToggleField: View {
+    let text: String
+    var caption: String?
+    @Binding var isOn: Bool
+
+    var body: some View {
+        Toggle(isOn: $isOn) {
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                Text(text)
+                    .font(PitchAtlasTheme.hankenMedium(14))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .fixedSize(horizontal: false, vertical: true)
+                if let caption {
+                    Text(caption)
+                        .font(PitchAtlasTheme.hanken(12))
+                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .toggleStyle(.switch)
+        .tint(PitchAtlasTheme.cyan)
+        .padding(PitchAtlasSpacing.sm)
+        .background(PitchAtlasTheme.void.opacity(0.96), in: RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
+                .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+        )
+    }
+}
+
 // MARK: - Holographic wordmark (the refractor sheen)
 
 /// The Atlas masthead wordmark. Rather than paint the full 8-stop foil across the

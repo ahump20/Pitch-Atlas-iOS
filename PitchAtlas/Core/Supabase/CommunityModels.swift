@@ -126,6 +126,16 @@ enum CommunitySourceTier: String, Codable, CaseIterable, Identifiable, Hashable 
     case unverified
 
     var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .communityFirsthand: return "Community firsthand"
+        case .coachObserved: return "Coach observed"
+        case .reputableAnalysis: return "Reputable analysis"
+        case .secondhandAttributed: return "Secondhand attributed"
+        case .unverified: return "Unverified"
+        }
+    }
 }
 
 struct CommunityFieldNote: Decodable, Identifiable, Hashable {
@@ -504,4 +514,18 @@ struct PreparedCommunityImage: Equatable {
     let width: Int
     let height: Int
     let fileExtension: String
+}
+
+enum CommunityVisibility {
+    static func hiddenAuthorIDs(from contributors: [BlockedContributor]) -> Set<String> {
+        Set(contributors.map(\.blockedID))
+    }
+
+    static func visibleFieldNotes(_ notes: [CommunityFieldNote], hiddenAuthorIDs: Set<String>) -> [CommunityFieldNote] {
+        notes.filter { !hiddenAuthorIDs.contains($0.authorID) }
+    }
+
+    static func visibleDiscussionPosts(_ posts: [DiscussionPost], hiddenAuthorIDs: Set<String>) -> [DiscussionPost] {
+        posts.filter { !hiddenAuthorIDs.contains($0.authorID) }
+    }
 }

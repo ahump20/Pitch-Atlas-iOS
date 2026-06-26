@@ -82,13 +82,17 @@ struct AccountView: View {
                 }
 
                 HStack {
-                    Button("Sign out") {
+                    Button {
                         Task { await auth.signOut() }
+                    } label: {
+                        Label("Sign out", systemImage: "rectangle.portrait.and.arrow.right")
                     }
                     .buttonStyle(.bordered)
 
-                    Button("Delete account", role: .destructive) {
+                    Button(role: .destructive) {
                         deleteRequested = true
+                    } label: {
+                        Label("Delete account", systemImage: "trash")
                     }
                     .buttonStyle(.borderedProminent)
                 }
@@ -141,8 +145,10 @@ struct AccountView: View {
                                     .foregroundStyle(PitchAtlasTheme.ink3)
                             }
                             Spacer()
-                            Button("Unblock") {
+                            Button {
                                 Task { await unblock(contributor) }
+                            } label: {
+                                Label("Unblock", systemImage: "person.crop.circle.badge.minus")
                             }
                             .buttonStyle(.bordered)
                             .accessibilityLabel("Unblock \(contributor.displayName)")
@@ -220,14 +226,17 @@ struct SignInPanel: View {
             .signInWithAppleButtonStyle(.white)
             .frame(height: 46)
 
-            TextField("Email for magic link", text: $email)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .padding(12)
-                .background(PitchAtlasTheme.void, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(PitchAtlasTheme.machined))
-                .foregroundStyle(PitchAtlasTheme.bone)
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                PitchFormLabel("Email")
+                TextField("you@example.com", text: $email)
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .font(PitchAtlasTheme.hanken(15))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .pitchTextFieldSurface()
+                PitchFormCaption(text: "Used only to send the magic sign-in link.")
+            }
 
             Button {
                 Task { await auth.sendMagicLink(email: email.trimmingCharacters(in: .whitespacesAndNewlines)) }
@@ -236,6 +245,7 @@ struct SignInPanel: View {
             }
             .buttonStyle(.borderedProminent)
             .disabled(email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking)
+            .opacity((email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking) ? 0.55 : 1)
 
             if let sentTo = auth.magicLinkSentTo {
                 Label("Check your email. We sent a sign-in link to \(sentTo). Open it on this device to finish.", systemImage: "checkmark.circle")

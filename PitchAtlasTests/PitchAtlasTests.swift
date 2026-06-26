@@ -308,6 +308,40 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertNil(media.signingError)
     }
 
+    func testBlockedContributorVisibilityFiltersCommunityRowsLocally() {
+        let hidden = CommunityVisibility.hiddenAuthorIDs(from: [
+            BlockedContributor(blockedID: "author-blocked", displayName: "Blocked", createdAt: "2026-06-25T12:00:00Z")
+        ])
+
+        let notes = [
+            communityFieldNote(id: "note-1", authorID: "author-visible"),
+            communityFieldNote(id: "note-2", authorID: "author-blocked"),
+        ]
+        let posts = [
+            DiscussionPost(
+                id: "post-1",
+                topicKey: "pitch:four-seam",
+                authorID: "author-visible",
+                displayName: "Visible",
+                parentID: nil,
+                body: "Visible post.",
+                createdAt: "2026-06-25T12:00:00Z"
+            ),
+            DiscussionPost(
+                id: "post-2",
+                topicKey: "pitch:four-seam",
+                authorID: "author-blocked",
+                displayName: "Blocked",
+                parentID: nil,
+                body: "Hidden post.",
+                createdAt: "2026-06-25T12:00:00Z"
+            ),
+        ]
+
+        XCTAssertEqual(CommunityVisibility.visibleFieldNotes(notes, hiddenAuthorIDs: hidden).map(\.id), ["note-1"])
+        XCTAssertEqual(CommunityVisibility.visibleDiscussionPosts(posts, hiddenAuthorIDs: hidden).map(\.id), ["post-1"])
+    }
+
     func testCommunityErrorMapperHidesRawDatabaseErrors() {
         let duplicateBlock = NSError(
             domain: "PostgREST",
@@ -402,6 +436,27 @@ final class PitchAtlasTests: XCTestCase {
         }
         return out
     }
+}
+
+private func communityFieldNote(id: String, authorID: String) -> CommunityFieldNote {
+    CommunityFieldNote(
+        id: id,
+        pitchSlug: "four-seam",
+        authorID: authorID,
+        displayName: authorID,
+        tweak: "Index finger rides the inside seam.",
+        playerLevel: .collegePlus,
+        armSlot: .threeQuarter,
+        intent: .addedVelocity,
+        claimedResultKind: .velocityGain,
+        claimedResultNote: nil,
+        sampleSize: nil,
+        evidenceURL: nil,
+        evidenceLabel: nil,
+        note: nil,
+        sourceTier: .communityFirsthand,
+        createdAt: "2026-06-25T12:00:00Z"
+    )
 }
 
 private extension PitchAtlasEntry {
