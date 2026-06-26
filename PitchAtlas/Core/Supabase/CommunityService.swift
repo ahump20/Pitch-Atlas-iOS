@@ -158,10 +158,10 @@ struct CommunityService {
         let results = try await client.storage
             .from(Self.mediaBucket)
             .createSignedURLs(paths: rows.map(\.storagePath), expiresIn: Self.signedURLTTL)
-        let urlsByPath = Dictionary(uniqueKeysWithValues: results.compactMap { result -> (String, URL)? in
-            guard let signedURL = result.signedURL else { return nil }
-            return (result.path, signedURL)
-        })
+        let urlsByPath = results.reduce(into: [String: URL]()) { urls, result in
+            guard let signedURL = result.signedURL else { return }
+            urls[result.path] = signedURL
+        }
         let failedPaths = Set(results.compactMap { result in
             result.signedURL == nil ? result.path : nil
         })
@@ -214,6 +214,9 @@ struct CommunityService {
 
         let raw = "\(error.localizedDescription) \(String(describing: error))".lowercased()
         if raw.contains("auth_required") || raw.contains("jwt") || raw.contains("not authenticated") || raw.contains("permission denied") {
+            return "Sign in before doing that."
+        }
+        if raw.contains("row-level security") || raw.contains("rls") {
             return "Sign in before doing that."
         }
         if raw.contains("permanent account") {

@@ -13,7 +13,12 @@ struct CommunityPanel: View {
     private enum ActionTone { case success, error }
     private struct ActionMessage: Equatable { let text: String; let tone: ActionTone }
     private struct BlockUndo: Equatable { let authorID: String; let displayName: String }
-    private struct PendingMediaRetry: Equatable { let postID: String; let image: PreparedCommunityImage }
+    private struct PendingMediaRetry: Equatable {
+        let postID: String
+        let topicKey: String
+        let userID: String
+        let image: PreparedCommunityImage
+    }
 
     @Environment(AuthSessionStore.self) private var auth
     @AppStorage("pa.community.guidelinesAccepted") private var guidelinesAccepted = false
@@ -632,15 +637,22 @@ struct CommunityPanel: View {
 
     private func submitDiscussionPost() async {
         guard !isSubmitting, let userID = auth.userID else { return }
+        guard pendingMediaRetry == nil || preparedImage == nil else {
+            actionMessage = ActionMessage(text: "Retry the pending image before submitting another image.", tone: .error)
+            Haptics.failure()
+            return
+        }
+
         isSubmitting = true
         defer { isSubmitting = false }
 
         let postID = UUID().uuidString
+        let postTopicKey = topicKey
 
         do {
             let post = try NewDiscussionPost.validated(
                 id: postID,
-                topicKey: topicKey,
+                topicKey: postTopicKey,
                 displayName: auth.displayName,
                 body: postBody,
                 parentID: nil
@@ -661,14 +673,16 @@ struct CommunityPanel: View {
         if let pendingImage, mediaTermsAccepted {
             do {
                 try await service.acceptMediaTerms()
-                try await service.uploadImage(pendingImage, topicKey: topicKey, postID: postID, userID: userID)
+                try await service.uploadImage(pendingImage, topicKey: postTopicKey, postID: postID, userID: userID)
                 preparedImage = nil
                 selectedPhoto = nil
-                pendingMediaRetry = nil
+                if pendingMediaRetry?.postID == postID {
+                    pendingMediaRetry = nil
+                }
                 actionMessage = ActionMessage(text: "Post submitted.", tone: .success)
             } catch {
                 preparedImage = pendingImage
-                pendingMediaRetry = PendingMediaRetry(postID: postID, image: pendingImage)
+                pendingMediaRetry = PendingMediaRetry(postID: postID, topicKey: postTopicKey, userID: userID, image: pendingImage)
                 actionMessage = ActionMessage(
                     text: "Post submitted. The image did not attach; it is still ready to retry.",
                     tone: .success
@@ -676,7 +690,7 @@ struct CommunityPanel: View {
             }
         } else if let pendingImage {
             preparedImage = pendingImage
-            pendingMediaRetry = PendingMediaRetry(postID: postID, image: pendingImage)
+            pendingMediaRetry = PendingMediaRetry(postID: postID, topicKey: postTopicKey, userID: userID, image: pendingImage)
             actionMessage = ActionMessage(text: "Post submitted. Accept upload terms to attach the image.", tone: .success)
         } else {
             selectedPhoto = nil
@@ -739,6 +753,10 @@ struct CommunityPanel: View {
 
     private func retryPendingMedia() async {
         guard let retry = pendingMediaRetry, let userID = auth.userID else { return }
+        guard retry.userID == userID else {
+            actionMessage = ActionMessage(text: "Sign back in with the account that created that post before retrying the image.", tone: .error)
+            return
+        }
         guard mediaTermsAccepted else {
             actionMessage = ActionMessage(text: "Accept upload terms before retrying the image.", tone: .error)
             return
@@ -748,10 +766,12 @@ struct CommunityPanel: View {
         defer { isSubmitting = false }
         do {
             try await service.acceptMediaTerms()
-            try await service.uploadImage(retry.image, topicKey: topicKey, postID: retry.postID, userID: userID)
+            try await service.uploadImage(retry.image, topicKey: retry.topicKey, postID: retry.postID, userID: retry.userID)
             preparedImage = nil
             selectedPhoto = nil
-            pendingMediaRetry = nil
+            if pendingMediaRetry == retry {
+                pendingMediaRetry = nil
+            }
             actionMessage = ActionMessage(text: "Image attached.", tone: .success)
             Haptics.success()
             await loadDiscussion()
