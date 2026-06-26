@@ -77,6 +77,7 @@ struct PitchDetailView: View {
             // the drawn SeamBall only where nothing real is on file.
             if let film = canonical.gripFilm {
                 GripFilmCard(film: film)
+                    .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
             } else if let photo = heroPhoto {
                 GripStillCard(photo: photo)
             } else {

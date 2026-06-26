@@ -258,6 +258,7 @@ struct GripsView: View {
             // The film leads when one is on file — the owner's hand in motion.
             if let film = entry.film {
                 GripFilmCard(film: film, height: 360)
+                    .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
                     .padding(.top, PitchAtlasSpacing.xs)
             }
 

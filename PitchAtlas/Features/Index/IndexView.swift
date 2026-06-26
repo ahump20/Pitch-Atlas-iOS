@@ -3,18 +3,74 @@ import SwiftUI
 // =============================================================================
 // Pitch Atlas — The Pitch Index
 // =============================================================================
-// The core native surface: a searchable, family-filterable index of every pitch
-// a coach, a pitcher, or the tracking taxonomy would call a pitch. Honestly
-// labeled — each row wears its status; the rows that file a fuller specimen push
-// to it. Four-state aware: a decode failure, an empty bundle, and an empty search
-// each read differently, never as a blank field.
+// The core native surface: a searchable, family-filterable, sortable index of
+// every pitch a coach, a pitcher, or the tracking taxonomy would call a pitch.
+// Honestly labeled: each row wears its status; the rows that file a fuller
+// specimen push to it. Four-state aware: a decode failure, an empty bundle, and
+// an empty search each read differently, never as a blank field.
 // =============================================================================
+
+enum IndexSort: String, CaseIterable, Identifiable {
+    case family, az, documentation, filed
+
+    var id: String { rawValue }
+
+    var label: String {
+        switch self {
+        case .family: return "Family"
+        case .az: return "A-Z"
+        case .documentation: return "Documentation"
+        case .filed: return "Filed first"
+        }
+    }
+
+    var accessibilityLabel: String {
+        switch self {
+        case .family: return "Sort by family order"
+        case .az: return "Sort A to Z by name"
+        case .documentation: return "Sort by documentation depth"
+        case .filed: return "Sort filed specimens first"
+        }
+    }
+
+    func ordered(_ entries: [RepertoireEntry], store: PitchStore) -> [RepertoireEntry] {
+        switch self {
+        case .family:
+            return entries
+        case .az:
+            return entries.enumerated().sorted { lhs, rhs in
+                let names = lhs.element.name.localizedStandardCompare(rhs.element.name)
+                return names == .orderedSame ? lhs.offset < rhs.offset : names == .orderedAscending
+            }.map(\.element)
+        case .documentation:
+            return entries.enumerated().sorted { lhs, rhs in
+                let left = documentationRank(lhs.element, store: store)
+                let right = documentationRank(rhs.element, store: store)
+                return left == right ? lhs.offset < rhs.offset : left < right
+            }.map(\.element)
+        case .filed:
+            return entries.enumerated().sorted { lhs, rhs in
+                let left = lhs.element.filedSlug == nil ? 1 : 0
+                let right = rhs.element.filedSlug == nil ? 1 : 0
+                return left == right ? lhs.offset < rhs.offset : left < right
+            }.map(\.element)
+        }
+    }
+
+    func documentationRank(_ entry: RepertoireEntry, store: PitchStore) -> Int {
+        guard let slug = entry.filedSlug, let pitch = store.pitch(slug: slug) else { return 4 }
+        if pitch.canonical.gripFilm != nil { return 0 }
+        if !(pitch.canonical.gripImages ?? []).isEmpty { return 1 }
+        return 2
+    }
+}
 
 struct IndexView: View {
     @Environment(PitchStore.self) private var store
 
     @State private var query = ""
     @State private var family: RepertoireFamily? = nil
+    @State private var sort: IndexSort = .family
 
     var body: some View {
         ZStack {
@@ -25,6 +81,7 @@ struct IndexView: View {
                     masthead
                     searchField
                     familyChips
+                    sortControls
                     content
                 }
                 .padding(.horizontal, PitchAtlasSpacing.lg)
@@ -119,6 +176,32 @@ struct IndexView: View {
         }
     }
 
+    // MARK: - Sort controls
+
+    private var sortControls: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+            Text("Sort")
+                .font(PitchAtlasTheme.martian(9))
+                .tracking(1.3)
+                .foregroundStyle(PitchAtlasTheme.ink3)
+                .textCase(.uppercase)
+                .accessibilityHidden(true)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: PitchAtlasSpacing.xs) {
+                    ForEach(IndexSort.allCases) { option in
+                        FilterChip(label: option.label, dot: nil, selected: sort == option) {
+                            Haptics.toggle()
+                            sort = option
+                        }
+                        .accessibilityLabel(option.accessibilityLabel)
+                    }
+                }
+                .padding(.horizontal, 1)
+            }
+        }
+    }
+
     // MARK: - Content (the four states)
 
     @ViewBuilder
@@ -191,11 +274,11 @@ struct IndexView: View {
     }
 
     /// Groups the filtered entries under their family info, preserving the bundle's
-    /// family order. A family with no matching rows is dropped.
+    /// family order. Sort changes row order within each group, never the groups.
     private var filteredGroups: [FamilyGroup] {
         let entries = filteredEntries
         return store.repertoire.families.compactMap { info in
-            let rows = entries.filter { $0.family == info.family }
+            let rows = sort.ordered(entries.filter { $0.family == info.family }, store: store)
             return rows.isEmpty ? nil : FamilyGroup(info: info, entries: rows)
         }
     }

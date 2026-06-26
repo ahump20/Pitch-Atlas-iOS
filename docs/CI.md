@@ -66,7 +66,7 @@ tests may still pass `CODE_SIGNING_ALLOWED=NO`.
 
 Before a release upload, verify the live Supabase project, the iOS community RPCs,
 media upload/readback, blocked-content filtering, and the JWT-protected
-`delete-account` function. For build `1.0.1 (9)`, the live project had the iOS
+`delete-account` function. For build `1.0.1 (10)`, the live project had the iOS
 preflight migrations, `delete-account`, and authenticated block RPCs
 (`block_user`, `unblock_user`, `my_blocked_users`) applied. Also recheck Supabase
 branch/migration health from `ahump20/Pitch-Atlas`; prior release notes recorded

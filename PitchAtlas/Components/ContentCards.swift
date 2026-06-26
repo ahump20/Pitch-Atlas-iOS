@@ -418,11 +418,15 @@ struct RepertoireRow: View {
     /// The aliases are load-bearing for pitch identity but get truncated to one line
     /// on screen; VoiceOver announces the full list so they are never silently lost.
     private var accessibilityLabel: String {
-        var parts = [entry.name, entry.status.displayLabel]
+        var parts = [
+            entry.name,
+            entry.family.label,
+            entry.filedSlug == nil ? "Basic file" : "Filed specimen",
+            entry.status.displayLabel,
+        ]
         if let aka = entry.aka, !aka.isEmpty {
             parts.append("also known as \(aka.joined(separator: ", "))")
         }
-        if entry.filedSlug != nil { parts.append("filed specimen available") }
         return parts.joined(separator: ", ")
     }
 }

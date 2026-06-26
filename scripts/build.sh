@@ -143,12 +143,16 @@ case "$cmd" in
       -scheme "$SCHEME" -sdk iphonesimulator \
       -destination "$TEST_DEST" -derivedDataPath "$DERIVED" \
       -enableCodeCoverage NO \
-      -quiet
+      -quiet \
+      CODE_SIGNING_ALLOWED=NO
     shutdown_simulators
-    wait_for_test_simulator
     set +e
-    run_test_with_timeout
+    wait_for_test_simulator
     test_status=$?
+    if [ "$test_status" -eq 0 ]; then
+      run_test_with_timeout
+      test_status=$?
+    fi
     set -e
     if [ "$test_status" -eq 124 ]; then
       restart_core_simulator

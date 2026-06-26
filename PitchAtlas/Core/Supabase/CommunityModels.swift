@@ -419,6 +419,7 @@ struct NewDiscussionPost: Encodable {
 }
 
 enum DiscussionPostLimits {
+    static let displayName = 40
     static let body = 4000
 }
 
@@ -430,6 +431,11 @@ extension NewDiscussionPost {
         body: String,
         parentID: String?
     ) throws -> NewDiscussionPost {
+        let cleanDisplayName = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard (2...DiscussionPostLimits.displayName).contains(cleanDisplayName.count) else {
+            throw CommunityServiceError.invalidDiscussionPost("Your display name must be 2 to 40 characters.")
+        }
+
         let cleanBody = body.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !cleanBody.isEmpty else {
             throw CommunityServiceError.invalidDiscussionPost("Add a post before submitting.")
@@ -441,7 +447,7 @@ extension NewDiscussionPost {
         return NewDiscussionPost(
             id: id,
             topicKey: topicKey,
-            displayName: displayName.trimmingCharacters(in: .whitespacesAndNewlines),
+            displayName: cleanDisplayName,
             body: cleanBody,
             parentID: parentID
         )

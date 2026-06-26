@@ -186,25 +186,30 @@ struct AccountView: View {
     }
 
     private func loadBlockedContributors() async {
-        guard auth.isSignedIn else {
+        guard auth.isSignedIn, let userID = auth.userID else {
             blockedState = .idle
             return
         }
         blockedState = .loading
         do {
             let contributors = try await service.blockedContributors()
+            guard auth.userID == userID else { return }
             blockedState = contributors.isEmpty ? .empty : .loaded(contributors)
         } catch {
+            guard auth.userID == userID else { return }
             blockedState = .failed(CommunityService.userMessage(for: error, fallback: "Could not load blocked contributors just now. Try again."))
         }
     }
 
     private func unblock(_ contributor: BlockedContributor) async {
+        guard let userID = auth.userID else { return }
         do {
             try await service.unblockUser(blockedID: contributor.blockedID)
+            guard auth.userID == userID else { return }
             await loadBlockedContributors()
             Haptics.success()
         } catch {
+            guard auth.userID == userID else { return }
             blockedState = .failed(CommunityService.userMessage(for: error))
             Haptics.failure()
         }

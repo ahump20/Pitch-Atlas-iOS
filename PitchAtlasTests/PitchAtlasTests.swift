@@ -50,6 +50,34 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(store.sources.count, store.manifest.counts["sources.json"])
     }
 
+    func testIndexSortOrdersRowsWithinAFamilyByName() {
+        let store = PitchStore()
+        let fastballs = store.repertoire.entries.filter { $0.family == .fastball }
+        let sorted = IndexSort.az.ordered(fastballs, store: store)
+
+        XCTAssertEqual(sorted.map(\.name), fastballs.map(\.name).sorted())
+        XCTAssertEqual(Set(sorted.map(\.family)), [.fastball])
+    }
+
+    func testIndexSortPutsFiledSpecimensBeforeBasicFiles() {
+        let store = PitchStore()
+        let offspeed = store.repertoire.entries.filter { $0.family == .offspeed }
+        let sorted = IndexSort.filed.ordered(offspeed, store: store)
+        let firstBasic = sorted.firstIndex { $0.filedSlug == nil } ?? sorted.endIndex
+
+        XCTAssertTrue(sorted[..<firstBasic].allSatisfy { $0.filedSlug != nil })
+        XCTAssertTrue(sorted[firstBasic...].allSatisfy { $0.filedSlug == nil })
+    }
+
+    func testIndexSortRanksDocumentationDepthWithoutInventedGrades() {
+        let store = PitchStore()
+        let offspeed = store.repertoire.entries.filter { $0.family == .offspeed }
+        let sorted = IndexSort.documentation.ordered(offspeed, store: store)
+        let ranks = sorted.map { IndexSort.documentation.documentationRank($0, store: store) }
+
+        XCTAssertEqual(ranks, ranks.sorted())
+    }
+
     /// The owner's grip films: every film referenced by the content must resolve
     /// to a real bundled clip and poster, carry first-party/original rights, and
     /// cover exactly the four grips that were filmed — no fabricated films, no
