@@ -61,6 +61,20 @@ struct AtlasView: View {
             HoloWordmark(text: "PITCH\nATLAS", size: 48, lineSpacing: -8)
                 .padding(.leading, PitchAtlasSpacing.sm)
 
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+                Text("The pitch, struck as a specimen.")
+                    .font(PitchAtlasTheme.newsreader(27))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text("A grip-first archive for pitches, variants, feel cues, forgotten experiments, master examples, and field notes.")
+                    .font(PitchAtlasTheme.hanken(15))
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                archivePillRow
+            }
+
             if let featured = store.pitches.first {
                 NavigationLink(value: featured) {
                     PitchSpecimenCard(entry: featured, style: .hero)
@@ -78,6 +92,43 @@ struct AtlasView: View {
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
         }
+    }
+
+    private var archivePillRow: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: PitchAtlasSpacing.xs) {
+                archivePill("Grip first", tone: PitchAtlasTheme.cyan)
+                archivePill("Source attached", tone: PitchAtlasTheme.powder)
+                archivePill("No fake certainty", tone: PitchAtlasTheme.seamBright)
+            }
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
+                HStack(spacing: PitchAtlasSpacing.xs) {
+                    archivePill("Grip first", tone: PitchAtlasTheme.cyan)
+                    archivePill("Source attached", tone: PitchAtlasTheme.powder)
+                }
+                archivePill("No fake certainty", tone: PitchAtlasTheme.seamBright)
+            }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func archivePill(_ text: String, tone: Color) -> some View {
+        HStack(spacing: PitchAtlasSpacing.xs2) {
+            Circle()
+                .fill(tone)
+                .frame(width: 6, height: 6)
+                .accessibilityHidden(true)
+            Text(text.uppercased())
+                .font(PitchAtlasTheme.martian(8))
+                .tracking(0.8)
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .lineLimit(1)
+                .minimumScaleFactor(0.82)
+        }
+        .padding(.horizontal, PitchAtlasSpacing.xs)
+        .padding(.vertical, 6)
+        .background(PitchAtlasTheme.void.opacity(0.82), in: Capsule())
+        .overlay(Capsule().strokeBorder(PitchAtlasTheme.machined, lineWidth: 1))
     }
 
     // MARK: Filed specimens rail

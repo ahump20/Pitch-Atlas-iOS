@@ -103,9 +103,11 @@ struct StatusPill: View {
     let tone: Color
     var body: some View {
         Text(text.uppercased())
-            .font(PitchAtlasTheme.martian(8))
+            .font(PitchAtlasTheme.martian(9))
             .tracking(1)
             .foregroundStyle(tone)
+            .lineLimit(1)
+            .minimumScaleFactor(0.78)
             .padding(.horizontal, 7)
             .padding(.vertical, 3)
             .overlay(
@@ -404,7 +406,7 @@ struct RepertoireRow: View {
 
     private func cardStrip(_ text: String, color: Color) -> some View {
         Text(text.uppercased())
-            .font(PitchAtlasTheme.martian(7))
+            .font(PitchAtlasTheme.martian(8))
             .tracking(0.8)
             .foregroundStyle(color)
             .lineLimit(1)
