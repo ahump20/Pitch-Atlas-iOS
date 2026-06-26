@@ -95,14 +95,14 @@ final class PitchAtlasTests: XCTestCase {
 
     /// The owner's grip photography: every photo referenced by the content must
     /// resolve to a real bundled image and carry first-party/original rights.
-    /// Counts pin the 17 labeled stills (12 on specimens, 17 in the library) so
+    /// Counts pin the labeled stills (9 on specimens, 17 in the library) so
     /// a dropped bundle file or dead reference fails loudly.
     func testGripPhotographyIsBundledAndRightsClean() {
         let store = PitchStore()
 
         let specimenPhotos = store.pitches.flatMap { $0.canonical.gripImages ?? [] }
         let libraryPhotos = store.grips.entries.flatMap(\.photos)
-        XCTAssertEqual(specimenPhotos.count, 12, "four-seam, two-seam, twelve-six, splitter carry 3 photos each")
+        XCTAssertEqual(specimenPhotos.count, 9, "four-seam, two-seam, twelve-six carry 3 photos each; the league-taxonomy splitter specimen carries none (the owner's split-finger lives in the library)")
         XCTAssertEqual(libraryPhotos.count, 17, "the grip library carries all 17 labeled stills")
 
         for photo in specimenPhotos + libraryPhotos {
@@ -116,7 +116,7 @@ final class PitchAtlasTests: XCTestCase {
         // The real-still ladder: a film's poster fronts it, else the first
         // photo, and every still it returns resolves in the bundle.
         let stills = store.pitches.compactMap { $0.canonical.realStill }
-        XCTAssertEqual(stills.count, 4, "four specimens carry a real still face")
+        XCTAssertEqual(stills.count, 3, "four-seam, two-seam, twelve-six carry a real still face")
         for still in stills {
             XCTAssertNotNil(BundledImage.load(still.src),
                             "real still missing from bundle: \(still.src)")

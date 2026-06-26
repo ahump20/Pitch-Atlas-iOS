@@ -4,7 +4,7 @@
     "label": "MLB.com Statcast Glossary, Active Spin",
     "url": "https://www.mlb.com/glossary/statcast/active-spin",
     "retrievedAt": "2026-06-04",
-    "season": "2019 reference (Verlander 98.5%)"
+    "season": "2019 reference"
   },
   {
     "id": "mlb-ivb",
@@ -763,10 +763,10 @@
     "retrievedAt": "2026-06-05"
   },
   {
-    "id": "palmball-football-change-naming",
-    "label": "Wikipedia Palmball (used as the reachable anchor for the palmball pitch; the 'football change' informal alias is recorded as unverified community naming since no reachable authoritative source states it)",
-    "url": "https://en.wikipedia.org/wiki/Palmball",
-    "retrievedAt": "2026-06-05"
+    "id": "austin-grips",
+    "label": "Austin H. — first-party grip library (his own pitches, photographed 2026-06-06, in his own first-person account)",
+    "url": "https://pitch-atlas.com/grips",
+    "retrievedAt": "2026-06-06"
   },
   {
     "id": "wiki-vulcan-changeup",
@@ -1711,5 +1711,26 @@
     "label": "Baseball-Reference, Cole Hamels — the full record",
     "url": "https://www.baseball-reference.com/players/h/hamelco01.shtml",
     "retrievedAt": "2026-06-10"
+  },
+  {
+    "id": "commons-satchel-paige-1942",
+    "label": "Wikimedia Commons, Satchel Paige 1942",
+    "url": "https://commons.wikimedia.org/wiki/File:Satchel_Paige_1942_(cropped).jpg",
+    "retrievedAt": "2026-06-26",
+    "season": "public domain image source"
+  },
+  {
+    "id": "commons-rube-foster-1924",
+    "label": "Wikimedia Commons, Rube Foster 1924",
+    "url": "https://commons.wikimedia.org/wiki/File:Rube_Foster_1924.jpg",
+    "retrievedAt": "2026-06-26",
+    "season": "public domain image source"
+  },
+  {
+    "id": "commons-negro-league-all-star-1936",
+    "label": "Wikimedia Commons, 1936 Negro League All-Star Game",
+    "url": "https://commons.wikimedia.org/wiki/File:1936_Negro_League_All-Star_Game.jpg",
+    "retrievedAt": "2026-06-26",
+    "season": "public domain image source"
   }
 ]
