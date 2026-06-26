@@ -3,10 +3,10 @@ import SwiftUI
 // =============================================================================
 // Blaze companion — scroll tracking plumbing
 // =============================================================================
-// The companion sits in a bottom safe-area inset, a sibling of each tab's scroll
+// The companion sits in a bottom overlay, a sibling of each tab's scroll
 // view — and SwiftUI preferences flow UP to ancestors, never sideways to a sibling.
 // So the scroll's progress is published as a preference that the TabScaffold (a
-// shared ANCESTOR of both the scroll and the inset) reads, converts to 0…1 using
+// shared ANCESTOR of both the scroll and the overlay) reads, converts to 0…1 using
 // the viewport it measures, and writes into the shared BlazeCompanionController the
 // companion observes. That common-ancestor hand-off is what makes the dog chase the
 // scroll — the wiring that was declared but never connected before.

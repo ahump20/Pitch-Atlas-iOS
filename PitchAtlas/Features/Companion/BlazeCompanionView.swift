@@ -1,9 +1,9 @@
 import SwiftUI
 
 /// Wraps a tab's content with the bottom companion and the shared scroll-tracking
-/// controller. As an ancestor of both the scroll (inside `content`) and the inset
+/// controller. As an ancestor of both the scroll (inside `content`) and the overlay
 /// companion, it is the one place that can read the scroll's emitted metrics and
-/// feed the companion — the hand-off the old per-view @State controller never got.
+/// feed the companion without reserving a blank row above the tab bar.
 struct TabScaffold<Content: View>: View {
     let tab: AppTab
     @ViewBuilder var content: Content
@@ -18,7 +18,7 @@ struct TabScaffold<Content: View>: View {
                     let scrolled = max(0, -metrics.contentTop)
                     companion.update(progress: min(1, scrolled / span))
                 }
-                .safeAreaInset(edge: .bottom, spacing: 0) {
+                .overlay(alignment: .bottom) {
                     BlazeCompanionView(selectedTab: tab)
                 }
         }

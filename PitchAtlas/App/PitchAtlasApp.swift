@@ -46,9 +46,9 @@ private enum AppChromeAppearance {
         let cyan = UIColor(red: 55.0 / 255.0, green: 214.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
 
         let tab = UITabBarAppearance()
-        tab.configureWithOpaqueBackground()
-        tab.backgroundColor = field
-        tab.shadowColor = UIColor(red: 246.0 / 255.0, green: 241.0 / 255.0, blue: 230.0 / 255.0, alpha: 0.12)
+        tab.configureWithTransparentBackground()
+        tab.backgroundColor = .clear
+        tab.shadowColor = .clear
         [tab.stackedLayoutAppearance, tab.inlineLayoutAppearance, tab.compactInlineLayoutAppearance].forEach { item in
             item.normal.iconColor = bone2
             item.normal.titleTextAttributes = [.foregroundColor: bone2]
@@ -57,7 +57,7 @@ private enum AppChromeAppearance {
         }
         UITabBar.appearance().standardAppearance = tab
         UITabBar.appearance().scrollEdgeAppearance = tab
-        UITabBar.appearance().isTranslucent = false
+        UITabBar.appearance().isTranslucent = true
 
         let nav = UINavigationBarAppearance()
         nav.configureWithOpaqueBackground()
@@ -144,8 +144,9 @@ struct RootView: View {
                 .tag(AppTab.sources)
         }
         .tint(PitchAtlasTheme.powder)
-        .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar, .tabBar)
-        .toolbarBackground(.visible, for: .navigationBar, .tabBar)
+        .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .tabBar)
         .toolbarColorScheme(.dark, for: .navigationBar, .tabBar)
         .onOpenURL { url in
             auth.handle(url: url)
