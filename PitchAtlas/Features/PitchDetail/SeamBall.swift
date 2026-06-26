@@ -112,18 +112,15 @@ struct SeamBall: View {
         }
     }
 
-    /// Catcher's-eye movement direction. Prefer measured values if an older bundle
-    /// carries them; otherwise use the current qualitative shape fields.
+    /// Catcher's-eye movement direction, read from the qualitative shape fields.
+    /// The atlas carries shape, never a measured break-in-inches figure, so the
+    /// ball draws its break from horizontalDir + verticalShape and nothing else.
     private var breakVector: (horizontal: Double, vertical: Double) {
         let direction: Double
         switch motion.horizontalDir {
         case .armSide: direction = 1
         case .gloveSide: direction = -1
         case .none: direction = 0
-        }
-
-        if let ivb = motion.ivbInches, let horizontal = motion.horizontalInches {
-            return (direction * max(horizontal, 0.001), ivb)
         }
 
         let vertical: Double
@@ -143,11 +140,6 @@ struct SeamBall: View {
     }
 
     private var breakMagnitude: CGFloat {
-        if let ivb = motion.ivbInches, let horizontal = motion.horizontalInches {
-            let mag = (ivb * ivb + horizontal * horizontal).squareRoot()
-            return CGFloat(min(max(mag / 24.0, 0.15), 0.85))
-        }
-
         let vector = breakVector
         let mag = (vector.vertical * vector.vertical + vector.horizontal * vector.horizontal).squareRoot()
         return CGFloat(min(max(mag / 1.4, 0.25), 0.65))
