@@ -2,6 +2,17 @@
 
 Status: 2026-06-24 production submission for `com.pitchatlas.app`.
 
+Update, 2026-06-25: build `1.0.1 (10)` was uploaded from the local signed
+archive after the tab-bar gutter fix and App Store Connect reports it as
+`VALID` (`a953bb8c-e419-40e2-a339-b02830b966df`, uploaded
+`2026-06-25T21:59:10-07:00`). It is assigned to the internal TestFlight group
+`Pitch Atlas Internal Testers`, and the all-builds internal group should also
+see it. App version `1.0.1` remains `WAITING_FOR_REVIEW` with build `9`
+attached; a direct API attempt to attach build `10` returned
+`ENTITY_ERROR.RELATIONSHIP.INVALID.INVALID_STATE`. Replacing the App Review
+binary now requires cancelling/removing the current waiting review submission
+and resubmitting with build `10`.
+
 Build `1.0.1 (9)` is the submitted release target. App Store Connect reported version `1.0` as previously approved/closed, rejected `1.0.0 (5)`, and accepted build `6` on 2026-06-24 before the final visual/loading pass. Build `9` supersedes builds `6`, `7`, and `8`; build `8` was removed from review so the corrected loading seal and darker app surface could ship.
 
 Verified 2026-06-24 through the App Store Connect API:
