@@ -1,6 +1,6 @@
 # App Review Notes
 
-Paste into App Store Connect for build `1.0.1 (9)`.
+Paste into App Store Connect for build `1.0.1 (10)`.
 
 Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community features use Supabase only after sign-in.
 
@@ -43,7 +43,7 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 - Bundle ID: `com.pitchatlas.app`
 - Version: `1.0.1`
-- Build: `9`
+- Build: `10`
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
 - No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, video upload, or BSI dependency.
@@ -51,8 +51,8 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 ## Final Build Proof
 
-Build `1.0.1 (9)` was verified on the MacBook with a clean iPhone 17 Pro simulator run: 28 tests passed, 0 failed. The signed Release iPhoneOS app metadata resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `9`, and `ITSAppUsesNonExemptEncryption=false`.
+Build `1.0.1 (10)` was verified on the MacBook with a clean iPhone 17 Pro simulator run on 2026-06-26: 29 tests passed, 0 failed. App Store Connect reports build `10` as `VALID`, with min OS `17.0` and `ITSAppUsesNonExemptEncryption=false`.
 
-Build `9` supersedes the earlier build `6`, build `7`, and build `8` binaries. App Store Connect readback on 2026-06-24 showed build `9` as `VALID`, attached to app version `1.0.1`, assigned to the internal TestFlight group `Pitch Atlas Internal Testers`, and submitted for App Review as `WAITING_FOR_REVIEW`.
+Build `10` supersedes the earlier build `6`, build `7`, build `8`, and build `9` binaries. App Store Connect readback on 2026-06-26 showed build `10` as `VALID`, attached to app version `1.0.1`, assigned to the internal TestFlight group `Pitch Atlas Internal Testers`, and submitted for App Review as `WAITING_FOR_REVIEW` under review submission `eb1c9764-d7af-4ce8-8896-938e7f25fb96`.
 
 Screenshot proof and the required design critique are in `docs/review-evidence/2026-06-24-ios-screenshot-report.md`.
