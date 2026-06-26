@@ -70,14 +70,14 @@ struct SourcesView: View {
                 .font(PitchAtlasTheme.anton(52))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
-            Text("Every number wears its confidence. Nothing here is marked right or wrong.")
+            Text("The proof boundary stays visible. A story can breathe without pretending to be tracked data.")
                 .font(PitchAtlasTheme.newsreaderItalic(18))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Provenance. Sources. Every number wears its confidence. Nothing here is marked right or wrong.")
+        .accessibilityLabel("Provenance. Sources. The proof boundary stays visible. A story can breathe without pretending to be tracked data.")
     }
 
     // MARK: - Freshness (computed, never hardcoded)

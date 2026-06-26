@@ -59,7 +59,7 @@ struct CommunityGuidelinesView: View {
                 .font(PitchAtlasTheme.anton(34))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
-            Text("Pitch Atlas keeps a small community room around the craft — field notes and discussion on how pitches are actually thrown. These are the rules that keep it usable, and the tools behind every one of them ship in the app.")
+            Text("Pitch Atlas keeps a small community room around the craft: the tell, the feel, the miss, the adjustment, and what a pitcher actually trusted. These rules keep that room useful, and the tools behind every one of them ship in the app.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)

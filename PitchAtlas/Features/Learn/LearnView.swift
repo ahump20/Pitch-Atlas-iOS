@@ -38,19 +38,19 @@ struct LearnView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "THE FIELD MANUAL", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "ONE PITCH AT A TIME", color: PitchAtlasTheme.powder)
             Text("LEARN")
                 .font(PitchAtlasTheme.anton(48))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
-            Text("Sourced teaching. Every number behind its tier.")
+            Text("Command before stuff. Lower half, line to the plate, finish low, then trust the target.")
                 .font(PitchAtlasTheme.newsreaderItalic(17))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("The field manual. Learn. Sourced teaching. Every number behind its tier.")
+        .accessibilityLabel("One pitch at a time. Learn. Command before stuff. Lower half, line to the plate, finish low, then trust the target.")
     }
 
     // MARK: - Content (four states)

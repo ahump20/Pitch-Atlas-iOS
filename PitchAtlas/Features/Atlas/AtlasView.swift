@@ -51,8 +51,8 @@ struct AtlasView: View {
             HStack(alignment: .center, spacing: PitchAtlasSpacing.sm) {
                 BrandSealMark(size: 62)
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    SectionLabel(text: "THE LIVING FIELD MANUAL", color: PitchAtlasTheme.powder)
-                    Text("Sourced, not corrected.")
+                    SectionLabel(text: "THE CONVERSATION FIELD MANUAL", color: PitchAtlasTheme.powder)
+                    Text("Hand on the ball. Source on the claim.")
                         .font(PitchAtlasTheme.newsreaderItalic(18))
                         .foregroundStyle(PitchAtlasTheme.bone2)
                 }
@@ -87,7 +87,7 @@ struct AtlasView: View {
 
             BlazeInlineCompanionView(style: .atlas, mood: .sniffing)
 
-            Text("How pitches are gripped and thrown. Sources stay visible. Community opens when you sign in.")
+            Text("Start with the tell: fingers, seams, eye level, clock. Then show what the source can prove and what only a pitcher could feel.")
                 .font(PitchAtlasTheme.hanken(16))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -159,15 +159,15 @@ struct AtlasView: View {
 
     private var wings: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "WINGS")
+            SectionLabel(text: "WAYS IN")
             NavigationLink { LearnView() } label: {
-                wingRow(title: "The Field Manual", sub: "Sourced teaching across \(store.knowledge.count) wings", tone: PitchAtlasTheme.cyan)
+                wingRow(title: "One Pitch at a Time", sub: "Lower half, line to the plate, finish low. Then get back to the target.", tone: PitchAtlasTheme.cyan)
             }.buttonStyle(.plain)
             NavigationLink { LostPitchesView() } label: {
-                wingRow(title: "Lost Pitches", sub: "The Negro Leagues wing. The tier is the feature", tone: PitchAtlasTheme.sandBright)
+                wingRow(title: "Lost Pitches", sub: "Craft that survived as story, source, and gap", tone: PitchAtlasTheme.sandBright)
             }.buttonStyle(.plain)
             NavigationLink { AboutView() } label: {
-                wingRow(title: "About the Atlas", sub: "How it stays honest", tone: PitchAtlasTheme.ink3)
+                wingRow(title: "About the Atlas", sub: "Why this is not another analytics wrapper", tone: PitchAtlasTheme.ink3)
             }.buttonStyle(.plain)
             NavigationLink { AccountView() } label: {
                 wingRow(title: "Account and Safety", sub: "Sign in, report, block, support, and delete account", tone: PitchAtlasTheme.amberBright)

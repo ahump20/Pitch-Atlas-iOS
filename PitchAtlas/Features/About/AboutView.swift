@@ -52,14 +52,14 @@ struct AboutView: View {
                 .font(PitchAtlasTheme.anton(52))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
-            Text("Sourced, not corrected.")
+            Text("Hand, seam, hitter, source.")
                 .font(PitchAtlasTheme.newsreaderItalic(18))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("About. Pitch Atlas. Sourced, not corrected.")
+        .accessibilityLabel("About. Pitch Atlas. Hand, seam, hitter, source.")
     }
 
     // MARK: - Settings
@@ -89,12 +89,12 @@ struct AboutView: View {
     private var whatThisIsCard: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "What this is")
-            Text("A sourced reference for how pitches are gripped and thrown. The pitch index, filed specimens, first-party grip library, craftsmen hall, lost-pitches wing, and sources colophon are bundled into the app and readable without a connection.")
+            Text("Pitch Atlas is a living field manual for the art of pitching. It starts where the pitch starts: the hand on the ball, the seam under the fingers, the target in the mitt, and the hitter trying to solve it in time.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
                 .lineSpacing(3)
-            Text("Every number wears its confidence tier. Nothing is marked right or wrong. A grip is filed, never graded.")
+            Text("This is craft and conversation, not a scoreboard of metrics. The photo proves the hold. The source proves the claim. First-person feel stays first-person feel.")
                 .font(PitchAtlasTheme.newsreaderItalic(14))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -102,7 +102,7 @@ struct AboutView: View {
         }
         .leatherPress()
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("What this is. A sourced reference for how pitches are gripped and thrown. The pitch index, filed specimens, first-party grip library, craftsmen hall, lost-pitches wing, and sources colophon are bundled into the app and readable without a connection. Every number wears its confidence tier. Nothing is marked right or wrong.")
+        .accessibilityLabel("What this is. Pitch Atlas is a living field manual for the art of pitching. It starts with the hand on the ball, the seam under the fingers, the target in the mitt, and the hitter trying to solve it in time. This is craft and conversation, not a scoreboard of metrics.")
     }
 
     // MARK: - The provenance model
@@ -132,7 +132,7 @@ struct AboutView: View {
         let checked = store.sourcesLastChecked
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "How it stays honest")
-            Text("Reference content is generated from the companion web reference and bundled into the app. Community notes, discussion, reporting, blocking, and account deletion use the live Pitch Atlas Supabase backend and require sign-in.")
+            Text("The reference layer is bundled, sourced, and readable offline. The community layer is live only when real people show up: field notes, discussion, reporting, blocking, and account deletion use the Pitch Atlas Supabase backend and require sign-in.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
@@ -160,8 +160,8 @@ struct AboutView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
             checked.isEmpty
-                ? "How it stays honest. Reference content is generated from the companion web reference and bundled into the app. Community actions use the live Pitch Atlas Supabase backend and require sign-in. Sources last checked, not recorded in this build. Checked, not auto-refreshed."
-                : "How it stays honest. Reference content is generated from the companion web reference and bundled into the app. Community actions use the live Pitch Atlas Supabase backend and require sign-in. Sources last checked \(checked). Checked, not auto-refreshed."
+                ? "How it stays honest. The reference layer is bundled, sourced, and readable offline. Community actions use the live Pitch Atlas Supabase backend and require sign-in. Sources last checked, not recorded in this build. Checked, not auto-refreshed."
+                : "How it stays honest. The reference layer is bundled, sourced, and readable offline. Community actions use the live Pitch Atlas Supabase backend and require sign-in. Sources last checked \(checked). Checked, not auto-refreshed."
         )
     }
 
@@ -174,7 +174,7 @@ struct AboutView: View {
                 SealMark(size: 34)
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
                     SectionLabel(text: "Pitch Atlas")
-                    Text("A field manual for the craft of the pitch.")
+                    Text("The tell first. The claim boundary right behind it.")
                         .font(PitchAtlasTheme.newsreaderItalic(14))
                         .foregroundStyle(PitchAtlasTheme.ink3)
                         .fixedSize(horizontal: false, vertical: true)
@@ -183,7 +183,7 @@ struct AboutView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Pitch Atlas. A field manual for the craft of the pitch.")
+        .accessibilityLabel("Pitch Atlas. The tell first. The claim boundary right behind it.")
     }
 
     // MARK: - Status (four-state honesty even on a prose screen)

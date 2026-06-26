@@ -45,7 +45,7 @@ struct CraftsmenView: View {
                 .antonSkew()
                 .padding(.vertical, 2)
 
-            Text("Arms who defined a pitch — and one legend that is a pitch, not a person.")
+            Text("The arms who made a pitch feel real: grip, count, nerve, and the hitter left guessing.")
                 .font(PitchAtlasTheme.newsreaderItalic(17))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -53,7 +53,7 @@ struct CraftsmenView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("The Craftsmen. Arms who defined a pitch, and one legend that is a pitch, not a person.")
+        .accessibilityLabel("The Craftsmen. The arms who made a pitch feel real: grip, count, nerve, and the hitter left guessing.")
     }
 
     // MARK: - Four states

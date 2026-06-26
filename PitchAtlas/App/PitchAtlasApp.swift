@@ -82,7 +82,7 @@ enum AppTab: String, CaseIterable, Identifiable {
         case .atlas: return "Atlas"
         case .index: return "Index"
         case .grips: return "Grips"
-        case .craftsmen: return "Craft"
+        case .craftsmen: return "Craftsmen"
         case .sources: return "Sources"
         }
     }

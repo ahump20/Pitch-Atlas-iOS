@@ -133,7 +133,7 @@ struct CommunityPanel: View {
         case .idle, .loading:
             LoadingTile(label: "Loading field notes")
         case .empty:
-            EmptyStateView(message: "No visible field notes for \(pitchName) yet. Reading is open; posting requires sign-in.")
+            EmptyStateView(message: "No one has filed the tell, feel, or result for \(pitchName) yet. Reading is open; posting requires sign-in.")
         case .failed(let reason):
             ErrorStateView(title: "Field notes unavailable", reason: reason)
         case .loaded(let notes):
@@ -151,7 +151,7 @@ struct CommunityPanel: View {
         case .idle, .loading:
             LoadingTile(label: "Loading discussion")
         case .empty:
-            EmptyStateView(message: "No visible discussion posts for \(pitchName) yet. Pitch Atlas never seeds fake posts.")
+            EmptyStateView(message: "No real conversation has started on \(pitchName) yet. Pitch Atlas resurfaces real voices; it never seeds fake posts.")
         case .failed(let reason):
             ErrorStateView(title: "Discussion unavailable", reason: reason)
         case .loaded(let posts):
@@ -254,9 +254,9 @@ struct CommunityPanel: View {
     private var fieldNoteComposer: some View {
         if canContribute {
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                SectionLabel(text: "File a note")
+                SectionLabel(text: "File what worked")
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    PitchFormLabel("Grip change or cue", required: true)
+                    PitchFormLabel("Tell, grip feel, or mound cue", required: true)
                     TextField("Thumb deeper under the leather, ring finger off the seam", text: $fieldTweak, axis: .vertical)
                         .font(PitchAtlasTheme.hanken(15))
                         .foregroundStyle(PitchAtlasTheme.bone)
@@ -327,7 +327,7 @@ struct CommunityPanel: View {
 
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
                     PitchFormLabel("Plain words note")
-                    TextField("What happened, in plain words", text: $fieldNote, axis: .vertical)
+                    TextField("What the hand did, what the ball did, what the hitter saw", text: $fieldNote, axis: .vertical)
                         .font(PitchAtlasTheme.hanken(15))
                         .foregroundStyle(PitchAtlasTheme.bone)
                         .pitchTextFieldSurface(minHeight: 76)
@@ -351,10 +351,10 @@ struct CommunityPanel: View {
     private var discussionComposer: some View {
         if canContribute {
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                SectionLabel(text: "Post")
+                SectionLabel(text: "Start a conversation")
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
                     PitchFormLabel("Discussion post", required: true)
-                    TextField("File a grip cue, image, or breakdown. Keep it about the pitch.", text: $postBody, axis: .vertical)
+                    TextField("Ask, answer, or tell the story from the mound", text: $postBody, axis: .vertical)
                         .font(PitchAtlasTheme.hanken(15))
                         .foregroundStyle(PitchAtlasTheme.bone)
                         .pitchTextFieldSurface(minHeight: 96)

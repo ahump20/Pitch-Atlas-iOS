@@ -48,7 +48,7 @@ struct IndexView: View {
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
                 .padding(.vertical, 2)
-            Text("Every pitch a coach, a pitcher, or the tracking taxonomy would call a pitch — honestly labeled.")
+            Text("Names and families are the map. The game is still the hand, the ball, and the hitter's clock.")
                 .font(PitchAtlasTheme.newsreaderItalic(17))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -56,7 +56,7 @@ struct IndexView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("The Pitch Index. Every pitch a coach, a pitcher, or the tracking taxonomy would call a pitch, honestly labeled.")
+        .accessibilityLabel("The Pitch Index. Names and families are the map. The game is still the hand, the ball, and the hitter's clock.")
     }
 
     // MARK: - Search field
