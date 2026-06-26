@@ -37,3 +37,63 @@ jobs:
             exit 1
           fi
           PA_TEST_DEST="platform=iOS Simulator,id=${DESTINATION}" ./scripts/build.sh test
+
+  # ---------------------------------------------------------------------------
+  # Content bundle drift gate.
+  #
+  # PitchAtlas/Resources/Content/*.json is GENERATED from the web repo's
+  # src/data (the single source of truth) by tools/generate-content. It is never
+  # hand-authored. This job checks out web `main`, regenerates the bundle, and
+  # fails if the committed bundle differs - so a web data change that was not
+  # re-synced into the app can never silently ship.
+  #
+  # The generator is a pure function of src/data (deterministic JSON, no clock,
+  # no randomness) and src/data imports nothing outside the repo, so this runs on
+  # cheap Linux with only the generator's own deps - no web npm install, no macOS.
+  #
+  # Scope honesty: this catches CONTENT drift (records added/changed/removed on
+  # the web side but not regenerated here). It does NOT catch a brand-new web
+  # FIELD that Swift's Codable silently drops while record counts still match;
+  # that case is guarded per-feature by an explicit decode assertion in
+  # PitchAtlasTests (alongside testDecodedCountsMatchManifest), added when the
+  # field is introduced.
+  content-drift:
+    name: Content bundle drift
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out the iOS app
+        uses: actions/checkout@v4
+
+      - name: Check out the web source of truth (public; default branch = main)
+        uses: actions/checkout@v4
+        with:
+          repository: ahump20/Pitch-Atlas
+          path: web-src
+
+      - name: Set up Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install the generator
+        working-directory: tools/generate-content
+        run: npm ci
+
+      - name: Regenerate the bundle from web source
+        working-directory: tools/generate-content
+        env:
+          PITCH_ATLAS_WEB: ${{ github.workspace }}/web-src
+        run: npm run generate
+
+      - name: Fail on any drift vs the committed bundle
+        run: |
+          if ! git diff --quiet -- PitchAtlas/Resources/Content; then
+            echo "::error::iOS content bundle is stale - a web src/data change was not regenerated into PitchAtlas/Resources/Content."
+            echo "Fix: cd tools/generate-content && PITCH_ATLAS_WEB=/path/to/Pitch-Atlas npm run generate  (then commit the result)."
+            git --no-pager diff --stat -- PitchAtlas/Resources/Content
+            git --no-pager diff -- PitchAtlas/Resources/Content | head -200
+            exit 1
+          fi
+          echo "✓ iOS content bundle matches web source"
