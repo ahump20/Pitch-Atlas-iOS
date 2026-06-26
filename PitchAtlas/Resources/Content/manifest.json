@@ -1,12 +1,12 @@
 {
   "counts": {
     "pitches.json": 12,
-    "repertoire.json": 40,
+    "repertoire.json": 42,
     "craftsmen.json": 12,
     "lost-pitches.json": 15,
     "knowledge.json": 10,
     "grips.json": 7,
-    "sources.json": 274
+    "sources.json": 277
   },
-  "sourcesLastChecked": "2026-06-10"
+  "sourcesLastChecked": "2026-06-26"
 }
