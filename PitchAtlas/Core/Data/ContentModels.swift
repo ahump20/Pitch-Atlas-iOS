@@ -398,6 +398,29 @@ struct GripGuide: Codable, Hashable {
     let does: GripDoes
 }
 
+/// The honest specimen grade, baked by the content generator from the web's
+/// specimenGradeFor. It is documentation depth — a first-party moving grip beats
+/// a still beats a reference schematic — never a scarcity claim or a random draw.
+/// The gold 1/1 is the four-seam struck at specimen 00; every other grade is
+/// categorical. Unknown keys degrade to `.reference` so a future grade can never
+/// crash an older build.
+enum SpecimenGradeKey: String, Codable, Hashable {
+    case gold
+    case inMotion = "in-motion"
+    case firstParty = "first-party"
+    case reference
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = SpecimenGradeKey(rawValue: raw) ?? .reference
+    }
+}
+
+struct SpecimenGrade: Codable, Hashable {
+    let key: SpecimenGradeKey
+    /// The visible stamp wording. Categorical; the only digits are the real 1/1 gold.
+    let label: String
+}
+
 /// One filed specimen — the canonical record plus its render spec, display copy,
 /// master variants, community preview, seam geometry, and optional coaching guide.
 struct PitchAtlasEntry: Codable, Hashable, Identifiable {
@@ -408,6 +431,9 @@ struct PitchAtlasEntry: Codable, Hashable, Identifiable {
     let community: CommunityVariantPreview
     let seam: SeamGeometryReference
     let guide: GripGuide?
+    /// How richly THIS atlas has preserved the specimen — read by the detail
+    /// badge and the index documentation sort, baked from the web at generate time.
+    let specimenGrade: SpecimenGrade
 
     var id: String { canonical.id }
     var slug: String { display.slug }

@@ -35,7 +35,7 @@ if (!existsSync(DATA)) {
 
 const imp = (rel: string) => import(pathToFileURL(join(DATA, rel)).href)
 
-const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources] = await Promise.all([
+const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade] = await Promise.all([
   imp('pitches/index.ts'),
   imp('repertoire/index.ts'),
   imp('craftsmen/index.ts'),
@@ -43,6 +43,7 @@ const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources] = await 
   imp('knowledge/index.ts'),
   imp('grips/index.ts'),
   imp('sources.ts'),
+  imp('specimen-grade.ts'),
 ])
 
 /*
@@ -88,8 +89,12 @@ const pitchEntries = (pitches.PITCHES as AnyRecord[]).map((p) => {
   const lib = filmedLibrary.find((g) =>
     images.some((img) => typeof img.src === 'string' && (img.src as string).includes(`/grips/${g.id}-`)),
   )
-  if (!lib) return p
-  return { ...p, canonical: { ...canonical, gripFilm: filmFor(lib) } }
+  // The honest specimen grade the web card already wears, baked in so the iOS
+  // badge and the index documentation sort read one authoritative value — never
+  // a second Swift recomputation that could drift from the web.
+  const withGrade = { ...p, specimenGrade: specimenGrade.specimenGradeFor(p) }
+  if (!lib) return withGrade
+  return { ...withGrade, canonical: { ...canonical, gripFilm: filmFor(lib) } }
 })
 
 const bundles: Record<string, unknown> = {

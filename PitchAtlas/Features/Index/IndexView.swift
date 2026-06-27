@@ -57,11 +57,17 @@ enum IndexSort: String, CaseIterable, Identifiable {
         }
     }
 
+    // Documentation depth read straight off the baked specimen grade — the same
+    // authoritative value the detail badge shows — so the sort can never drift
+    // from the grade. A row with no filed specimen ranks last.
     func documentationRank(_ entry: RepertoireEntry, store: PitchStore) -> Int {
         guard let slug = entry.filedSlug, let pitch = store.pitch(slug: slug) else { return 4 }
-        if pitch.canonical.gripFilm != nil { return 0 }
-        if !(pitch.canonical.gripImages ?? []).isEmpty { return 1 }
-        return 2
+        switch pitch.specimenGrade.key {
+        case .gold: return 0
+        case .inMotion: return 1
+        case .firstParty: return 2
+        case .reference: return 3
+        }
     }
 }
 

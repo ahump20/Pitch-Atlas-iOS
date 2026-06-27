@@ -64,6 +64,14 @@ struct PitchDetailView: View {
                 SectionLabel(text: canonical.family.label, color: canonical.family.accent, size: 9)
             }
 
+            // The preservation grade — how richly this specimen is documented,
+            // the same stamp the web card wears. Gold is the real 1/1 chase.
+            SectionLabel(
+                text: entry.specimenGrade.label,
+                color: entry.specimenGrade.key == .gold ? PitchAtlasTheme.amberBright : PitchAtlasTheme.bone2,
+                size: 9
+            )
+
             Text(canonical.name.uppercased())
                 .font(PitchAtlasTheme.anton(40))
                 .foregroundStyle(PitchAtlasTheme.bone)

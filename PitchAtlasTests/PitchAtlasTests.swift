@@ -78,6 +78,22 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(ranks, ranks.sorted())
     }
 
+    /// The specimen grade travels web → bundle → app on every filed pitch, and the
+    /// gold 1/1 stays the singular chase: only the specimen-00 record may be gold,
+    /// and that record must be gold. Guards the cross-platform parity contract.
+    func testSpecimenGradeTravelsAndOnlyTheChaseIsGold() {
+        let store = PitchStore()
+        XCTAssertFalse(store.pitches.isEmpty, "no pitches decoded")
+        for pitch in store.pitches {
+            XCTAssertFalse(pitch.specimenGrade.label.isEmpty, "\(pitch.slug) has no grade label")
+            if pitch.display.specimenNo == "00" {
+                XCTAssertEqual(pitch.specimenGrade.key, .gold, "the specimen-00 chase must be gold")
+            } else {
+                XCTAssertNotEqual(pitch.specimenGrade.key, .gold, "\(pitch.slug) is gold but is not specimen 00")
+            }
+        }
+    }
+
     /// The owner's grip films: every film referenced by the content must resolve
     /// to a real bundled clip and poster, carry first-party/original rights, and
     /// cover exactly the four grips that were filmed — no fabricated films, no
