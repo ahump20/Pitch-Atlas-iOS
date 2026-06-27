@@ -331,8 +331,6 @@ struct PitchMotion: Codable, Hashable {
     let forceLabel: String
     let gyro: Bool?
     let verticalShape: VerticalShape?
-    let ivbInches: Double?
-    let horizontalInches: Double?
     let horizontalDir: HorizontalDir
     let breakView: BreakView
     let indeterminateBreak: Bool?
