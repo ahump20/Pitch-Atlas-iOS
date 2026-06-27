@@ -91,6 +91,14 @@ final class PitchStore {
 
     func pitch(slug: String) -> PitchAtlasEntry? { pitches.first { $0.slug == slug } }
     func pitch(id: String) -> PitchAtlasEntry? { pitches.first { $0.id == id } }
+
+    /// Other filed specimens sharing a pitch's family, in filed order, self excluded.
+    /// Powers the same-family rail on the specimen screen — the native mate to the
+    /// web's "Others in the {family}" list. Read off the filed `family`, never a baked
+    /// or fabricated link, so a family of one yields an empty rail rather than filler.
+    func siblings(of entry: PitchAtlasEntry) -> [PitchAtlasEntry] {
+        pitches.filter { $0.canonical.family == entry.canonical.family && $0.slug != entry.slug }
+    }
     func craftsman(slug: String) -> Craftsman? { craftsmen.first { $0.slug == slug } }
     func lostPitch(slug: String) -> LostPitch? { lostPitches.entries.first { $0.slug == slug } }
     func wing(slug: String) -> KnowledgeWing? { knowledge.first { $0.slug == slug } }
