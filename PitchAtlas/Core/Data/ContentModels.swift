@@ -485,6 +485,14 @@ struct RepertoireEntry: Codable, Hashable, Identifiable {
     let notableThrowers: String?
     let filedSlug: String?
     let plain: String?
+    /// Study hook: the slug of a filed specimen to study first — the filed family
+    /// anchor that teaches this unfiled pitch's mechanic. Optional; absent for a
+    /// pitch with no filed cousin (the banned doctored balls). Mirrors the web.
+    let studyFirstSlug: String?
+    /// The sourced one-line bridge explaining why that specimen is worth studying.
+    /// A full Claim (source + tier); authored only where a source supports it, so
+    /// it can never read as unsourced. Never a measured figure.
+    let contextNote: Claim?
 }
 
 struct RepertoireRoot: Codable, Hashable {

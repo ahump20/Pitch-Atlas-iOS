@@ -135,6 +135,39 @@ final class PitchAtlasTests: XCTestCase {
         }
     }
 
+    /// Feature #11 — study hooks decode and bridge to real filed specimens. Every
+    /// study-first slug must resolve to a bundled filed pitch (never a typo), the
+    /// banned doctored pitches stay hook-free (no legal pitch to study first), and
+    /// every context note is a real sourced claim. The native mate of the web guard.
+    func testStudyHooksBridgeToFiledSpecimens() {
+        let store = PitchStore()
+        let entries = store.repertoire.entries
+        XCTAssertFalse(entries.isEmpty, "no repertoire entries decoded")
+
+        let filed = Set(store.pitches.map(\.slug))
+        var hooked = 0
+        for e in entries {
+            if let slug = e.studyFirstSlug {
+                XCTAssertTrue(filed.contains(slug), "\(e.id) -> \(slug) is not a filed specimen")
+                XCTAssertNotNil(store.pitch(slug: slug), "\(e.id) -> \(slug) did not resolve")
+                hooked += 1
+            }
+            // banned doctored pitches carry no legal "study this" cousin
+            if e.family == .banned {
+                XCTAssertNil(e.studyFirstSlug, "\(e.id) is banned but carries a study hook")
+                XCTAssertNil(e.contextNote, "\(e.id) is banned but carries a context note")
+            }
+            // a context note, when present, is a real sourced claim with a tier
+            if let note = e.contextNote {
+                XCTAssertFalse(note.value.isEmpty, "\(e.id) context note is empty")
+                let weak = note.confidence == .unverified || note.confidence == .secondhandAttributed
+                if !weak { XCTAssertNotNil(note.source, "\(e.id) confident note needs a source") }
+            }
+        }
+        // the feature actually shipped hooks, not an empty contract
+        XCTAssertGreaterThan(hooked, 10, "expected many basic files to carry a study hook")
+    }
+
     /// The owner's grip films: every film referenced by the content must resolve
     /// to a real bundled clip and poster, carry first-party/original rights, and
     /// cover exactly the four grips that were filmed — no fabricated films, no

@@ -20,6 +20,13 @@ struct RepertoireDetailView: View {
         return store.pitch(slug: slug)
     }
 
+    /// The filed specimen to study first: a basic file's bridge to the one filed
+    /// pitch that teaches its mechanic. Resolves only if that pitch is bundled.
+    private var studyTarget: PitchAtlasEntry? {
+        guard let slug = entry.studyFirstSlug else { return nil }
+        return store.pitch(slug: slug)
+    }
+
     var body: some View {
         ZStack {
             FieldBackdrop()
@@ -46,6 +53,8 @@ struct RepertoireDetailView: View {
                     if let throwers = entry.notableThrowers, !throwers.isEmpty {
                         thrownBySection(throwers)
                     }
+
+                    studyFirstLink
 
                     filedSpecimenLink
                 }
@@ -186,6 +195,44 @@ struct RepertoireDetailView: View {
         } else {
             SectionLabel(text: "Fuller breakdown coming", color: PitchAtlasTheme.ink3, size: 9)
                 .padding(.top, PitchAtlasSpacing.xs)
+        }
+    }
+
+    // MARK: - Study this first (the basic file's bridge to a filed specimen)
+
+    @ViewBuilder
+    private var studyFirstLink: some View {
+        if let target = studyTarget {
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+                SectionLabel(text: "Study this first", color: PitchAtlasTheme.amberBright, size: 9)
+
+                // The sourced one-line bridge, when one is authored. ClaimText
+                // carries its tier dot + source, so it can never read as unsourced.
+                if let note = entry.contextNote {
+                    ClaimText(claim: note)
+                }
+
+                NavigationLink(value: target) {
+                    HStack(spacing: PitchAtlasSpacing.sm) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            SectionLabel(text: "Filed specimen", color: PitchAtlasTheme.cyan, size: 9)
+                            Text(target.canonical.name)
+                                .font(PitchAtlasTheme.hankenMedium(16))
+                                .foregroundStyle(PitchAtlasTheme.cyan)
+                        }
+                        Spacer(minLength: PitchAtlasSpacing.xs)
+                        Image(systemName: "arrow.right")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(PitchAtlasTheme.cyan)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Study this first: \(target.canonical.name)")
+                .accessibilityAddTraits(.isButton)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .leatherPress()
         }
     }
 }

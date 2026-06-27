@@ -154,7 +154,18 @@
         "note": "Sourced, not corrected: Austin throws this as a fastball (pitcher's own words). The offspeed 'splitter' label is MLB's tracking taxonomy, filed separately under the Splitter specimen. Both framings are kept; neither overrides the other."
       },
       "notableThrowers": "Austin H. — a situational pitch in his mix, the harder, fastball-tilt version of his changeup.",
-      "plain": "My split-finger fastball. I grip it almost like my two-seam, just spread the fingers a touch wider, outside the laces. It comes out at full fastball arm speed and drops late — a fastball that acts like a change, not a soft one."
+      "plain": "My split-finger fastball. I grip it almost like my two-seam, just spread the fingers a touch wider, outside the laces. It comes out at full fastball arm speed and drops late — a fastball that acts like a change, not a soft one.",
+      "studyFirstSlug": "splitter",
+      "contextNote": {
+        "value": "Set the filed Splitter next to this and the difference is the intent: same finger spread, but Austin throws his at full fastball arm speed and files it as a fastball, where the league files the splitter as offspeed. Sourced, not corrected.",
+        "source": {
+          "id": "austin-grips",
+          "label": "Austin H. — first-party grip library (his own pitches, photographed 2026-06-06, in his own first-person account)",
+          "url": "https://pitch-atlas.com/grips",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "pitcher-own-words"
+      }
     },
     {
       "id": "sinker",
@@ -240,7 +251,18 @@
         "note": "The one-seam grip is a relatively new, still-evolving pitch-design concept; attribution to specific pitchers like Wainwright comes from analysis and reporting rather than league pitch-classification data."
       },
       "notableThrowers": "Adam Wainwright is the most-cited practitioner; the grip has become a pitch-design tool for sinkerballers hunting seam-shifted-wake movement.",
-      "plain": "A sinker with a twist: one finger rides a single seam so the seam itself, not the spin, steers the ball. It's a newer pitch-lab idea built to squeeze out extra sink and run."
+      "plain": "A sinker with a twist: one finger rides a single seam so the seam itself, not the spin, steers the ball. It's a newer pitch-lab idea built to squeeze out extra sink and run.",
+      "studyFirstSlug": "two-seam",
+      "contextNote": {
+        "value": "Its filed cousin is the Two-Seam, the spin-driven sinker. This one chases the same arm-side run and sink a different way, letting one exposed seam steer the ball through a seam-shifted wake instead of leaning on spin.",
+        "source": {
+          "id": "driveline-ssw-sinkers",
+          "label": "Driveline Baseball — An Introduction to Seam-Shifted Wakes and Their Effect on Sinkers",
+          "url": "https://www.drivelinebaseball.com/2020/11/more-than-what-it-seams-an-introduction-to-seam-shifted-wakes-and-their-effect-on-sinkers/",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "cutter",
@@ -326,7 +348,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Used colloquially for any pitcher whose two-seamer or sinker is run-dominant.",
-      "plain": "Not really its own pitch. It's just a nickname for a two-seamer or sinker that mostly runs sideways toward the pitcher's arm side instead of dropping. Same grip, different label."
+      "plain": "Not really its own pitch. It's just a nickname for a two-seamer or sinker that mostly runs sideways toward the pitcher's arm side instead of dropping. Same grip, different label.",
+      "studyFirstSlug": "two-seam",
+      "contextNote": {
+        "value": "There is no separate pitch to file here. The filed Two-Seam is the pitch this names; running fastball is just the label for the run-heavy end of that grip family.",
+        "source": {
+          "id": "mlb-glossary-two-seam",
+          "label": "MLB.com Glossary — Two-Seam Fastball",
+          "url": "https://www.mlb.com/glossary/pitch-types/two-seam-fastball",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "rising-fastball",
@@ -370,7 +403,18 @@
         "note": "Treated as an optical illusion: no true rising fastball has realistically been thrown in MLB conditions, per Alan Nathan and the Hardball Times physics analysis."
       },
       "notableThrowers": "Invoked for high-carry four-seamers (e.g., Shota Imanaga's deceptive 'rising' heater); the rise itself is perceptual, not physical.",
-      "plain": "The rise is an illusion. The ball never actually climbs. It's a high-backspin four-seamer that drops less than your eyes expect, so your brain reads the gap as the ball jumping up. No human has thrown one that truly rises."
+      "plain": "The rise is an illusion. The ball never actually climbs. It's a high-backspin four-seamer that drops less than your eyes expect, so your brain reads the gap as the ball jumping up. No human has thrown one that truly rises.",
+      "studyFirstSlug": "four-seam",
+      "contextNote": {
+        "value": "Study the filed Four-Seam, because that is what this is. A high-backspin four-seamer drops less than the eye expects and reads as a climb; there is no separate rising pitch to hold.",
+        "source": {
+          "id": "mlb-glossary-four-seam",
+          "label": "MLB.com Glossary — Four-Seam Fastball (FF)",
+          "url": "https://www.mlb.com/glossary/pitch-types/four-seam-fastball",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "straight-three-finger-changeup",
@@ -413,7 +457,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Taught widely as a first off-speed pitch; less common at the major-league level than the circle change.",
-      "plain": "The simplest changeup, and usually the first one a young pitcher learns. Lay three close fingers over the ball, seat it back toward the palm, and the same fastball arm motion comes out slower. The hitter swings early because he can't tell it's slow until it's nearly on him."
+      "plain": "The simplest changeup, and usually the first one a young pitcher learns. Lay three close fingers over the ball, seat it back toward the palm, and the same fastball arm motion comes out slower. The hitter swings early because he can't tell it's slow until it's nearly on him.",
+      "studyFirstSlug": "circle-change",
+      "contextNote": {
+        "value": "The three-finger change and the circle change are the two named changeup grips taught side by side. The filed Circle Change is the modern default; this is the simpler one most arms learn first.",
+        "source": {
+          "id": "gorout-pitch-grips",
+          "label": "GoRout — Baseball Pitch Grips guide (three-finger grip changeup and circle changeup as named changeup grips)",
+          "url": "https://gorout.com/baseball-pitch-grips/",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "football-changeup",
@@ -444,7 +499,18 @@
         "confidence": "pitcher-own-words"
       },
       "notableThrowers": "Austin H. — a situational pitch he carried for a summer, sitting between his curve and his three-finger change.",
-      "plain": "My football changeup. The giveaway is the hand together, all four fingers on the ball. Instead of getting slingshotted off the fingertips and snapped with the wrist, the whole hand drags the speed off it while the arm still looks like a fastball. I threw it from my curveball slot, and it broke somewhere between my curve and my three-finger change."
+      "plain": "My football changeup. The giveaway is the hand together, all four fingers on the ball. Instead of getting slingshotted off the fingertips and snapped with the wrist, the whole hand drags the speed off it while the arm still looks like a fastball. I threw it from my curveball slot, and it broke somewhere between my curve and my three-finger change.",
+      "studyFirstSlug": "circle-change",
+      "contextNote": {
+        "value": "The filed Circle Change is the modern changeup baseline. Austin's football change is his own four-finger version, thrown from his 12-6 slot with the whole hand dragging the speed off the ball. Not a circle change, and not a palmball.",
+        "source": {
+          "id": "austin-grips",
+          "label": "Austin H. — first-party grip library (his own pitches, photographed 2026-06-06, in his own first-person account)",
+          "url": "https://pitch-atlas.com/grips",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "pitcher-own-words"
+      }
     },
     {
       "id": "circle-changeup",
@@ -530,7 +596,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Joe Nelson (associated with originating and popularizing the grip).",
-      "plain": "Named for the Star Trek hand sign. You wedge the ball between your middle and ring fingers to make a 'V,' which kills spin and makes the ball tumble and drop. It comes in slow off fastball arm speed and acts a lot like a splitter."
+      "plain": "Named for the Star Trek hand sign. You wedge the ball between your middle and ring fingers to make a 'V,' which kills spin and makes the ball tumble and drop. It comes in slow off fastball arm speed and acts a lot like a splitter.",
+      "studyFirstSlug": "splitter",
+      "contextNote": {
+        "value": "Wedging the ball between the middle and ring fingers kills spin, so the Vulcan tumbles and drops much like a split-finger. The filed Splitter is the closest shape on the board to study.",
+        "source": {
+          "id": "wiki-vulcan-changeup",
+          "label": "Vulcan changeup — Wikipedia (V-shaped middle/ring-finger grip, pronation, split-finger behavior, Joe Nelson)",
+          "url": "https://en.wikipedia.org/wiki/Vulcan_changeup",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "fosh",
@@ -574,7 +651,18 @@
         "note": "Often loosely linked to the Maddux name in popular discussion, but the documented origin is Mike Boddicker, not Mike Maddux; corrected to match the source."
       },
       "notableThrowers": "Mike Boddicker, Trevor Hoffman, Johan Santana, Jason Frasor.",
-      "plain": "A soft, low-spin pitch that sits halfway between a split-finger and a plain changeup. Thrown right, it behaves like a breaking changeup or a gentle splitter, and it is an early relative of today's kick change."
+      "plain": "A soft, low-spin pitch that sits halfway between a split-finger and a plain changeup. Thrown right, it behaves like a breaking changeup or a gentle splitter, and it is an early relative of today's kick change.",
+      "studyFirstSlug": "splitter",
+      "contextNote": {
+        "value": "The fosh sits between a split-finger and a straight change, and thrown right it behaves like a soft splitter. The filed Splitter shows the harder version of that off-the-table drop.",
+        "source": {
+          "id": "wiki-fosh",
+          "label": "Fosh (baseball) — Wikipedia (cross between splitter and straight change, grip, Boddicker/Nipper origin)",
+          "url": "https://en.wikipedia.org/wiki/Fosh_(baseball)",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "kick-change",
@@ -616,7 +704,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Hayden Birdsong (Giants); popularized through Tread Athletics; quickly adopted by other MLB pitchers.",
-      "plain": "A recent twist on the changeup that spread fast around the league. You spike a knuckle onto a seam and 'kick' the ball's spin at release, which buys splitter-like drop from a firmer changeup look. It's the trendy modern version of an old idea."
+      "plain": "A recent twist on the changeup that spread fast around the league. You spike a knuckle onto a seam and 'kick' the ball's spin at release, which buys splitter-like drop from a firmer changeup look. It's the trendy modern version of an old idea.",
+      "studyFirstSlug": "splitter",
+      "contextNote": {
+        "value": "Kicking the spin axis buys splitter-like depth from a firmer changeup look. The filed Splitter is where to learn the late, downward drop the kick change is reaching for.",
+        "source": {
+          "id": "fangraphs-kick-change",
+          "label": "FanGraphs — 'Landen Roupp Spins a Curveball, Hayden Birdsong Throws a Kick-Change' (spiked middle finger kicking the axis, flat vertical shape, Giants, Tread Athletics)",
+          "url": "https://blogs.fangraphs.com/landen-roupp-spins-a-curveball-hayden-birdsong-throws-a-kick-change/",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "palmball",
@@ -657,7 +756,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Trevor Hoffman, whose palmball-grip changeup is the modern gold standard and his career out pitch; earlier practitioners include Roy Halladay.",
-      "plain": "An old-school slow ball. You bury the ball deep in your palm and squeeze — the whole hand drains the speed while the arm still looks like a fastball, so it arrives soft and late with a little sink. Trevor Hoffman built a Hall-of-Fame career on his."
+      "plain": "An old-school slow ball. You bury the ball deep in your palm and squeeze — the whole hand drains the speed while the arm still looks like a fastball, so it arrives soft and late with a little sink. Trevor Hoffman built a Hall-of-Fame career on his.",
+      "studyFirstSlug": "circle-change",
+      "contextNote": {
+        "value": "The palmball is an old-school member of the changeup family, sitting alongside the circle and three-finger changes. The filed Circle Change is the modern grip that took its place as the default offspeed.",
+        "source": {
+          "id": "wiki-palmball",
+          "label": "Palmball — Wikipedia (ball cradled in palm, Trevor Hoffman as notable thrower)",
+          "url": "https://en.wikipedia.org/wiki/Palmball",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "splitter",
@@ -807,7 +917,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Sergio Romo (the no-dot slider)",
-      "plain": "A slider that barely breaks. The ball spins end-over-end like a thrown football, pointed at the plate, so almost none of that spin bends it. It just looks like a fastball, then drops late and hard. The missing red dot is why hitters swing right through it."
+      "plain": "A slider that barely breaks. The ball spins end-over-end like a thrown football, pointed at the plate, so almost none of that spin bends it. It just looks like a fastball, then drops late and hard. The missing red dot is why hitters swing right through it.",
+      "studyFirstSlug": "slider",
+      "contextNote": {
+        "value": "This is the bullet-spin end of the slider family. The filed Slider is the grip to study; the gyro version trades the slider's tilt for end-over-end spin that barely breaks and just disappears late.",
+        "source": {
+          "id": "fangraphs-romo-no-dot",
+          "label": "FanGraphs, Sergio Romo's No-Dot Slider Revealed",
+          "url": "https://blogs.fangraphs.com/sergio-romos-no-dot-slider-revealed/",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "sweeper",
@@ -871,7 +992,18 @@
         "confidence": "official-data"
       },
       "notableThrowers": "Often applied to breaking balls that sit between a true slider and a true curve",
-      "plain": "A slider-curve in-betweener. It breaks on a diagonal, dropping more than a slider but sweeping sideways more than a true curve. The name fits any breaking ball that won't sit cleanly in either bucket."
+      "plain": "A slider-curve in-betweener. It breaks on a diagonal, dropping more than a slider but sweeping sideways more than a true curve. The name fits any breaking ball that won't sit cleanly in either bucket.",
+      "studyFirstSlug": "slider",
+      "contextNote": {
+        "value": "The slurve sits between a slider and a curve. The filed Slider is the harder, tighter parent to study first; the slurve just lets the break travel more sideways and drop more than a true slider.",
+        "source": {
+          "id": "mlb-glossary-slurve",
+          "label": "Slurve (SV) — MLB.com Glossary, Pitch Types",
+          "url": "https://www.mlb.com/glossary/pitch-types/slurve",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "slutter",
@@ -904,7 +1036,18 @@
         "note": "Tyler Glasnow has publicly used the name 'slutter' for a hybrid of his; one outlet (Korked Bats) reported his version as a splitter-cutter while others describe a cutter-slider, so the precise blend behind the nickname is contested. The cut-slider sense used here is the broadly described one."
       },
       "notableThrowers": "Tyler Glasnow has discussed his own version; Jake Arrieta's breaking ball has been cited as a tracking example",
-      "plain": "A cutter and a slider blended into one. It's harder and tighter than a slider and holds its fastball look longer, but breaks glove-side more than a cutter. It blurs the two so much that tracking systems keep flipping the label."
+      "plain": "A cutter and a slider blended into one. It's harder and tighter than a slider and holds its fastball look longer, but breaks glove-side more than a cutter. It blurs the two so much that tracking systems keep flipping the label.",
+      "studyFirstSlug": "cutter",
+      "contextNote": {
+        "value": "Harder and tighter than a slider, but with more glove-side run than a cutter. The filed Cutter is the fastball-tight end of that blend; tracking systems flip the label between the two for a reason.",
+        "source": {
+          "id": "baseballscouter-cutter-slider",
+          "label": "The 'Cutter' vs. 'Slider': Spotting the Difference (incl. the slutter / cut-slider) — Baseball Scouter",
+          "url": "https://baseballscouter.com/cutter-vs-slider-pitch-comparison/",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "curveball",
@@ -938,7 +1081,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Clayton Kershaw, Sandy Koufax",
-      "plain": "The classic dropping pitch. You roll your wrist and fingers over the top so the ball spins forward, and that topspin plus gravity bends it down. It comes in slower than a slider with a bigger, looping break to throw off a hitter's timing."
+      "plain": "The classic dropping pitch. You roll your wrist and fingers over the top so the ball spins forward, and that topspin plus gravity bends it down. It comes in slower than a slider with a bigger, looping break to throw off a hitter's timing.",
+      "studyFirstSlug": "twelve-six",
+      "contextNote": {
+        "value": "The filed 12-6 Curveball is the purest vertical version of this pitch, thrown from a high over-the-top slot so the break runs straight down. Study it to see where the curve's topspin can take the ball.",
+        "source": {
+          "id": "wiki-twelve-six-curveball",
+          "label": "12–6 curveball — Wikipedia",
+          "url": "https://en.wikipedia.org/wiki/12%E2%80%936_curveball",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "twelve-six-curveball",
@@ -1002,7 +1156,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Often called the 'spike curve' by MLB players and coaches",
-      "plain": "A curveball with a firmer grip. You spike one fingertip into a seam for a stronger hold, which often gives a tighter, harder break. Despite the name it has nothing to do with a knuckleball, so most players just call it the spike curve."
+      "plain": "A curveball with a firmer grip. You spike one fingertip into a seam for a stronger hold, which often gives a tighter, harder break. Despite the name it has nothing to do with a knuckleball, so most players just call it the spike curve.",
+      "studyFirstSlug": "twelve-six",
+      "contextNote": {
+        "value": "Spiking a fingertip into a seam only firms up the hold; the pitch still functions as a curveball. The filed 12-6 Curveball is the break to study underneath the spike grip.",
+        "source": {
+          "id": "mlb-glossary-knuckle-curve",
+          "label": "Knuckle-curve (KC) — MLB.com Glossary, Pitch Types",
+          "url": "https://www.mlb.com/glossary/pitch-types/knuckle-curve",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "slow-curve",
@@ -1034,7 +1199,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Zack Greinke",
-      "plain": "A curveball thrown way down in speed, a big slow looping change of pace meant to wreck a hitter's timing. Dialed down far enough, it starts to blur into the lobbing eephus."
+      "plain": "A curveball thrown way down in speed, a big slow looping change of pace meant to wreck a hitter's timing. Dialed down far enough, it starts to blur into the lobbing eephus.",
+      "studyFirstSlug": "eephus",
+      "contextNote": {
+        "value": "Dialed down far enough, the slow curve blurs into the lob. The filed Eephus is that extreme, the rainbow change-of-pace this one is reaching toward when Greinke floats it.",
+        "source": {
+          "id": "mlb-greinke-eephus-curve",
+          "label": "Zack Greinke's eephus curve is baffling hitters — MLB.com",
+          "url": "https://www.mlb.com/news/zack-greinke-s-eephus-curve-is-baffling-hitters",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "screwball",
@@ -1067,7 +1243,18 @@
         "note": "The 'fear of arm injury keeps it nearly dead' framing is the prevailing belief rather than settled medical fact — the SABR article explicitly argues the screwball was wrongly blamed for Hubbell's elbow. No injury or medical claim is asserted here, only the pitch's reputation and rarity."
       },
       "notableThrowers": "Carl Hubbell, Fernando Valenzuela, Christy Mathewson",
-      "plain": "A pitch that breaks the 'wrong' way, in toward a same-handed hitter, the opposite of a curve. It's thrown by twisting the wrist backward from how a curve is thrown. One of the rarest pitches in the game, and it has nearly disappeared."
+      "plain": "A pitch that breaks the 'wrong' way, in toward a same-handed hitter, the opposite of a curve. It's thrown by twisting the wrist backward from how a curve is thrown. One of the rarest pitches in the game, and it has nearly disappeared.",
+      "studyFirstSlug": "circle-change",
+      "contextNote": {
+        "value": "The filed Circle Change fades arm-side in the same direction as a screwball, produced by pronating the forearm at release. The atlas files it as the modern stand-in for this nearly extinct pitch.",
+        "source": {
+          "id": "wiki-circle-changeup",
+          "label": "Circle changeup — Wikipedia (OK-circle grip, pronation/arm-side run, Pedro Martinez)",
+          "url": "https://en.wikipedia.org/wiki/Circle_changeup",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "knuckle-slurve",
@@ -1111,7 +1298,18 @@
         "note": "relationship -> knuckle-curve + slurve. Neither MLB nor any tracking system classifies a 'knuckle-slurve'; this is the honest 'not a pitch' verdict."
       },
       "notableThrowers": "None — not a classified pitch",
-      "plain": "Not really its own pitch. It's a casual mashup name for something sitting between a spike curve and a slurve. No tracking system recognizes it, so whatever gets called this would just register as one of those two."
+      "plain": "Not really its own pitch. It's a casual mashup name for something sitting between a spike curve and a slurve. No tracking system recognizes it, so whatever gets called this would just register as one of those two.",
+      "studyFirstSlug": "twelve-six",
+      "contextNote": {
+        "value": "No tracking system files this name. Whatever gets called a knuckle-slurve registers as a knuckle-curve or a slurve, and the knuckle-curve functions as a curve, so the filed 12-6 Curveball is the closest real pitch on the board.",
+        "source": {
+          "id": "mlb-glossary-knuckle-curve",
+          "label": "Knuckle-curve (KC) — MLB.com Glossary, Pitch Types",
+          "url": "https://www.mlb.com/glossary/pitch-types/knuckle-curve",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "knuckleball",
@@ -1247,7 +1445,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Hiroki Kuroda, Masumi Kuwata, Noboru Akiyama, Yu Darvish",
-      "plain": "A Japanese name for a pitch that runs and sinks in toward a same-handed hitter, boring in on his hands. Despite the exotic label, players who caught it say it's basically a two-seamer, the arm-side mirror of a cutter."
+      "plain": "A Japanese name for a pitch that runs and sinks in toward a same-handed hitter, boring in on his hands. Despite the exotic label, players who caught it say it's basically a two-seamer, the arm-side mirror of a cutter.",
+      "studyFirstSlug": "two-seam",
+      "contextNote": {
+        "value": "Hiroki Kuroda's catcher Russell Martin flatly called it a two-seamer. Despite the exotic name, the filed Two-Seam is the pitch to study: the shuuto lives in that family as the arm-side mirror of a cutter.",
+        "source": {
+          "id": "tht-shuuto",
+          "label": "The shuuto — The Hardball Times / FanGraphs (arm-side run, 'just a two-seamer,' opposite of a cutter)",
+          "url": "https://tht.fangraphs.com/tht-live/the-shuuto/",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "gyroball",
@@ -1551,7 +1760,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Masaji Hiramatsu (Taiyo Whales, 1967–1984), the definitive practitioner — his version earned the \"razor\" nickname; he reached the Japanese Baseball Hall of Fame.",
-      "plain": "Think of it as the shuuto with a sharper edge — Hiramatsu's famous pitch jammed righties so hard and broke so late that people said it looked like it cut the air instead of tumbling."
+      "plain": "Think of it as the shuuto with a sharper edge — Hiramatsu's famous pitch jammed righties so hard and broke so late that people said it looked like it cut the air instead of tumbling.",
+      "studyFirstSlug": "two-seam",
+      "contextNote": {
+        "value": "Catchers who handled the shuuto called it a two-seamer, and the razor is that same arm-side family with a sharper, later break. The filed Two-Seam is where to learn the grip underneath it.",
+        "source": {
+          "id": "tht-shuuto",
+          "label": "The shuuto — The Hardball Times / FanGraphs (arm-side run, 'just a two-seamer,' opposite of a cutter)",
+          "url": "https://tht.fangraphs.com/tht-live/the-shuuto/",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "slip-pitch",
@@ -1598,7 +1818,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Paul Richards (the coach who named and taught it, as White Sox and Orioles manager); veteran pitchers he reclaimed by teaching it. Bob Shaw is attributed to Richards's instruction in pitch lore, but no source reviewed here documents Shaw throwing a \"slip pitch\" by name — treat that link as unverified.",
-      "plain": "When you hear an old-timer talk about Paul Richards's \"slip pitch,\" he's talking about a slider — Richards just had his own name for the breaking ball he used to bring tired veteran arms back to life. Same family as a slider; different decade, different branding."
+      "plain": "When you hear an old-timer talk about Paul Richards's \"slip pitch,\" he's talking about a slider — Richards just had his own name for the breaking ball he used to bring tired veteran arms back to life. Same family as a slider; different decade, different branding.",
+      "studyFirstSlug": "slider",
+      "contextNote": {
+        "value": "Paul Richards's slip pitch was a slider he renamed. The filed Slider is the pitch underneath the branding; this entry just keeps the historical alias on the board instead of erasing it.",
+        "source": {
+          "id": "exp-baltimore-sun-reckless-richards",
+          "label": "The Baltimore Sun — \"'Reckless' Richards cracks open O's coffers\"",
+          "url": "https://www.baltimoresun.com/2003/10/29/reckless-richards-cracks-open-os-coffers/",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "airbender-changeup",
@@ -1645,7 +1876,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Devin Williams (Milwaukee Brewers, then New York Yankees, then New York Mets)",
-      "plain": "A changeup that spins like nothing else in the game and dives sideways off the plate after looking like a fastball out of the hand. One pitcher built it; nobody has copied it."
+      "plain": "A changeup that spins like nothing else in the game and dives sideways off the plate after looking like a fastball out of the hand. One pitcher built it; nobody has copied it.",
+      "studyFirstSlug": "circle-change",
+      "contextNote": {
+        "value": "Strip away the record spin and it is still a changeup. The filed Circle Change is the baseline this one pushes to an extreme; the Airbender is Devin Williams's version, not a new pitch class.",
+        "source": {
+          "id": "exp-mlb-airbender-explainer",
+          "label": "MLB.com — \"Devin Williams brings unique Airbender pitch to Yankees\"",
+          "url": "https://www.mlb.com/news/devin-williams-airbender-pitch-explainer",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "deathball",
@@ -1691,7 +1933,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Ryne Nelson and Yilber Diaz (Arizona Diamondbacks); Jordan Montgomery throws a slower curve-graded version. Popularized in pitch-lab and Tread Athletics circles.",
-      "plain": "The Deathball is a nickname pitch labs hung on a slider with the horizontal sweep wrung out of it — it falls almost straight down. Throw it from way up over the top and to a hitter it looks like a screwball ducking back across the plate."
+      "plain": "The Deathball is a nickname pitch labs hung on a slider with the horizontal sweep wrung out of it — it falls almost straight down. Throw it from way up over the top and to a hitter it looks like a screwball ducking back across the plate.",
+      "studyFirstSlug": "slider",
+      "contextNote": {
+        "value": "The same analysis that named it calls it the gyro slider: a vertical, near-zero-horizontal slider thrown from way over the top. The filed Slider is the grip family to study underneath the pitch-lab coinage.",
+        "source": {
+          "id": "exp-azsnakepit-deathball",
+          "label": "AZ Snake Pit (SB Nation): \"The Deathball: An Important Pitch to the Dbacks in 2025 That You've Likely Never Heard Of\" (Jeff Irving, Jan 2025)",
+          "url": "https://www.azsnakepit.com/2025/1/6/24336678/the-deathball-an-important-pitch-to-the-dbacks-in-2025-that-youve-likely-never-heard-of",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
+      }
     },
     {
       "id": "dead-fish-changeup",
@@ -1736,7 +1989,18 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "César Valdez, whose Orioles bullpen run in 2020 made it his signature out pitch and the pitch's namesake; an unusually changeup-heavy arm built almost entirely around it.",
-      "plain": "Picture a changeup that just dies on its way to the plate. Valdez throws his from whatever arm angle the situation calls for, buries it deep in the palm so it has almost no spin to hold it up, and lets it drop straight out of the hitter's swing path — which is why batters wave at it and walk back to the dugout."
+      "plain": "Picture a changeup that just dies on its way to the plate. Valdez throws his from whatever arm angle the situation calls for, buries it deep in the palm so it has almost no spin to hold it up, and lets it drop straight out of the hitter's swing path — which is why batters wave at it and walk back to the dugout.",
+      "studyFirstSlug": "circle-change",
+      "contextNote": {
+        "value": "It is a changeup at heart, set apart from the circle change by its killed spin and shifting arm slots. The filed Circle Change is the steady baseline to read it against.",
+        "source": {
+          "id": "exp-mlb-dead-fish-valdez",
+          "label": "MLB.com — César Valdez's 'Dead Fish' changeup analyzed",
+          "url": "https://www.mlb.com/news/cesar-valdez-s-dead-fish-changeup-analyzed",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis"
+      }
     }
   ]
 }
