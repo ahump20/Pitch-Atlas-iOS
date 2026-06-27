@@ -390,6 +390,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "gold",
+      "label": "Gold · 1 of 1"
     }
   },
   {
@@ -760,6 +764,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "in-motion",
+      "label": "First-party motion"
     }
   },
   {
@@ -1182,6 +1190,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "in-motion",
+      "label": "First-party motion"
     }
   },
   {
@@ -1556,6 +1568,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "reference",
+      "label": "Reference specimen"
     }
   },
   {
@@ -1906,6 +1922,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "reference",
+      "label": "Reference specimen"
     }
   },
   {
@@ -2232,6 +2252,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "reference",
+      "label": "Reference specimen"
     }
   },
   {
@@ -2561,6 +2585,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "reference",
+      "label": "Reference specimen"
     }
   },
   {
@@ -2889,6 +2917,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "reference",
+      "label": "Reference specimen"
     }
   },
   {
@@ -3223,6 +3255,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "reference",
+      "label": "Reference specimen"
     }
   },
   {
@@ -3546,6 +3582,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "reference",
+      "label": "Reference specimen"
     }
   },
   {
@@ -3855,6 +3895,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "reference",
+      "label": "Reference specimen"
     }
   },
   {
@@ -4110,6 +4154,10 @@
         "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
       },
       "calibrationDoc": "docs/seam-calibration.md"
+    },
+    "specimenGrade": {
+      "key": "reference",
+      "label": "Reference specimen"
     }
   }
 ]
