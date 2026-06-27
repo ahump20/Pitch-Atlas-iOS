@@ -116,6 +116,25 @@ final class PitchAtlasTests: XCTestCase {
         }
     }
 
+    /// The status facet (native mate to the web one): the repertoire must span more
+    /// than one status tier for the facet to earn its place, and filtering by any
+    /// present tier must narrow to a real, smaller, homogeneous subset.
+    func testRepertoireStatusFacetNarrowsToAPresentTier() {
+        let store = PitchStore()
+        let entries = store.repertoire.entries
+        XCTAssertFalse(entries.isEmpty, "no repertoire entries decoded")
+
+        let present = Set(entries.map(\.status))
+        XCTAssertGreaterThan(present.count, 1, "status facet needs multiple tiers to be useful")
+
+        for tier in present {
+            let narrowed = entries.filter { $0.status == tier }
+            XCTAssertFalse(narrowed.isEmpty, "\(tier) is present but filtered to nothing")
+            XCTAssertLessThan(narrowed.count, entries.count, "a single status must narrow the list")
+            XCTAssertTrue(narrowed.allSatisfy { $0.status == tier }, "\(tier) filter leaked another tier")
+        }
+    }
+
     /// The owner's grip films: every film referenced by the content must resolve
     /// to a real bundled clip and poster, carry first-party/original rights, and
     /// cover exactly the four grips that were filmed — no fabricated films, no

@@ -76,6 +76,7 @@ struct IndexView: View {
 
     @State private var query = ""
     @State private var family: RepertoireFamily? = nil
+    @State private var status: RepertoireStatus? = nil
     @State private var sort: IndexSort = .family
 
     var body: some View {
@@ -87,6 +88,7 @@ struct IndexView: View {
                     masthead
                     searchField
                     familyChips
+                    statusChips
                     sortControls
                     content
                 }
@@ -182,6 +184,49 @@ struct IndexView: View {
         }
     }
 
+    // MARK: - Status filter chips
+
+    /// The field-rarity / honest-edge tiers actually present in the data, in the
+    /// legend's order. The native mate to the web status facet; only renders when
+    /// the data spans more than one tier, so there's never a lone or empty chip.
+    private var presentStatuses: [RepertoireStatus] {
+        let present = Set(store.repertoire.entries.map(\.status))
+        let order: [RepertoireStatus] = [
+            .standard, .niche, .rare, .nearExtinct, .banned, .alias, .illusion, .notAPitch,
+        ]
+        return order.filter(present.contains)
+    }
+
+    @ViewBuilder
+    private var statusChips: some View {
+        if presentStatuses.count > 1 {
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                Text("Status")
+                    .font(PitchAtlasTheme.martian(9))
+                    .tracking(1.3)
+                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .textCase(.uppercase)
+                    .accessibilityHidden(true)
+
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: PitchAtlasSpacing.xs) {
+                        FilterChip(label: "All", dot: nil, selected: status == nil) {
+                            Haptics.toggle()
+                            status = nil
+                        }
+                        ForEach(presentStatuses, id: \.self) { tier in
+                            FilterChip(label: tier.displayLabel, dot: tier.tone, selected: status == tier) {
+                                Haptics.toggle()
+                                status = (status == tier) ? nil : tier
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 1)
+                }
+            }
+        }
+    }
+
     // MARK: - Sort controls
 
     private var sortControls: some View {
@@ -273,10 +318,13 @@ struct IndexView: View {
         }
     }
 
-    /// The searched set, restricted to the selected family chip if one is active.
+    /// The searched set, restricted to the selected family and/or status chips.
+    /// Family, status, and search compose (AND), the same axes the web index uses.
     private var filteredEntries: [RepertoireEntry] {
-        guard let family else { return searchedEntries }
-        return searchedEntries.filter { $0.family == family }
+        var entries = searchedEntries
+        if let family { entries = entries.filter { $0.family == family } }
+        if let status { entries = entries.filter { $0.status == status } }
+        return entries
     }
 
     /// Groups the filtered entries under their family info, preserving the bundle's
@@ -291,10 +339,13 @@ struct IndexView: View {
 
     private var emptyResultMessage: String {
         let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty {
-            return "No pitches in this family."
+        if !trimmed.isEmpty {
+            return "No pitches match \(trimmed)."
         }
-        return "No pitches match \(trimmed)."
+        if status != nil || family != nil {
+            return "No pitches match these filters."
+        }
+        return "No pitches in this family."
     }
 
     private struct FamilyGroup {
