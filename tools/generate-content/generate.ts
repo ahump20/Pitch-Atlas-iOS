@@ -35,16 +35,18 @@ if (!existsSync(DATA)) {
 
 const imp = (rel: string) => import(pathToFileURL(join(DATA, rel)).href)
 
-const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade] = await Promise.all([
-  imp('pitches/index.ts'),
-  imp('repertoire/index.ts'),
-  imp('craftsmen/index.ts'),
-  imp('lost-pitches/index.ts'),
-  imp('knowledge/index.ts'),
-  imp('grips/index.ts'),
-  imp('sources.ts'),
-  imp('specimen-grade.ts'),
-])
+const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade, archive] =
+  await Promise.all([
+    imp('pitches/index.ts'),
+    imp('repertoire/index.ts'),
+    imp('craftsmen/index.ts'),
+    imp('lost-pitches/index.ts'),
+    imp('knowledge/index.ts'),
+    imp('grips/index.ts'),
+    imp('sources.ts'),
+    imp('specimen-grade.ts'),
+    imp('media/archive-images.ts'),
+  ])
 
 /*
   Film mapping at the boundary. The web models a looping grip video as GripClip
@@ -112,6 +114,10 @@ const bundles: Record<string, unknown> = {
     entries: gripEntries,
   },
   'sources.json': sources.allSources(),
+  // The Lost Pitches image record: one rights-labeled plate per lost pitch. The
+  // imageSrc paths resolve to JPGs bundled under Resources/archive, so the native
+  // card reads the same plate and rights label the web wing shows.
+  'archive-images.json': archive.LOST_PITCH_ARCHIVE_IMAGES,
 }
 
 function countOf(v: unknown): number {

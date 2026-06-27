@@ -74,6 +74,18 @@ enum RightsStatus: String, Codable, Hashable, CaseIterable {
         let raw = try decoder.singleValueContainer().decode(String.self)
         self = RightsStatus(rawValue: raw) ?? .restricted
     }
+
+    /// Human label for the rights badge — kept here so the one shipping wording
+    /// lives next to the cases, never duplicated per view.
+    var label: String {
+        switch self {
+        case .original: return "Original"
+        case .licensed: return "Licensed"
+        case .publicDomain: return "Public domain"
+        case .linkedOnly: return "Linked only"
+        case .restricted: return "Restricted"
+        }
+    }
 }
 
 /// A cited source. `url`/`retrievedAt`/`season` stay String — the dates are bare
@@ -614,6 +626,52 @@ struct LostPitch: Codable, Hashable, Identifiable {
 struct LostPitchesRoot: Codable, Hashable {
     let tiers: [LostPitchTierInfo]
     let entries: [LostPitch]
+}
+
+// MARK: - Archive plates (archive-images.json → [ArchiveImage])
+
+/// What kind of plate stands in for a lost pitch: a surviving likeness, a team or
+/// venue photograph, or a first-party study drawn when no clean public image exists.
+enum ArchivePlateKind: String, Codable, Hashable, CaseIterable {
+    case portrait
+    case team
+    case venue
+    case originalStudy = "original-study"
+
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = ArchivePlateKind(rawValue: raw) ?? .portrait
+    }
+
+    var label: String {
+        switch self {
+        case .portrait: return "Portrait"
+        case .team: return "Team"
+        case .venue: return "Venue"
+        case .originalStudy: return "Original study"
+        }
+    }
+}
+
+/// One filed image record for a lost pitch. A verified public-domain photo plate
+/// (cropped from a cited source) or a first-party original study. `rights` answers
+/// "may we ship it"; `source` carries the public-domain provenance when there is
+/// one. `imageSrc` resolves to a JPG bundled under Resources/archive.
+struct ArchiveImage: Codable, Hashable, Identifiable {
+    let id: String
+    let title: String
+    let label: String
+    let plateKind: ArchivePlateKind
+    let imageSrc: String
+    let alt: String
+    let caption: String
+    let source: Source?
+    let rights: RightsStatus
+    let width: Int
+    let height: Int
+    let qualityNote: String
+    let relatedSlug: String
+    let relatedLabel: String
 }
 
 // MARK: - Knowledge wings (knowledge.json → [KnowledgeWing])

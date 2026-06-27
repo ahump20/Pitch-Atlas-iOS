@@ -1716,21 +1716,63 @@
     "id": "commons-satchel-paige-1942",
     "label": "Wikimedia Commons, Satchel Paige 1942",
     "url": "https://commons.wikimedia.org/wiki/File:Satchel_Paige_1942_(cropped).jpg",
-    "retrievedAt": "2026-06-26",
+    "retrievedAt": "2026-06-27",
     "season": "public domain image source"
   },
   {
     "id": "commons-rube-foster-1924",
     "label": "Wikimedia Commons, Rube Foster 1924",
     "url": "https://commons.wikimedia.org/wiki/File:Rube_Foster_1924.jpg",
-    "retrievedAt": "2026-06-26",
+    "retrievedAt": "2026-06-27",
     "season": "public domain image source"
   },
   {
     "id": "commons-negro-league-all-star-1936",
     "label": "Wikimedia Commons, 1936 Negro League All-Star Game",
     "url": "https://commons.wikimedia.org/wiki/File:1936_Negro_League_All-Star_Game.jpg",
-    "retrievedAt": "2026-06-26",
+    "retrievedAt": "2026-06-27",
+    "season": "public domain image source"
+  },
+  {
+    "id": "commons-bullet-joe-rogan-1924",
+    "label": "Wikimedia Commons, Bullet Joe Rogan 1924",
+    "url": "https://commons.wikimedia.org/wiki/File:Bullet_Joe_Rogan_1924.jpg",
+    "retrievedAt": "2026-06-27",
+    "season": "public domain image source"
+  },
+  {
+    "id": "commons-smokey-joe-williams",
+    "label": "Wikimedia Commons, Cyclone Joe Williams",
+    "url": "https://commons.wikimedia.org/wiki/File:Williams_Cyclone_Joe.jpg",
+    "retrievedAt": "2026-06-27",
+    "season": "public domain image source"
+  },
+  {
+    "id": "commons-phil-cockrell-1924",
+    "label": "Wikimedia Commons, Phil Cockrell 1924",
+    "url": "https://commons.wikimedia.org/wiki/File:Phil_Cockrell_1924.jpg",
+    "retrievedAt": "2026-06-27",
+    "season": "public domain image source"
+  },
+  {
+    "id": "commons-william-bell-1924",
+    "label": "Wikimedia Commons, William Bell 1924",
+    "url": "https://commons.wikimedia.org/wiki/File:William_Bell_1924.jpg",
+    "retrievedAt": "2026-06-27",
+    "season": "public domain image source"
+  },
+  {
+    "id": "commons-dave-brown-1923",
+    "label": "Wikimedia Commons, 1923 Tomas Gutierrez Dave Brown card",
+    "url": "https://commons.wikimedia.org/wiki/File:1923_Tomas_Gutierrez_Dave_Brown.jpg",
+    "retrievedAt": "2026-06-27",
+    "season": "public domain image source"
+  },
+  {
+    "id": "commons-lincoln-giants-1912",
+    "label": "Wikimedia Commons, 1912 Lincoln Giants team photograph",
+    "url": "https://commons.wikimedia.org/wiki/File:1912_Lincoln_Giants.jpg",
+    "retrievedAt": "2026-06-27",
     "season": "public domain image source"
   }
 ]
