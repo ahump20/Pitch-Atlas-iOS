@@ -26,6 +26,7 @@ struct LostPitchDetailView: View {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
                     header
                     introCard
+                    archivePlate
                     whatItWas
                     whyItsLost
                     numbers
@@ -80,6 +81,64 @@ struct LostPitchDetailView: View {
             .foregroundStyle(PitchAtlasTheme.bone2)
             .fixedSize(horizontal: false, vertical: true)
             .leatherPress()
+    }
+
+    // MARK: - Archive plate (the filed image record)
+
+    /// Give the record a face before the prose: the one verified public-domain
+    /// photo plate or first-party study filed for this pitch, with its rights
+    /// label and source. Renders only when a plate shipped; a missing plate image
+    /// falls to BundledImage's seal, never a gray box.
+    @ViewBuilder
+    private var archivePlate: some View {
+        if let image = store.archiveImage(forLostPitch: pitch.slug) {
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+                HStack {
+                    SectionLabel(text: image.label, size: 9)
+                    Spacer()
+                    SectionLabel(text: image.plateKind.label, color: PitchAtlasTheme.cyanDeep, size: 9)
+                }
+
+                BundledImage(src: image.imageSrc, alt: image.alt, contentMode: .fit)
+                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+
+                Text(image.caption)
+                    .font(PitchAtlasTheme.hanken(14))
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text(image.qualityNote)
+                    .font(PitchAtlasTheme.martian(9))
+                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                HStack(spacing: PitchAtlasSpacing.xs) {
+                    Text(image.rights.label.uppercased())
+                        .font(PitchAtlasTheme.martian(9))
+                        .tracking(1.0)
+                        .foregroundStyle(PitchAtlasTheme.cyan)
+                    if let source = image.source {
+                        Text("\u{00B7}")
+                            .font(PitchAtlasTheme.martian(9))
+                            .foregroundStyle(PitchAtlasTheme.ink3)
+                        Text(source.label)
+                            .font(PitchAtlasTheme.martian(9))
+                            .foregroundStyle(PitchAtlasTheme.ink3)
+                            .lineLimit(2)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .leatherPress()
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(plateAccessibilityLabel(image))
+        }
+    }
+
+    private func plateAccessibilityLabel(_ image: ArchiveImage) -> String {
+        var parts = ["\(image.label). \(image.caption)", image.rights.label]
+        if let source = image.source { parts.append("source, \(source.label)") }
+        return parts.joined(separator: ". ")
     }
 
     // MARK: - What it was

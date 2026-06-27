@@ -29,6 +29,7 @@ final class PitchStore {
     let knowledge: [KnowledgeWing]
     let grips: GripsFile
     let sources: [Source]
+    let archiveImages: [ArchiveImage]
     let manifest: ContentManifest
     let status: Status
 
@@ -59,6 +60,7 @@ final class PitchStore {
                                                                          sequenceNote: "", sequence: []),
                                               proofLimit: "", entries: []))
         self.sources = load("sources", [Source].self, fallback: [])
+        self.archiveImages = load("archive-images", [ArchiveImage].self, fallback: [])
 
         self.status = problems.isEmpty ? .ready : .failed(problems.joined(separator: " | "))
     }
@@ -101,6 +103,11 @@ final class PitchStore {
     }
     func craftsman(slug: String) -> Craftsman? { craftsmen.first { $0.slug == slug } }
     func lostPitch(slug: String) -> LostPitch? { lostPitches.entries.first { $0.slug == slug } }
+    /// The one filed plate for a lost pitch, matched on its related slug. Nil when
+    /// none shipped, so the detail view falls to its empty state instead of filler.
+    func archiveImage(forLostPitch slug: String) -> ArchiveImage? {
+        archiveImages.first { $0.relatedSlug == slug }
+    }
     func wing(slug: String) -> KnowledgeWing? { knowledge.first { $0.slug == slug } }
     func repertoireEntry(id: String) -> RepertoireEntry? { repertoire.entries.first { $0.id == id } }
     func gripEntry(id: String) -> GripEntry? { grips.entries.first { $0.id == id } }

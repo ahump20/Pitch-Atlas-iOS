@@ -34,6 +34,7 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertFalse(store.knowledge.isEmpty, "no knowledge wings decoded")
         XCTAssertFalse(store.grips.entries.isEmpty, "no grips decoded")
         XCTAssertFalse(store.sources.isEmpty, "no sources decoded")
+        XCTAssertFalse(store.archiveImages.isEmpty, "no archive images decoded")
     }
 
     /// Drift guard: decoded record counts must match the build manifest. If the
@@ -48,6 +49,34 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(store.knowledge.count, store.manifest.counts["knowledge.json"])
         XCTAssertEqual(store.grips.entries.count, store.manifest.counts["grips.json"])
         XCTAssertEqual(store.sources.count, store.manifest.counts["sources.json"])
+        XCTAssertEqual(store.archiveImages.count, store.manifest.counts["archive-images.json"])
+    }
+
+    /// Every lost pitch carries exactly one rights-labeled plate, the plate points
+    /// back at a real lost pitch, every public-domain photo names a source, and
+    /// every first-party study carries none. Mirrors the web archive-plate test so
+    /// the two surfaces hold the same provenance contract.
+    func testEveryLostPitchHasARightsLabeledPlate() {
+        let store = PitchStore()
+        XCTAssertEqual(store.archiveImages.count, store.lostPitches.entries.count)
+        for pitch in store.lostPitches.entries {
+            guard let image = store.archiveImage(forLostPitch: pitch.slug) else {
+                XCTFail("\(pitch.slug) has no archive plate")
+                continue
+            }
+            XCTAssertEqual(image.relatedSlug, pitch.slug)
+            XCTAssertTrue(image.imageSrc.hasPrefix("/archive/lost-pitches/"),
+                          "\(image.id) imageSrc escaped the archive folder: \(image.imageSrc)")
+            XCTAssertGreaterThan(image.alt.count, 20, "\(image.id) alt text is too thin")
+            switch image.rights {
+            case .publicDomain:
+                XCTAssertNotNil(image.source, "\(image.id) is public-domain but names no source")
+            case .original:
+                XCTAssertNil(image.source, "\(image.id) is an original study but carries a source")
+            default:
+                XCTFail("\(image.id) shipped with unexpected rights \(image.rights.rawValue)")
+            }
+        }
     }
 
     func testIndexSortOrdersRowsWithinAFamilyByName() {
