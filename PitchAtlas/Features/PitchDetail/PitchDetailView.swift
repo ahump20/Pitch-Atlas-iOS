@@ -16,6 +16,9 @@ struct PitchDetailView: View {
     /// column can't hold "PRESSURE FINGER" without clipping, so the row stacks.
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
+    /// The shared content store, read for the same-family rail.
+    @Environment(PitchStore.self) private var store
+
     private var canonical: CanonicalPitchRecord { entry.canonical }
     private var display: PitchDisplay { entry.display }
     private var physics: PhysicsReference { canonical.physics }
@@ -39,6 +42,7 @@ struct PitchDetailView: View {
                     mechanics
                     if let voice = canonical.voice { voiceQuote(voice) }
                     if !entry.masterVariants.isEmpty { mastersLedger }
+                    relatedFamily
                     communityPreview
                     // When real footage or photography carries the hero, the
                     // drawn specimen files down here beside the seam-geometry
@@ -407,6 +411,53 @@ struct PitchDetailView: View {
             }
         }
         .leatherPress()
+    }
+
+    // MARK: Same-family rail
+
+    /// The native mate to the web's "Others in the {family}" rail: a horizontal strip
+    /// of the other filed specimens in this pitch's family, each pushing its own detail.
+    /// Hidden entirely when the family has no other filed member, so it never shows an
+    /// empty rail.
+    @ViewBuilder
+    private var relatedFamily: some View {
+        let kin = store.siblings(of: entry)
+        if !kin.isEmpty {
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+                SectionLabel(text: "Others in the \(canonical.family.label)")
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: PitchAtlasSpacing.sm) {
+                        ForEach(kin) { sib in
+                            NavigationLink(value: sib) { siblingPill(sib) }
+                                .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.vertical, 2)
+                }
+            }
+        }
+    }
+
+    private func siblingPill(_ sib: PitchAtlasEntry) -> some View {
+        // Gold dot for the lone 1/1 chase, the family accent otherwise — the same read
+        // the web sibling pill uses, so the two surfaces mark the chase identically.
+        let dot = sib.display.specimenNo == "00" ? PitchAtlasTheme.amberBright : sib.canonical.family.accent
+        return HStack(spacing: PitchAtlasSpacing.xs) {
+            Circle()
+                .fill(dot)
+                .frame(width: 9, height: 9)
+            Text(sib.canonical.name)
+                .font(PitchAtlasTheme.hankenMedium(14))
+                .foregroundStyle(PitchAtlasTheme.bone)
+            Image(systemName: "arrow.right")
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(PitchAtlasTheme.ink3)
+        }
+        .padding(.vertical, PitchAtlasSpacing.xs)
+        .padding(.horizontal, PitchAtlasSpacing.sm)
+        .overlay(Capsule().stroke(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(sib.canonical.name), open specimen")
     }
 
     // MARK: Community

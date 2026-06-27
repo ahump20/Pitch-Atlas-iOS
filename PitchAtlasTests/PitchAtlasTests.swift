@@ -94,6 +94,28 @@ final class PitchAtlasTests: XCTestCase {
         }
     }
 
+    /// The same-family rail reads off the filed family: every sibling shares the
+    /// subject's family, the subject never lists itself, and the relationship is
+    /// symmetric (if A lists B, B lists A). No baked relatedSlugs, no fabricated link.
+    func testSameFamilyRailListsOtherFiledPitchesInTheFamily() {
+        let store = PitchStore()
+        XCTAssertFalse(store.pitches.isEmpty, "no pitches decoded")
+
+        // At least one family must have more than one filed member for the rail to exist.
+        guard let subject = store.pitches.first(where: { !store.siblings(of: $0).isEmpty }) else {
+            return XCTFail("expected at least one family with multiple filed pitches")
+        }
+
+        let kin = store.siblings(of: subject)
+        for s in kin {
+            XCTAssertEqual(s.canonical.family, subject.canonical.family, "\(s.slug) is not in \(subject.slug)'s family")
+            XCTAssertNotEqual(s.slug, subject.slug, "a pitch must not be its own sibling")
+            // symmetric: the sibling's rail includes the subject
+            XCTAssertTrue(store.siblings(of: s).contains { $0.slug == subject.slug },
+                          "\(subject.slug) missing from \(s.slug)'s family rail")
+        }
+    }
+
     /// The owner's grip films: every film referenced by the content must resolve
     /// to a real bundled clip and poster, carry first-party/original rights, and
     /// cover exactly the four grips that were filmed — no fabricated films, no
