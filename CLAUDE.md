@@ -31,7 +31,7 @@ Native SwiftUI: tab shell, searchable index, grip library, craftsmen hall, sourc
 
 The binary is **no longer reference-only**. It ships the **Supabase community layer**: Sign in with Apple + email magic link, account view with in-app **account deletion** (5.1.1(v)), and per-pitch **Field Notes + Discussion** with the UGC-moderation pillars present — report, block, a 17+ age gate, and guidelines/media-terms acceptance (1.2). Reachable via Atlas → "Account and Safety". The reference manual (index, grips, craftsmen, sources, filed specimens) stays fully usable signed-out. iPhone only. See `docs/COMPLIANCE.md` and `docs/APP-REVIEW-NOTES.md`.
 
-**Open item for Austin to verify (not iOS-side):** blocked-user content hiding. The client inserts into `blocked_users` and reloads, but `CommunityService.fieldNotes`/`discussionPosts` don't filter blocked authors client-side — so hiding depends on **Supabase RLS** filtering blocked content server-side. Confirm that RLS is in place; if not, add a client-side filter or an RLS policy before relying on block for review.
+**Resolved (was an open item):** blocked-user content hiding is enforced client-side too. `CommunityVisibility` filters blocked authors out of both community tabs, hydration is fail-closed (a failed block-list load sets both tabs to `.failed` rather than showing unfiltered content), and the blocked-contributors manager lives in Account & Safety — covered by `testBlockedContributorVisibilityFiltersCommunityRowsLocally`. Supabase RLS remains the server-side backstop.
 
 ## Build / release
 
