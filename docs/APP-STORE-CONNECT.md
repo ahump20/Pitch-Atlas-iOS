@@ -29,6 +29,16 @@ images attached to `1.0.1`; no App Preview videos are present. Do not paste the
 1.1 anonymous-first copy onto `1.0.1`, because that version is still attached to
 build `10`.
 
+Media Manager write check, 2026-07-03 afternoon: the current five App Store
+Connect screenshots were backed up locally before any write attempt. Uploading
+the first build `11` screenshot into the live `APP_IPHONE_67` set through
+`POST /v1/appScreenshots` returned `409
+ENTITY_ERROR.ATTRIBUTE.INVALID.INVALID_STATE` on `appScreenshots`. No existing
+screenshot was deleted, and follow-up API readback still showed the original
+five complete `1320x2868` images. Treat Media Manager as locked while `1.0.1`
+is in `PENDING_DEVELOPER_RELEASE`; upload the build `11` screenshot set only
+after the current release slot is made editable or a new `1.1.0` version exists.
+
 Supabase production proof: the web repo is on `a703784`
 (`fix(db): repair the community grants-hardening fallout (field notes +
 discussion media) (#151)`), and the live Supabase migration list includes
