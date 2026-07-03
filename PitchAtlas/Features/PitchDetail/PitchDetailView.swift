@@ -109,7 +109,7 @@ struct PitchDetailView: View {
 
     private var specimenCard: some View {
         VStack(spacing: PitchAtlasSpacing.xs) {
-            SeamBall(motion: entry.motion, size: 240, contacts: canonical.fingerPlacement)
+            SpecimenStage(entry: entry, size: 240)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, PitchAtlasSpacing.sm)
 
@@ -225,6 +225,10 @@ struct PitchDetailView: View {
                 gripFact("Thumb", model.thumbRole)
                 gripFact("Palm gap", model.palmGapCue)
                 gripFact("Release", model.releaseCue)
+                if let orientation = model.orientation {
+                    gripFact("Knuckle line", orientation.knuckleLine)
+                    gripFact("Palm facing", orientation.palmFacing)
+                }
             }
             .leatherPress()
 
@@ -248,6 +252,11 @@ struct PitchDetailView: View {
                                 .font(PitchAtlasTheme.martian(8))
                                 .foregroundStyle(PitchAtlasTheme.ink3)
                         }
+                    }
+
+                    // The solved pose is itself a claim — it wears its source.
+                    if let provenance = model.provenance {
+                        SourceClaimLabel(claim: provenance)
                     }
                 }
             }

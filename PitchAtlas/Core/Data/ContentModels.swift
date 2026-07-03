@@ -168,6 +168,33 @@ enum Handedness: String, Codable, Hashable, CaseIterable {
     }
 }
 
+/// How a finger meets the leather — the contact solver's lift/hug key.
+enum FingerEngagement: String, Codable, Hashable, CaseIterable {
+    case tip, pad, inside, nail, knuckle
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = FingerEngagement(rawValue: raw) ?? .pad
+    }
+}
+
+/// How hard a contact presses — widens the rendered pad, never invents force.
+enum PressureTier: String, Codable, Hashable, CaseIterable {
+    case primary, support, light
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = PressureTier(rawValue: raw) ?? .support
+    }
+}
+
+/// Whether the grip model is a filed (fully authored) pose or an unfiled sketch.
+enum GripStatus: String, Codable, Hashable, CaseIterable {
+    case filed, unfiled
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = GripStatus(rawValue: raw) ?? .filed
+    }
+}
+
 enum HorizontalDir: String, Codable, Hashable, CaseIterable {
     case armSide = "arm-side"
     case gloveSide = "glove-side"
@@ -264,6 +291,12 @@ struct SeamAnchoredPoint: Codable, Hashable {
     let note: String?
 }
 
+/// How the hand sits behind the ball, in the pitcher's own spatial language.
+struct HandOrientation: Codable, Hashable {
+    let knuckleLine: String
+    let palmFacing: String
+}
+
 struct GripContactModel: Codable, Hashable {
     let finger: Finger
     let label: String
@@ -273,6 +306,60 @@ struct GripContactModel: Codable, Hashable {
     let pressureRole: String
     let cue: String
     let curl: Double
+    /// Signed surface arc perpendicular to the seam path: 0 = on the seam.
+    /// Solver fields decode leniently (bundle-absent → the neutral default)
+    /// so an older bundle can never brick launch.
+    let seamOffset: Double
+    /// Finger-spine direction off the seam tangent, degrees. 0 rides the seam.
+    let azimuth: Double
+    let engagement: FingerEngagement
+    /// The finger this one pinches toward (the splitter's squeeze); rare.
+    let pinchesToward: Finger?
+    let pressureTier: PressureTier
+
+    init(
+        finger: Finger, label: String, seamT: Double, lift: Double,
+        seamRelation: String, pressureRole: String, cue: String, curl: Double,
+        seamOffset: Double = 0, azimuth: Double = 0,
+        engagement: FingerEngagement = .pad, pinchesToward: Finger? = nil,
+        pressureTier: PressureTier = .support
+    ) {
+        self.finger = finger
+        self.label = label
+        self.seamT = seamT
+        self.lift = lift
+        self.seamRelation = seamRelation
+        self.pressureRole = pressureRole
+        self.cue = cue
+        self.curl = curl
+        self.seamOffset = seamOffset
+        self.azimuth = azimuth
+        self.engagement = engagement
+        self.pinchesToward = pinchesToward
+        self.pressureTier = pressureTier
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case finger, label, seamT, lift, seamRelation, pressureRole, cue, curl
+        case seamOffset, azimuth, engagement, pinchesToward, pressureTier
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        finger = try container.decode(Finger.self, forKey: .finger)
+        label = try container.decode(String.self, forKey: .label)
+        seamT = try container.decode(Double.self, forKey: .seamT)
+        lift = try container.decode(Double.self, forKey: .lift)
+        seamRelation = try container.decode(String.self, forKey: .seamRelation)
+        pressureRole = try container.decode(String.self, forKey: .pressureRole)
+        cue = try container.decode(String.self, forKey: .cue)
+        curl = try container.decode(Double.self, forKey: .curl)
+        seamOffset = try container.decodeIfPresent(Double.self, forKey: .seamOffset) ?? 0
+        azimuth = try container.decodeIfPresent(Double.self, forKey: .azimuth) ?? 0
+        engagement = try container.decodeIfPresent(FingerEngagement.self, forKey: .engagement) ?? .pad
+        pinchesToward = try container.decodeIfPresent(Finger.self, forKey: .pinchesToward)
+        pressureTier = try container.decodeIfPresent(PressureTier.self, forKey: .pressureTier) ?? .support
+    }
 }
 
 struct GripModel: Codable, Hashable {
@@ -285,6 +372,12 @@ struct GripModel: Codable, Hashable {
     let releaseCue: String
     let visualCaveat: String
     let contacts: [GripContactModel]
+    /// Filed/unfiled marker on the authored pose (optional in older bundles).
+    let status: GripStatus?
+    /// Knuckle-line / palm-facing prose, surfaced in the Grip Lab.
+    let orientation: HandOrientation?
+    /// The sourced claim behind the solved pose — geometry wears provenance too.
+    let provenance: Claim?
 }
 
 struct BreakReading: Codable, Hashable {
