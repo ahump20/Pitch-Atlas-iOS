@@ -170,11 +170,19 @@ struct CommunityService {
             .execute()
     }
 
-    func submitPost(_ post: NewDiscussionPost) async throws {
-        try await client
+    /// Insert the post and return the server-generated id. RETURNING is scoped
+    /// to the id column on purpose: the column-scoped SELECT grant covers id,
+    /// while `select()` (RETURNING *) would touch ungranted columns and fail.
+    func submitPost(_ post: NewDiscussionPost) async throws -> String {
+        struct InsertedPost: Decodable { let id: String }
+        let inserted: InsertedPost = try await client
             .from("discussion_posts")
             .insert(post)
+            .select("id")
+            .single()
             .execute()
+            .value
+        return inserted.id
     }
 
     func acceptMediaTerms() async throws {
@@ -188,8 +196,8 @@ struct CommunityService {
             throw CommunityServiceError.unsupportedMedia
         }
 
-        let mediaID = UUID().uuidString
-        let path = "\(userID)/\(mediaID).\(image.fileExtension)"
+        let fileName = UUID().uuidString
+        let path = "\(userID)/\(fileName).\(image.fileExtension)"
         try await client.storage
             .from(Self.mediaBucket)
             .upload(
@@ -203,7 +211,6 @@ struct CommunityService {
             )
 
         let row = NewDiscussionMedia(
-            id: mediaID,
             postID: postID,
             topicKey: topicKey,
             storagePath: path,

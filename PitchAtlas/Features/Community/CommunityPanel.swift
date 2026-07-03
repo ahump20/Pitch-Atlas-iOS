@@ -793,18 +793,19 @@ struct CommunityPanel: View {
             return
         }
 
-        let postID = UUID().uuidString
         let postTopicKey = topicKey
 
+        // The server generates the post id (the INSERT grant does not include
+        // the id column); the insert returns it for the media attach below.
+        let postID: String
         do {
             let post = try NewDiscussionPost.validated(
-                id: postID,
                 topicKey: postTopicKey,
                 displayName: auth.displayName,
                 body: postBody,
                 parentID: nil
             )
-            try await service.submitPost(post)
+            postID = try await service.submitPost(post)
         } catch {
             // The post itself failed — keep the composer intact so the user can retry.
             actionMessage = ActionMessage(text: CommunityService.userMessage(for: error), tone: .error)
