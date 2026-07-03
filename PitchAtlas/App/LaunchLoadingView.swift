@@ -60,9 +60,10 @@ struct LaunchLoadingView: View {
                         .antonSkew()
                         .accessibilityAddTraits(.isHeader)
 
-                    Text("Sourced, not corrected.")
+                    Text("Preserving & Progressing the Art of the Pitch")
                         .font(PitchAtlasTheme.newsreaderItalic(18))
                         .foregroundStyle(PitchAtlasTheme.bone2)
+                        .multilineTextAlignment(.center)
                 }
 
                 LoadingRule()
@@ -74,7 +75,7 @@ struct LaunchLoadingView: View {
         }
         .onAppear { if !reduceMotion { sweep = true } }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Pitch Atlas. Sourced, not corrected.")
+        .accessibilityLabel("Pitch Atlas. Preserving and progressing the art of the pitch.")
     }
 }
 

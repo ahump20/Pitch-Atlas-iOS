@@ -11,6 +11,7 @@ import SwiftUI
 
 struct LostPitchDetailView: View {
     @Environment(PitchStore.self) private var store
+    @Environment(\.openURL) private var openURL
     let pitch: LostPitch
 
     /// The tier legend entry that matches this pitch's tier, if it shipped.
@@ -127,12 +128,84 @@ struct LostPitchDetailView: View {
                             .lineLimit(2)
                     }
                 }
+
+                if let video = image.video {
+                    archiveFilm(video)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .leatherPress()
             .accessibilityElement(children: .combine)
             .accessibilityLabel(plateAccessibilityLabel(image))
         }
+    }
+
+    /// Archival film card: motion stays at its official archive. iOS shows the
+    /// credit, the linked-only rights label, and a button that opens the archive
+    /// page out to Safari. No third-party player is embedded inline, and nothing
+    /// is rehosted; the bytes never enter the bundle.
+    @ViewBuilder
+    private func archiveFilm(_ video: ArchiveFilm) -> some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
+            SectionLabel(text: "Archival film", color: PitchAtlasTheme.cyanDeep, size: 9)
+
+            Text(video.caption.value)
+                .font(PitchAtlasTheme.hanken(13))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .fixedSize(horizontal: false, vertical: true)
+
+            HStack(spacing: PitchAtlasSpacing.xs) {
+                Text(video.rights.label.uppercased())
+                    .font(PitchAtlasTheme.martian(9))
+                    .tracking(1.0)
+                    .foregroundStyle(PitchAtlasTheme.cyan)
+                if let source = video.caption.source {
+                    Text("\u{00B7}")
+                        .font(PitchAtlasTheme.martian(9))
+                        .foregroundStyle(PitchAtlasTheme.ink3)
+                    Text(source.label)
+                        .font(PitchAtlasTheme.martian(9))
+                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .lineLimit(2)
+                }
+            }
+
+            Button {
+                if let url = URL(string: video.url) { openURL(url) }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "play.rectangle")
+                    Text("Watch at the archive")
+                    Text("\u{2197}")
+                }
+                .font(PitchAtlasTheme.martian(10))
+                .tracking(0.6)
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 12)
+                .frame(maxWidth: .infinity)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        .stroke(PitchAtlasTheme.bone.opacity(0.22))
+                )
+            }
+            .buttonStyle(.plain)
+
+            Text("Embedded from the Internet Archive, not rehosted.")
+                .font(PitchAtlasTheme.martian(8))
+                .foregroundStyle(PitchAtlasTheme.ink3)
+        }
+        .padding(PitchAtlasSpacing.sm)
+        .background(
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .fill(PitchAtlasTheme.bone.opacity(0.04))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 4, style: .continuous)
+                .stroke(PitchAtlasTheme.bone.opacity(0.10))
+        )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Archival film. \(video.caption.value). Linked only. Opens the Internet Archive.")
     }
 
     private func plateAccessibilityLabel(_ image: ArchiveImage) -> String {
