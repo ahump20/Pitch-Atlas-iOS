@@ -57,17 +57,17 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 ## Build Notes
 
 - Bundle ID: `com.pitchatlas.app`
-- Version: `1.0.1`
-- Build: `10`
+- Version: `1.1.0`
+- Build: `11`
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
-- No Firebase, Appwrite, CloudKit, push notifications, camera capture, video upload, or BSI dependency. Build `10` shipped with no WebView; from the first build after `10`, the only `WKWebView` is the credited TikTok teaching-clip embed described under **Embedded Teaching Clips** above — there is no app-content webview or web wrapper.
+- No Firebase, Appwrite, CloudKit, push notifications, camera capture, video upload, or BSI dependency. The only `WKWebView` is the credited TikTok teaching-clip embed described under **Embedded Teaching Clips** above. There is no app-content webview or web wrapper.
 - Production Supabase block RPCs were applied on 2026-06-24 as migration `20260624194451 block_user_rpcs`.
 
 ## Final Build Proof
 
-Build `1.0.1 (10)` was verified on the MacBook with a clean iPhone 17 Pro simulator run on 2026-06-26: 29 tests passed, 0 failed. App Store Connect reports build `10` as `VALID`, with min OS `17.0` and `ITSAppUsesNonExemptEncryption=false`.
+Build `1.1.0 (11)` was verified on the MacBook with the 6.9-inch Pitch Atlas screenshot simulator on 2026-07-03: 65 tests passed, 0 failed. App Store Connect reports build `11` as `VALID`, `APP_STORE_ELIGIBLE`, uploaded `2026-07-03T09:05:52-07:00`, with min OS `17.0` and `ITSAppUsesNonExemptEncryption=false`.
 
-Build `10` supersedes the earlier build `6`, build `7`, build `8`, and build `9` binaries. App Store Connect readback on 2026-06-26 showed build `10` as `VALID`, attached to app version `1.0.1`, assigned to the internal TestFlight group `Pitch Atlas Internal Testers`, and submitted for App Review as `WAITING_FOR_REVIEW` under review submission `eb1c9764-d7af-4ce8-8896-938e7f25fb96`.
+Build `11` supersedes builds `6` through `10` for the next review submission. App Store Connect readback on 2026-07-03 showed build `11` in the internal TestFlight group `Pitch Atlas Internal`. The App Store review submission is not yet created because App Store Connect still has `1.0.1 (10)` in `PENDING_DEVELOPER_RELEASE`; creating a `1.1.0` version returned `409 ENTITY_ERROR.RELATIONSHIP.INVALID`.
 
-Screenshot proof and the required design critique are in `docs/review-evidence/2026-06-24-ios-screenshot-report.md`.
+Screenshot proof for build `11` is in `docs/review-evidence/2026-07-03-build-11-screens/`.

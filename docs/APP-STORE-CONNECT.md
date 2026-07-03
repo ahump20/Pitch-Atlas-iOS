@@ -1,6 +1,37 @@
 # Pitch Atlas App Store Connect Pack
 
-Status: 2026-06-26 production submission for `com.pitchatlas.app`; 1.1.0 (11) in preparation.
+Status: 2026-07-03 release gate for `com.pitchatlas.app`; build `1.1.0 (11)` is valid in App Store Connect, but the App Store review submission is blocked by the older approved `1.0.1 (10)` version sitting in `PENDING_DEVELOPER_RELEASE`.
+
+Update, 2026-07-03 afternoon: App Store Connect API readback shows build `11`
+(`04554def-bc16-4176-bfbf-396979f7d496`) as `VALID`, uploaded
+`2026-07-03T09:05:52-07:00`, pre-release version `1.1.0`, min OS `17.0`,
+`APP_STORE_ELIGIBLE`, and `usesNonExemptEncryption=false`. Build `11` is in the
+internal TestFlight group `Pitch Atlas Internal`; it is not in `Pitch Atlas
+Internal Testers` or the external public-link group. The App Store version list
+still contains only `1.0.1` (`PENDING_DEVELOPER_RELEASE`) and `1.0` (`READY_FOR_SALE`).
+Creating a new `1.1.0` App Store version through `POST /v1/appStoreVersions`
+returned `409 ENTITY_ERROR.RELATIONSHIP.INVALID`: "You cannot create a new
+version of the App in the current state." Do not release build `10` as a
+workaround unless Austin explicitly chooses to put the older build into public
+distribution. Once the `1.0.1` pending-release slot is released, canceled, or
+reset in App Store Connect, create the `1.1.0` version, attach build `11`, paste
+the updated copy below, upload the July 3 screenshots, and submit that version
+for review.
+
+Build `11` local proof: XcodeBuildMCP built and launched the app on the
+`Pitch Atlas 6.9 Screenshot iPhone` simulator. `test_sim` passed `65` tests,
+`0` failures. Fresh 6.9-inch screenshots live in
+`docs/review-evidence/2026-07-03-build-11-screens/` at `1320x2868`. App Store
+Connect currently has one `APP_IPHONE_67` screenshot set with five complete
+images attached to `1.0.1`; no App Preview videos are present. Do not paste the
+1.1 anonymous-first copy onto `1.0.1`, because that version is still attached to
+build `10`.
+
+Supabase production proof: the web repo is on `a703784`
+(`fix(db): repair the community grants-hardening fallout (field notes +
+discussion media) (#151)`), and the live Supabase migration list includes
+`20260703164350_field_note_rank_trigger_security` and
+`20260703164408_discussion_media_read_policy_grant`.
 
 Update, 2026-07-03: the pre-archive release gate (now a real XCUITest — the
 `PitchAtlasReleaseGate` scheme, never run by CI) caught and fixed two 1.1.0
@@ -9,8 +40,9 @@ a stale cached token (401 after an overnight session; fixed by refreshing the
 session through the SDK), and community insert payloads carried a client-minted
 `id` that sits outside the column-scoped INSERT grants, denying the whole
 insert (fixed by mirroring the web contract — server-generated id, read back
-via RETURNING; pinned by a payload-shape unit test). Field-note posting remains
-gated on a server-side grant fix that ships from the web repo (web PR #151).
+via RETURNING; pinned by a payload-shape unit test). Field-note posting had
+been gated on a server-side grant fix from the web repo; PR #151 is now on web
+`main` and its two July 3 migrations are live in Supabase production.
 
 Update, 2026-07-02: version `1.1.0` build `11` prepared on `release/1.1.0` — the
 "Specimen Comes Alive" wave: the native 3D specimen ball (SceneKit, seam-informed
@@ -60,8 +92,8 @@ Verified 2026-06-26 through the App Store Connect API:
 - Pricing: `Free`
 - Platform: `iOS`
 - Device family: `iPhone`
-- Version: `1.0.1`
-- Build: `10`
+- Version: `1.1.0`
+- Build: `11`
 
 ## Canonical Xcode Project
 
@@ -149,7 +181,7 @@ Answer: uses only exempt encryption through standard HTTPS/ATS. `ITSAppUsesNonEx
 
 ## App Review Notes
 
-Paste from `docs/APP-REVIEW-NOTES.md`. It includes the final build, MacBook test, TestFlight, Supabase, and App Review proof for `1.0.1 (10)`.
+Paste from `docs/APP-REVIEW-NOTES.md` after the `1.1.0` App Store version slot exists. It includes the final build, simulator test, TestFlight, Supabase, and App Store Connect proof for `1.1.0 (11)`.
 
 If reviewer credentials are required, provide a Supabase test account in the App Store Connect reviewer credentials fields only.
 
@@ -169,10 +201,10 @@ For every final screenshot report, verify the rendered state first, then include
 ## Release Gates
 
 - Production Supabase project `cloeoulvrrfcbitrjpso` exposes `block_user`, `unblock_user`, and `my_blocked_users` to authenticated clients.
-- Clean iPhone 17 Pro simulator testing passed: 29 tests, 0 failures. App Store Connect build `10` resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `10`, and `ITSAppUsesNonExemptEncryption=false`.
-- App Store Connect build `10` is `VALID`, attached to app version `1.0.1`, and submitted for App Review as `WAITING_FOR_REVIEW`.
-- Internal TestFlight has build `10` in `Pitch Atlas Internal Testers`, and the all-builds internal group should also see it.
-- The external public-link TestFlight group was not changed.
+- Clean 6.9-inch simulator testing passed: 65 tests, 0 failures. App Store Connect build `11` resolves to pre-release version `1.1.0`, build `11`, min OS `17.0`, `APP_STORE_ELIGIBLE`, and `ITSAppUsesNonExemptEncryption=false`.
+- App Store Connect build `11` is `VALID` but cannot yet be submitted because the only editable review slot is blocked by `1.0.1 (10)` in `PENDING_DEVELOPER_RELEASE`.
+- Internal TestFlight has build `11` in `Pitch Atlas Internal`; `Pitch Atlas Internal Testers` and the external public-link group were not changed.
+- The new screenshots are captured locally and ready, but not uploaded to App Store Connect because no `1.1.0` App Store version exists yet.
 
 ## Internal Brand Guardrail
 
