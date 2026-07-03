@@ -543,6 +543,75 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertTrue(collectedTypes.contains("NSPrivacyCollectedDataTypePhotosorVideos"))
     }
 
+    /// The 3D contact solver's authored fields travel web → bundle → app: the
+    /// four-seam index contact pins the real values, every contact across the
+    /// bundle decodes them, and the hand orientation rides every filed pose.
+    func testGripContactsDecodeTheSolverFields() throws {
+        let store = PitchStore()
+        let fourSeam = try XCTUnwrap(store.pitch(slug: "four-seam"))
+        let index = try XCTUnwrap(
+            fourSeam.canonical.gripModel.contacts.first { $0.finger == .index }
+        )
+        XCTAssertEqual(index.seamT, 0.305)
+        XCTAssertEqual(index.seamOffset, 0)
+        XCTAssertEqual(index.azimuth, 80)
+        XCTAssertEqual(index.engagement, .pad)
+        XCTAssertEqual(index.pressureTier, .support)
+
+        var contactCount = 0
+        for pitch in store.pitches {
+            let model = pitch.canonical.gripModel
+            XCTAssertNotNil(model.orientation, "\(pitch.slug) grip model has no orientation")
+            XCTAssertNotNil(model.provenance, "\(pitch.slug) grip pose carries no provenance claim")
+            contactCount += model.contacts.count
+            for contact in model.contacts {
+                XCTAssertGreaterThanOrEqual(contact.seamT, 0, "\(pitch.slug) seamT out of range")
+                XCTAssertLessThanOrEqual(contact.seamT, 1, "\(pitch.slug) seamT out of range")
+            }
+        }
+        XCTAssertEqual(contactCount, 34, "the bundle carries 34 authored contacts")
+    }
+
+    /// Unknown enum strings in a future bundle fall back to safe cases — the
+    /// house lenient-decode contract, extended to the solver enums.
+    func testSolverEnumsFallBackOnUnknownStrings() throws {
+        let json = Data(
+            """
+            {
+              "finger": "index", "label": "Test", "seamT": 0.5, "lift": 0,
+              "seamRelation": "t", "pressureRole": "t", "cue": "t", "curl": 0,
+              "seamOffset": 0.02, "azimuth": 15,
+              "engagement": "future-engagement", "pressureTier": "future-tier"
+            }
+            """.utf8
+        )
+        let contact = try JSONDecoder().decode(GripContactModel.self, from: json)
+        XCTAssertEqual(contact.engagement, .pad)
+        XCTAssertEqual(contact.pressureTier, .support)
+
+        let statusJSON = Data(#""future-status""#.utf8)
+        XCTAssertEqual(try JSONDecoder().decode(GripStatus.self, from: statusJSON), .filed)
+    }
+
+    /// A contact WITHOUT the solver keys (an older bundle) still decodes, with
+    /// the neutral defaults — a content delta can never brick launch.
+    func testContactFixtureWithoutSolverKeysStillDecodes() throws {
+        let json = Data(
+            """
+            {
+              "finger": "middle", "label": "Middle pad", "seamT": 0.7, "lift": 0.01,
+              "seamRelation": "along the seam", "pressureRole": "drives", "cue": "firm", "curl": 0.2
+            }
+            """.utf8
+        )
+        let contact = try JSONDecoder().decode(GripContactModel.self, from: json)
+        XCTAssertEqual(contact.seamOffset, 0)
+        XCTAssertEqual(contact.azimuth, 0)
+        XCTAssertEqual(contact.engagement, .pad)
+        XCTAssertEqual(contact.pressureTier, .support)
+        XCTAssertNil(contact.pinchesToward)
+    }
+
     /// Provenance integrity: a confident claim carries a source; a weak claim
     /// (unverified / secondhand) carries an explanatory note. This is the data
     /// contract the whole "Sourced, not corrected" promise rests on.
