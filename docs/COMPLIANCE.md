@@ -11,6 +11,7 @@ Pitch Atlas v1 is a native SwiftUI iPhone app with bundled reference content and
 - Supabase project `cloeoulvrrfcbitrjpso` is reused. Do not create a second project.
 - `ahump20/Pitch-Atlas` remains the Supabase migration/function source of truth.
 - iOS v1 is image-only from PhotosPicker. No video upload, GIF upload, live camera capture, push notifications, Firebase, Appwrite, CloudKit, or BSI dependency.
+- Teaching clips are remote embeds only: TikTok's official player loads in the app's single `WKWebView` behind a poster tap, credited on-screen, with an outbound link to the original post. No third-party media bytes ship in the bundle — embed-or-link, never rehost (rights record: web repo `docs/MEDIA-LEDGER.md`, rows T1–T3).
 
 ## App Review Safety
 

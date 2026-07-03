@@ -41,6 +41,12 @@ struct PitchDetailView: View {
                     if let guide = entry.guide { coaching(guide) }
                     mechanics
                     if let voice = canonical.voice { voiceQuote(voice) }
+                    // See it taught: the credited TikTok teaching clip filed against
+                    // this slug, when one exists. Embedded from the platform's own
+                    // player behind a poster tap — never rehosted.
+                    if let clip = store.teachingClip(slug: entry.slug) {
+                        TeachingClipCard(clip: clip, accent: canonical.family.accent)
+                    }
                     if !entry.masterVariants.isEmpty { mastersLedger }
                     relatedFamily
                     communityPreview

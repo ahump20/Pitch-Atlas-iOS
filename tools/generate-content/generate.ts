@@ -35,7 +35,7 @@ if (!existsSync(DATA)) {
 
 const imp = (rel: string) => import(pathToFileURL(join(DATA, rel)).href)
 
-const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade, archive] =
+const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade, archive, tiktok] =
   await Promise.all([
     imp('pitches/index.ts'),
     imp('repertoire/index.ts'),
@@ -46,6 +46,10 @@ const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimen
     imp('sources.ts'),
     imp('specimen-grade.ts'),
     imp('media/archive-images.ts'),
+    // Teaching clips (TikTok). Embed-or-link, never rehost: this carries the post
+    // references the app embeds via the official player — no media file is bundled.
+    // The web side reads the same module. Promoted to the iOS bundle 2026-06-25.
+    imp('media/tiktok.ts'),
   ])
 
 /*
@@ -118,6 +122,9 @@ const bundles: Record<string, unknown> = {
   // imageSrc paths resolve to JPGs bundled under Resources/archive, so the native
   // card reads the same plate and rights label the web wing shows.
   'archive-images.json': archive.LOST_PITCH_ARCHIVE_IMAGES,
+  // Embed-or-link, never rehost. The app embeds the official TikTok player from
+  // these refs; no MP4 ships. See docs/MEDIA-LEDGER.md (web repo) rows T1–T3.
+  'teaching-clips.json': tiktok.TEACHING_CLIPS,
 }
 
 function countOf(v: unknown): number {
