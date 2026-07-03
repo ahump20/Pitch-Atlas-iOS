@@ -5,9 +5,9 @@ import SwiftUI
 // =============================================================================
 // The screen that says, in plain words, what this thing is and why it can be
 // trusted. It reinforces the native value (a bundled reference that remains
-// readable offline), the provenance model (every number wears its tier), and v1
-// honesty (reference content is checked at build time; community is live only
-// after sign-in).
+// readable offline), the provenance model (every number wears its tier), and
+// honesty (reference content is checked at build time; community is live and
+// anonymous-first — an account is minted only when someone contributes).
 //
 // Pure prose: there is no collection to enumerate, so there are no detail pushes.
 // The one freshness fact is store.sourcesLastChecked, computed off the build
@@ -132,7 +132,7 @@ struct AboutView: View {
         let checked = store.sourcesLastChecked
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "How it stays honest")
-            Text("The reference layer is bundled, sourced, and readable offline. The community layer is live only when real people show up: field notes, discussion, reporting, blocking, and account deletion use the Pitch Atlas Supabase backend and require sign-in.")
+            Text("The reference layer is bundled, sourced, and readable offline. The community layer is live only when real people show up: field notes, discussion, reporting, and blocking use the Pitch Atlas Supabase backend and work anonymously — an account exists only once you contribute, and you can claim it to keep your record across devices.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)

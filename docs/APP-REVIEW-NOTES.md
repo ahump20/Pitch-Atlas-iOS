@@ -2,25 +2,31 @@
 
 Paste into App Store Connect for build `1.0.1 (10)`.
 
-Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community features use Supabase only after sign-in.
+Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community participation is anonymous-first: no sign-in screen gates posting. Contributing creates a Supabase anonymous account silently on the first write, and the user can optionally claim that account (Sign in with Apple or email) to keep it across devices. Image uploads are the one community feature that requires a claimed (permanent) account, enforced server-side.
 
 ## Reviewer Path
 
 1. Launch the app.
 2. Browse Atlas, Index, Grips, Craftsmen, and Sources without signing in.
-3. Open Atlas, then Account and Safety, to sign in with Apple or email magic link.
-4. Open a pitch detail and scroll to Community.
-5. Accept the community guidelines and 17+ confirmation.
-6. Submit a Field Note or Discussion post.
-7. For image upload, accept image terms and choose a still image with PhotosPicker.
-8. Use the item menu to report content.
-9. Use the item menu to block a different user, then review the private blocked list in Account and Safety.
-10. Return to Account and Safety to delete the account.
+3. Open a pitch detail and scroll to Community. No sign-in is required to contribute.
+4. Accept the community guidelines and 17+ confirmation.
+5. Submit a Field Note or Discussion post — this works without any account setup; an anonymous account is created behind the scenes on the first contribution.
+6. Use the item menu to report content or block a different user. These also work anonymously.
+7. Open Atlas, then Account and Safety: the account shows as "Anonymous contributor" with a "Claim this record" block. Claim it with Sign in with Apple or an email confirmation link; the same account (and its posts) is preserved.
+8. For image upload, claim the account first (uploads require a permanent account), then accept image terms and choose a still image with PhotosPicker.
+9. Review the private blocked list in Account and Safety.
+10. Return to Account and Safety to delete the account (works for anonymous and claimed accounts).
+
+## Guideline 5.1.1(v) Posture
+
+Sign-in is never forced for non-account features. The full reference manual is readable with no account, and community contribution itself needs no sign-in — the anonymous account is created lazily and invisibly on the first write. Apple or email sign-in exists only to claim the record (keep it across devices) and to unlock image uploads, which are restricted to permanent accounts for moderation accountability.
 
 ## Community Safety
 
-- Posting, reporting, blocking, image uploads, and account deletion require sign-in.
-- Reading community content is open so visitors can inspect public field notes before creating an account.
+- Reporting, blocking, and text posting work anonymously; each write rides a real (anonymous) Supabase account, so rate limits, banned-term filters, and moderation apply to every contributor.
+- Image uploads and the upload-terms acceptance require a claimed (non-anonymous) account, enforced by server policy.
+- Account deletion requires an existing session (anonymous or claimed).
+- Reading community content is open and never creates an account.
 - Community posts are user-submitted field notes, not measured claims.
 - Field-note inputs are validated against live Supabase limits before submission.
 - Reports are write-only for normal clients and can auto-hide content through backend policy/trigger rules.

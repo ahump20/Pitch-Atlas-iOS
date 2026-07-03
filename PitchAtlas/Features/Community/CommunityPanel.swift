@@ -54,12 +54,17 @@ struct CommunityPanel: View {
     /// In-flight guard: blocks a second submit Task from spawning before the first
     /// await returns, so a slow-network double-tap can't file two identical rows.
     @State private var isSubmitting = false
-    @State private var signInEmail = ""
     @State private var showGuidelines = false
 
     private var service: CommunityService { CommunityService(client: auth.client) }
     private var topicKey: String { "pitch:\(pitchSlug)" }
-    private var canContribute: Bool { auth.isSignedIn && guidelinesAccepted && ageConfirmed }
+    /// Anonymous-first: the attestations gate contribution, sign-in does not.
+    /// The account is minted lazily inside each write via ensureSessionForWrite.
+    private var canContribute: Bool {
+        CommunityContributionGate.canContribute(guidelinesAccepted: guidelinesAccepted, ageConfirmed: ageConfirmed)
+    }
+    /// Includes the user id so a lazy anonymous mint mid-session re-runs reload
+    /// under the new identity (viewer flags, block list).
     private var reloadKey: String { "\(pitchSlug)|\(auth.userID ?? "signed-out")" }
     private var fieldNoteSubmitDisabled: Bool {
         isSubmitting || fieldTweak.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -138,7 +143,7 @@ struct CommunityPanel: View {
         case .idle, .loading:
             LoadingTile(label: "Loading field notes")
         case .empty:
-            EmptyStateView(message: "No one has filed the tell, feel, or result for \(pitchName) yet. Reading is open; posting requires sign-in.")
+            EmptyStateView(message: "No one has filed the tell, feel, or result for \(pitchName) yet. Reading and filing are open — no account needed.")
         case .failed(let reason):
             ErrorStateView(title: "Field notes unavailable", reason: reason)
         case .loaded(let notes):
@@ -346,9 +351,23 @@ struct CommunityPanel: View {
                 .controlSize(.large)
                 .disabled(fieldNoteSubmitDisabled)
                 .opacity(fieldNoteSubmitDisabled ? 0.55 : 1)
+
+                anonymousContributionFooter
             }
         } else {
             contributionGate
+        }
+    }
+
+    /// The quiet replacement for the old mandatory sign-in panel: contribution
+    /// works without an account, and the claim path lives in Account & Safety.
+    @ViewBuilder
+    private var anonymousContributionFooter: some View {
+        if !auth.isClaimed {
+            Text("You're contributing anonymously on this device. Claim the record in Account & Safety to keep it across devices.")
+                .font(PitchAtlasTheme.hanken(12))
+                .foregroundStyle(PitchAtlasTheme.ink3)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -366,34 +385,44 @@ struct CommunityPanel: View {
                     PitchFormCaption(text: "\(postBody.count)/\(DiscussionPostLimits.body)")
                 }
 
-                PitchToggleField(
-                    text: "I accept the image upload terms",
-                    caption: "Still images only. Upload only media you have the right to share.",
-                    isOn: $mediaTermsAccepted
-                )
+                // Server policy restricts uploads and media-terms acceptance to
+                // permanent accounts, so the picker never dangles for an
+                // anonymous contributor; the server error mapping stays as backstop.
+                if auth.isClaimed {
+                    PitchToggleField(
+                        text: "I accept the image upload terms",
+                        caption: "Still images only. Upload only media you have the right to share.",
+                        isOn: $mediaTermsAccepted
+                    )
 
-                PhotosPicker(selection: $selectedPhoto, matching: .images) {
-                    Label(preparedImage == nil ? "Attach image" : "Replace image", systemImage: "photo")
-                }
-                .buttonStyle(.bordered)
-                .disabled(!mediaTermsAccepted)
-                .onChange(of: selectedPhoto) { _, item in
-                    Task { await preparePhoto(item) }
-                }
-
-                if let preparedImage {
-                    attachmentPreview(preparedImage)
-                }
-
-                if pendingMediaRetry != nil {
-                    Button {
-                        Task { await retryPendingMedia() }
-                    } label: {
-                        Label("Retry image upload", systemImage: "arrow.clockwise")
+                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                        Label(preparedImage == nil ? "Attach image" : "Replace image", systemImage: "photo")
                     }
                     .buttonStyle(.bordered)
-                    .disabled(isSubmitting || !mediaTermsAccepted)
-                    .opacity((isSubmitting || !mediaTermsAccepted) ? 0.55 : 1)
+                    .disabled(!mediaTermsAccepted)
+                    .onChange(of: selectedPhoto) { _, item in
+                        Task { await preparePhoto(item) }
+                    }
+
+                    if let preparedImage {
+                        attachmentPreview(preparedImage)
+                    }
+
+                    if pendingMediaRetry != nil {
+                        Button {
+                            Task { await retryPendingMedia() }
+                        } label: {
+                            Label("Retry image upload", systemImage: "arrow.clockwise")
+                        }
+                        .buttonStyle(.bordered)
+                        .disabled(isSubmitting || !mediaTermsAccepted)
+                        .opacity((isSubmitting || !mediaTermsAccepted) ? 0.55 : 1)
+                    }
+                } else {
+                    Text("Image uploads need a claimed account — attach Apple or email in Account & Safety.")
+                        .font(PitchAtlasTheme.hanken(12))
+                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
                 Button {
@@ -405,6 +434,8 @@ struct CommunityPanel: View {
                 .controlSize(.large)
                 .disabled(postSubmitDisabled)
                 .opacity(postSubmitDisabled ? 0.55 : 1)
+
+                anonymousContributionFooter
             }
         } else {
             contributionGate
@@ -413,10 +444,6 @@ struct CommunityPanel: View {
 
     private var contributionGate: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            if !auth.isSignedIn {
-                SignInPanel(email: $signInEmail)
-            }
-
             PitchToggleField(
                 text: "I accept the community guidelines",
                 caption: "Post your own experience. Report problems. Keep the archive clean.",
@@ -526,10 +553,14 @@ struct CommunityPanel: View {
         .overlay(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous).stroke(PitchAtlasTheme.machined))
     }
 
+    /// Always enabled: report and block are write intents, so they mint the
+    /// anonymous session lazily via ensureSessionForWrite when none exists.
     private func safetyMenu(authorID: String, displayName: String, reportAction: @escaping () -> Void) -> some View {
         Menu {
             Button("Report") { reportAction() }
-            if let userID = auth.userID, userID != authorID {
+            // A signed-out viewer has no account yet, so they cannot be the
+            // author of anything visible — only hide Block from a signed-in self.
+            if auth.userID != authorID {
                 Button("Block user", role: .destructive) {
                     Task { await block(authorID, displayName: displayName) }
                 }
@@ -541,7 +572,6 @@ struct CommunityPanel: View {
         }
         .accessibilityLabel("More actions")
         .accessibilityHint("Report or block this contributor")
-        .disabled(!auth.isSignedIn)
     }
 
     private func reload() async {
@@ -604,6 +634,8 @@ struct CommunityPanel: View {
         isSubmitting = true
         defer { isSubmitting = false }
         do {
+            // Write intent: the only moment an account may be minted.
+            _ = try await auth.ensureSessionForWrite()
             let note = try NewFieldNote.validated(
                 pitchSlug: pitchSlug,
                 displayName: auth.displayName,
@@ -636,7 +668,7 @@ struct CommunityPanel: View {
     }
 
     private func submitDiscussionPost() async {
-        guard !isSubmitting, let userID = auth.userID else { return }
+        guard !isSubmitting else { return }
         guard pendingMediaRetry == nil || preparedImage == nil else {
             actionMessage = ActionMessage(text: "Retry the pending image before submitting another image.", tone: .error)
             Haptics.failure()
@@ -645,6 +677,16 @@ struct CommunityPanel: View {
 
         isSubmitting = true
         defer { isSubmitting = false }
+
+        // Write intent: the only moment an account may be minted.
+        let userID: String
+        do {
+            userID = try await auth.ensureSessionForWrite()
+        } catch {
+            actionMessage = ActionMessage(text: CommunityService.userMessage(for: error), tone: .error)
+            Haptics.failure()
+            return
+        }
 
         let postID = UUID().uuidString
         let postTopicKey = topicKey
@@ -702,6 +744,7 @@ struct CommunityPanel: View {
 
     private func reportFieldNote(_ id: String) async {
         do {
+            _ = try await auth.ensureSessionForWrite()
             try await service.reportFieldNote(id: id, reason: "reported from iOS")
             actionMessage = ActionMessage(text: "Report filed.", tone: .success)
             Haptics.success()
@@ -713,6 +756,7 @@ struct CommunityPanel: View {
 
     private func reportPost(_ id: String) async {
         do {
+            _ = try await auth.ensureSessionForWrite()
             try await service.reportPost(id: id, reason: "reported from iOS")
             actionMessage = ActionMessage(text: "Report filed.", tone: .success)
             Haptics.success()
@@ -724,6 +768,7 @@ struct CommunityPanel: View {
 
     private func block(_ authorID: String, displayName: String) async {
         do {
+            _ = try await auth.ensureSessionForWrite()
             try await service.blockUser(blockedID: authorID)
             hiddenAuthorIDs.insert(authorID)
             hideAuthor(authorID)
@@ -739,6 +784,7 @@ struct CommunityPanel: View {
 
     private func unblock(_ authorID: String) async {
         do {
+            _ = try await auth.ensureSessionForWrite()
             try await service.unblockUser(blockedID: authorID)
             hiddenAuthorIDs.remove(authorID)
             undoBlock = nil

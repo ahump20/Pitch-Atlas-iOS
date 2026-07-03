@@ -282,6 +282,53 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "10")
     }
 
+    /// Anonymous-first contribution: the two attestations gate the composers,
+    /// sign-in does NOT. The account is minted lazily on write intent only
+    /// (AuthSessionStore.ensureSessionForWrite — the app's single mint site,
+    /// mirroring the web's community.read-path.test.ts contract).
+    func testCommunityContributionGateNeedsAttestationsNotSignIn() {
+        XCTAssertTrue(CommunityContributionGate.canContribute(guidelinesAccepted: true, ageConfirmed: true))
+        XCTAssertFalse(CommunityContributionGate.canContribute(guidelinesAccepted: false, ageConfirmed: true))
+        XCTAssertFalse(CommunityContributionGate.canContribute(guidelinesAccepted: true, ageConfirmed: false))
+        XCTAssertFalse(CommunityContributionGate.canContribute(guidelinesAccepted: false, ageConfirmed: false))
+    }
+
+    /// The anon→Apple link conflict is detected by the Supabase error code first
+    /// and the message shape second — never exact string equality, which a server
+    /// wording change would silently break. A non-auth error never matches.
+    func testAppleIdentityConflictDetectionMatchesCodeAndShapeNotExactStrings() {
+        // Structured code wins regardless of message wording.
+        XCTAssertTrue(AuthSessionStore.isIdentityConflict(code: "identity_already_exists", message: "whatever the server says"))
+        // Message-shape fallback for gateways that omit the code.
+        XCTAssertTrue(AuthSessionStore.isIdentityConflict(code: nil, message: "Identity is already linked to another user"))
+        XCTAssertTrue(AuthSessionStore.isIdentityConflict(code: "unknown", message: "That identity was already claimed."))
+        // Unrelated auth failures never read as a link conflict.
+        XCTAssertFalse(AuthSessionStore.isIdentityConflict(code: "invalid_credentials", message: "Invalid login credentials"))
+        XCTAssertFalse(AuthSessionStore.isIdentityConflict(code: nil, message: "identity token malformed"))
+        // Non-AuthError values never match the public entry point.
+        XCTAssertFalse(AuthSessionStore.isAppleIdentityConflict(
+            NSError(domain: "URLSession", code: -1009, userInfo: [NSLocalizedDescriptionKey: "identity already exists"])
+        ))
+    }
+
+    /// The conflict copy is honest about both halves: sign in with the existing
+    /// account, and the anonymous record stays behind (never silently swapped).
+    func testAppleIdentityConflictCopyNamesBothOutcomes() {
+        let copy = AuthSessionStore.appleIdentityConflictMessage
+        XCTAssertTrue(copy.contains("already has a Pitch Atlas account"))
+        XCTAssertTrue(copy.contains("Sign in with it instead"))
+        XCTAssertTrue(copy.lowercased().contains("anonymous"))
+    }
+
+    /// A failed lazy session start on write intent surfaces the same copy as the
+    /// web's SESSION_START_ERROR, through the shared community error mapper.
+    func testSessionStartFailureMapsToWebParityCopy() {
+        XCTAssertEqual(
+            CommunityService.userMessage(for: CommunityServiceError.sessionStartFailed),
+            "Could not start your community session just now. Try again."
+        )
+    }
+
     func testCommunityImagePreparationRejectsNonImages() {
         XCTAssertThrowsError(try CommunityService.prepareImage(data: Data("not an image".utf8))) { error in
             XCTAssertEqual(error as? CommunityServiceError, .unsupportedMedia)
