@@ -12,15 +12,123 @@ struct CommunityService {
         self.client = client
     }
 
+    /// Ranked, visible field notes for one pitch. Sorts on `base_rank` — the live
+    /// ranking a DB trigger maintains via note_base_rank() — with created_at as
+    /// the tiebreak, matching the web's listNotes. Ordering is purely SQL; the
+    /// client never re-sorts.
     func fieldNotes(pitchSlug: String) async throws -> [CommunityFieldNote] {
         try await client
             .from("field_notes")
-            .select("id, pitch_slug, author_id, display_name, tweak, player_level, arm_slot, intent, claimed_result_kind, claimed_result_note, sample_size, evidence_url, evidence_label, note, source_tier, created_at")
+            .select("id, pitch_slug, author_id, display_name, tweak, player_level, arm_slot, intent, claimed_result_kind, claimed_result_note, sample_size, evidence_url, evidence_label, note, source_tier, adoption_count, helpful_count, base_rank, created_at")
             .eq("pitch_slug", value: pitchSlug)
+            .order("base_rank", ascending: false)
             .order("created_at", ascending: false)
             .limit(25)
             .execute()
             .value
+    }
+
+    /// The viewer's own Tried This / Helpful marks for the visible notes.
+    ///
+    /// READ path: never call ensureSessionForWrite from here — the caller only
+    /// invokes this when a session already exists, so hydrating flags can never
+    /// mint an account. RLS scopes both tables to the viewer's own rows.
+    ///
+    /// Direct selects first; if a deployment still has older engagement grants,
+    /// fall back to the legacy `viewer_note_engagement` RPC filtered to the
+    /// visible ids (the web's fallbackViewerEngagement). If both paths fail the
+    /// flags degrade to neutral — counts still render, and the trigger-maintained
+    /// server counts correct any divergence on the next reload.
+    func viewerEngagement(noteIDs: [String]) async -> (tried: Set<String>, helpful: Set<String>) {
+        let ids = Array(Set(noteIDs.filter { !$0.isEmpty }))
+        guard !ids.isEmpty else { return ([], []) }
+
+        do {
+            async let triedRows: [NoteEngagementRef] = client
+                .from("note_tries")
+                .select("note_id")
+                .in("note_id", values: ids.map { $0 as any PostgrestFilterValue })
+                .execute()
+                .value
+            async let helpfulRows: [NoteEngagementRef] = client
+                .from("note_helpful")
+                .select("note_id")
+                .in("note_id", values: ids.map { $0 as any PostgrestFilterValue })
+                .execute()
+                .value
+            return (Set(try await triedRows.map(\.noteID)), Set(try await helpfulRows.map(\.noteID)))
+        } catch {
+            do {
+                let rows: [ViewerNoteEngagementRow] = try await client
+                    .rpc("viewer_note_engagement")
+                    .execute()
+                    .value
+                let visible = Set(ids)
+                let scoped = rows.filter { visible.contains($0.noteID) }
+                return (
+                    Set(scoped.filter(\.tried).map(\.noteID)),
+                    Set(scoped.filter(\.helpful).map(\.noteID))
+                )
+            } catch {
+                return ([], [])
+            }
+        }
+    }
+
+    /// Toggle "Tried this" (adoption). One row per account is enforced by the DB.
+    func setTried(noteID: String, on: Bool) async throws {
+        try await setEngagement(table: "note_tries", noteID: noteID, on: on)
+    }
+
+    /// Toggle "Helpful". One row per account is enforced by the DB.
+    func setHelpful(noteID: String, on: Bool) async throws {
+        try await setEngagement(table: "note_helpful", noteID: noteID, on: on)
+    }
+
+    private func setEngagement(table: String, noteID: String, on: Bool) async throws {
+        if on {
+            do {
+                try await client
+                    .from(table)
+                    .insert(NoteEngagementInsert(noteID: noteID))
+                    .execute()
+            } catch where Self.isUniqueViolation(error) {
+                // 23505 = the one-per-account unique violation: the mark is
+                // already on, which is the state the user asked for. Success.
+            }
+        } else {
+            let userID = try await currentUserID()
+            try await client
+                .from(table)
+                .delete()
+                .eq("note_id", value: noteID)
+                .eq("user_id", value: userID)
+                .execute()
+        }
+    }
+
+    /// The signed-in user id for delete scoping. Write callers run
+    /// ensureSessionForWrite first, so a missing session here is a real fault,
+    /// not a signal to mint — surface it as the session error.
+    private func currentUserID() async throws -> String {
+        do {
+            let session = try await client.auth.session
+            return String(describing: session.user.id)
+        } catch {
+            throw CommunityServiceError.sessionStartFailed
+        }
+    }
+
+    /// Postgres 23505 (unique violation). The structured PostgrestError code is
+    /// authoritative; the message shape is the fallback for any transport that
+    /// surfaces the failure as a different error type — same layered matching
+    /// as AuthSessionStore.isIdentityConflict.
+    static func isUniqueViolation(_ error: Error) -> Bool {
+        if let postgrestError = error as? PostgrestError, postgrestError.code == "23505" {
+            return true
+        }
+        let raw = "\(error.localizedDescription) \(String(describing: error))".lowercased()
+        return raw.contains("23505") || raw.contains("duplicate key")
     }
 
     func discussionPosts(topicKey: String) async throws -> [DiscussionPost] {

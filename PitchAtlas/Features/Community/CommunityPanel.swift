@@ -51,6 +51,11 @@ struct CommunityPanel: View {
     @State private var pendingMediaRetry: PendingMediaRetry?
     @State private var hiddenAuthorIDs: Set<String> = []
     @State private var hiddenAuthorsHydratedForUserID: String?
+    /// The viewer's own Tried This / Helpful marks, hydrated after loadFieldNotes
+    /// ONLY when a session already exists. A signed-out reader sees the counts
+    /// with neutral chips — hydration never mints an account.
+    @State private var viewerTried: Set<String> = []
+    @State private var viewerHelpful: Set<String> = []
     /// In-flight guard: blocks a second submit Task from spawning before the first
     /// await returns, so a slow-network double-tap can't file two identical rows.
     @State private var isSubmitting = false
@@ -213,10 +218,54 @@ struct CommunityPanel: View {
             .font(PitchAtlasTheme.hanken(12))
             .foregroundStyle(PitchAtlasTheme.ink3)
             .fixedSize(horizontal: false, vertical: true)
+
+            // The web's viewerIsAuthor guard: an author never marks their own
+            // note, so the chips are absent entirely on the viewer's own cards.
+            // A signed-out reader (auth.userID == nil) always sees them.
+            if note.authorID != auth.userID {
+                HStack(spacing: PitchAtlasSpacing.sm) {
+                    engagementChip(
+                        label: "Tried this",
+                        count: note.adoptionCount,
+                        isOn: viewerTried.contains(note.id)
+                    ) {
+                        Haptics.selection()
+                        Task { await toggleEngagement(noteID: note.id, kind: .tried) }
+                    }
+                    engagementChip(
+                        label: "Helpful",
+                        count: note.helpfulCount,
+                        isOn: viewerHelpful.contains(note.id)
+                    ) {
+                        Haptics.selection()
+                        Task { await toggleEngagement(noteID: note.id, kind: .helpful) }
+                    }
+                }
+            }
         }
         .padding(PitchAtlasSpacing.sm)
         .background(PitchAtlasTheme.void, in: RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
         .overlay(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous).stroke(PitchAtlasTheme.machined))
+    }
+
+    private func engagementChip(label: String, count: Int, isOn: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text("\(label.uppercased()) · \(count)")
+                .font(PitchAtlasTheme.martian(9))
+                .tracking(1)
+                .foregroundStyle(isOn ? PitchAtlasTheme.cyan : PitchAtlasTheme.bone2)
+                .padding(.horizontal, PitchAtlasSpacing.sm)
+                .padding(.vertical, 8)
+                .background(Capsule().fill(isOn ? PitchAtlasTheme.cyan.opacity(0.12) : Color.clear))
+                .overlay(Capsule().stroke(isOn ? PitchAtlasTheme.cyanDeep : PitchAtlasTheme.machined))
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(label)
+        .accessibilityValue("\(count)")
+        .accessibilityAddTraits(isOn ? [.isSelected] : [])
+        .accessibilityHint(isOn ? "Removes your mark" : "Adds your mark")
     }
 
     private func discussionPostCard(_ post: DiscussionPost) -> some View {
@@ -613,8 +662,64 @@ struct CommunityPanel: View {
             let rows = try await service.fieldNotes(pitchSlug: pitchSlug)
             let visibleRows = CommunityVisibility.visibleFieldNotes(rows, hiddenAuthorIDs: hiddenAuthorIDs)
             notesState = visibleRows.isEmpty ? .empty : .loaded(visibleRows)
+            // Viewer flags hydrate only over an EXISTING session — this is a read,
+            // and reads never mint an account. Signed-out readers keep the counts
+            // with both chips neutral.
+            if auth.isSignedIn, !visibleRows.isEmpty {
+                let engagement = await service.viewerEngagement(noteIDs: visibleRows.map(\.id))
+                viewerTried = engagement.tried
+                viewerHelpful = engagement.helpful
+            } else {
+                viewerTried = []
+                viewerHelpful = []
+            }
         } catch {
             notesState = .failed(CommunityService.userMessage(for: error, fallback: "Could not load field notes just now. Try again."))
+        }
+    }
+
+    /// Optimistic Tried This / Helpful toggle, mirroring the web's
+    /// useFieldNotes.toggleEngagement: flip locally first (same pattern as
+    /// hideAuthor's rebuild), then persist; on failure, resync from the server —
+    /// loadFieldNotes reverts both the count and the viewer flag.
+    private func toggleEngagement(noteID: String, kind: CommunityEngagementKind) async {
+        guard case .loaded(let notes) = notesState else { return }
+        guard let note = notes.first(where: { $0.id == noteID }), note.authorID != auth.userID else { return }
+
+        let outcome = CommunityEngagement.toggled(
+            noteID: noteID,
+            kind: kind,
+            tried: viewerTried,
+            helpful: viewerHelpful,
+            notes: notes
+        )
+        viewerTried = outcome.tried
+        viewerHelpful = outcome.helpful
+        notesState = .loaded(outcome.notes)
+
+        do {
+            // Write intent: the only moment an account may be minted.
+            _ = try await auth.ensureSessionForWrite()
+            switch kind {
+            case .tried:
+                try await service.setTried(noteID: noteID, on: outcome.isNowOn)
+            case .helpful:
+                try await service.setHelpful(noteID: noteID, on: outcome.isNowOn)
+            }
+            // A first-ever mark from a signed-out reader mints a session, which
+            // changes reloadKey and can hydrate the viewer flags BEFORE this
+            // insert commits. Re-assert the flag so that race can't leave a
+            // just-confirmed mark rendered neutral.
+            switch kind {
+            case .tried:
+                if outcome.isNowOn { viewerTried.insert(noteID) } else { viewerTried.remove(noteID) }
+            case .helpful:
+                if outcome.isNowOn { viewerHelpful.insert(noteID) } else { viewerHelpful.remove(noteID) }
+            }
+        } catch {
+            Haptics.failure()
+            actionMessage = ActionMessage(text: CommunityService.userMessage(for: error), tone: .error)
+            await loadFieldNotes()
         }
     }
 
