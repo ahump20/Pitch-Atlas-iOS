@@ -653,6 +653,19 @@ enum ArchivePlateKind: String, Codable, Hashable, CaseIterable {
     }
 }
 
+/// Optional archival film attached to a plate. Motion is embed/link-only at its
+/// official archive: the bytes never enter the bundle, so the motion floor holds.
+/// `rights` is always linked-only and `caption` carries the footage's own
+/// provenance. iOS opens the archive page out to Safari rather than embedding a
+/// third-party player inline.
+struct ArchiveFilm: Codable, Hashable {
+    let url: String
+    let embedUrl: String
+    let caption: Claim
+    let rights: RightsStatus
+    let previewSrc: String?
+}
+
 /// One filed image record for a lost pitch. A verified public-domain photo plate
 /// (cropped from a cited source) or a first-party original study. `rights` answers
 /// "may we ship it"; `source` carries the public-domain provenance when there is
@@ -672,6 +685,9 @@ struct ArchiveImage: Codable, Hashable, Identifiable {
     let qualityNote: String
     let relatedSlug: String
     let relatedLabel: String
+    /// Optional archival film, embed/link-only at its official archive. Present
+    /// only where genuinely public-domain footage honestly depicts this subject.
+    let video: ArchiveFilm?
 }
 
 // MARK: - Knowledge wings (knowledge.json → [KnowledgeWing])

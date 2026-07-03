@@ -79,6 +79,29 @@ final class PitchAtlasTests: XCTestCase {
         }
     }
 
+    func testArchivalFilmIsLinkedOnlyCreditedAndNeverBundled() {
+        let store = PitchStore()
+        for image in store.archiveImages {
+            guard let video = image.video else { continue }
+            // Motion is embed/link-only: rights pinned, the bytes live at the archive.
+            XCTAssertEqual(video.rights, .linkedOnly, "\(image.id) film is not linked-only")
+            XCTAssertTrue(video.url.hasPrefix("https://"), "\(image.id) film url is not external https")
+            XCTAssertTrue(video.embedUrl.hasPrefix("https://"), "\(image.id) film embed is not external https")
+            XCTAssertFalse(video.url.hasPrefix("/archive/"), "\(image.id) film must never be a bundled path")
+            // The footage carries its own provenance.
+            XCTAssertNotNil(video.caption.source, "\(image.id) film names no source")
+            XCTAssertGreaterThan(video.caption.value.count, 20, "\(image.id) film credit is too thin")
+            // A preview still ships only when it is a real, bundled, public-domain file.
+            if let preview = video.previewSrc {
+                XCTAssertTrue(preview.hasPrefix("/archive/"), "\(image.id) film preview escaped the archive folder")
+            }
+        }
+        // The layer ships dormant until real, rights-verified footage is authored web-side
+        // (src/data/media/archive-images.ts gains a `video`, the bundle regenerates, and these
+        // invariants arm on the first record). No floor assertion — a fabricated film to satisfy
+        // a count would violate the sourcing policy the invariants above exist to protect.
+    }
+
     func testIndexSortOrdersRowsWithinAFamilyByName() {
         let store = PitchStore()
         let fastballs = store.repertoire.entries.filter { $0.family == .fastball }
