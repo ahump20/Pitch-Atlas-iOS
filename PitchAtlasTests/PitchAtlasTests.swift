@@ -326,8 +326,8 @@ final class PitchAtlasTests: XCTestCase {
     }
 
     func testAppInfoPlistUsesReleaseBuildSettings() {
-        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, "1.0.1")
-        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "10")
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, "1.1.0")
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "11")
     }
 
     /// Anonymous-first contribution: the two attestations gate the composers,

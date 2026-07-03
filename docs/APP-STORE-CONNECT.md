@@ -1,6 +1,19 @@
 # Pitch Atlas App Store Connect Pack
 
-Status: 2026-06-26 production submission for `com.pitchatlas.app`.
+Status: 2026-06-26 production submission for `com.pitchatlas.app`; 1.1.0 (11) in preparation.
+
+Update, 2026-07-02: version `1.1.0` build `11` prepared on `release/1.1.0` — the
+"Specimen Comes Alive" wave: the native 3D specimen ball (SceneKit, seam-informed
+schematic label preserved), anonymous-first community with a claimable record,
+the field-note Tried this / Helpful loop with live ranking, teaching clips
+(poster-gated remote embeds), the dormant archival-film layer, and the launch
+line corrected to the identity line. Ship path: local signed archive (the same
+path build 10 shipped through) → TestFlight internal. **Do not submit 1.1.0 for
+review while the 1.0.1 (10) submission is still open** — one active submission
+per platform; if 1.0.1 is approved, release or hold it and then submit 1.1.0;
+if rejected, fold the response into 1.1.0 and submit that instead. The
+description/truth-table corrections for anonymous-first (below) must be pasted
+into ASC when 1.1.0's store version is created.
 
 Update, 2026-06-25: build `1.0.1 (10)` was uploaded from the local signed
 archive after the tab-bar gutter fix and App Store Connect reports it as
@@ -54,6 +67,10 @@ Archive and upload from `PitchAtlas.xcodeproj` in the main `Pitch-Atlas-iOS` rep
 
 85 characters.
 
+## What's New — 1.1.0
+
+`The specimen comes alive: an interactive 3D ball on every filed pitch — warm leather, raised seam, and the fingertip pressure marks of the grip, drawn from the same sourced geometry as the schematic. Drag to turn it; the honest 2D schematic remains for Reduce Motion. Community is now anonymous-first: file a note with no account, then claim your record with Apple or email whenever you want it to travel. Field notes gained the Tried this / Helpful loop with live ranking, filed specimens gained teaching clips, and the launch screen now carries the line the product lives by: Preserving & Progressing the Art of the Pitch.`
+
 ## Description
 
 Pitch Atlas is a native field manual for the craft of pitching. It explains how pitches are gripped, how they move, who made them famous, and how solid each claim is.
@@ -67,9 +84,9 @@ Inside the app:
 - A grip library built from first-party grip photography and first-person notes.
 - Craftsmen and lost-pitches wings for the pitchers, pitch names, and techniques that shaped the language.
 - A sources browser so the reader can see where each claim came from.
-- An optional, free community layer: sign in to post field notes and discussion, attach still images, report content, block contributors, and delete your account.
+- An optional, free community layer: post field notes and discussion, report content, and block contributors with no account setup — an anonymous record is created on your first contribution, and you can claim it with Sign in with Apple or email to keep it across devices and attach still images.
 
-The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. An account is only needed for community actions: posting, reporting, blocking, uploads, and account deletion.
+The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. Community participation needs no sign-in: posting, reporting, and blocking work anonymously. Sign-in exists only to claim your record across devices and to attach images.
 
 ## Keywords
 
@@ -98,17 +115,18 @@ Collected data, all linked to identity, none used for tracking, all for App Func
 
 Truth table for this binary:
 
-- Optional account. Sign-in is required only for community posting, reporting, blocking, image uploads, and account deletion.
+- Optional account, anonymous-first. Community posting, reporting, and blocking work with no sign-in (an anonymous account is created server-side on the first write). Sign in with Apple / email exists to claim the record; image uploads require a claimed account.
 - Sign in with Apple is supported.
 - No analytics SDK.
 - No advertising SDK.
 - No tracking.
-- No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, or video upload.
-- Device motion is used only on-device for the foil card effect and stops when Reduce Motion is enabled.
+- No Firebase, Appwrite, CloudKit, push notifications, camera capture, or video upload.
+- One WKWebView exists: the teaching-clip embed on a specimen page. It loads nothing until the poster is tapped, plays a remote TikTok embed (never rehosted), and is not a web wrapper around app content.
+- Device motion is used only on-device for the foil card effect and the specimen ball's resting parallax, and stops when Reduce Motion is enabled.
 
 ## Age Rating
 
-Expected posture: answer the questionnaire honestly and let App Store Connect compute the rating. The reference content is baseball instruction; the community surface is gated by sign-in, guidelines acceptance, and a 17+ posting/upload confirmation.
+Expected posture: answer the questionnaire honestly and let App Store Connect compute the rating. The reference content is baseball instruction; community contribution is gated by guidelines acceptance and a 17+ posting/upload confirmation (sign-in is optional — contribution is anonymous-first).
 
 - User-generated content: yes.
 - Posting and uploads require sign-in.

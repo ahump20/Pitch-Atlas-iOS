@@ -1,6 +1,6 @@
 # App Review Notes
 
-Paste into App Store Connect for build `1.0.1 (10)`.
+Paste into App Store Connect for build `1.1.0 (11)`.
 
 Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community participation is anonymous-first: no sign-in screen gates posting. Contributing creates a Supabase anonymous account silently on the first write, and the user can optionally claim that account (Sign in with Apple or email) to keep it across devices. Image uploads are the one community feature that requires a claimed (permanent) account, enforced server-side.
 

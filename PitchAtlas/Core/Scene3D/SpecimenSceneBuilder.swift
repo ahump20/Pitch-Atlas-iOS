@@ -55,6 +55,11 @@ enum SpecimenSceneBuilder {
         let camera = SCNCamera()
         camera.fieldOfView = 32
         camera.wantsHDR = true
+        // Pinned exposure: adaptation reads the dark void and blows the leather
+        // out to a bleached practice ball. The negative offset holds the warm
+        // aged-hide read the albedo carries.
+        camera.wantsExposureAdaptation = false
+        camera.exposureOffset = -0.85
         let cameraNode = SCNNode()
         cameraNode.camera = camera
         cameraNode.position = SCNVector3(0, 0, 6.4)
@@ -143,7 +148,7 @@ enum SpecimenSceneBuilder {
                             from: SCNVector3(2.6, 3.2, 5.2))   // warm key
         addDirectionalLight(to: scene, color: UIColor(hexRGB: 0xC8DAF2), intensity: 550,
                             from: SCNVector3(-4.2, -1.4, 2.2)) // cool fill
-        addDirectionalLight(to: scene, color: .white, intensity: 1900,
+        addDirectionalLight(to: scene, color: .white, intensity: 1300,
                             from: SCNVector3(-1.6, -2.2, -5.4)) // rim, behind-low
 
         return Built(
