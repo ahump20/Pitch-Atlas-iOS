@@ -1,6 +1,50 @@
 # Pitch Atlas App Store Connect Pack
 
-Status: 2026-06-26 production submission for `com.pitchatlas.app`; 1.1.0 (11) in preparation.
+Status: 2026-07-03 submitted release for `com.pitchatlas.app`; build
+`1.1.0 (11)` is in App Store Connect as `WAITING_FOR_REVIEW`.
+
+Update, 2026-07-03 evening: Austin approved briefly releasing the older approved
+`1.0.1 (10)` build to unlock the stuck App Store version slot. App Store Connect
+accepted the manual release request for `1.0.1` (`201`) and then reported
+`1.0.1` as `READY_FOR_SALE`. A new `1.1.0` App Store version was created
+(`db6cb47d-3547-4acd-91ba-d41857b65c67`), build `11`
+(`04554def-bc16-4176-bfbf-396979f7d496`) was attached, the `en-US` store copy
+and App Review notes were updated, the Media Manager `APP_IPHONE_67` screenshot
+set was replaced with five complete build-11 screenshots at `1320x2868`, and
+review submission `7f3ac406-4831-42b9-b7be-b284a494a781` was submitted at
+`2026-07-03T22:50:48.918Z`. Final App Store Connect readback reported `1.1.0`
+as `WAITING_FOR_REVIEW`; `1.0.1` remains `READY_FOR_SALE` while Apple reviews
+the update.
+
+Build `11` local proof: XcodeBuildMCP built and launched the app on the
+`Pitch Atlas 6.9 Screenshot iPhone` simulator. `test_sim` passed `65` tests,
+`0` failures. Fresh 6.9-inch screenshots live in
+`docs/review-evidence/2026-07-03-build-11-screens/` at `1320x2868`. App Store
+Connect now has one `APP_IPHONE_67` screenshot set for `1.1.0` with these five
+complete build-11 images: `01-atlas.png`, `02-pitch-detail.png`,
+`03-grips.png`, `04-index.png`, and `05-sources.png`. No App Preview videos are
+present.
+
+Earlier blocker, now resolved: before `1.0.1` was manually released, uploading
+build-11 screenshots into the old live `1.0.1` Media Manager set returned `409
+ENTITY_ERROR.ATTRIBUTE.INVALID.INVALID_STATE` on `appScreenshots`. No existing
+screenshot was deleted in that failed write. After `1.1.0` was created, the
+new version's inherited old screenshots were replaced safely: five build-11
+screenshots uploaded to `COMPLETE`, then the inherited old five were deleted
+from the `1.1.0` set.
+
+Supabase production proof: the web repo is on `a703784`
+(`fix(db): repair the community grants-hardening fallout (field notes +
+discussion media) (#151)`), and the live Supabase migration list includes
+`20260703164350_field_note_rank_trigger_security` and
+`20260703164408_discussion_media_read_policy_grant`.
+
+Chrome UI proof note: the Codex Chrome Extension is installed and enabled in
+Chrome `Profile 1`, Chrome is running, and the native-host manifest is correct,
+but the browser-client backend still returned no available Chrome backend after
+retry. App Store Connect UI was therefore not inspected through Chrome in this
+pass, per the Chrome plugin rule against substituting another browser driver for
+account work.
 
 Update, 2026-07-03: the pre-archive release gate (now a real XCUITest — the
 `PitchAtlasReleaseGate` scheme, never run by CI) caught and fixed two 1.1.0
@@ -9,8 +53,9 @@ a stale cached token (401 after an overnight session; fixed by refreshing the
 session through the SDK), and community insert payloads carried a client-minted
 `id` that sits outside the column-scoped INSERT grants, denying the whole
 insert (fixed by mirroring the web contract — server-generated id, read back
-via RETURNING; pinned by a payload-shape unit test). Field-note posting remains
-gated on a server-side grant fix that ships from the web repo (web PR #151).
+via RETURNING; pinned by a payload-shape unit test). Field-note posting had
+been gated on a server-side grant fix from the web repo; PR #151 is now on web
+`main` and its two July 3 migrations are live in Supabase production.
 
 Update, 2026-07-02: version `1.1.0` build `11` prepared on `release/1.1.0` — the
 "Specimen Comes Alive" wave: the native 3D specimen ball (SceneKit, seam-informed
@@ -18,12 +63,11 @@ schematic label preserved), anonymous-first community with a claimable record,
 the field-note Tried this / Helpful loop with live ranking, teaching clips
 (poster-gated remote embeds), the dormant archival-film layer, and the launch
 line corrected to the identity line. Ship path: local signed archive (the same
-path build 10 shipped through) → TestFlight internal. **Do not submit 1.1.0 for
-review while the 1.0.1 (10) submission is still open** — one active submission
-per platform; if 1.0.1 is approved, release or hold it and then submit 1.1.0;
-if rejected, fold the response into 1.1.0 and submit that instead. The
-description/truth-table corrections for anonymous-first (below) must be pasted
-into ASC when 1.1.0's store version is created.
+path build 10 shipped through) → TestFlight internal. Superseded 2026-07-03:
+the old `1.0.1 (10)` slot was manually released with Austin's approval, then
+`1.1.0 (11)` was created and submitted for review. The description/truth-table
+corrections for anonymous-first below were applied to the `1.1.0` App Store
+version before submission.
 
 Update, 2026-06-25: build `1.0.1 (10)` was uploaded from the local signed
 archive after the tab-bar gutter fix and App Store Connect reports it as
@@ -38,12 +82,16 @@ attached to version `1.0.1`, reviewer notes were refreshed for build `10`, and
 new review submission `eb1c9764-d7af-4ce8-8896-938e7f25fb96` was submitted at
 `2026-06-26T08:53:05.618Z`.
 
-Build `1.0.1 (10)` is the submitted release target. App Store Connect reported version `1.0` as previously approved/closed, rejected `1.0.0 (5)`, and accepted build `6` on 2026-06-24 before the final visual/loading pass. Build `10` supersedes builds `6`, `7`, `8`, and `9`.
+Historical: build `1.0.1 (10)` was the submitted release target before the
+`1.1.0` update. App Store Connect reported version `1.0` as previously
+approved/closed, rejected `1.0.0 (5)`, and accepted build `6` on 2026-06-24
+before the final visual/loading pass. Build `10` superseded builds `6`, `7`,
+`8`, and `9`; build `11` now supersedes build `10` for the next update.
 
 Verified 2026-06-26 through the App Store Connect API:
 
 - Build `10`: `VALID`, uploaded `2026-06-25T21:59:10-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`, build ID `a953bb8c-e419-40e2-a339-b02830b966df`.
-- App version `1.0.1`: `WAITING_FOR_REVIEW` with attached build `10`.
+- App version `1.0.1`: was `WAITING_FOR_REVIEW` with attached build `10` during the 2026-06-26 submission; it is now `READY_FOR_SALE`.
 - Review submission `eb1c9764-d7af-4ce8-8896-938e7f25fb96`: `WAITING_FOR_REVIEW`, submitted `2026-06-26T08:53:05.618Z`.
 - Internal TestFlight: build `10` is in `Pitch Atlas Internal Testers`, and the all-builds internal group should also see it.
 - External public-link TestFlight group was not changed.
@@ -60,8 +108,8 @@ Verified 2026-06-26 through the App Store Connect API:
 - Pricing: `Free`
 - Platform: `iOS`
 - Device family: `iPhone`
-- Version: `1.0.1`
-- Build: `10`
+- Version: `1.1.0`
+- Build: `11`
 
 ## Canonical Xcode Project
 
@@ -149,7 +197,7 @@ Answer: uses only exempt encryption through standard HTTPS/ATS. `ITSAppUsesNonEx
 
 ## App Review Notes
 
-Paste from `docs/APP-REVIEW-NOTES.md`. It includes the final build, MacBook test, TestFlight, Supabase, and App Review proof for `1.0.1 (10)`.
+Paste from `docs/APP-REVIEW-NOTES.md` after the `1.1.0` App Store version slot exists. It includes the final build, simulator test, TestFlight, Supabase, and App Store Connect proof for `1.1.0 (11)`.
 
 If reviewer credentials are required, provide a Supabase test account in the App Store Connect reviewer credentials fields only.
 
@@ -169,10 +217,10 @@ For every final screenshot report, verify the rendered state first, then include
 ## Release Gates
 
 - Production Supabase project `cloeoulvrrfcbitrjpso` exposes `block_user`, `unblock_user`, and `my_blocked_users` to authenticated clients.
-- Clean iPhone 17 Pro simulator testing passed: 29 tests, 0 failures. App Store Connect build `10` resolves to bundle ID `com.pitchatlas.app`, version `1.0.1`, build `10`, and `ITSAppUsesNonExemptEncryption=false`.
-- App Store Connect build `10` is `VALID`, attached to app version `1.0.1`, and submitted for App Review as `WAITING_FOR_REVIEW`.
-- Internal TestFlight has build `10` in `Pitch Atlas Internal Testers`, and the all-builds internal group should also see it.
-- The external public-link TestFlight group was not changed.
+- Clean 6.9-inch simulator testing passed: 65 tests, 0 failures. App Store Connect build `11` resolves to pre-release version `1.1.0`, build `11`, min OS `17.0`, `APP_STORE_ELIGIBLE`, and `ITSAppUsesNonExemptEncryption=false`.
+- App Store Connect build `11` is `VALID` but cannot yet be submitted because the only editable review slot is blocked by `1.0.1 (10)` in `PENDING_DEVELOPER_RELEASE`.
+- Internal TestFlight has build `11` in `Pitch Atlas Internal`; `Pitch Atlas Internal Testers` and the external public-link group were not changed.
+- The new screenshots are captured locally and ready, but not uploaded to App Store Connect because no `1.1.0` App Store version exists yet.
 
 ## Internal Brand Guardrail
 
