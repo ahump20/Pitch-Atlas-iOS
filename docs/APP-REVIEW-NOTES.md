@@ -68,6 +68,6 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 Build `1.1.0 (11)` was verified on the MacBook with the 6.9-inch Pitch Atlas screenshot simulator on 2026-07-03: 65 tests passed, 0 failed. App Store Connect reports build `11` as `VALID`, `APP_STORE_ELIGIBLE`, uploaded `2026-07-03T09:05:52-07:00`, with min OS `17.0` and `ITSAppUsesNonExemptEncryption=false`.
 
-Build `11` supersedes builds `6` through `10` for the next review submission. App Store Connect readback on 2026-07-03 showed build `11` in the internal TestFlight group `Pitch Atlas Internal`. The App Store review submission is not yet created because App Store Connect still has `1.0.1 (10)` in `PENDING_DEVELOPER_RELEASE`; creating a `1.1.0` version returned `409 ENTITY_ERROR.RELATIONSHIP.INVALID`.
+Build `11` supersedes builds `6` through `10` for the next public update. App Store Connect readback on 2026-07-03 showed build `11` in the internal TestFlight group `Pitch Atlas Internal`. After the older approved `1.0.1 (10)` release was manually released to unlock the slot, `1.1.0 (11)` was created, attached to build `11`, and submitted for App Review as review submission `7f3ac406-4831-42b9-b7be-b284a494a781` at `2026-07-03T22:50:48.918Z`. App Store Connect reports `1.1.0` as `WAITING_FOR_REVIEW`.
 
 Screenshot proof for build `11` is in `docs/review-evidence/2026-07-03-build-11-screens/`.
