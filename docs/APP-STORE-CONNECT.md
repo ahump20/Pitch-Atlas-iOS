@@ -11,12 +11,14 @@ Internal Testers` or the external public-link group. The App Store version list
 still contains only `1.0.1` (`PENDING_DEVELOPER_RELEASE`) and `1.0` (`READY_FOR_SALE`).
 Creating a new `1.1.0` App Store version through `POST /v1/appStoreVersions`
 returned `409 ENTITY_ERROR.RELATIONSHIP.INVALID`: "You cannot create a new
-version of the App in the current state." Do not release build `10` as a
-workaround unless Austin explicitly chooses to put the older build into public
-distribution. Once the `1.0.1` pending-release slot is released, canceled, or
-reset in App Store Connect, create the `1.1.0` version, attach build `11`, paste
-the updated copy below, upload the July 3 screenshots, and submit that version
-for review.
+version of the App in the current state." Apple's current App Store Connect Help
+says a new version requires the current version status to be `Ready for
+Distribution`, and describes `Pending Developer Release` as the state where the
+available action is manual release. Do not release build `10` as a workaround
+unless Austin explicitly chooses to put the older build into public distribution.
+Once the `1.0.1` pending-release slot is released, canceled, or reset in App
+Store Connect, create the `1.1.0` version, attach build `11`, paste the updated
+copy below, upload the July 3 screenshots, and submit that version for review.
 
 Build `11` local proof: XcodeBuildMCP built and launched the app on the
 `Pitch Atlas 6.9 Screenshot iPhone` simulator. `test_sim` passed `65` tests,
@@ -32,6 +34,13 @@ Supabase production proof: the web repo is on `a703784`
 discussion media) (#151)`), and the live Supabase migration list includes
 `20260703164350_field_note_rank_trigger_security` and
 `20260703164408_discussion_media_read_policy_grant`.
+
+Chrome UI proof note: the Codex Chrome Extension is installed and enabled in
+Chrome `Profile 1`, Chrome is running, and the native-host manifest is correct,
+but the browser-client backend still returned no available Chrome backend after
+retry. App Store Connect UI was therefore not inspected through Chrome in this
+pass, per the Chrome plugin rule against substituting another browser driver for
+account work.
 
 Update, 2026-07-03: the pre-archive release gate (now a real XCUITest — the
 `PitchAtlasReleaseGate` scheme, never run by CI) caught and fixed two 1.1.0
