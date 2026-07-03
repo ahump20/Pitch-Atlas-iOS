@@ -536,6 +536,158 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(CommunityVisibility.visibleDiscussionPosts(posts, hiddenAuthorIDs: hidden).map(\.id), ["post-1"])
     }
 
+    /// Codable-drop guard for the engagement columns. The CI drift gate cannot
+    /// catch a silently dropped field — a decoder that ignores adoption_count
+    /// still decodes cleanly — so this fixture pins that the three columns land
+    /// on the model. Ordering itself (base_rank desc, created_at desc) is purely
+    /// SQL in CommunityService.fieldNotes, matching the web's listNotes; there is
+    /// no client-side sort to test, so decode fidelity is the whole contract here.
+    func testCommunityFieldNoteDecodesEngagementColumns() throws {
+        let json = Data(
+            """
+            {
+              "id": "note-1",
+              "pitch_slug": "four-seam",
+              "author_id": "author-1",
+              "display_name": "Austin",
+              "tweak": "Index finger rides the inside seam.",
+              "player_level": "college-plus",
+              "arm_slot": "three-quarter",
+              "intent": "added-velocity",
+              "claimed_result_kind": "velocity-gain",
+              "claimed_result_note": null,
+              "sample_size": 40,
+              "evidence_url": null,
+              "evidence_label": null,
+              "note": null,
+              "source_tier": "community-firsthand",
+              "adoption_count": 4,
+              "helpful_count": 2,
+              "base_rank": 3.75,
+              "created_at": "2026-07-01T12:00:00Z"
+            }
+            """.utf8
+        )
+
+        let note = try JSONDecoder().decode(CommunityFieldNote.self, from: json)
+
+        XCTAssertEqual(note.adoptionCount, 4)
+        XCTAssertEqual(note.helpfulCount, 2)
+        XCTAssertEqual(note.baseRank, 3.75)
+        XCTAssertEqual(note.id, "note-1")
+        XCTAssertEqual(note.sampleSize, 40)
+    }
+
+    /// Older fixtures (or a select that omits the engagement columns) must still
+    /// decode, with the counts and rank defaulting to zero — never a throw.
+    func testCommunityFieldNoteDecodeToleratesMissingEngagementColumns() throws {
+        let json = Data(
+            """
+            {
+              "id": "note-legacy",
+              "pitch_slug": "four-seam",
+              "author_id": "author-1",
+              "display_name": "Austin",
+              "tweak": "Index finger rides the inside seam.",
+              "player_level": "college-plus",
+              "arm_slot": "three-quarter",
+              "intent": "added-velocity",
+              "claimed_result_kind": "velocity-gain",
+              "source_tier": "community-firsthand",
+              "created_at": "2026-07-01T12:00:00Z"
+            }
+            """.utf8
+        )
+
+        let note = try JSONDecoder().decode(CommunityFieldNote.self, from: json)
+
+        XCTAssertEqual(note.adoptionCount, 0)
+        XCTAssertEqual(note.helpfulCount, 0)
+        XCTAssertEqual(note.baseRank, 0)
+        XCTAssertNil(note.note)
+    }
+
+    /// The pure optimistic-toggle math behind the Tried This / Helpful chips:
+    /// on adds the flag and bumps only that kind's count on only that note;
+    /// off removes both; the two kinds never bleed into each other.
+    func testEngagementToggleMathOnAndOffBothKinds() {
+        let notes = [
+            communityFieldNote(id: "note-1", authorID: "author-1"),
+            communityFieldNote(id: "note-2", authorID: "author-2"),
+        ]
+
+        let triedOn = CommunityEngagement.toggled(
+            noteID: "note-1", kind: .tried, tried: [], helpful: [], notes: notes
+        )
+        XCTAssertTrue(triedOn.isNowOn)
+        XCTAssertEqual(triedOn.tried, ["note-1"])
+        XCTAssertTrue(triedOn.helpful.isEmpty)
+        XCTAssertEqual(triedOn.notes[0].adoptionCount, 1)
+        XCTAssertEqual(triedOn.notes[0].helpfulCount, 0)
+        XCTAssertEqual(triedOn.notes[1].adoptionCount, 0, "other notes stay untouched")
+
+        let triedOff = CommunityEngagement.toggled(
+            noteID: "note-1", kind: .tried, tried: triedOn.tried, helpful: triedOn.helpful, notes: triedOn.notes
+        )
+        XCTAssertFalse(triedOff.isNowOn)
+        XCTAssertTrue(triedOff.tried.isEmpty)
+        XCTAssertEqual(triedOff.notes[0].adoptionCount, 0)
+
+        let helpfulOn = CommunityEngagement.toggled(
+            noteID: "note-2", kind: .helpful, tried: ["note-1"], helpful: [], notes: notes
+        )
+        XCTAssertTrue(helpfulOn.isNowOn)
+        XCTAssertEqual(helpfulOn.helpful, ["note-2"])
+        XCTAssertEqual(helpfulOn.tried, ["note-1"], "the other kind's set is untouched")
+        XCTAssertEqual(helpfulOn.notes[1].helpfulCount, 1)
+        XCTAssertEqual(helpfulOn.notes[1].adoptionCount, 0)
+
+        let helpfulOff = CommunityEngagement.toggled(
+            noteID: "note-2", kind: .helpful, tried: helpfulOn.tried, helpful: helpfulOn.helpful, notes: helpfulOn.notes
+        )
+        XCTAssertFalse(helpfulOff.isNowOn)
+        XCTAssertTrue(helpfulOff.helpful.isEmpty)
+        XCTAssertEqual(helpfulOff.notes[1].helpfulCount, 0)
+    }
+
+    /// A stale viewer flag over a freshly resynced zero count must clamp at zero
+    /// on the way down, never render a negative number.
+    func testEngagementToggleClampsCountAtZero() {
+        let notes = [communityFieldNote(id: "note-1", authorID: "author-1")]
+
+        let outcome = CommunityEngagement.toggled(
+            noteID: "note-1", kind: .tried, tried: ["note-1"], helpful: [], notes: notes
+        )
+
+        XCTAssertFalse(outcome.isNowOn)
+        XCTAssertEqual(outcome.notes[0].adoptionCount, 0)
+    }
+
+    /// 23505 (already marked) must read as success in the toggle path. The
+    /// structured code is authoritative; the message shape is the fallback.
+    func testUniqueViolationDetectionByCodeAndMessageShape() {
+        let byMessage = NSError(
+            domain: "PostgREST",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "duplicate key value violates unique constraint \"note_tries_pkey\""]
+        )
+        XCTAssertTrue(CommunityService.isUniqueViolation(byMessage))
+
+        let byCode = NSError(
+            domain: "PostgREST",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "error 23505"]
+        )
+        XCTAssertTrue(CommunityService.isUniqueViolation(byCode))
+
+        let unrelated = NSError(
+            domain: "PostgREST",
+            code: 0,
+            userInfo: [NSLocalizedDescriptionKey: "permission denied for table note_tries"]
+        )
+        XCTAssertFalse(CommunityService.isUniqueViolation(unrelated))
+    }
+
     func testCommunityErrorMapperHidesRawDatabaseErrors() {
         let duplicateBlock = NSError(
             domain: "PostgREST",

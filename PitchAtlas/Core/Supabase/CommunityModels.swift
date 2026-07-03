@@ -154,6 +154,13 @@ struct CommunityFieldNote: Decodable, Identifiable, Hashable {
     let evidenceLabel: String?
     let note: String?
     let sourceTier: CommunitySourceTier
+    /// Trigger-maintained on the server, read-only to clients. `var` so the
+    /// optimistic toggle can adjust a local copy; the server stays authoritative.
+    var adoptionCount: Int = 0
+    var helpfulCount: Int = 0
+    /// Server ranking signal (note_base_rank() trigger). Ordering happens in SQL;
+    /// this is carried so the decoded row matches what the query sorted on.
+    var baseRank: Double = 0
     let createdAt: String
 
     enum CodingKeys: String, CodingKey {
@@ -172,7 +179,130 @@ struct CommunityFieldNote: Decodable, Identifiable, Hashable {
         case evidenceLabel = "evidence_label"
         case note
         case sourceTier = "source_tier"
+        case adoptionCount = "adoption_count"
+        case helpfulCount = "helpful_count"
+        case baseRank = "base_rank"
         case createdAt = "created_at"
+    }
+}
+
+extension CommunityFieldNote {
+    /// Hand-written so the three engagement columns tolerate absence (older
+    /// fixtures, or a select that omits them) instead of failing the whole
+    /// decode. Synthesized Decodable would throw on a missing key even when the
+    /// property has a default. Living in an extension keeps the memberwise init.
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        pitchSlug = try container.decode(String.self, forKey: .pitchSlug)
+        authorID = try container.decode(String.self, forKey: .authorID)
+        displayName = try container.decode(String.self, forKey: .displayName)
+        tweak = try container.decode(String.self, forKey: .tweak)
+        playerLevel = try container.decode(CommunityPlayerLevel.self, forKey: .playerLevel)
+        armSlot = try container.decode(CommunityArmSlot.self, forKey: .armSlot)
+        intent = try container.decode(CommunityPitchIntent.self, forKey: .intent)
+        claimedResultKind = try container.decode(CommunityClaimedResultKind.self, forKey: .claimedResultKind)
+        claimedResultNote = try container.decodeIfPresent(String.self, forKey: .claimedResultNote)
+        sampleSize = try container.decodeIfPresent(Int.self, forKey: .sampleSize)
+        evidenceURL = try container.decodeIfPresent(String.self, forKey: .evidenceURL)
+        evidenceLabel = try container.decodeIfPresent(String.self, forKey: .evidenceLabel)
+        note = try container.decodeIfPresent(String.self, forKey: .note)
+        sourceTier = try container.decode(CommunitySourceTier.self, forKey: .sourceTier)
+        adoptionCount = try container.decodeIfPresent(Int.self, forKey: .adoptionCount) ?? 0
+        helpfulCount = try container.decodeIfPresent(Int.self, forKey: .helpfulCount) ?? 0
+        baseRank = try container.decodeIfPresent(Double.self, forKey: .baseRank) ?? 0
+        createdAt = try container.decode(String.self, forKey: .createdAt)
+    }
+}
+
+/// Insert body for note_tries / note_helpful. `user_id` is intentionally
+/// absent — it defaults to auth.uid() on the server, so a client can only
+/// ever mark as itself.
+struct NoteEngagementInsert: Encodable {
+    let noteID: String
+
+    enum CodingKeys: String, CodingKey {
+        case noteID = "note_id"
+    }
+}
+
+/// One row of the legacy `viewer_note_engagement` RPC — the fallback read path
+/// when the direct note_tries / note_helpful selects are refused by an older
+/// grant deployment. Mirrors the web's fallbackViewerEngagement row shape.
+struct ViewerNoteEngagementRow: Decodable, Equatable {
+    let noteID: String
+    let tried: Bool
+    let helpful: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case noteID = "note_id"
+        case tried
+        case helpful
+    }
+}
+
+/// A bare note_id row from the direct note_tries / note_helpful selects.
+struct NoteEngagementRef: Decodable {
+    let noteID: String
+
+    enum CodingKeys: String, CodingKey {
+        case noteID = "note_id"
+    }
+}
+
+enum CommunityEngagementKind {
+    case tried
+    case helpful
+}
+
+/// Pure optimistic-toggle math for the Tried This / Helpful loop, mirrored from
+/// the web's useFieldNotes.toggleEngagement. Kept side-effect-free so the flip
+/// (sets + adjusted count on the one note) is testable without a network.
+enum CommunityEngagement {
+    struct ToggleOutcome: Equatable {
+        let tried: Set<String>
+        let helpful: Set<String>
+        let notes: [CommunityFieldNote]
+        /// The state the toggle just moved TO — drives insert (true) vs delete (false).
+        let isNowOn: Bool
+    }
+
+    static func toggled(
+        noteID: String,
+        kind: CommunityEngagementKind,
+        tried: Set<String>,
+        helpful: Set<String>,
+        notes: [CommunityFieldNote]
+    ) -> ToggleOutcome {
+        let wasOn: Bool
+        var newTried = tried
+        var newHelpful = helpful
+        switch kind {
+        case .tried:
+            wasOn = tried.contains(noteID)
+            if wasOn { newTried.remove(noteID) } else { newTried.insert(noteID) }
+        case .helpful:
+            wasOn = helpful.contains(noteID)
+            if wasOn { newHelpful.remove(noteID) } else { newHelpful.insert(noteID) }
+        }
+
+        let delta = wasOn ? -1 : 1
+        let newNotes = notes.map { note -> CommunityFieldNote in
+            guard note.id == noteID else { return note }
+            var adjusted = note
+            // Clamp at zero: a stale viewer flag over a freshly resynced count
+            // must never show a negative number. The server resync corrects any
+            // small divergence this clamp introduces.
+            switch kind {
+            case .tried:
+                adjusted.adoptionCount = max(0, note.adoptionCount + delta)
+            case .helpful:
+                adjusted.helpfulCount = max(0, note.helpfulCount + delta)
+            }
+            return adjusted
+        }
+
+        return ToggleOutcome(tried: newTried, helpful: newHelpful, notes: newNotes, isNowOn: !wasOn)
     }
 }
 
