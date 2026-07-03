@@ -261,6 +261,9 @@ enum CommunityServiceError: LocalizedError, Equatable {
     case imageTooLarge
     case invalidFieldNote(String)
     case invalidDiscussionPost(String)
+    /// The lazy anonymous session could not be started or read on write intent.
+    /// Same copy as the web's SESSION_START_ERROR.
+    case sessionStartFailed
 
     var errorDescription: String? {
         switch self {
@@ -268,6 +271,8 @@ enum CommunityServiceError: LocalizedError, Equatable {
             return "Pitch Atlas iOS accepts still images only."
         case .imageTooLarge:
             return "That image is too large after compression. Choose a smaller file."
+        case .sessionStartFailed:
+            return "Could not start your community session just now. Try again."
         case .invalidFieldNote(let message):
             return message
         case .invalidDiscussionPost(let message):

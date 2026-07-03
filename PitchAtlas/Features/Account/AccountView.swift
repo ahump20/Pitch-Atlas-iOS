@@ -6,8 +6,10 @@ struct AccountView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @State private var email = ""
+    @State private var claimEmail = ""
     @State private var deleteRequested = false
     @State private var deleteFinished = false
+    @State private var anonymousSignOutRequested = false
     @State private var blockedState: CommunityLoadState<[BlockedContributor]> = .idle
 
     private var service: CommunityService { CommunityService(client: auth.client) }
@@ -45,6 +47,14 @@ struct AccountView: View {
         } message: {
             Text("The app is back in logged-out reference mode.")
         }
+        .alert("Abandon this anonymous record?", isPresented: $anonymousSignOutRequested) {
+            Button("Cancel", role: .cancel) {}
+            Button("Sign out", role: .destructive) {
+                Task { await auth.signOut() }
+            }
+        } message: {
+            Text("Signing out abandons this anonymous record — its notes stay public but can never be claimed.")
+        }
     }
 
     private var masthead: some View {
@@ -59,7 +69,7 @@ struct AccountView: View {
                         .antonSkew()
                 }
             }
-            Text("The field manual is readable without an account. Posting, reports, blocks, uploads, and account deletion require sign-in.")
+            Text("The field manual is readable without an account, and posting, reports, and blocks work anonymously. Sign in only to keep your record across devices; image uploads need a claimed account.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -68,40 +78,134 @@ struct AccountView: View {
 
     @ViewBuilder
     private var accountState: some View {
-        if auth.isSignedIn {
+        if auth.isClaimed {
+            claimedPanel
+        } else if auth.isSignedIn {
+            anonymousPanel
+        } else {
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-                SectionLabel(text: "Signed in")
-                Text(auth.email ?? auth.userID ?? "Pitch Atlas account")
-                    .font(PitchAtlasTheme.newsreader(22))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-
-                if let error = auth.errorMessage {
-                    Text(error)
-                        .font(PitchAtlasTheme.hanken(13))
-                        .foregroundStyle(PitchAtlasTheme.amberBright)
-                }
-
-                HStack {
-                    Button {
-                        Task { await auth.signOut() }
-                    } label: {
-                        Label("Sign out", systemImage: "rectangle.portrait.and.arrow.right")
-                    }
-                    .buttonStyle(.bordered)
-
-                    Button(role: .destructive) {
-                        deleteRequested = true
-                    } label: {
-                        Label("Delete account", systemImage: "trash")
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
+                SignInPanel(email: $email)
+                Text("Reading the atlas and posting anonymously need no account. Sign in only if you want your record to travel with you.")
+                    .font(PitchAtlasTheme.hanken(13))
+                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             .leatherPress()
-        } else {
-            SignInPanel(email: $email)
-                .leatherPress()
         }
+    }
+
+    private var claimedPanel: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+            SectionLabel(text: "Signed in")
+            // Never the raw user id: a UUID as an account title reads like a bug.
+            Text(auth.email ?? "Pitch Atlas account")
+                .font(PitchAtlasTheme.newsreader(22))
+                .foregroundStyle(PitchAtlasTheme.bone)
+
+            if let error = auth.errorMessage {
+                Text(error)
+                    .font(PitchAtlasTheme.hanken(13))
+                    .foregroundStyle(PitchAtlasTheme.amberBright)
+            }
+
+            HStack {
+                Button {
+                    Task { await auth.signOut() }
+                } label: {
+                    Label("Sign out", systemImage: "rectangle.portrait.and.arrow.right")
+                }
+                .buttonStyle(.bordered)
+
+                Button(role: .destructive) {
+                    deleteRequested = true
+                } label: {
+                    Label("Delete account", systemImage: "trash")
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .leatherPress()
+    }
+
+    private var anonymousPanel: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+            SectionLabel(text: "Signed in")
+            Text("Anonymous contributor")
+                .font(PitchAtlasTheme.newsreader(22))
+                .foregroundStyle(PitchAtlasTheme.bone)
+            Text("Everything you file rides this device's anonymous record. Claim it below to keep your notes across devices.")
+                .font(PitchAtlasTheme.hanken(14))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Divider().overlay(PitchAtlasTheme.machined)
+            SectionLabel(text: "Claim this record")
+
+            // Links the Apple identity onto the anonymous account — the store's
+            // completeAppleSignIn branches to the link path while the session is
+            // anonymous, so the user id and filed notes are preserved.
+            SignInWithAppleButton(.signIn) { request in
+                auth.configureAppleRequest(request)
+            } onCompletion: { result in
+                Task { await auth.completeAppleSignIn(result) }
+            }
+            .signInWithAppleButtonStyle(.white)
+            .frame(height: 46)
+
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                PitchFormLabel("Email")
+                TextField("you@example.com", text: $claimEmail)
+                    .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .font(PitchAtlasTheme.hanken(15))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .pitchTextFieldSurface()
+                PitchFormCaption(text: "We send a confirmation link that attaches this email to your record.")
+            }
+
+            Button {
+                Task { await auth.claimEmail(claimEmail.trimmingCharacters(in: .whitespacesAndNewlines)) }
+            } label: {
+                Label(auth.isWorking ? "Sending…" : "Claim with email", systemImage: "envelope")
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(claimEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking)
+            .opacity((claimEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking) ? 0.55 : 1)
+
+            if let sentTo = auth.claimEmailSentTo {
+                Label("Check your email to confirm — your filed notes ride along. The link went to \(sentTo).", systemImage: "checkmark.circle")
+                    .font(PitchAtlasTheme.hanken(13))
+                    .foregroundStyle(PitchAtlasTheme.okBright)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            if let error = auth.errorMessage {
+                Text(error)
+                    .font(PitchAtlasTheme.hanken(13))
+                    .foregroundStyle(PitchAtlasTheme.amberBright)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Divider().overlay(PitchAtlasTheme.machined)
+
+            HStack {
+                Button {
+                    anonymousSignOutRequested = true
+                } label: {
+                    Label("Sign out", systemImage: "rectangle.portrait.and.arrow.right")
+                }
+                .buttonStyle(.bordered)
+
+                Button(role: .destructive) {
+                    deleteRequested = true
+                } label: {
+                    Label("Delete account", systemImage: "trash")
+                }
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .leatherPress()
     }
 
     private var safety: some View {
@@ -160,7 +264,7 @@ struct AccountView: View {
                 }
             }
         } else {
-            Text("Sign in to review or change blocked contributors.")
+            Text("No contributor record on this device yet. Block someone from a community post and the private list appears here.")
                 .font(PitchAtlasTheme.hanken(13))
                 .foregroundStyle(PitchAtlasTheme.ink3)
                 .fixedSize(horizontal: false, vertical: true)

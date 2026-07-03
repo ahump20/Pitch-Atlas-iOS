@@ -535,3 +535,13 @@ enum CommunityVisibility {
         posts.filter { !hiddenAuthorIDs.contains($0.authorID) }
     }
 }
+
+/// Contribution gating for the community composers. Sign-in is deliberately
+/// absent from this decision: participation is anonymous-first, and the account
+/// is minted lazily on write intent (AuthSessionStore.ensureSessionForWrite).
+/// The two attestations stay mandatory — the App Review notes rely on them.
+enum CommunityContributionGate {
+    static func canContribute(guidelinesAccepted: Bool, ageConfirmed: Bool) -> Bool {
+        guidelinesAccepted && ageConfirmed
+    }
+}

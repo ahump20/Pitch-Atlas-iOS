@@ -13,12 +13,19 @@ final class AuthSessionStore {
     private(set) var userID: String?
     private(set) var email: String?
     private(set) var accessToken: String?
+    /// True while the session belongs to an unclaimed anonymous account.
+    /// False when signed out (there is no account to be anonymous).
+    private(set) var isAnonymous = false
     private(set) var isWorking = false
     var errorMessage: String?
     /// Set to the address a magic link was just sent to, so the sign-in panel can
     /// confirm "check your email" instead of leaving a successful tap looking like
     /// nothing happened. Cleared when a new send starts or the user signs in.
     private(set) var magicLinkSentTo: String?
+    /// Set to the address an anonymous-account email claim was just sent to, so
+    /// the claim block can confirm "check your email" the same way the magic-link
+    /// panel does. Cleared when a new claim starts or once the claim confirms.
+    private(set) var claimEmailSentTo: String?
     private var lastMagicLinkAt: Date?
     private let magicLinkCooldown: TimeInterval = 30
 
@@ -30,6 +37,11 @@ final class AuthSessionStore {
     }
 
     var isSignedIn: Bool { userID != nil }
+
+    /// A permanent account: signed in AND not anonymous. Server policy restricts
+    /// media uploads and media-terms acceptance to claimed accounts, so upload UI
+    /// gates on this, not on `isSignedIn`.
+    var isClaimed: Bool { isSignedIn && !isAnonymous }
 
     var displayName: String {
         if let email, let prefix = email.split(separator: "@").first {
@@ -58,8 +70,47 @@ final class AuthSessionStore {
         Task { await refreshSession() }
     }
 
+    /// Write-intent session: return the signed-in user id (anonymous or claimed),
+    /// minting an anonymous account only when no session exists at all.
+    ///
+    /// This is the ONLY place in the app allowed to call `signInAnonymously()`.
+    /// It mirrors the web's no-minting contract (pinned by
+    /// `src/lib/community.read-path.test.ts` in the web repo): reads NEVER mint —
+    /// the anon role's SELECT grants already serve the public set to a sessionless
+    /// caller — and an account appears only when someone actually posts, reports,
+    /// or blocks. A failed session lookup surfaces as an error instead of minting
+    /// a replacement account that would orphan the existing record.
+    func ensureSessionForWrite() async throws -> String {
+        do {
+            let session = try await client.auth.session
+            apply(session: session)
+            return String(describing: session.user.id)
+        } catch AuthError.sessionMissing {
+            // Genuinely signed out — fall through and mint on this write intent.
+        } catch {
+            // The session exists but could not be read (refresh failure, network).
+            // Do NOT mint a replacement over it.
+            throw CommunityServiceError.sessionStartFailed
+        }
+
+        do {
+            let session = try await client.auth.signInAnonymously()
+            apply(session: session)
+            return String(describing: session.user.id)
+        } catch {
+            throw CommunityServiceError.sessionStartFailed
+        }
+    }
+
     func sendMagicLink(email: String) async {
         guard !isWorking else { return }
+        // A magic link signs into a DIFFERENT account, which would orphan every
+        // note filed under this device's anonymous record. Claiming an anonymous
+        // account goes through claimEmail; this path is for signed-out sign-in only.
+        if isSignedIn && isAnonymous {
+            errorMessage = "This device has an anonymous record. Use \"Claim this record\" so your filed notes ride along."
+            return
+        }
         // Resend cooldown: a sign-in link is already in their inbox, so a second
         // tap a moment later just spams them. Tell them, don't re-send.
         if let last = lastMagicLinkAt {
@@ -110,16 +161,77 @@ final class AuthSessionStore {
                 return
             }
 
-            let session = try await client.auth.signInWithIdToken(
-                credentials: OpenIDConnectCredentials(
-                    provider: .apple,
-                    idToken: idToken,
-                    nonce: nonce
-                )
+            let credentials = OpenIDConnectCredentials(
+                provider: .apple,
+                idToken: idToken,
+                nonce: nonce
             )
-            apply(session: session)
+
+            if isSignedIn && isAnonymous {
+                // Claim path: LINK the Apple identity onto the anonymous account
+                // so the user id — and every note filed under it — is preserved.
+                // Never fall back to signInWithIdToken here: that would sign into
+                // a different account and orphan the anonymous record.
+                let session = try await client.auth.linkIdentityWithIdToken(credentials: credentials)
+                apply(session: session)
+            } else {
+                let session = try await client.auth.signInWithIdToken(credentials: credentials)
+                apply(session: session)
+            }
+        } catch let error where Self.isAppleIdentityConflict(error) {
+            errorMessage = Self.appleIdentityConflictMessage
         } catch {
             errorMessage = "Apple sign-in failed. Try again from the Apple button."
+        }
+    }
+
+    /// The Apple identity is already attached to a different Pitch Atlas account,
+    /// so it cannot also claim this anonymous record. Matched by Supabase error
+    /// code first, message shape second — never exact string equality.
+    nonisolated static func isAppleIdentityConflict(_ error: Error) -> Bool {
+        guard let authError = error as? AuthError else { return false }
+        return isIdentityConflict(code: authError.errorCode.rawValue, message: authError.message)
+    }
+
+    /// Pure matcher behind isAppleIdentityConflict, testable without constructing
+    /// SDK error types. The structured code is authoritative; older gateways may
+    /// omit it, so the message SHAPE is the fallback — never exact equality,
+    /// which a server wording change would silently break.
+    nonisolated static func isIdentityConflict(code: String?, message: String) -> Bool {
+        if code == "identity_already_exists" { return true }
+        let lowered = message.lowercased()
+        return lowered.contains("identity") && lowered.contains("already")
+    }
+
+    nonisolated static var appleIdentityConflictMessage: String {
+        "That Apple ID already has a Pitch Atlas account. Sign in with it instead — notes filed anonymously on this device stay under the anonymous record."
+    }
+
+    /// Claim the anonymous account by attaching an email. The user id never
+    /// changes, so every filed note survives; Supabase emails a confirmation
+    /// link and the account stops being anonymous when it is confirmed.
+    ///
+    /// This must NEVER route through `sendMagicLink`/`signInWithOTP` for an
+    /// anonymous session — OTP signs into a different account and orphans the
+    /// anonymous record. Mirrors the web's `claimWithEmail`.
+    func claimEmail(_ email: String) async {
+        guard !isWorking else { return }
+        isWorking = true
+        errorMessage = nil
+        claimEmailSentTo = nil
+        defer { isWorking = false }
+
+        do {
+            try await client.auth.update(
+                user: UserAttributes(email: email),
+                redirectTo: SupabaseConfig.authRedirectURL
+            )
+            claimEmailSentTo = email
+            // The SDK already refreshed the local user; re-apply so isAnonymous
+            // and email reflect the server's view of the claim in progress.
+            await refreshSession()
+        } catch {
+            errorMessage = "Could not send the claim email just now. Check the address and try again."
         }
     }
 
@@ -188,7 +300,12 @@ final class AuthSessionStore {
         userID = session.map { String(describing: $0.user.id) }
         email = session?.user.email
         accessToken = session?.accessToken
+        isAnonymous = session?.user.isAnonymous ?? false
         if session != nil { magicLinkSentTo = nil }
+        // The claim confirmation stays visible while the account is still
+        // anonymous (the auth stream re-applies the session on every update);
+        // it clears once the claim confirms and the record stops being anonymous.
+        if let session, !session.user.isAnonymous { claimEmailSentTo = nil }
     }
 
     private static func sha256(_ input: String) -> String {
