@@ -37,6 +37,15 @@ Sign-in is never forced for non-account features. The full reference manual is r
 
 iOS v1 accepts still images only through PhotosPicker. There is no video upload, GIF upload, live camera capture, or camera permission.
 
+## Embedded Teaching Clips
+
+Ships in the first build after `1.0.1 (10)`. Four of the twelve filed-specimen screens (four-seam, two-seam, slider, circle-change) show one short, credited teaching clip embedded from TikTok — three clips total; the Nolan Ryan clip files against both fastballs. Each uses TikTok's own official player (`https://www.tiktok.com/player/v1/<id>`) inside a `WKWebView` — the same public embed any website uses. These are supplementary teaching references; the app is fully usable without them, and every other surface is native SwiftUI.
+
+- Each clip is credited to the original creator on-screen, with a "Watch on TikTok" button that opens the original post.
+- Nothing is downloaded, re-encoded, or re-hosted. TikTok serves the video from its own player; the app bundles no clip file. (Rights record: web repo `docs/MEDIA-LEDGER.md`, rows T1–T3.)
+- No autoplay, and no network request until the user taps the native poster tile to load the player. If the player fails to load, the card says so and the outbound link remains the path to the clip.
+- This is the only `WKWebView` in the app and its only third-party embed. It is not a web wrapper — navigation, content, and provenance rendering are all native.
+
 ## Privacy
 
 The app does not track users and does not include ads. It collects account email/user ID, user-written content, and uploaded still images only for app functionality and moderation/safety. App privacy labels should not say `Data Not Collected`.
@@ -52,7 +61,7 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 - Build: `10`
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
-- No Firebase, Appwrite, CloudKit, push notifications, WebView, camera capture, video upload, or BSI dependency.
+- No Firebase, Appwrite, CloudKit, push notifications, camera capture, video upload, or BSI dependency. Build `10` shipped with no WebView; from the first build after `10`, the only `WKWebView` is the credited TikTok teaching-clip embed described under **Embedded Teaching Clips** above — there is no app-content webview or web wrapper.
 - Production Supabase block RPCs were applied on 2026-06-24 as migration `20260624194451 block_user_rpcs`.
 
 ## Final Build Proof
