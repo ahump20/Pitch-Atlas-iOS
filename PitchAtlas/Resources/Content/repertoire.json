@@ -23,7 +23,7 @@
     {
       "family": "banned",
       "label": "Banned & doctored",
-      "blurb": "Outlawed in 1920, but never gone from the lore. A scuff, a smear, a shine — movement bought by breaking a rule."
+      "blurb": "Outlawed in 1920, but never gone from the lore. A scuff, a smear, a shine: movement bought by breaking a rule."
     }
   ],
   "entries": [
@@ -1087,7 +1087,7 @@
         "value": "The filed 12-6 Curveball is the purest vertical version of this pitch, thrown from a high over-the-top slot so the break runs straight down. Study it to see where the curve's topspin can take the ball.",
         "source": {
           "id": "wiki-twelve-six-curveball",
-          "label": "12–6 curveball — Wikipedia",
+          "label": "12-6 curveball — Wikipedia",
           "url": "https://en.wikipedia.org/wiki/12%E2%80%936_curveball",
           "retrievedAt": "2026-06-05"
         },
@@ -1107,7 +1107,7 @@
         "value": "A curveball thrown from a high, over-the-top arm slot so the topspin axis is oriented for pure vertical break; the name comes from the ball appearing to drop straight from the 12 to the 6 position on a clock face.",
         "source": {
           "id": "wiki-twelve-six-curveball",
-          "label": "12–6 curveball — Wikipedia",
+          "label": "12-6 curveball — Wikipedia",
           "url": "https://en.wikipedia.org/wiki/12%E2%80%936_curveball",
           "retrievedAt": "2026-06-05"
         },
@@ -1117,7 +1117,7 @@
         "value": "Breaks almost straight down with little to no horizontal movement, prized as one of the hardest curves to square up; a true 12-6 requires the higher slot — a three-quarters or sidearm delivery tilts the break toward 2-to-8 instead, so sidearmers cannot throw a genuine one.",
         "source": {
           "id": "wiki-twelve-six-curveball",
-          "label": "12–6 curveball — Wikipedia",
+          "label": "12-6 curveball — Wikipedia",
           "url": "https://en.wikipedia.org/wiki/12%E2%80%936_curveball",
           "retrievedAt": "2026-06-05"
         },
@@ -1759,7 +1759,7 @@
         },
         "confidence": "reputable-analysis"
       },
-      "notableThrowers": "Masaji Hiramatsu (Taiyo Whales, 1967–1984), the definitive practitioner — his version earned the \"razor\" nickname; he reached the Japanese Baseball Hall of Fame.",
+      "notableThrowers": "Masaji Hiramatsu (Taiyo Whales, 1967-1984), the definitive practitioner — his version earned the \"razor\" nickname; he reached the Japanese Baseball Hall of Fame.",
       "plain": "Think of it as the shuuto with a sharper edge — Hiramatsu's famous pitch jammed righties so hard and broke so late that people said it looked like it cut the air instead of tumbling.",
       "studyFirstSlug": "two-seam",
       "contextNote": {

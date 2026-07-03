@@ -836,7 +836,7 @@
   },
   {
     "id": "wiki-twelve-six-curveball",
-    "label": "12–6 curveball — Wikipedia",
+    "label": "12-6 curveball — Wikipedia",
     "url": "https://en.wikipedia.org/wiki/12%E2%80%936_curveball",
     "retrievedAt": "2026-06-05"
   },
@@ -1774,5 +1774,66 @@
     "url": "https://commons.wikimedia.org/wiki/File:1912_Lincoln_Giants.jpg",
     "retrievedAt": "2026-06-27",
     "season": "public domain image source"
+  },
+  {
+    "id": "garrido-life-yours-to-win",
+    "label": "Augie Garrido, Life Is Yours to Win (Simon & Schuster, 2011), quotations confirmed via the SimmonsField book review",
+    "url": "http://simmonsfield.blogspot.com/2011/08/augie-garridos-life-is-yours-to-win.html",
+    "retrievedAt": "2026-06-27",
+    "season": "2011 book"
+  },
+  {
+    "id": "saban-process-std",
+    "label": "Nick Saban's \"the Process\", as relayed in process-thinking leadership writing",
+    "url": "https://www.samuelthomasdavies.com/nick-saban-process/",
+    "retrievedAt": "2026-06-27"
+  },
+  {
+    "id": "wiki-doubleday-myth",
+    "label": "Wikipedia, Doubleday myth",
+    "url": "https://en.wikipedia.org/wiki/Doubleday_myth",
+    "retrievedAt": "2026-06-27"
+  },
+  {
+    "id": "mlb-mound-distance",
+    "label": "MLB.com, Why is the mound 60 feet, 6 inches away?",
+    "url": "https://www.mlb.com/news/why-is-the-mound-60-ft-6-inches-away",
+    "retrievedAt": "2026-06-27"
+  },
+  {
+    "id": "britannica-k-strikeout",
+    "label": "Britannica, Why Does “K” Stand for a Strikeout in Baseball?",
+    "url": "https://www.britannica.com/story/why-does-k-stand-for-a-strikeout-in-baseball",
+    "retrievedAt": "2026-06-27"
+  },
+  {
+    "id": "sabr-spitball-deadball",
+    "label": "SABR, The Spitball and the End of the Deadball Era",
+    "url": "https://sabr.org/journal/article/the-spitball-and-the-end-of-the-deadball-era/",
+    "retrievedAt": "2026-06-27"
+  },
+  {
+    "id": "tht-eephus-sewell",
+    "label": "The Hardball Times, Rip Sewell, the eephus and the All-Star Game",
+    "url": "https://tht.fangraphs.com/rip-sewell-the-eephus-and-the-all-star-game/",
+    "retrievedAt": "2026-06-27"
+  },
+  {
+    "id": "hof-rubbing-mud",
+    "label": "Baseball Hall of Fame, Lena Blackburne rubbing mud a secret of the game",
+    "url": "https://baseballhall.org/discover/lena-blackburne-rubbing-mud-a-secret-of-the-game",
+    "retrievedAt": "2026-06-27"
+  },
+  {
+    "id": "sabr-first-night-game",
+    "label": "SABR, May 24, 1935: Reds fans see the lights in first night game in MLB history",
+    "url": "https://sabr.org/gamesproj/game/may-24-1935-reds-fans-see-the-lights-in-first-night-game-in-mlb-history/",
+    "retrievedAt": "2026-06-27"
+  },
+  {
+    "id": "wiki-candy-cummings",
+    "label": "Wikipedia, Candy Cummings",
+    "url": "https://en.wikipedia.org/wiki/Candy_Cummings",
+    "retrievedAt": "2026-06-27"
   }
 ]

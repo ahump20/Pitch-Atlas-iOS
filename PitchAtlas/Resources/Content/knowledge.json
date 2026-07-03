@@ -969,12 +969,12 @@
       {
         "heading": "The UCL Epidemic: Scale and Shift to Youth",
         "paragraphs": [
-          "Tommy John surgery (UCL reconstruction) has risen dramatically over the past decade, becoming endemic in baseball. The shift in timing is alarming: where surgeries once clustered among professional pitchers in their late 20s, the majority now occur in teenagers aged 15–19. High school and college pitchers dominate modern caseloads, indicating that initial ligament damage typically occurs during youth competition rather than at the professional level.",
+          "Tommy John surgery (UCL reconstruction) has risen dramatically over the past decade, becoming endemic in baseball. The shift in timing is alarming: where surgeries once clustered among professional pitchers in their late 20s, the majority now occur in teenagers aged 15-19. High school and college pitchers dominate modern caseloads, indicating that initial ligament damage typically occurs during youth competition rather than at the professional level.",
           "This demographic reversal reflects systemic changes in youth baseball culture: year-round participation across multiple teams, inconsistent enforcement of pitch-count limits, and widespread noncompliance with evidence-based workload guidelines. A major sports health publication found that 90% of youth baseball teams do not follow Pitch Smart protocols, meaning most young pitchers exceed safe throwing thresholds and receive insufficient recovery time."
         ],
         "claims": [
           {
-            "value": "More than half of all Tommy John surgeries are performed on teenagers aged 15–19",
+            "value": "More than half of all Tommy John surgeries are performed on teenagers aged 15-19",
             "confidence": "reputable-analysis",
             "source": {
               "id": "k-theconversation-com-50-years-after-the-first-procedure-t",
@@ -1005,7 +1005,7 @@
               "url": "https://theconversation.com/50-years-after-the-first-procedure-tommy-john-surgery-is-more-common-than-ever-especially-for-young-athletes-236293",
               "retrievedAt": "2026-06-06"
             },
-            "note": "Ages 15–19; dramatic reversal from professional-dominated decades prior"
+            "note": "Ages 15-19; dramatic reversal from professional-dominated decades prior"
           }
         }
       },
@@ -1110,17 +1110,17 @@
       {
         "heading": "The 100-Inning Threshold and Annual Workload",
         "paragraphs": [
-          "One of the most actionable findings in pitching injury research comes from a 10-year prospective study of 481 youth pitchers aged 9–14 conducted by ASMI researchers. Annual injury outcomes—elbow surgery, shoulder surgery, or retirement due to throwing injury—tracked cleanly against workload thresholds. Youth pitchers who exceeded 100 innings in a single year were 3.5 times more likely to suffer injury than those who stayed below that threshold.",
-          "The 100-inning limit reflects both volume and recovery window. A pitcher throwing 100 innings across a season typically makes 12–16 appearances, scattered across months with recovery days between. A pitcher throwing 120 innings pitches more frequently, recovers less fully between starts, and accumulates microtrauma at a faster rate. The threshold is empirical, not arbitrary, derived from injury data across a decade.",
+          "One of the most actionable findings in pitching injury research comes from a 10-year prospective study of 481 youth pitchers aged 9-14 conducted by ASMI researchers. Annual injury outcomes—elbow surgery, shoulder surgery, or retirement due to throwing injury—tracked cleanly against workload thresholds. Youth pitchers who exceeded 100 innings in a single year were 3.5 times more likely to suffer injury than those who stayed below that threshold.",
+          "The 100-inning limit reflects both volume and recovery window. A pitcher throwing 100 innings across a season typically makes 12-16 appearances, scattered across months with recovery days between. A pitcher throwing 120 innings pitches more frequently, recovers less fully between starts, and accumulates microtrauma at a faster rate. The threshold is empirical, not arbitrary, derived from injury data across a decade.",
           "Beyond annual innings, research also stresses that pitchers who play competitively for more than 8 months per year face 5 times greater injury risk than those with shorter seasons. Year-round throwing without an off-season provides no window for tissue adaptation and repair. A mandatory 2- to 3-month annual shutdown (4 months preferred) from all overhead throwing is foundational injury prevention."
         ],
         "claims": [
           {
-            "value": "Youth pitchers who pitched >100 innings annually were 3.5 times more likely to suffer arm injury (95% CI = 1.16–10.44)",
+            "value": "Youth pitchers who pitched >100 innings annually were 3.5 times more likely to suffer arm injury (95% CI = 1.16-10.44)",
             "confidence": "official-data",
             "source": {
               "id": "k-pubmed-ncbi-nlm-nih-gov-21098816",
-              "label": "PubMed, 10-year prospective cohort study of 481 youth pitchers aged 9–14",
+              "label": "PubMed, 10-year prospective cohort study of 481 youth pitchers aged 9-14",
               "url": "https://pubmed.ncbi.nlm.nih.gov/21098816/",
               "retrievedAt": "2026-06-06"
             }
@@ -1136,7 +1136,7 @@
             }
           },
           {
-            "value": "Recommended annual rest: 2–3 months minimum (4 months preferred) of no overhead throwing",
+            "value": "Recommended annual rest: 2-3 months minimum (4 months preferred) of no overhead throwing",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3435945",
@@ -1165,12 +1165,12 @@
         "heading": "Acute-to-Chronic Workload: Managing the Spike",
         "paragraphs": [
           "Simply counting total innings misses acute injury risk. The acute-to-chronic workload ratio monitors whether a pitcher's short-term load (current week) spikes dangerously relative to his baseline (rolling 4-week average). A pitcher averaging 50 throws per week can likely tolerate a spike to 60; jumping to 75 creates hazard. This ratio captures the off-season ramp-up, mid-season surge, or tournament overload—moments when pitchers exceed their adapted capacity.",
-          "Research on athletes across sports shows that injury risk climbs substantially when acute workload increases more than 10–20% beyond chronic baseline in a single week. A pitcher moving from once-per-week appearances to twice-per-week suddenly creates a volume spike that requires compensatory rest afterward. However, some experts note that ratio-based models alone may not fully capture injury risk, since they measure external load but not how an individual pitcher actually adapts physiologically or whether hidden mechanical compensation is occurring.",
-          "Practically, this means: build volume gradually. Do not jump from off-season rest directly into heavy competition. Gradually increase throws and appearances over 2–3 weeks of preseason work. During the season, monitor not just game pitches but also bullpen work, long-toss, and weighted-ball exercises—all add to chronic load. If a pitcher suddenly pitches twice in a week, provide compensatory rest and mechanical assessment afterward to ensure he is adapting rather than compensating."
+          "Research on athletes across sports shows that injury risk climbs substantially when acute workload increases more than 10-20% beyond chronic baseline in a single week. A pitcher moving from once-per-week appearances to twice-per-week suddenly creates a volume spike that requires compensatory rest afterward. However, some experts note that ratio-based models alone may not fully capture injury risk, since they measure external load but not how an individual pitcher actually adapts physiologically or whether hidden mechanical compensation is occurring.",
+          "Practically, this means: build volume gradually. Do not jump from off-season rest directly into heavy competition. Gradually increase throws and appearances over 2-3 weeks of preseason work. During the season, monitor not just game pitches but also bullpen work, long-toss, and weighted-ball exercises—all add to chronic load. If a pitcher suddenly pitches twice in a week, provide compensatory rest and mechanical assessment afterward to ensure he is adapting rather than compensating."
         ],
         "claims": [
           {
-            "value": "Injury risk increases when acute workload exceeds chronic baseline by more than 10–20% in a single week",
+            "value": "Injury risk increases when acute workload exceeds chronic baseline by more than 10-20% in a single week",
             "confidence": "reputable-analysis",
             "source": {
               "id": "k-blog-armcare-com-rethinking-acute-to-chronic-workload-fo",
@@ -1194,7 +1194,7 @@
         "pullStat": {
           "label": "Safe spike limit",
           "claim": {
-            "value": "+10–20% per week",
+            "value": "+10-20% per week",
             "confidence": "reputable-analysis",
             "source": {
               "id": "k-blog-armcare-com-rethinking-acute-to-chronic-workload-fo",
@@ -1210,7 +1210,7 @@
         "heading": "Actionable Arm-Health Framework: Rest, Monitoring, Mechanics",
         "paragraphs": [
           "Arm health is not determined by genetics or destiny. It is determined by choices: workload management, recovery protocols, and mechanical efficiency. The evidence supports a straightforward framework applicable across youth, amateur, college, and professional levels.",
-          "Enforce workload limits: no more than 100 innings per season in youth; no pitching for more than 8–9 months per year; mandatory 2–3-month off-season shutdown from overhead throwing. Monitor fatigue in real time: if a pitcher reports arm soreness, declining pace, or loss of control, rest him immediately. Attend to mechanics: a pitcher with poor hip-to-shoulder separation or excessive arm lag absorbs more elbow stress per throw. Coaching and biomechanical assessment should be preventive, not reactive. Account for total throwing volume beyond game pitches alone: bullpen work, long-toss, and weighted balls all accumulate load. Build volume gradually in spring training and avoid acute spikes. Finally, communicate collectively across coaching staff, athletic trainers, and the pitcher. Injury risk detection requires shared awareness, not siloed decision-making."
+          "Enforce workload limits: no more than 100 innings per season in youth; no pitching for more than 8-9 months per year; mandatory 2-3-month off-season shutdown from overhead throwing. Monitor fatigue in real time: if a pitcher reports arm soreness, declining pace, or loss of control, rest him immediately. Attend to mechanics: a pitcher with poor hip-to-shoulder separation or excessive arm lag absorbs more elbow stress per throw. Coaching and biomechanical assessment should be preventive, not reactive. Account for total throwing volume beyond game pitches alone: bullpen work, long-toss, and weighted balls all accumulate load. Build volume gradually in spring training and avoid acute spikes. Finally, communicate collectively across coaching staff, athletic trainers, and the pitcher. Injury risk detection requires shared awareness, not siloed decision-making."
         ],
         "claims": [
           {
@@ -1295,7 +1295,7 @@
         "paragraphs": [
           "Young pitchers develop best by learning one pitch type at a time, in a deliberate order. The fastball comes first—it teaches proper arm slot, trunk rotation, and ground-force generation. Only after a young pitcher masters fastball mechanics should an off-speed pitch enter the toolbox.",
           "The change-up is the first and safest off-speed pitch. Because the hand, wrist, and arm action mirror the fastball, the change-up does not impose new biomechanical demands on a still-developing shoulder and elbow. It can be taught as early as age nine or ten, provided fastball mechanics are sound. Young pitchers with smaller hands do well with a three-finger change-up or circle change (thumb and index forming a circle), which teaches deception without added arm stress.",
-          "Breaking balls—curveballs and sliders—represent a later progression. Research does not link curveball throwing definitively to injury, but most young pitchers lack the physical maturity and neuromuscular control to throw breaking balls with sound mechanics. Attempting them too early leads to arm fatigue and often causes young pitchers to abandon fastball mastery. Age 14–15 and physical maturity are reasonable gates for curveballs; sliders should wait until high school age at minimum."
+          "Breaking balls—curveballs and sliders—represent a later progression. Research does not link curveball throwing definitively to injury, but most young pitchers lack the physical maturity and neuromuscular control to throw breaking balls with sound mechanics. Attempting them too early leads to arm fatigue and often causes young pitchers to abandon fastball mastery. Age 14-15 and physical maturity are reasonable gates for curveballs; sliders should wait until high school age at minimum."
         ],
         "claims": [
           {
@@ -1344,12 +1344,12 @@
         "heading": "MLB Pitch Smart Workload Guidelines",
         "paragraphs": [
           "MLB and USA Baseball publish Pitch Smart—an age-based pitch count and rest framework designed to prevent overuse injury. These guidelines set daily pitch maximums and required calendar-day rest periods based on pitches thrown in each outing. They are the most widely adopted standard in American youth baseball.",
-          "For pitchers aged 9–12, daily limits range from 75 to 85 pitches. Rest requirements depend on pitch count: throwing 1–20 pitches requires no rest, while 66+ pitches in a single game demands four calendar days before pitching again. For pitchers aged 13–14, the daily cap rises to 95 pitches; ages 15–18 can throw 95–105 pitches with rest thresholds that shift (0 rest for 1–30 pitches, 4 rest for 81+ pitches).",
-          "A hard rule applies to all ages: no pitcher shall throw in three consecutive calendar days, regardless of pitch count. This rule protects pitchers who might pitch on short rest from the cumulative fatigue of three-day runs. Annual innings caps also apply: 80 innings for ages 9–12, 100 innings for ages 13–14, and approximately 125 innings for ages 15–18."
+          "For pitchers aged 9-12, daily limits range from 75 to 85 pitches. Rest requirements depend on pitch count: throwing 1-20 pitches requires no rest, while 66+ pitches in a single game demands four calendar days before pitching again. For pitchers aged 13-14, the daily cap rises to 95 pitches; ages 15-18 can throw 95-105 pitches with rest thresholds that shift (0 rest for 1-30 pitches, 4 rest for 81+ pitches).",
+          "A hard rule applies to all ages: no pitcher shall throw in three consecutive calendar days, regardless of pitch count. This rule protects pitchers who might pitch on short rest from the cumulative fatigue of three-day runs. Annual innings caps also apply: 80 innings for ages 9-12, 100 innings for ages 13-14, and approximately 125 innings for ages 15-18."
         ],
         "claims": [
           {
-            "value": "Ages 9–10 have a daily maximum of 75 pitches; ages 11–12 have 85 pitches; ages 13–14 have 95 pitches; ages 15–18 have 95–105 pitches.",
+            "value": "Ages 9-10 have a daily maximum of 75 pitches; ages 11-12 have 85 pitches; ages 13-14 have 95 pitches; ages 15-18 have 95-105 pitches.",
             "confidence": "official-data",
             "source": {
               "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
@@ -1359,7 +1359,7 @@
             }
           },
           {
-            "value": "For ages 9–14, rest requirements are: 1–20 pitches = 0 days, 21–35 = 1 day, 36–50 = 2 days, 51–65 = 3 days, 66+ = 4 days rest.",
+            "value": "For ages 9-14, rest requirements are: 1-20 pitches = 0 days, 21-35 = 1 day, 36-50 = 2 days, 51-65 = 3 days, 66+ = 4 days rest.",
             "confidence": "official-data",
             "source": {
               "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
@@ -1369,7 +1369,7 @@
             }
           },
           {
-            "value": "For ages 15–18, rest requirements are: 1–30 pitches = 0 days, 31–45 = 1 day, 46–60 = 2 days, 61–80 = 3 days, 81+ = 4 days rest.",
+            "value": "For ages 15-18, rest requirements are: 1-30 pitches = 0 days, 31-45 = 1 day, 46-60 = 2 days, 61-80 = 3 days, 81+ = 4 days rest.",
             "confidence": "official-data",
             "source": {
               "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
@@ -1389,7 +1389,7 @@
             }
           },
           {
-            "value": "Annual innings caps: 80 innings for ages 9–12, 100 innings for ages 13–14, and approximately 125 innings for ages 15–18.",
+            "value": "Annual innings caps: 80 innings for ages 9-12, 100 innings for ages 13-14, and approximately 125 innings for ages 15-18.",
             "confidence": "official-data",
             "source": {
               "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
@@ -1403,12 +1403,12 @@
       {
         "heading": "Mandatory Annual Rest and Overhead Throwing",
         "paragraphs": [
-          "Overuse is the dominant risk factor for youth pitching injuries. The ASMI position statement mandates that young pitchers take deliberate time away from pitching and overhead throwing every year. For ages 13–18, this means no competitive baseball pitching for a minimum of four months per year, and zero overhead throwing of any kind for at least two to three months, with four months preferred.",
+          "Overuse is the dominant risk factor for youth pitching injuries. The ASMI position statement mandates that young pitchers take deliberate time away from pitching and overhead throwing every year. For ages 13-18, this means no competitive baseball pitching for a minimum of four months per year, and zero overhead throwing of any kind for at least two to three months, with four months preferred.",
           "This rest window is not optional fatigue management—it is foundational to career durability. A pitcher who throws year-round, even across only two seasons (spring travel, summer league) without a true off-season, will accumulate fatigue that cannot fully resolve. Rest allows muscles, tendons, and growth plates time to adapt and strengthen. A young pitcher who rests deliberately now builds a longer, healthier career ahead."
         ],
         "claims": [
           {
-            "value": "Young pitchers should have no overhead throwing of any kind for at least 2–3 months per year, with 4 months preferred, and no competitive baseball pitching for at least 4 months per year.",
+            "value": "Young pitchers should have no overhead throwing of any kind for at least 2-3 months per year, with 4 months preferred, and no competitive baseball pitching for at least 4 months per year.",
             "confidence": "official-data",
             "source": {
               "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
@@ -1443,12 +1443,12 @@
         "heading": "The Cost of Early Specialization",
         "paragraphs": [
           "Single-sport specialization—training in baseball year-round and on multiple teams with overlapping seasons—is epidemic in youth baseball. The research on its long-term consequences is clear: young pitchers who specialize early do not gain a professional advantage, but they do incur higher risk of serious injury.",
-          "In a study of 102 professional baseball players, 49% had specialized before high school, with a mean specialization age of 8.9 years. Early specializers sustained 2.3 times more serious injuries in their professional careers (0.54 mean injuries) than non-specialized peers (0.23). Among youth pitchers aged 9–12, specialization was associated with a 6.7-fold increased risk of shoulder and elbow injury. Notably, 57.9% of specialized youth pitchers and their parents were unaware they were specializing—they saw multiple teams as normal practice rather than recognizing it as overuse.",
+          "In a study of 102 professional baseball players, 49% had specialized before high school, with a mean specialization age of 8.9 years. Early specializers sustained 2.3 times more serious injuries in their professional careers (0.54 mean injuries) than non-specialized peers (0.23). Among youth pitchers aged 9-12, specialization was associated with a 6.7-fold increased risk of shoulder and elbow injury. Notably, 57.9% of specialized youth pitchers and their parents were unaware they were specializing—they saw multiple teams as normal practice rather than recognizing it as overuse.",
           "Year-round pitching and training volume exceeding a player's age in hours per week (e.g., a 12-year-old pitching more than 12 hours weekly) doubles serious overuse injury risk. The trade-off is clear: resting now and pursuing multiple sports or activities in youth preserves a longer, healthier career. The pitchers who reach professional baseball are those who pitched less in youth, not more."
         ],
         "claims": [
           {
-            "value": "49% of professional baseball players in one study specialized in baseball before high school, with a mean specialization age of 8.9 years (range 4–17).",
+            "value": "49% of professional baseball players in one study specialized in baseball before high school, with a mean specialization age of 8.9 years (range 4-17).",
             "confidence": "reputable-analysis",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc5613849",
@@ -1478,7 +1478,7 @@
             }
           },
           {
-            "value": "Among youth baseball pitchers aged 9–12, all 21 arm injuries recorded in one prospective study occurred in specialized athletes; specialized players had a 6.7-fold higher odds ratio for shoulder/elbow injury compared to non-specialized peers (P=0.03).",
+            "value": "Among youth baseball pitchers aged 9-12, all 21 arm injuries recorded in one prospective study occurred in specialized athletes; specialized players had a 6.7-fold higher odds ratio for shoulder/elbow injury compared to non-specialized peers (P=0.03).",
             "confidence": "reputable-analysis",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc6805058",
@@ -1556,7 +1556,7 @@
         ],
         "claims": [
           {
-            "value": "Pitchers aged 15–18 should take at least 4 months off from competitive pitching every year, including at least 2–3 continuous months off from all overhead throwing.",
+            "value": "Pitchers aged 15-18 should take at least 4 months off from competitive pitching every year, including at least 2-3 continuous months off from all overhead throwing.",
             "confidence": "official-data",
             "source": {
               "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
@@ -1927,7 +1927,7 @@
     "navLabel": "The Canon",
     "eyebrow": "The lineage",
     "title": "The Canon: Foundational Texts and Thought Lineages in Pitching",
-    "summary": "Curated reading path spanning classic pitching philosophy, biomechanics, psychology, and modern analytical frameworks—solutions, not idols.",
+    "summary": "Curated reading path spanning classic pitching philosophy, biomechanics, psychology, and modern analytical frameworks. Solutions, not idols.",
     "sub": "From the craft essays of Tom Seaver and Bob Gibson to the biomechanical work of ASMI and the data-driven analyses of FanGraphs and Baseball Prospectus, the canon traces how pitching knowledge has accumulated. These texts and methodologies form the intellectual backbone for understanding what works, why it works, and how to teach it.",
     "accent": "powder",
     "educational": false,
@@ -2015,7 +2015,7 @@
         "heading": "Biomechanics, Injury Prevention, and the Modern Scientific Foundation",
         "paragraphs": [
           "The American Sports Medicine Institute (ASMI), founded in 1987 by orthopedic surgeon Dr. James R. Andrews and led by research director Dr. Glenn Fleisig, provides the evidence-based foundation for injury prevention in pitching. ASMI's research uses video analysis and computer modeling to quantify the forces acting on the shoulder, elbow, and trunk during the throwing motion. Their findings identify overuse and poor mechanics as the twin engines of injury in young pitchers.",
-          "ASMI's Position Statement for Adolescent Baseball Pitchers establishes clear thresholds: no overhead throwing for 2–3 months per year (4 months preferred), no more than 100 innings per calendar year, and a strict focus on learning fastball mechanics before introducing breaking pitches. This framework has been incorporated into MLB's Pitch Smart program, which sets age-specific pitch counts and mandatory rest periods for ages 7–22.",
+          "ASMI's Position Statement for Adolescent Baseball Pitchers establishes clear thresholds: no overhead throwing for 2-3 months per year (4 months preferred), no more than 100 innings per calendar year, and a strict focus on learning fastball mechanics before introducing breaking pitches. This framework has been incorporated into MLB's Pitch Smart program, which sets age-specific pitch counts and mandatory rest periods for ages 7-22.",
           "Driveline Baseball and Tread Athletics represent the modern analytical and biomechanical coaching frontier. Both organizations employ motion capture technology and detailed mechanical analysis to quantify individual pitcher mechanics and validate coaching cues. Driveline has demonstrated that pitching development can be measured, systematized, and optimized through high-level biomechanical analysis."
         ],
         "claims": [
@@ -2030,7 +2030,7 @@
             }
           },
           {
-            "value": "ASMI's Position Statement for Adolescent Baseball Pitchers recommends 2–3 months minimum (4 months preferred) without overhead throwing annually and maximum 100 innings per calendar year, with a focus on learning fastball mechanics before breaking pitches.",
+            "value": "ASMI's Position Statement for Adolescent Baseball Pitchers recommends 2-3 months minimum (4 months preferred) without overhead throwing annually and maximum 100 innings per calendar year, with a focus on learning fastball mechanics before breaking pitches.",
             "confidence": "official-data",
             "source": {
               "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
@@ -2040,7 +2040,7 @@
             }
           },
           {
-            "value": "MLB's Pitch Smart program sets age-appropriate pitch count limits and mandatory rest periods for pitchers ages 7–22 based on ASMI research and recommendations.",
+            "value": "MLB's Pitch Smart program sets age-appropriate pitch count limits and mandatory rest periods for pitchers ages 7-22 based on ASMI research and recommendations.",
             "confidence": "official-data",
             "source": {
               "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
