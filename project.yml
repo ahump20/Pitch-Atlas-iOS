@@ -91,3 +91,27 @@ targets:
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
+  # Release-gate UI tests. NOT in the PitchAtlas scheme (CI never runs them):
+  # they drive the real app against production Supabase — anonymous post,
+  # verify, in-app account delete — and run manually via the ReleaseGate
+  # scheme as a pre-archive step.
+  PitchAtlasReleaseGateUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: PitchAtlasReleaseGateUITests
+    dependencies:
+      - target: PitchAtlas
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  PitchAtlasReleaseGate:
+    build:
+      targets:
+        PitchAtlas: all
+        PitchAtlasReleaseGateUITests: [test]
+    test:
+      targets:
+        - PitchAtlasReleaseGateUITests
