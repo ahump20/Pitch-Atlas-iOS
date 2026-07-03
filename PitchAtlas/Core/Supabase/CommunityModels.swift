@@ -532,15 +532,18 @@ extension NewFieldNote {
     }
 }
 
+/// The insert payload for a discussion post. The id is NOT sent: the server
+/// generates it, and the column-scoped INSERT grant on discussion_posts covers
+/// exactly topic_key/display_name/body/parent_id — any extra key (including id)
+/// fails the whole insert with a permission error. The web's createPost is the
+/// contract: insert these four columns, read the id back via RETURNING.
 struct NewDiscussionPost: Encodable {
-    let id: String
     let topicKey: String
     let displayName: String
     let body: String
     let parentID: String?
 
     enum CodingKeys: String, CodingKey {
-        case id
         case topicKey = "topic_key"
         case displayName = "display_name"
         case body
@@ -555,7 +558,6 @@ enum DiscussionPostLimits {
 
 extension NewDiscussionPost {
     static func validated(
-        id: String,
         topicKey: String,
         displayName: String,
         body: String,
@@ -575,7 +577,6 @@ extension NewDiscussionPost {
         }
 
         return NewDiscussionPost(
-            id: id,
             topicKey: topicKey,
             displayName: cleanDisplayName,
             body: cleanBody,
@@ -584,8 +585,11 @@ extension NewDiscussionPost {
     }
 }
 
+/// The insert payload for a media row. Like NewDiscussionPost, the row id is
+/// server-generated and must not be sent — it is not in the INSERT grant. The
+/// storage path keeps its own client-minted UUID filename; the two ids never
+/// needed to match.
 struct NewDiscussionMedia: Encodable {
-    let id: String
     let postID: String
     let topicKey: String
     let storagePath: String
@@ -596,7 +600,6 @@ struct NewDiscussionMedia: Encodable {
     let height: Int?
 
     enum CodingKeys: String, CodingKey {
-        case id
         case postID = "post_id"
         case topicKey = "topic_key"
         case storagePath = "storage_path"

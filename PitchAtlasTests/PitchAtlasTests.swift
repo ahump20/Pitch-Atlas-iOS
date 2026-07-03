@@ -487,7 +487,6 @@ final class PitchAtlasTests: XCTestCase {
 
     func testDiscussionPostValidationTrimsAndRejectsBadBodies() throws {
         let post = try NewDiscussionPost.validated(
-            id: "post-1",
             topicKey: "pitch:four-seam",
             displayName: "Austin",
             body: "  This grip finally held through catch play.  ",
@@ -497,7 +496,6 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(post.body, "This grip finally held through catch play.")
 
         XCTAssertThrowsError(try NewDiscussionPost.validated(
-            id: "post-2",
             topicKey: "pitch:four-seam",
             displayName: "Austin",
             body: "   ",
@@ -506,7 +504,6 @@ final class PitchAtlasTests: XCTestCase {
             XCTAssertEqual(error as? CommunityServiceError, .invalidDiscussionPost("Add a post before submitting."))
         }
         XCTAssertThrowsError(try NewDiscussionPost.validated(
-            id: "post-3",
             topicKey: "pitch:four-seam",
             displayName: "Austin",
             body: String(repeating: "x", count: 4001),
@@ -514,6 +511,75 @@ final class PitchAtlasTests: XCTestCase {
         )) { error in
             XCTAssertEqual(error as? CommunityServiceError, .invalidDiscussionPost("Discussion posts must be 4000 characters or fewer."))
         }
+    }
+
+    /// Every write payload must encode ONLY columns inside the server's
+    /// column-scoped INSERT grants (pinned from the web repo's migrations).
+    /// Postgres denies the WHOLE insert when a payload carries any ungranted
+    /// column — the release gate caught exactly that when the app sent a
+    /// client-minted `id` on discussion posts, so the id is server-generated
+    /// and read back via RETURNING instead. The drift gate does not cover
+    /// Encodable shapes; this test is the guard.
+    func testInsertPayloadsStayInsideColumnScopedInsertGrants() throws {
+        func encodedKeys<T: Encodable>(_ value: T) throws -> Set<String> {
+            let data = try JSONEncoder().encode(value)
+            let object = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+            return Set(object.keys)
+        }
+
+        let postGrant: Set<String> = ["topic_key", "display_name", "body", "parent_id"]
+        let post = try NewDiscussionPost.validated(
+            topicKey: "pitch:four-seam",
+            displayName: "Austin",
+            body: "Grant-shape guard.",
+            parentID: "parent-1"
+        )
+        XCTAssertTrue(try encodedKeys(post).isSubset(of: postGrant))
+
+        let mediaGrant: Set<String> = [
+            "post_id", "topic_key", "storage_path", "mime_type",
+            "kind", "byte_size", "width", "height", "duration_s",
+        ]
+        let media = NewDiscussionMedia(
+            postID: "post-1",
+            topicKey: "pitch:four-seam",
+            storagePath: "user/file.jpg",
+            mimeType: "image/jpeg",
+            kind: "image",
+            byteSize: 1024,
+            width: 100,
+            height: 100
+        )
+        XCTAssertTrue(try encodedKeys(media).isSubset(of: mediaGrant))
+
+        let noteGrant: Set<String> = [
+            "pitch_slug", "display_name", "tweak", "player_level", "arm_slot",
+            "intent", "claimed_result_kind", "claimed_result_note", "sample_size",
+            "evidence_url", "evidence_label", "source_tier", "note", "velocity_band",
+        ]
+        let fieldNote = NewFieldNote(
+            pitchSlug: "four-seam",
+            displayName: "Austin",
+            tweak: "Grant-shape guard.",
+            playerLevel: .highSchool,
+            armSlot: .threeQuarter,
+            intent: .betterCommand,
+            claimedResultKind: .betterCommand,
+            claimedResultNote: "note",
+            sampleSize: 10,
+            evidenceURL: "https://example.com",
+            evidenceLabel: "label",
+            sourceTier: .communityFirsthand,
+            note: "note"
+        )
+        XCTAssertTrue(try encodedKeys(fieldNote).isSubset(of: noteGrant))
+
+        // Reports: nil optionals must be OMITTED (not null) so a post report
+        // never carries note_id/media_id keys, which are outside that grant.
+        let reportGrant: Set<String> = ["post_id", "media_id", "reason"]
+        let postReport = CommunityReport(noteID: nil, postID: "post-1", mediaID: nil, reason: "why")
+        XCTAssertEqual(try encodedKeys(postReport), ["post_id", "reason"])
+        XCTAssertTrue(try encodedKeys(postReport).isSubset(of: reportGrant))
     }
 
     func testFieldNoteMenusAvoidMedicalReviewLanguageButDecodeLiveValues() throws {

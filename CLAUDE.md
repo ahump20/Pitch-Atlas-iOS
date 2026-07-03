@@ -41,6 +41,13 @@ xcodegen generate
 ./scripts/build.sh test       # build + test
 ```
 
+The `PitchAtlasReleaseGate` scheme (target `PitchAtlasReleaseGateUITests`) is a
+manual pre-archive gate that drives the real UI against production Supabase —
+anonymous post end to end. It is intentionally NOT in the `PitchAtlas` scheme:
+CI must never run it. Server write access is column-scoped per table; insert
+payloads must encode only granted columns (ids are server-generated, read back
+via RETURNING) — pinned by `testInsertPayloadsStayInsideColumnScopedInsertGrants`.
+
 CI is **Xcode Cloud** (configured in the Xcode project). Three release rules: build numbers are monotonic per app and bump in lockstep across configs; an `action_required` result means a compile error, not an approval gate; release branches merge back to `main` the same day they archive. The post-clone step generates the Xcode project. Content refresh is a local pre-release step that must be committed before archive.
 
 ## Patterns

@@ -2,6 +2,16 @@
 
 Status: 2026-06-26 production submission for `com.pitchatlas.app`; 1.1.0 (11) in preparation.
 
+Update, 2026-07-03: the pre-archive release gate (now a real XCUITest — the
+`PitchAtlasReleaseGate` scheme, never run by CI) caught and fixed two 1.1.0
+write-path bugs against production before archive: the delete-account call sent
+a stale cached token (401 after an overnight session; fixed by refreshing the
+session through the SDK), and community insert payloads carried a client-minted
+`id` that sits outside the column-scoped INSERT grants, denying the whole
+insert (fixed by mirroring the web contract — server-generated id, read back
+via RETURNING; pinned by a payload-shape unit test). Field-note posting remains
+gated on a server-side grant fix that ships from the web repo (web PR #151).
+
 Update, 2026-07-02: version `1.1.0` build `11` prepared on `release/1.1.0` — the
 "Specimen Comes Alive" wave: the native 3D specimen ball (SceneKit, seam-informed
 schematic label preserved), anonymous-first community with a claimable record,
