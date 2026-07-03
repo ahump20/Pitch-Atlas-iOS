@@ -247,7 +247,14 @@ final class AuthSessionStore {
     }
 
     func deleteAccount() async -> Bool {
-        guard let accessToken else {
+        // Ask the SDK for the session instead of trusting the cached token
+        // string: the SDK refreshes an expired session on read, while a stale
+        // cached token 401s at the edge function. An app left overnight then
+        // asked to delete its account hit exactly that.
+        let freshToken: String
+        do {
+            freshToken = try await client.auth.session.accessToken
+        } catch {
             errorMessage = "You need to sign in before deleting an account."
             return false
         }
@@ -261,7 +268,7 @@ final class AuthSessionStore {
             request.httpMethod = "POST"
             // A flaky network must not leave the user staring at a spinner forever.
             request.timeoutInterval = 30
-            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            request.setValue("Bearer \(freshToken)", forHTTPHeaderField: "Authorization")
             request.setValue(SupabaseConfig.publishableKey, forHTTPHeaderField: "apikey")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = Data("{}".utf8)
