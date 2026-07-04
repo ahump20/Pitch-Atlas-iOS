@@ -18,6 +18,10 @@ struct LostPitchDetailView: View {
         store.lostPitches.tiers.first { $0.tier == pitch.tier }
     }
 
+    private var archiveImage: ArchiveImage? {
+        store.archiveImage(forLostPitch: pitch.slug)
+    }
+
     var body: some View {
         ZStack {
             PitchAtlasTheme.void.ignoresSafeArea()
@@ -25,6 +29,9 @@ struct LostPitchDetailView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
                     header
+                    if let archiveImage {
+                        LostPitchArchivePlateView(image: archiveImage)
+                    }
                     introCard
                     whatItWas
                     whyItsLost

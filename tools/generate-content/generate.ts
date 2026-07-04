@@ -35,7 +35,7 @@ if (!existsSync(DATA)) {
 
 const imp = (rel: string) => import(pathToFileURL(join(DATA, rel)).href)
 
-const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources] = await Promise.all([
+const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, archiveImages] = await Promise.all([
   imp('pitches/index.ts'),
   imp('repertoire/index.ts'),
   imp('craftsmen/index.ts'),
@@ -43,6 +43,7 @@ const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources] = await 
   imp('knowledge/index.ts'),
   imp('grips/index.ts'),
   imp('sources.ts'),
+  imp('media/archive-images.ts'),
 ])
 
 /*
@@ -97,6 +98,7 @@ const bundles: Record<string, unknown> = {
   'repertoire.json': { families: repertoire.REPERTOIRE_FAMILIES, entries: repertoire.REPERTOIRE },
   'craftsmen.json': craftsmen.CRAFTSMEN,
   'lost-pitches.json': { tiers: lost.LOST_PITCH_TIERS, entries: lost.LOST_PITCHES },
+  'archive-images.json': archiveImages.LOST_PITCH_ARCHIVE_IMAGES,
   'knowledge.json': knowledge.WINGS,
   'grips.json': {
     intro: grips.GRIP_LIBRARY_INTRO,

@@ -26,6 +26,7 @@ final class PitchStore {
     let repertoire: RepertoireRoot
     let craftsmen: [Craftsman]
     let lostPitches: LostPitchesRoot
+    let archiveImages: [ArchiveImage]
     let knowledge: [KnowledgeWing]
     let grips: GripsFile
     let sources: [Source]
@@ -52,6 +53,7 @@ final class PitchStore {
         self.craftsmen = load("craftsmen", [Craftsman].self, fallback: [])
         self.lostPitches = load("lost-pitches", LostPitchesRoot.self,
                                 fallback: LostPitchesRoot(tiers: [], entries: []))
+        self.archiveImages = load("archive-images", [ArchiveImage].self, fallback: [])
         self.knowledge = load("knowledge", [KnowledgeWing].self, fallback: [])
         self.grips = load("grips", GripsFile.self,
                           fallback: GripsFile(intro: "", arsenal: "", commandNote: "",
@@ -93,6 +95,7 @@ final class PitchStore {
     func pitch(id: String) -> PitchAtlasEntry? { pitches.first { $0.id == id } }
     func craftsman(slug: String) -> Craftsman? { craftsmen.first { $0.slug == slug } }
     func lostPitch(slug: String) -> LostPitch? { lostPitches.entries.first { $0.slug == slug } }
+    func archiveImage(forLostPitch slug: String) -> ArchiveImage? { archiveImages.first { $0.relatedSlug == slug } }
     func wing(slug: String) -> KnowledgeWing? { knowledge.first { $0.slug == slug } }
     func repertoireEntry(id: String) -> RepertoireEntry? { repertoire.entries.first { $0.id == id } }
     func gripEntry(id: String) -> GripEntry? { grips.entries.first { $0.id == id } }

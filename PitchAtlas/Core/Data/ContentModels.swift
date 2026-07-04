@@ -582,6 +582,42 @@ struct LostPitchesRoot: Codable, Hashable {
     let entries: [LostPitch]
 }
 
+enum ArchivePlateKind: String, Codable, Hashable, CaseIterable {
+    case portrait, team, venue
+    case originalStudy = "original-study"
+
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = ArchivePlateKind(rawValue: raw) ?? .originalStudy
+    }
+
+    var label: String {
+        switch self {
+        case .portrait: return "Portrait"
+        case .team: return "Team"
+        case .venue: return "Venue"
+        case .originalStudy: return "Original study"
+        }
+    }
+}
+
+struct ArchiveImage: Codable, Hashable, Identifiable {
+    let id: String
+    let title: String
+    let label: String
+    let plateKind: ArchivePlateKind
+    let imageSrc: String
+    let alt: String
+    let caption: String
+    let source: Source?
+    let rights: RightsStatus
+    let width: Double
+    let height: Double
+    let qualityNote: String
+    let relatedSlug: String
+    let relatedLabel: String
+}
+
 // MARK: - Knowledge wings (knowledge.json → [KnowledgeWing])
 
 struct KnowledgeRelatedLink: Codable, Hashable {

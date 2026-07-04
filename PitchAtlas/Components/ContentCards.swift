@@ -338,10 +338,20 @@ struct CraftsmanCard: View {
 
 /// A Lost Pitches card: the documentation tier is the feature, not a footnote.
 struct LostPitchCard: View {
+    @Environment(PitchStore.self) private var store
     let pitch: LostPitch
+
+    private var archiveImage: ArchiveImage? {
+        store.archiveImage(forLostPitch: pitch.slug)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
+            if let archiveImage {
+                LostPitchArchiveThumbnail(image: archiveImage)
+                    .padding(.bottom, PitchAtlasSpacing.xs)
+            }
+
             HStack {
                 SectionLabel(text: pitch.specimenNo, color: PitchAtlasTheme.cyanDeep, size: 9)
                 Spacer()
@@ -367,5 +377,68 @@ struct LostPitchCard: View {
         .leatherPress()
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(pitch.name), \(pitch.tier.label), \(pitch.era)")
+    }
+}
+
+private struct LostPitchArchiveThumbnail: View {
+    let image: ArchiveImage
+
+    var body: some View {
+        BundledImage(src: image.imageSrc, alt: image.alt)
+            .frame(height: 150)
+            .frame(maxWidth: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous)
+                    .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+            )
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(image.alt)
+    }
+}
+
+struct LostPitchArchivePlateView: View {
+    let image: ArchiveImage
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+            BundledImage(src: image.imageSrc, alt: image.alt)
+                .frame(height: 220)
+                .frame(maxWidth: .infinity)
+                .clipShape(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous)
+                        .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+                )
+
+            HStack(alignment: .firstTextBaseline) {
+                SectionLabel(text: image.label, color: PitchAtlasTheme.cyanDeep, size: 9)
+                Spacer(minLength: PitchAtlasSpacing.sm)
+                StatusPill(text: image.rights.rawValue, tone: image.rights == .publicDomain ? PitchAtlasTheme.cyanDeep : PitchAtlasTheme.sandBright)
+            }
+
+            Text(image.title.uppercased())
+                .font(PitchAtlasTheme.anton(26))
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .antonSkew()
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text(image.caption)
+                .font(PitchAtlasTheme.hanken(14))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text(image.qualityNote)
+                .font(PitchAtlasTheme.hanken(12))
+                .foregroundStyle(PitchAtlasTheme.ink3)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if let source = image.source {
+                SourceRow(source: source)
+            }
+        }
+        .leatherPress()
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(image.title). \(image.label). \(image.caption)")
     }
 }

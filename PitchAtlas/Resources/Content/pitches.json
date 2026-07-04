@@ -86,10 +86,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "out-in-fingers",
         "fingerSpacing": "slight-spread",
         "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles stacked square behind the ball, in line with the target.",
+          "palmFacing": "Palm to the plate as the fingers come through the top."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited grip descriptions: index and middle pads laid across the horseshoe seam, thumb beneath on the leather. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "wiki-four-seam",
+            "label": "Wikipedia, Four-seam fastball",
+            "url": "https://en.wikipedia.org/wiki/Four-seam_fastball",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Corroborated across Wikipedia (Four-seam fastball), Wikipedia (Fastball), and eFastball."
+        },
         "thumbRole": "Thumb supports underneath, centered below the top two fingers.",
         "palmGapCue": "A little daylight stays between ball and palm so the ball leaves clean.",
         "releaseCue": "Let the index and middle pads roll the ball off the top with backspin.",
@@ -100,6 +116,10 @@
             "label": "Index pad",
             "seamT": 0.305,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 80,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Across the wide horseshoe seam",
             "pressureRole": "Guides the straight release",
             "cue": "Close to middle, not spread wide",
@@ -110,6 +130,10 @@
             "label": "Middle pad",
             "seamT": 0.355,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 98,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Across the wide horseshoe seam",
             "pressureRole": "Primary fastball pressure",
             "cue": "Flat pad across the seam",
@@ -120,6 +144,10 @@
             "label": "Thumb",
             "seamT": 0.83,
             "lift": 0,
+            "seamOffset": 0.05,
+            "azimuth": 55,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Under smooth leather, sometimes touching seam",
             "pressureRole": "Balances the ball under the finger pair",
             "cue": "Under the index-middle window",
@@ -440,10 +468,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "out-in-fingers",
         "fingerSpacing": "slight-spread",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles lined up with the narrow seam lanes, not across them.",
+          "palmFacing": "Palm to the plate, tilting a touch toward the arm side at release."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited grip description: index and middle riding the paired narrow seams like rails, thumb beneath. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "driveline-sinker",
+            "label": "Driveline Baseball, How to Throw a Sinker or Two-Seam Fastball",
+            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-sinker-or-two-seam-fastball/",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The along-seam lanes are the documented two-seam/sinker tell; one-seam variants differ."
+        },
         "thumbRole": "Thumb supports underneath and can sit slightly off-center.",
         "palmGapCue": "Held like a fastball: out in the fingers, not choked into the palm.",
         "releaseCue": "Throw fastball effort and let the along-seam contact tilt the axis.",
@@ -454,6 +498,10 @@
             "label": "Index seam",
             "seamT": 0.12,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": -25,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Runs along one narrow seam",
             "pressureRole": "Starts the arm-side bias",
             "cue": "Along the seam, not across it",
@@ -464,6 +512,10 @@
             "label": "Middle seam",
             "seamT": 0.17,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": -21,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Runs along the paired narrow seam",
             "pressureRole": "Pairs with index to guide run",
             "cue": "Same width as fastball",
@@ -474,6 +526,10 @@
             "label": "Thumb",
             "seamT": 0.62,
             "lift": 0,
+            "seamOffset": 0.05,
+            "azimuth": 50,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Under leather, slightly off-center",
             "pressureRole": "Balances control under the seam pair",
             "cue": "Do not pinch it tight",
@@ -590,9 +646,9 @@
       "shortName": "Two-Seam",
       "specimenNo": "01",
       "heroSub": "The four-seam, tilted.",
-      "heroIntro": "Same arm, the axis rolled toward the hand. Ride becomes run, and the ball finishes at the knees. Taken to its extreme — the most movement, the least ride — this is the pitch the pros call a sinker.",
+      "heroIntro": "Same arm, the axis rolled toward the hand. Ride becomes run, and the ball finishes at the knees. Taken to its extreme, the most movement and the least ride, this is the pitch the pros call a sinker.",
       "foundationCaption": "It rides far less than a four-seam and runs toward the arm. Thrown low, it produces ground balls.",
-      "mastersIntro": "Three documented sinkers — the two-seam taken to its extreme, three ways down. The visual is our own seam schematic. What sets each version apart is in the read, not a gauge."
+      "mastersIntro": "Three documented sinkers: the two-seam taken to its extreme, three ways down. The visual is our own seam schematic. What sets each version apart lives in the read, not a gauge."
     },
     "masterVariants": [
       {
@@ -708,336 +764,6 @@
   },
   {
     "canonical": {
-      "id": "circle-changeup",
-      "name": "Circle changeup",
-      "family": "offspeed",
-      "grip": {
-        "value": "The thumb and index finger form an OK circle against the inner side of the ball while the other three fingers lay across the top. The ball rests deeper in the hand, which deadens the exit, and the off-center grip tilts the axis toward the arm for fade.",
-        "source": {
-          "id": "mlb-glossary-changeup",
-          "label": "MLB.com Statcast Glossary, Changeup (CH)",
-          "url": "https://www.mlb.com/glossary/pitch-types/changeup",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "official-data",
-        "note": "Paraphrased from MLB.com Glossary, not quoted."
-      },
-      "gripDetails": [
-        {
-          "value": "MLB.com calls the circle change the most common changeup grip: thumb and index in a circle on the inner side, the other three fingers over the rest of the ball. Held farther back in the hand, sometimes toward the palm, which is what takes the speed off.",
-          "source": {
-            "id": "mlb-glossary-changeup",
-            "label": "MLB.com Statcast Glossary, Changeup (CH)",
-            "url": "https://www.mlb.com/glossary/pitch-types/changeup",
-            "retrievedAt": "2026-06-04"
-          },
-          "confidence": "official-data",
-          "note": "Paraphrased from the official glossary."
-        },
-        {
-          "value": "Driveline cues the fade by rolling the hand over the ball or swiping its inside: the more the hand turns over, the more arm-side run. The more the axis leans toward the arm, the more the ball runs that way.",
-          "source": {
-            "id": "driveline-changeup",
-            "label": "Driveline Baseball, How to Throw a Changeup",
-            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-changeup/",
-            "retrievedAt": "2026-06-04",
-            "season": "2020"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Mechanical cues paraphrased from Driveline."
-        },
-        {
-          "value": "The deception is the late arrival on identical arm action, so the standard cue is to keep fastball arm speed and let the grip deaden the pitch, not the throw.",
-          "source": {
-            "id": "mlb-glossary-changeup",
-            "label": "MLB.com Statcast Glossary, Changeup (CH)",
-            "url": "https://www.mlb.com/glossary/pitch-types/changeup",
-            "retrievedAt": "2026-06-04"
-          },
-          "confidence": "official-data",
-          "note": "The \"start the swing before the pitch arrives\" deception is the glossary definition; the maintain-arm-speed cue is standard and widely taught."
-        }
-      ],
-      "fingerPlacement": [
-        {
-          "seamT": 0.305,
-          "lift": 0.02,
-          "label": "Index",
-          "finger": "index",
-          "note": "Over the top, with the thumb it forms the OK circle on the inner side."
-        },
-        {
-          "seamT": 0.355,
-          "lift": 0.02,
-          "label": "Middle",
-          "finger": "middle",
-          "note": "Across the top, leading the three fingers that grip the ball."
-        },
-        {
-          "seamT": 0.86,
-          "lift": 0,
-          "label": "Thumb",
-          "finger": "thumb",
-          "note": "Curled to meet the index in a circle; the ball sits deeper in the hand."
-        }
-      ],
-      "gripModel": {
-        "defaultView": "thumb",
-        "ballDepth": "deep-in-hand",
-        "fingerSpacing": "wide",
-        "primaryPressureFinger": "middle",
-        "thumbRole": "Thumb curls toward the index to form the inside circle.",
-        "palmGapCue": "The ball sits deeper than a fastball, closer to the palm.",
-        "releaseCue": "Keep fastball arm speed and let the deeper grip take speed off.",
-        "visualCaveat": "Grip geometry is schematic and shows a standard circle-change family; individual circle size varies by hand. Do not call a grip a circle change unless the thumb-index circle is visible; small hands may fit a three-finger or palm/football change better.",
-        "contacts": [
-          {
-            "finger": "index",
-            "label": "Index circle",
-            "seamT": 0.305,
-            "lift": 0.02,
-            "seamRelation": "Curls toward thumb on the inside of the ball",
-            "pressureRole": "Forms the loose circle, not the main drive",
-            "cue": "Circle, do not pinch",
-            "curl": 0.82
-          },
-          {
-            "finger": "middle",
-            "label": "Middle top",
-            "seamT": 0.355,
-            "lift": 0.02,
-            "seamRelation": "Across the top of the ball",
-            "pressureRole": "Main top-finger control",
-            "cue": "Fastball arm, deeper hold",
-            "curl": 0.34
-          },
-          {
-            "finger": "thumb",
-            "label": "Thumb circle",
-            "seamT": 0.86,
-            "lift": 0,
-            "seamRelation": "Meets the index on the inner side",
-            "pressureRole": "Completes the OK circle",
-            "cue": "Loose circle, palm side",
-            "curl": 0.8
-          }
-        ]
-      },
-      "mechanics": {
-        "value": "The arm matches the fastball; the deeper grip and loosened circle deaden the exit, not a softer throw. A slight pronation at release tilts the axis arm-side, so the ball fades toward the throwing hand and tumbles as it crosses.",
-        "source": {
-          "id": "driveline-changeup",
-          "label": "Driveline Baseball, How to Throw a Changeup",
-          "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-changeup/",
-          "retrievedAt": "2026-06-04",
-          "season": "2020"
-        },
-        "confidence": "reputable-analysis",
-        "note": "Paraphrased. Maintaining fastball arm speed is a standard changeup cue echoed across MLB.com and instructional sources."
-      },
-      "physics": {
-        "spinAxis": {
-          "value": "A fastball-like backspin rotated toward the arm. The axis leans arm-side rather than pointing straight up, and the harder it leans, the harder the ball fades toward the throwing hand.",
-          "source": {
-            "id": "driveline-changeup",
-            "label": "Driveline Baseball, How to Throw a Changeup",
-            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-changeup/",
-            "retrievedAt": "2026-06-04",
-            "season": "2020"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Where the tilt sits depends on how the hand turns over; observed and spin-based reads of the axis differ by method."
-        },
-        "shape": {
-          "value": "It runs toward the throwing hand and tumbles under the barrel, late and on the arm-side. The fade is real and the drop is real; how wide it runs depends on how hard the arm turns the axis over.",
-          "source": {
-            "id": "savant-webb",
-            "label": "Baseball Savant (Statcast), Logan Webb",
-            "url": "https://baseballsavant.mlb.com/savant-player/logan-webb-657277",
-            "retrievedAt": "2026-06-04",
-            "season": "2024"
-          },
-          "confidence": "official-data",
-          "note": "Described as shape, not a measured number. The arm-side run and the drop are both genuine; the amount varies arm to arm."
-        },
-        "teaching": {
-          "value": "The late arrival and the fade work because the arm action is identical to the fastball. The eyes read fastball, the swing starts on fastball timing, then the ball arrives a beat late while fading down and toward the arm, and the barrel passes over it. Take the arm speed off and the deception collapses.",
-          "source": {
-            "id": "mlb-glossary-changeup",
-            "label": "MLB.com Statcast Glossary, Changeup (CH)",
-            "url": "https://www.mlb.com/glossary/pitch-types/changeup",
-            "retrievedAt": "2026-06-04"
-          },
-          "confidence": "official-data",
-          "note": "Synthesizes the MLB.com deception definition with Driveline mechanics. The whole pitch lives on the gap between the look and the clock."
-        }
-      },
-      "voice": {
-        "value": "It's just an outlier pitch. The spin I'm able to create makes it different from every other changeup.",
-        "source": {
-          "id": "mlb-williams-airbender",
-          "label": "MLB.com, Devin Williams and the Airbender changeup",
-          "url": "https://www.mlb.com/news/devin-williams-airbender-pitch-explainer",
-          "retrievedAt": "2026-06-04",
-          "season": "2024"
-        },
-        "confidence": "secondhand-attributed",
-        "note": "Devin Williams to The Athletic in 2020, re-published in MLB.com's Airbender explainer. It speaks to his own changeup, the extreme tail of the family, not the circle change in general."
-      },
-      "rights": "original"
-    },
-    "motion": {
-      "spinAxis": {
-        "x": 0.62,
-        "y": 0.52,
-        "z": 0.59
-      },
-      "forceLabel": "Magnus, arm-side",
-      "verticalShape": "flat",
-      "horizontalDir": "arm-side",
-      "breakView": "movement"
-    },
-    "display": {
-      "slug": "circle-change",
-      "shortName": "Circle change",
-      "specimenNo": "02",
-      "heroSub": "Fastball arm, a beat late.",
-      "heroIntro": "The same arm action, the ball deeper in the hand. It arrives late, fading toward the arm and tumbling under the barrel. This is how the pitch fools timing.",
-      "foundationCaption": "It fades toward the arm and drops under a fastball-timed swing, all on identical arm speed.",
-      "mastersIntro": "Four documented changeups, four answers. The visual is our own seam schematic. What sets each version apart is in the read, not a gauge."
-    },
-    "masterVariants": [
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Cole Hamels",
-        "context": "The textbook circle change and one of the defining changeups of his generation, a bat-missing pitch built on identical arm action and late arrival.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The bat-missing standard. Hitters chased it because the arm action read fastball and the ball was simply gone by the time the barrel arrived — the textbook everyone since has measured against.",
-          "source": {
-            "id": "fangraphs-changeup-2011",
-            "label": "FanGraphs, The Best Pitches of 2011: Changeup (Cole Hamels)",
-            "url": "https://blogs.fangraphs.com/the-best-pitches-of-2011-changeup/",
-            "retrievedAt": "2026-06-04",
-            "season": "2011"
-          },
-          "confidence": "reputable-analysis"
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Devin Williams",
-        "context": "The extreme tail, the Airbender. We show it as the outer limit of the circle grip while flagging that its movement pushes toward screwball territory.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The outer limit of the grip. His Airbender fades so hard and so late that it reads less like a changeup than a screwball — the same family, taken past where the family usually ends.",
-          "source": {
-            "id": "mlb-williams-airbender",
-            "label": "MLB.com, Devin Williams and the Airbender changeup",
-            "url": "https://www.mlb.com/news/devin-williams-airbender-pitch-explainer",
-            "retrievedAt": "2026-06-04",
-            "season": "2024"
-          },
-          "confidence": "official-data"
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Logan Webb",
-        "context": "The other archetype: a high-volume shape-and-location change built for weak contact and ground balls, not empty swings, the counterweight to the bat-missers.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The ground-ball answer. His change wins on shape and location instead of a huge timing gap, beating the ball into the dirt rather than past the bat — proof a great changeup need not be a chase pitch.",
-          "source": {
-            "id": "savant-webb",
-            "label": "Baseball Savant (Statcast), Logan Webb",
-            "url": "https://baseballsavant.mlb.com/savant-player/logan-webb-657277",
-            "retrievedAt": "2026-06-04",
-            "season": "2024"
-          },
-          "confidence": "official-data"
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Johan Santana",
-        "context": "The historical benchmark, and the honest one. Widely called the best changeup of its era, built on identical arm action rather than raw movement; the record shows the disguise did the work. He has his own chapter in the Craftsmen.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The deception case, fully honest. The legend was the speed drop; the more useful lesson is the disguise — same arm, same look, late arrival.",
-          "source": {
-            "id": "santana-fangraphs-nohit",
-            "label": "FanGraphs, Johan Santana Rides Changeup to No-Hitter",
-            "url": "https://blogs.fangraphs.com/johan-santana-rides-changeup-to-no-hitter/",
-            "retrievedAt": "2026-06-05",
-            "season": "2012"
-          },
-          "confidence": "reputable-analysis"
-        },
-        "rights": "original"
-      }
-    ],
-    "community": {
-      "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
-      "columns": [
-        "Rank",
-        "Variant",
-        "Adoption",
-        "Source tier"
-      ]
-    },
-    "guide": {
-      "family": "The deception",
-      "tagline": "It looks exactly like the fastball and arrives a beat slower. It wrecks a hitter’s timing.",
-      "feel": "Fastball arm speed, always. More surface area and deeper hand contact take the speed off, not a slower arm.",
-      "steps": [
-        "Make an OK sign: curl your index down to meet your thumb on the side of the ball, forming a visible circle.",
-        "Let the ball sit deeper in your hand, toward the palm, with more surface on the ball than a fastball.",
-        "Throw it with fastball arm speed and the same release; the deep grip deadens the pitch for you.",
-        "Let the palm turn out toward your arm side at release. Never try to spin it by hand."
-      ],
-      "does": {
-        "headline": "It lies. Same look, slower clock.",
-        "plain": "Buried in the hand, the ball comes out slower with a little arm-side fade. The hitter has already committed to fastball timing, so the swing starts early, and the barrel passes over the top of it."
-      }
-    },
-    "seam": {
-      "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
-      "stitchCount": {
-        "value": "108 double stitches, 216 individual",
-        "source": {
-          "id": "wiki-baseball-ball",
-          "label": "Wikipedia, Baseball (ball)",
-          "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "reputable-analysis",
-        "note": "A manufacturing convention, not a number written into the rulebook, which fixes only weight and circumference."
-      },
-      "accuracyLevel": "seam-informed schematic",
-      "accuracyNote": {
-        "value": "The published closed-form figure-eight seam curve is laid on the sphere, but the exact regulation cover constants and the full 108-stitch pattern are approximated, not measured.",
-        "source": {
-          "id": "mathcurve",
-          "label": "mathcurve.com, Seam line of a tennis ball (Ferreol / Esculier)",
-          "url": "https://mathcurve.com/courbes3d.gb/couture/couture.shtml",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "reputable-analysis",
-        "approximate": true,
-        "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
-      },
-      "calibrationDoc": "docs/seam-calibration.md"
-    }
-  },
-  {
-    "canonical": {
       "id": "twelve-six-curveball",
       "name": "12-6 curveball",
       "family": "breaking",
@@ -1100,10 +826,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "side",
         "ballDepth": "deep-in-hand",
         "fingerSpacing": "touching",
         "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles up and slightly forward, the hand cocked to pull down the front.",
+          "palmFacing": "Palm toward the body at release as the wrist carries over the top."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited description: middle finger lined along a long seam as the engine, index resting beside it, thumb braced on the back seam as the opposing pressure. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "driveline-curveball",
+            "label": "Driveline Baseball, How to Throw a Curveball",
+            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-curveball/",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The straight-curve family; spike and knuckle variants change the index shape, not the middle-finger seam leverage."
+        },
         "thumbRole": "Thumb anchors the back seam under the middle finger.",
         "palmGapCue": "The ball can sit deeper than a fastball to load the pull-down feel.",
         "releaseCue": "Middle finger pulls down through the front of the ball to create topspin.",
@@ -1114,7 +856,11 @@
             "label": "Middle seam",
             "seamT": 0.3,
             "lift": 0.02,
-            "seamRelation": "Leverages the seam for the pull-down",
+            "seamOffset": 0,
+            "azimuth": -14,
+            "engagement": "inside",
+            "pressureTier": "primary",
+            "seamRelation": "Lined along the seam, leveraging it for the pull-down",
             "pressureRole": "Primary curveball pressure",
             "cue": "This finger owns the pitch",
             "curl": 0.36
@@ -1124,6 +870,10 @@
             "label": "Index light",
             "seamT": 0.255,
             "lift": 0.02,
+            "seamOffset": -0.03,
+            "azimuth": -30,
+            "engagement": "pad",
+            "pressureTier": "light",
             "seamRelation": "Rests beside the middle finger",
             "pressureRole": "Light guide or spiked variant",
             "cue": "Minimal pressure",
@@ -1134,7 +884,11 @@
             "label": "Back thumb",
             "seamT": 0.8,
             "lift": 0,
-            "seamRelation": "Underneath on the back seam",
+            "seamOffset": 0,
+            "azimuth": 20,
+            "engagement": "inside",
+            "pressureTier": "support",
+            "seamRelation": "Braced underneath on the back seam",
             "pressureRole": "Opposes the middle-finger pull",
             "cue": "Anchor under the seam",
             "curl": 0.5
@@ -1432,6 +1186,1056 @@
   },
   {
     "canonical": {
+      "id": "circle-changeup",
+      "name": "Circle changeup",
+      "family": "offspeed",
+      "grip": {
+        "value": "The thumb and index finger form an OK circle against the inner side of the ball while the other three fingers lay across the top. The ball rests deeper in the hand, which deadens the exit, and the off-center grip tilts the axis toward the arm for fade.",
+        "source": {
+          "id": "mlb-glossary-changeup",
+          "label": "MLB.com Statcast Glossary, Changeup (CH)",
+          "url": "https://www.mlb.com/glossary/pitch-types/changeup",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "official-data",
+        "note": "Paraphrased from MLB.com Glossary, not quoted."
+      },
+      "gripDetails": [
+        {
+          "value": "MLB.com calls the circle change the most common changeup grip: thumb and index in a circle on the inner side, the other three fingers over the rest of the ball. Held farther back in the hand, sometimes toward the palm, which is what takes the speed off.",
+          "source": {
+            "id": "mlb-glossary-changeup",
+            "label": "MLB.com Statcast Glossary, Changeup (CH)",
+            "url": "https://www.mlb.com/glossary/pitch-types/changeup",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "official-data",
+          "note": "Paraphrased from the official glossary."
+        },
+        {
+          "value": "Driveline cues the fade by rolling the hand over the ball or swiping its inside: the more the hand turns over, the more arm-side run. The more the axis leans toward the arm, the more the ball runs that way.",
+          "source": {
+            "id": "driveline-changeup",
+            "label": "Driveline Baseball, How to Throw a Changeup",
+            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-changeup/",
+            "retrievedAt": "2026-06-04",
+            "season": "2020"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Mechanical cues paraphrased from Driveline."
+        },
+        {
+          "value": "The deception is the late arrival on identical arm action, so the standard cue is to keep fastball arm speed and let the grip deaden the pitch, not the throw.",
+          "source": {
+            "id": "mlb-glossary-changeup",
+            "label": "MLB.com Statcast Glossary, Changeup (CH)",
+            "url": "https://www.mlb.com/glossary/pitch-types/changeup",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "official-data",
+          "note": "The \"start the swing before the pitch arrives\" deception is the glossary definition; the maintain-arm-speed cue is standard and widely taught."
+        }
+      ],
+      "fingerPlacement": [
+        {
+          "seamT": 0.305,
+          "lift": 0.02,
+          "label": "Index",
+          "finger": "index",
+          "note": "Over the top, with the thumb it forms the OK circle on the inner side."
+        },
+        {
+          "seamT": 0.355,
+          "lift": 0.02,
+          "label": "Middle",
+          "finger": "middle",
+          "note": "Across the top, leading the three fingers that grip the ball."
+        },
+        {
+          "seamT": 0.86,
+          "lift": 0,
+          "label": "Thumb",
+          "finger": "thumb",
+          "note": "Curled to meet the index in a circle; the ball sits deeper in the hand."
+        }
+      ],
+      "gripModel": {
+        "status": "filed",
+        "defaultView": "thumb",
+        "ballDepth": "deep-in-hand",
+        "fingerSpacing": "wide",
+        "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles rolled toward the arm side so the circle shows the plate its rim.",
+          "palmFacing": "Palm turning slightly out — pronated — as the hand comes through."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: thumb and index closed into the OK circle on the inner side, middle and ring carrying the ball across the top, the whole hold deeper in the hand than a fastball. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-changeup",
+            "label": "MLB.com Statcast Glossary, Changeup (CH)",
+            "url": "https://www.mlb.com/glossary/pitch-types/changeup",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Circle size varies by hand; small hands often fit a three-finger or palm change better."
+        },
+        "thumbRole": "Thumb curls toward the index to form the inside circle.",
+        "palmGapCue": "The ball sits deeper than a fastball, closer to the palm.",
+        "releaseCue": "Keep fastball arm speed and let the deeper grip take speed off.",
+        "visualCaveat": "Grip geometry is schematic and shows a standard circle-change family; individual circle size varies by hand. Do not call a grip a circle change unless the thumb-index circle is visible; small hands may fit a three-finger or palm/football change better.",
+        "contacts": [
+          {
+            "finger": "index",
+            "label": "Index circle",
+            "seamT": 0.305,
+            "lift": 0.02,
+            "seamOffset": -0.04,
+            "azimuth": 62,
+            "engagement": "inside",
+            "pinchesToward": "thumb",
+            "pressureTier": "light",
+            "seamRelation": "Curls toward thumb on the inside of the ball",
+            "pressureRole": "Forms the loose circle, not the main drive",
+            "cue": "Circle, do not pinch",
+            "curl": 0.82
+          },
+          {
+            "finger": "middle",
+            "label": "Middle top",
+            "seamT": 0.355,
+            "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 78,
+            "engagement": "pad",
+            "pressureTier": "primary",
+            "seamRelation": "Across the top of the ball",
+            "pressureRole": "Main top-finger control",
+            "cue": "Fastball arm, deeper hold",
+            "curl": 0.34
+          },
+          {
+            "finger": "ring",
+            "label": "Ring pad",
+            "seamT": 0.405,
+            "lift": 0.02,
+            "seamOffset": 0.02,
+            "azimuth": 74,
+            "engagement": "pad",
+            "pressureTier": "support",
+            "seamRelation": "Beside the middle, sharing the top of the ball",
+            "pressureRole": "Carries weight so the index can stay in the circle",
+            "cue": "Let it hold real weight",
+            "curl": 0.36
+          },
+          {
+            "finger": "thumb",
+            "label": "Thumb circle",
+            "seamT": 0.86,
+            "lift": 0,
+            "seamOffset": -0.02,
+            "azimuth": 50,
+            "engagement": "inside",
+            "pinchesToward": "index",
+            "pressureTier": "support",
+            "seamRelation": "Meets the index on the inner side",
+            "pressureRole": "Completes the OK circle",
+            "cue": "Loose circle, palm side",
+            "curl": 0.8
+          }
+        ]
+      },
+      "mechanics": {
+        "value": "The arm matches the fastball; the deeper grip and loosened circle deaden the exit, not a softer throw. A slight pronation at release tilts the axis arm-side, so the ball fades toward the throwing hand and tumbles as it crosses.",
+        "source": {
+          "id": "driveline-changeup",
+          "label": "Driveline Baseball, How to Throw a Changeup",
+          "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-changeup/",
+          "retrievedAt": "2026-06-04",
+          "season": "2020"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Paraphrased. Maintaining fastball arm speed is a standard changeup cue echoed across MLB.com and instructional sources."
+      },
+      "physics": {
+        "spinAxis": {
+          "value": "A fastball-like backspin rotated toward the arm. The axis leans arm-side rather than pointing straight up, and the harder it leans, the harder the ball fades toward the throwing hand.",
+          "source": {
+            "id": "driveline-changeup",
+            "label": "Driveline Baseball, How to Throw a Changeup",
+            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-changeup/",
+            "retrievedAt": "2026-06-04",
+            "season": "2020"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Where the tilt sits depends on how the hand turns over; observed and spin-based reads of the axis differ by method."
+        },
+        "shape": {
+          "value": "It runs toward the throwing hand and tumbles under the barrel, late and on the arm-side. The fade is real and the drop is real; how wide it runs depends on how hard the arm turns the axis over.",
+          "source": {
+            "id": "savant-webb",
+            "label": "Baseball Savant (Statcast), Logan Webb",
+            "url": "https://baseballsavant.mlb.com/savant-player/logan-webb-657277",
+            "retrievedAt": "2026-06-04",
+            "season": "2024"
+          },
+          "confidence": "official-data",
+          "note": "Described as shape, not a measured number. The arm-side run and the drop are both genuine; the amount varies arm to arm."
+        },
+        "teaching": {
+          "value": "The late arrival and the fade work because the arm action is identical to the fastball. The eyes read fastball, the swing starts on fastball timing, then the ball arrives a beat late while fading down and toward the arm, and the barrel passes over it. Take the arm speed off and the deception collapses.",
+          "source": {
+            "id": "mlb-glossary-changeup",
+            "label": "MLB.com Statcast Glossary, Changeup (CH)",
+            "url": "https://www.mlb.com/glossary/pitch-types/changeup",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "official-data",
+          "note": "Synthesizes the MLB.com deception definition with Driveline mechanics. The whole pitch lives on the gap between the look and the clock."
+        }
+      },
+      "voice": {
+        "value": "It's just an outlier pitch. The spin I'm able to create makes it different from every other changeup.",
+        "source": {
+          "id": "mlb-williams-airbender",
+          "label": "MLB.com, Devin Williams and the Airbender changeup",
+          "url": "https://www.mlb.com/news/devin-williams-airbender-pitch-explainer",
+          "retrievedAt": "2026-06-04",
+          "season": "2024"
+        },
+        "confidence": "secondhand-attributed",
+        "note": "Devin Williams to The Athletic in 2020, re-published in MLB.com's Airbender explainer. It speaks to his own changeup, the extreme tail of the family, not the circle change in general."
+      },
+      "rights": "original"
+    },
+    "motion": {
+      "spinAxis": {
+        "x": 0.62,
+        "y": 0.52,
+        "z": 0.59
+      },
+      "forceLabel": "Magnus, arm-side",
+      "verticalShape": "flat",
+      "horizontalDir": "arm-side",
+      "breakView": "movement"
+    },
+    "display": {
+      "slug": "circle-change",
+      "shortName": "Circle change",
+      "specimenNo": "02",
+      "heroSub": "Fastball arm, a beat late.",
+      "heroIntro": "The same arm action, the ball deeper in the hand. It arrives late, fading toward the arm and tumbling under the barrel while the swing is already gone.",
+      "foundationCaption": "It fades toward the arm and drops under a fastball-timed swing, all on identical arm speed.",
+      "mastersIntro": "Four documented changeups, four answers. The visual is our own seam schematic. What sets each version apart is in the read, not a gauge."
+    },
+    "masterVariants": [
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Cole Hamels",
+        "context": "The textbook circle change and one of the defining changeups of his generation, a bat-missing pitch built on identical arm action and late arrival.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "The bat-missing standard. Hitters chased it because the arm action read fastball and the ball was simply gone by the time the barrel arrived — the textbook everyone since has measured against.",
+          "source": {
+            "id": "fangraphs-changeup-2011",
+            "label": "FanGraphs, The Best Pitches of 2011: Changeup (Cole Hamels)",
+            "url": "https://blogs.fangraphs.com/the-best-pitches-of-2011-changeup/",
+            "retrievedAt": "2026-06-04",
+            "season": "2011"
+          },
+          "confidence": "reputable-analysis"
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Devin Williams",
+        "context": "The extreme tail, the Airbender. We show it as the outer limit of the circle grip while flagging that its movement pushes toward screwball territory.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "The outer limit of the grip. His Airbender fades so hard and so late that it reads less like a changeup than a screwball — the same family, taken past where the family usually ends.",
+          "source": {
+            "id": "mlb-williams-airbender",
+            "label": "MLB.com, Devin Williams and the Airbender changeup",
+            "url": "https://www.mlb.com/news/devin-williams-airbender-pitch-explainer",
+            "retrievedAt": "2026-06-04",
+            "season": "2024"
+          },
+          "confidence": "official-data"
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Logan Webb",
+        "context": "The other archetype: a high-volume shape-and-location change built for weak contact and ground balls, not empty swings, the counterweight to the bat-missers.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "The ground-ball answer. His change wins on shape and location instead of a huge timing gap, beating the ball into the dirt rather than past the bat — proof a great changeup need not be a chase pitch.",
+          "source": {
+            "id": "savant-webb",
+            "label": "Baseball Savant (Statcast), Logan Webb",
+            "url": "https://baseballsavant.mlb.com/savant-player/logan-webb-657277",
+            "retrievedAt": "2026-06-04",
+            "season": "2024"
+          },
+          "confidence": "official-data"
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Johan Santana",
+        "context": "The historical benchmark, and the honest one. Widely called the best changeup of its era, built on identical arm action rather than raw movement; the record shows the disguise did the work. He has his own chapter in the Craftsmen.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "The deception case, fully honest. The legend was the speed drop; the more useful lesson is the disguise — same arm, same look, late arrival.",
+          "source": {
+            "id": "santana-fangraphs-nohit",
+            "label": "FanGraphs, Johan Santana Rides Changeup to No-Hitter",
+            "url": "https://blogs.fangraphs.com/johan-santana-rides-changeup-to-no-hitter/",
+            "retrievedAt": "2026-06-05",
+            "season": "2012"
+          },
+          "confidence": "reputable-analysis"
+        },
+        "rights": "original"
+      }
+    ],
+    "community": {
+      "enabled": true,
+      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
+      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "columns": [
+        "Rank",
+        "Variant",
+        "Adoption",
+        "Source tier"
+      ]
+    },
+    "guide": {
+      "family": "The deception",
+      "tagline": "It looks exactly like the fastball and arrives a beat slower. It wrecks a hitter’s timing.",
+      "feel": "Fastball arm speed, always. More surface area and deeper hand contact take the speed off, not a slower arm.",
+      "steps": [
+        "Make an OK sign: curl your index down to meet your thumb on the side of the ball, forming a visible circle.",
+        "Let the ball sit deeper in your hand, toward the palm, with more surface on the ball than a fastball.",
+        "Throw it with fastball arm speed and the same release; the deep grip deadens the pitch for you.",
+        "Let the palm turn out toward your arm side at release. Never try to spin it by hand."
+      ],
+      "does": {
+        "headline": "It lies. Same look, slower clock.",
+        "plain": "Buried in the hand, the ball comes out slower with a little arm-side fade. The hitter has already committed to fastball timing, so the swing starts early, and the barrel passes over the top of it."
+      }
+    },
+    "seam": {
+      "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "stitchCount": {
+        "value": "108 double stitches, 216 individual",
+        "source": {
+          "id": "wiki-baseball-ball",
+          "label": "Wikipedia, Baseball (ball)",
+          "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "reputable-analysis",
+        "note": "A manufacturing convention, not a number written into the rulebook, which fixes only weight and circumference."
+      },
+      "accuracyLevel": "seam-informed schematic",
+      "accuracyNote": {
+        "value": "The published closed-form figure-eight seam curve is laid on the sphere, but the exact regulation cover constants and the full 108-stitch pattern are approximated, not measured.",
+        "source": {
+          "id": "mathcurve",
+          "label": "mathcurve.com, Seam line of a tennis ball (Ferreol / Esculier)",
+          "url": "https://mathcurve.com/courbes3d.gb/couture/couture.shtml",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "reputable-analysis",
+        "approximate": true,
+        "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
+      },
+      "calibrationDoc": "docs/seam-calibration.md"
+    }
+  },
+  {
+    "canonical": {
+      "id": "split-finger-fastball",
+      "name": "Splitter",
+      "family": "offspeed",
+      "grip": {
+        "value": "The index and middle fingers are wedged to opposite sides of the ball, spread wide on the outside of the leather, wider and farther back than a forkball, with the ball coming off the inside of the fingers rather than the fingertips. Thrown with the arm action of a fastball.",
+        "source": {
+          "id": "wiki-splitter",
+          "label": "Wikipedia, Split-finger fastball",
+          "url": "https://en.wikipedia.org/wiki/Split-finger_fastball",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Paraphrased from Wikipedia (Split-finger fastball) and corroborated by Driveline; not quoted."
+      },
+      "gripDetails": [
+        {
+          "value": "A descendant of the forkball, the splitter is held farther forward in the hand with a wider split between the fingers, which is why it can be thrown harder than the deep-jammed forkball.",
+          "source": {
+            "id": "wiki-splitter",
+            "label": "Wikipedia, Split-finger fastball",
+            "url": "https://en.wikipedia.org/wiki/Split-finger_fastball",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Wikipedia describes the splitter as a faster, shallower relative of the forkball."
+        },
+        {
+          "value": "Driveline files the splitter under the same family and notes its defining trait: it spins far less than a fastball. The lost backspin, not any added force, is what makes it drop.",
+          "source": {
+            "id": "driveline-splitters",
+            "label": "Driveline Baseball Help, Pitch Grips: Splitters",
+            "url": "https://help.drivelinebaseball.com/portal/en/kb/articles/pitch-grips-splitters",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Paraphrased from Driveline. Described as a loss of spin, in words, not a measured figure."
+        },
+        {
+          "value": "Bruce Sutter's unusually large hands let him spread the split far enough to execute it; he learned it from instructor Fred Martin after his fastball faded post-surgery and never changed the grip after the first day.",
+          "source": {
+            "id": "sutter-hof",
+            "label": "National Baseball Hall of Fame, Sutter remembered as pioneer of the split-finger",
+            "url": "https://baseballhall.org/discover/Sutter-remembered-as-pioneer-of-split-fingered-fastball",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "From the Hall of Fame tribute to Sutter; the hand-size detail is corroborated on his Wikipedia page."
+        }
+      ],
+      "fingerPlacement": [
+        {
+          "seamT": 0.265,
+          "lift": 0.03,
+          "label": "Index",
+          "finger": "index",
+          "note": "Wedged to the outside of the ball, well off the middle finger."
+        },
+        {
+          "seamT": 0.43,
+          "lift": 0.03,
+          "label": "Middle",
+          "finger": "middle",
+          "note": "Wedged to the opposite side, the wide split that kills the spin."
+        },
+        {
+          "seamT": 0.83,
+          "lift": 0,
+          "label": "Thumb",
+          "finger": "thumb",
+          "note": "Underneath on the leather, centered between the split fingers."
+        }
+      ],
+      "gripModel": {
+        "status": "filed",
+        "defaultView": "top",
+        "ballDepth": "neutral",
+        "fingerSpacing": "wide",
+        "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles spread into a wide V behind the ball, square to the target.",
+          "palmFacing": "Palm to the plate with a stiff wrist — fastball hand, deadened spin."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: index and middle split wide to opposite sides of the ball, pads riding the open leather outside the seam tracks, thumb centered beneath. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "wiki-splitter",
+            "label": "Wikipedia, Split-finger fastball",
+            "url": "https://en.wikipedia.org/wiki/Split-finger_fastball",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Outside the seams is the splitter tell; depth and spread vary with hand size, and short fingers genuinely struggle to hold it."
+        },
+        "thumbRole": "Thumb supports underneath, centered between the two split fingers.",
+        "palmGapCue": "The ball sits up between the split fingers, farther forward than a forkball.",
+        "releaseCue": "Throw it like the fastball and let the wide split deaden the spin.",
+        "visualCaveat": "Grip geometry is schematic and shows the wide split-finger family; the depth and spread vary with hand size, and large hands make it easier. On shorter fingers the split can look close to a two-seam; read whether the fingers sit outside the seam tracks instead of directly on them.",
+        "contacts": [
+          {
+            "finger": "index",
+            "label": "Index pad",
+            "seamT": 0.265,
+            "lift": 0.03,
+            "seamOffset": 0.1,
+            "azimuth": 18,
+            "engagement": "pad",
+            "pressureTier": "primary",
+            "seamRelation": "Wedged to the outside of the ball, off the seam tracks",
+            "pressureRole": "Half of the wide split",
+            "cue": "Split wide, fingers off the seams",
+            "curl": 0.16
+          },
+          {
+            "finger": "middle",
+            "label": "Middle pad",
+            "seamT": 0.43,
+            "lift": 0.03,
+            "seamOffset": 0.1,
+            "azimuth": 18,
+            "engagement": "pad",
+            "pressureTier": "support",
+            "seamRelation": "Wedged to the opposite side, off the seam tracks",
+            "pressureRole": "The other half of the split that kills the backspin",
+            "cue": "As wide as the hand allows, stiff wrist",
+            "curl": 0.16
+          },
+          {
+            "finger": "thumb",
+            "label": "Thumb",
+            "seamT": 0.83,
+            "lift": 0,
+            "seamOffset": 0,
+            "azimuth": 55,
+            "engagement": "inside",
+            "pressureTier": "support",
+            "seamRelation": "Under smooth leather, centered",
+            "pressureRole": "Balances the ball between the split fingers",
+            "cue": "Centered underneath",
+            "curl": 0.42
+          }
+        ]
+      },
+      "mechanics": {
+        "value": "It is thrown with the arm speed and release of a fastball. The wide split and a stiffer wrist dramatically reduce the backspin, weakening the Magnus lift that keeps a four-seamer riding, so gravity wins late and the ball drops sharply, the classic trap-door look.",
+        "source": {
+          "id": "gausman-conversation",
+          "label": "The Conversation, the physics of Kevin Gausman's splitter",
+          "url": "https://theconversation.com/how-the-physics-of-baseball-explains-blue-jay-kevin-gausmans-signature-pitch-268732",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Paraphrased from The Conversation's physics breakdown of Gausman's splitter."
+      },
+      "voice": {
+        "value": "I’d like to tell you I worked and worked at it but I’d be lying to you because it did come to me right away. The first day I threw it I’d get it to break ... I never adjusted my grip after the first day.",
+        "source": {
+          "id": "sutter-hof",
+          "label": "National Baseball Hall of Fame, Sutter remembered as pioneer of the split-finger",
+          "url": "https://baseballhall.org/discover/Sutter-remembered-as-pioneer-of-split-fingered-fastball",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "pitcher-own-words",
+        "note": "Bruce Sutter, recalling learning the split-finger from Fred Martin, in the Hall of Fame tribute."
+      },
+      "physics": {
+        "spinAxis": {
+          "value": "A fastball-like backspin axis out of the hand, so the two look identical at release; the deception lives in matching the fastball's tilt until the pitch separates in flight.",
+          "source": {
+            "id": "wiki-splitter",
+            "label": "Wikipedia, Split-finger fastball",
+            "url": "https://en.wikipedia.org/wiki/Split-finger_fastball",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis"
+        },
+        "shape": {
+          "value": "Rides the fastball's line out of the hand, then falls off the table late and hard, a trap-door drop that arrives just under the barrel. With the backspin stripped away it tumbles instead of carrying, and the floor seems to vanish at the last instant.",
+          "source": {
+            "id": "gausman-conversation",
+            "label": "The Conversation, the physics of Kevin Gausman's splitter",
+            "url": "https://theconversation.com/how-the-physics-of-baseball-explains-blue-jay-kevin-gausmans-signature-pitch-268732",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Described as shape, not a measured number. The fall is real; how much depends on the arm and the hand."
+        },
+        "teaching": {
+          "value": "Because it leaves the hand looking like the fastball, the hitter starts a fastball swing; then the lost backspin lets gravity pull it under the barrel at the last instant. Take the split away or put the backspin back and it just becomes a slow fastball.",
+          "source": {
+            "id": "gausman-conversation",
+            "label": "The Conversation, the physics of Kevin Gausman's splitter",
+            "url": "https://theconversation.com/how-the-physics-of-baseball-explains-blue-jay-kevin-gausmans-signature-pitch-268732",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Synthesized from The Conversation and Wikipedia: the weakened-Magnus drop off a fastball look is the whole pitch."
+        }
+      },
+      "rights": "original",
+      "gripImages": []
+    },
+    "motion": {
+      "spinAxis": {
+        "x": 0.92,
+        "y": 0.18,
+        "z": 0.16
+      },
+      "forceLabel": "Magnus, weak",
+      "verticalShape": "flat",
+      "horizontalDir": "arm-side",
+      "breakView": "carry"
+    },
+    "display": {
+      "slug": "splitter",
+      "shortName": "Splitter",
+      "specimenNo": "05",
+      "heroSub": "A fastball look, a trap-door drop.",
+      "heroIntro": "Wedge the fingers wide, throw it like the fastball, and let the lost backspin drop it off the table at the plate. The same arm, the same path, then the floor falls out.",
+      "foundationCaption": "It barely rides, so it falls almost like a spinless ball, late and under the barrel.",
+      "mastersIntro": "From the pitch's pioneer to its modern swing-and-miss kings. The visual is our own seam schematic. What sets each arm's splitter apart is in the read and the hand, not a gauge."
+    },
+    "masterVariants": [
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Bruce Sutter",
+        "context": "The pioneer. Taught the split-finger by instructor Fred Martin after arm surgery, he rode it to the Hall of Fame as one of the first dominant closers.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "The first to ride this pitch to the Hall of Fame, and the proof of concept for the whole grip — a closer who turned one trap-door drop into a career after his fastball left him.",
+          "source": {
+            "id": "sutter-wiki",
+            "label": "Wikipedia, Bruce Sutter",
+            "url": "https://en.wikipedia.org/wiki/Bruce_Sutter",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis"
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Roger Clemens",
+        "context": "Added the splitter in the nineties, nicknamed it \"Mr. Splitty,\" and made it his out pitch, one of the most devastating in the pitch's history. He has his own chapter in the Craftsmen.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "Late-career reinvention in one pitch: he bolted \"Mr. Splitty\" onto a power arsenal and kept missing barrels long after the pure heat would have faded, which is why he stayed an ace into his forties.",
+          "source": {
+            "id": "clemens-wiki",
+            "label": "Wikipedia, Roger Clemens",
+            "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "official-data"
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Kevin Gausman",
+        "context": "The modern volume king. His splitter has produced more swinging strikes than any other pitcher's since the Statcast era began, by a wide margin.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "The most prolific swing-and-miss splitter of the tracked era, and not close — he throws it like a fastball over and over and hitters keep waving under the late drop because the look never tips.",
+          "source": {
+            "id": "gausman-jays",
+            "label": "Jays Journal, Gausman's splitter is one of the best pitches in baseball",
+            "url": "https://jaysjournal.com/kevin-gausman-s-splitter-has-been-one-of-the-best-pitches-in-baseball-01js0g3za211",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis"
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Shohei Ohtani",
+        "context": "The unhittable one. His trap-door splitter became, in a single season, about as unhittable as a pitch gets.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "A splitter thrown hard enough to look like premium heat until the floor drops — for one season hitters who put a swing on it almost never made contact, which is as close to unhittable as the pitch comes.",
+          "source": {
+            "id": "ohtani-mlb-splitter",
+            "label": "MLB.com, Ohtani's splitter still the most unhittable pitch",
+            "url": "https://www.mlb.com/news/shohei-ohtani-splitter-still-most-unhittable-pitch",
+            "retrievedAt": "2026-06-05",
+            "season": "2021"
+          },
+          "confidence": "reputable-analysis"
+        },
+        "rights": "original"
+      }
+    ],
+    "community": {
+      "enabled": true,
+      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
+      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "columns": [
+        "Rank",
+        "Variant",
+        "Adoption",
+        "Source tier"
+      ]
+    },
+    "guide": {
+      "family": "The trap door",
+      "tagline": "It looks like the fastball the whole way, then the floor drops out at the plate.",
+      "feel": "Throw it as hard as the fastball. The wide split does the work, not a softer arm.",
+      "steps": [
+        "Wedge your index and middle fingers wide, to opposite sides of the ball, outside the seam tracks rather than directly on them.",
+        "Let the ball sit up between them, farther forward than a deep forkball.",
+        "Rest your thumb underneath, centered between the split fingers.",
+        "Throw it with fastball arm speed and a firm wrist; the split kills the spin for you."
+      ],
+      "does": {
+        "headline": "A fastball that quits on the hitter.",
+        "plain": "The wide grip strips the backspin a fastball lives on, so the ball stops riding and gravity takes it down late. The hitter has already swung where the fastball should be, and the pitch falls under the barrel."
+      }
+    },
+    "seam": {
+      "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "stitchCount": {
+        "value": "108 double stitches, 216 individual",
+        "source": {
+          "id": "wiki-baseball-ball",
+          "label": "Wikipedia, Baseball (ball)",
+          "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "reputable-analysis",
+        "note": "A manufacturing convention, not a number written into the rulebook, which fixes only weight and circumference."
+      },
+      "accuracyLevel": "seam-informed schematic",
+      "accuracyNote": {
+        "value": "The published closed-form figure-eight seam curve is laid on the sphere, but the exact regulation cover constants and the full 108-stitch pattern are approximated, not measured.",
+        "source": {
+          "id": "mathcurve",
+          "label": "mathcurve.com, Seam line of a tennis ball (Ferreol / Esculier)",
+          "url": "https://mathcurve.com/courbes3d.gb/couture/couture.shtml",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "reputable-analysis",
+        "approximate": true,
+        "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
+      },
+      "calibrationDoc": "docs/seam-calibration.md"
+    }
+  },
+  {
+    "canonical": {
+      "id": "cutter",
+      "name": "Cutter",
+      "family": "fastball",
+      "grip": {
+        "value": "A four-seam grip with both fingers shifted slightly toward one side of the ball — the glove side for the handedness — and thrown like a fastball. That off-center placement produces a short cutting movement at the plate without a slider's pronounced finger pull.",
+        "source": {
+          "id": "mlb-glossary-cutter",
+          "label": "MLB.com Glossary — Cutter (FC)",
+          "url": "https://www.mlb.com/glossary/pitch-types/cutter",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "official-data",
+        "note": "Paraphrased. MLB.com: both fingers placed toward one side (the right of the ball for a righty, the left for a lefty) to produce the cutting movement."
+      },
+      "gripDetails": [
+        {
+          "value": "A common build is a four-seam fastball grip with the ball set slightly off center in the hand — the same fastball, just nudged off the middle.",
+          "source": {
+            "id": "wiki-cut-fastball",
+            "label": "Wikipedia, Cut fastball",
+            "url": "https://en.wikipedia.org/wiki/Cut_fastball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Paraphrased from Wikipedia's grip description."
+        },
+        {
+          "value": "The cut comes from that finger placement and a touch of supination at release, not from a big wrist action — it is a fastball that bites. Lean harder into the supination and the off-center grip and it drifts toward hard-slider territory.",
+          "source": {
+            "id": "mlb-glossary-cutter",
+            "label": "MLB.com Glossary — Cutter (FC)",
+            "url": "https://www.mlb.com/glossary/pitch-types/cutter",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Paraphrased. MLB confirms the grip-driven cut and fastball delivery; the supination/slider-drift framing is coaching-standard."
+        },
+        {
+          "value": "It is the most ride-or-die-able single pitch in the game: Mariano Rivera threw almost nothing but his cutter across his whole career, and Kenley Jansen leans on his nearly as hard — proof that one great cutter can be a whole career.",
+          "source": {
+            "id": "wiki-cut-fastball",
+            "label": "Wikipedia, Cut fastball",
+            "url": "https://en.wikipedia.org/wiki/Cut_fastball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Paraphrased. Rivera and Jansen are among the most cutter-reliant arms ever tracked."
+        }
+      ],
+      "fingerPlacement": [
+        {
+          "seamT": 0.3,
+          "lift": 0.02,
+          "label": "Index",
+          "finger": "index",
+          "note": "Across the horseshoe like a four-seam, both fingers shifted slightly toward the glove side of the ball."
+        },
+        {
+          "seamT": 0.35,
+          "lift": 0.02,
+          "label": "Middle",
+          "finger": "middle",
+          "note": "Beside the index, carrying a touch more pressure to set the cut."
+        },
+        {
+          "seamT": 0.83,
+          "lift": 0,
+          "label": "Thumb",
+          "finger": "thumb",
+          "note": "Underneath, centered, as on a four-seam."
+        }
+      ],
+      "gripModel": {
+        "status": "filed",
+        "defaultView": "top",
+        "ballDepth": "neutral",
+        "fingerSpacing": "touching",
+        "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Square behind the ball like the four-seam, nudged a hair glove-side.",
+          "palmFacing": "Palm to the plate — the shift in the grip, not the wrist, makes the cut."
+        },
+        "provenance": {
+          "value": "Finger placement solved as an off-center four-seam: pads still crossing the horseshoe seam, the pair displaced toward the glove side, middle finger carrying the pressure. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-cutter",
+            "label": "MLB.com Glossary — Cutter (FC)",
+            "url": "https://www.mlb.com/glossary/pitch-types/cutter",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "MLB.com: both fingers set toward one side of the ball; the cut comes from placement and a touch of supination, never a slider-style pull."
+        },
+        "thumbRole": "Thumb stays centered underneath, as on the four-seam it is built from.",
+        "palmGapCue": "Held like a fastball, not buried — the cut is from the grip, not from squeezing.",
+        "releaseCue": "Throw it like a four-seam with a hair of supination — let the ball cut off the fingers rather than pulling down the side like a slider.",
+        "visualCaveat": "Grip geometry is schematic; the more a pitcher supinates and shifts off-center, the closer it drifts to a hard slider.",
+        "contacts": [
+          {
+            "finger": "index",
+            "label": "Index off-center",
+            "seamT": 0.3,
+            "lift": 0.02,
+            "seamOffset": -0.05,
+            "azimuth": 76,
+            "engagement": "pad",
+            "pressureTier": "support",
+            "seamRelation": "Across the horseshoe, shifted toward the glove side from a four-seam",
+            "pressureRole": "Sets the off-center grip",
+            "cue": "Just off center",
+            "curl": 0.3
+          },
+          {
+            "finger": "middle",
+            "label": "Middle pressure",
+            "seamT": 0.35,
+            "lift": 0.02,
+            "seamOffset": -0.07,
+            "azimuth": 98,
+            "engagement": "pad",
+            "pressureTier": "primary",
+            "seamRelation": "Across the horseshoe beside the index, slightly more pressure",
+            "pressureRole": "Drives the late cut",
+            "cue": "Lead with this finger",
+            "curl": 0.32
+          },
+          {
+            "finger": "thumb",
+            "label": "Thumb",
+            "seamT": 0.83,
+            "lift": 0,
+            "seamOffset": 0.02,
+            "azimuth": 55,
+            "engagement": "inside",
+            "pressureTier": "support",
+            "seamRelation": "Centered underneath",
+            "pressureRole": "Fastball support",
+            "cue": "Stay centered",
+            "curl": 0.4
+          }
+        ]
+      },
+      "mechanics": {
+        "value": "It is thrown a hair softer than the four-seam, with the same arm action, so it tunnels off the fastball. The late glove-side cut comes from the off-center grip and a slightly supinated release rather than from a slider's downward finger pull.",
+        "source": {
+          "id": "mlb-glossary-cutter",
+          "label": "MLB.com Glossary — Cutter (FC)",
+          "url": "https://www.mlb.com/glossary/pitch-types/cutter",
+          "retrievedAt": "2026-06-05"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Paraphrased. The fastball-minus feel and same-arm-action tunneling are coaching-standard, anchored to the MLB glossary's fastball-with-a-cut framing."
+      },
+      "physics": {
+        "spinAxis": {
+          "value": "A fastball axis tilted toward the glove side, just shy of upright for a right-hander, with a little of the spin turned gyro. That mix is why it rides like a fastball but cuts instead of running true.",
+          "source": {
+            "id": "mlb-glossary-cutter",
+            "label": "MLB.com Glossary — Cutter (FC)",
+            "url": "https://www.mlb.com/glossary/pitch-types/cutter",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The tilt is the coaching reference, not a glossary quote; MLB frames the cutter as a fastball that moves glove-side."
+        },
+        "shape": {
+          "value": "Rides almost like a four-seam, then bites short and late to the glove side at the very end — a small, sudden cut, far shorter than a slider's sweep. The harder a pitcher leans on it, the more ride he trades for that bite.",
+          "source": {
+            "id": "savant-clase",
+            "label": "Baseball Savant (Statcast), Emmanuel Clase",
+            "url": "https://baseballsavant.mlb.com/savant-player/emmanuel-clase-661403",
+            "retrievedAt": "2026-06-06",
+            "season": "2025"
+          },
+          "confidence": "official-data",
+          "note": "Described as shape, not a measured number. The cut is real and late; how far it bites depends on the arm — some ride high and fastball-like, some cut harder and shorter."
+        },
+        "teaching": {
+          "value": "A four-seam rides on pure backspin: the axis is sideways to flight, so the Magnus force points straight up and the ball carries. Tilt that axis toward the glove side and let a little of the spin go gyro, and the ball trades some of its ride for a short, late cut to the glove side — a fastball that bites just enough to miss the barrel.",
+          "source": {
+            "id": "mlb-glossary-cutter",
+            "label": "MLB.com Glossary — Cutter (FC)",
+            "url": "https://www.mlb.com/glossary/pitch-types/cutter",
+            "retrievedAt": "2026-06-05"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Synthesis of the four-seam Magnus model and the MLB glossary's fastball-with-a-cut description."
+        }
+      },
+      "rights": "original"
+    },
+    "motion": {
+      "spinAxis": {
+        "x": 0.85,
+        "y": -0.18,
+        "z": 0.5
+      },
+      "forceLabel": "Magnus, cut",
+      "gyro": false,
+      "verticalShape": "ride",
+      "horizontalDir": "glove-side",
+      "breakView": "movement"
+    },
+    "display": {
+      "slug": "cutter",
+      "shortName": "Cutter",
+      "specimenNo": "10",
+      "heroSub": "A fastball that bites.",
+      "heroIntro": "Take a four-seam grip, shift it slightly off-center, and throw it like a fastball. The ball rides almost like a heater, then cuts to the glove side at the last moment — just enough to find the end of the bat instead of the barrel. Rivera built a career on one.",
+      "foundationCaption": "It rides like a fastball but its axis is tilted glove-side, so a little of the lift becomes a short, late cut.",
+      "mastersIntro": "Three cutters across eras: the archetype, the modern extreme, and the cutter as a primary fastball. The visual is our own seam schematic. What sets each version apart is in the read, not a gauge."
+    },
+    "masterVariants": [
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Mariano Rivera",
+        "context": "The archetype: one cutter, thrown almost every pitch, all the way to the Hall of Fame. The proof that a single great pitch can be a whole career.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "A modest, almost gentle cut — but so late and so repeatable that hitters who knew it was coming still could not square it. The whole career rode on one pitch that bit just enough, every single time.",
+          "source": {
+            "id": "br-rivera-cutter",
+            "label": "Bleacher Report, Visual Breakdown of the Rise & Dominance of Mariano Rivera's Cutter",
+            "url": "https://bleacherreport.com/articles/1737396-visual-breakdown-of-the-rise-dominance-of-mariano-riveras-cutter",
+            "retrievedAt": "2026-06-06",
+            "season": "2007-2008"
+          },
+          "confidence": "reputable-analysis"
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Emmanuel Clase",
+        "context": "The modern extreme: a cutter thrown two of every three pitches, with a high-ride shape that behaves more like a fastball than a breaking ball.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "The cutter pushed to fastball intent, riding high and biting hard at once — so heavy and so firm that it plays like a heater that happens to cut, and hitters have to honor it like a true breaking ball.",
+          "source": {
+            "id": "savant-clase",
+            "label": "Baseball Savant (Statcast), Emmanuel Clase",
+            "url": "https://baseballsavant.mlb.com/savant-player/emmanuel-clase-661403",
+            "retrievedAt": "2026-06-06",
+            "season": "2025"
+          },
+          "confidence": "official-data"
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Corbin Burnes",
+        "context": "The cutter as a primary fastball, leaned on hard enough to anchor a Cy Young arsenal — a shorter, harder-to-square shape than Clase's.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "A shorter, tighter cut than Clase's, leaned on as the everyday fastball — the bite is small and the ride is honest, which is exactly what makes it so hard to barrel across a whole start.",
+          "source": {
+            "id": "savant-burnes",
+            "label": "Baseball Savant (Statcast), Corbin Burnes",
+            "url": "https://baseballsavant.mlb.com/savant-player/corbin-burnes-669203",
+            "retrievedAt": "2026-06-06",
+            "season": "2025"
+          },
+          "confidence": "official-data"
+        },
+        "rights": "original"
+      }
+    ],
+    "community": {
+      "enabled": true,
+      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
+      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "columns": [
+        "Rank",
+        "Variant",
+        "Adoption",
+        "Source tier"
+      ]
+    },
+    "guide": {
+      "family": "The late cut",
+      "tagline": "A fastball thrown off-center, so it rides like a heater and then bites to the glove side at the end.",
+      "feel": "Throw it like your fastball. Shift the grip slightly off-center and let the ball cut off your fingers — do not pull down the side like a slider.",
+      "steps": [
+        "Start from your four-seam grip and shift both fingers slightly toward the glove side of the ball.",
+        "Let the middle finger carry a touch more pressure.",
+        "Throw it with full fastball arm speed and just a hair of supination.",
+        "Let the ball cut off the fingers; the bite is small and late, and that is the point."
+      ],
+      "does": {
+        "headline": "It rides like a fastball, then jumps to the glove side at the end.",
+        "plain": "A cutter looks like a fastball almost the whole way, then darts to the glove side right before it gets to the plate. That tiny, late move is enough to catch the thin part of the bat instead of the barrel — which is why a great one breaks so many bats."
+      }
+    },
+    "seam": {
+      "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "stitchCount": {
+        "value": "108 double stitches, 216 individual",
+        "source": {
+          "id": "wiki-baseball-ball",
+          "label": "Wikipedia, Baseball (ball)",
+          "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "reputable-analysis",
+        "note": "A manufacturing convention, not a number written into the rulebook, which fixes only weight and circumference."
+      },
+      "accuracyLevel": "seam-informed schematic",
+      "accuracyNote": {
+        "value": "The published closed-form figure-eight seam curve is laid on the sphere, but the exact regulation cover constants and the full 108-stitch pattern are approximated, not measured.",
+        "source": {
+          "id": "mathcurve",
+          "label": "mathcurve.com, Seam line of a tennis ball (Ferreol / Esculier)",
+          "url": "https://mathcurve.com/courbes3d.gb/couture/couture.shtml",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "reputable-analysis",
+        "approximate": true,
+        "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
+      },
+      "calibrationDoc": "docs/seam-calibration.md"
+    }
+  },
+  {
+    "canonical": {
       "id": "slider",
       "name": "Slider",
       "family": "breaking",
@@ -1505,10 +2309,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "side",
         "ballDepth": "neutral",
         "fingerSpacing": "touching",
         "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles turned toward the outer third, set to pull down the side.",
+          "palmFacing": "Palm rolling slightly glove-side at release — the football spiral."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited grip description: middle finger riding a long seam near the outer third, index alongside, the pair set to pull down the side of the ball. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "driveline-slider",
+            "label": "Driveline Baseball, How to Throw a Slider",
+            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-slider/",
+            "retrievedAt": "2026-06-04"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The along-the-seam outer-third hold is what separates this from a cutter, which keeps a crossing four-seam anchor."
+        },
         "thumbRole": "Thumb supports underneath while the top fingers sit off-center.",
         "palmGapCue": "Firm but not buried; the ball needs room to slide off the side.",
         "releaseCue": "The fingers pull down the side so the ball spirals like a football.",
@@ -1519,6 +2339,10 @@
             "label": "Index off-center",
             "seamT": 0.4,
             "lift": 0.02,
+            "seamOffset": -0.03,
+            "azimuth": 30,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Close to middle, toward the outer third",
             "pressureRole": "Guides the off-center release",
             "cue": "Close, not wide",
@@ -1529,6 +2353,10 @@
             "label": "Middle seam",
             "seamT": 0.44,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 32,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Rides the seam near the outer third",
             "pressureRole": "Primary slider pressure",
             "cue": "Let it slide off this side",
@@ -1539,6 +2367,10 @@
             "label": "Thumb",
             "seamT": 0.74,
             "lift": 0,
+            "seamOffset": 0.04,
+            "azimuth": 45,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Underneath as support",
             "pressureRole": "Balances the off-center top fingers",
             "cue": "Support, do not squeeze",
@@ -1733,297 +2565,272 @@
   },
   {
     "canonical": {
-      "id": "split-finger-fastball",
-      "name": "Splitter",
-      "family": "offspeed",
+      "id": "sweeper",
+      "name": "Sweeper",
+      "family": "breaking",
       "grip": {
-        "value": "The index and middle fingers are wedged to opposite sides of the ball, spread wide on the outside of the leather, wider and farther back than a forkball, with the ball coming off the inside of the fingers rather than the fingertips. Thrown with the arm action of a fastball.",
+        "value": "A slider grip rotated further around the side of the ball. The index and middle fingers sit toward the outer third, the hand \"gets around\" the ball at release rather than cutting down through it, and a wider arm path lets the fingers sweep across the outside. That tilts the spin axis toward pure sidespin.",
         "source": {
-          "id": "wiki-splitter",
-          "label": "Wikipedia, Split-finger fastball",
-          "url": "https://en.wikipedia.org/wiki/Split-finger_fastball",
-          "retrievedAt": "2026-06-05"
+          "id": "mlb-glossary-sweeper",
+          "label": "MLB.com Statcast Glossary, Sweeper (ST)",
+          "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
+          "retrievedAt": "2026-06-06"
         },
         "confidence": "reputable-analysis",
-        "note": "Paraphrased from Wikipedia (Split-finger fastball) and corroborated by Driveline; not quoted."
+        "note": "Paraphrased. MLB.com: the sweeper is thrown with side-spin, \"getting around\" the ball, or with a two-seam grip — the gyro slider, by contrast, is thrown with bullet spin."
       },
       "gripDetails": [
         {
-          "value": "A descendant of the forkball, the splitter is held farther forward in the hand with a wider split between the fingers, which is why it can be thrown harder than the deep-jammed forkball.",
+          "value": "MLB.com frames the sweeper grip as side-spin first: the pitcher gets around the outside of the ball, or uses a two-seam orientation, where a traditional gyro slider is thrown with bullet spin that spirals like a football.",
           "source": {
-            "id": "wiki-splitter",
-            "label": "Wikipedia, Split-finger fastball",
-            "url": "https://en.wikipedia.org/wiki/Split-finger_fastball",
-            "retrievedAt": "2026-06-05"
+            "id": "mlb-glossary-sweeper",
+            "label": "MLB.com Statcast Glossary, Sweeper (ST)",
+            "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
+            "retrievedAt": "2026-06-06"
           },
           "confidence": "reputable-analysis",
-          "note": "Wikipedia describes the splitter as a faster, shallower relative of the forkball."
+          "note": "Paraphrased from the glossary entry, not quoted."
         },
         {
-          "value": "Driveline files the splitter under the same family and notes its defining trait: it spins far less than a fastball. The lost backspin, not any added force, is what makes it drop.",
+          "value": "It is, mechanically, a slider family member — Driveline's slider grips, with the fingers set off-center and the ball allowed to roll from the hand, are the same starting point; the sweeper just rotates the hand further around the side for lateral spin.",
           "source": {
-            "id": "driveline-splitters",
-            "label": "Driveline Baseball Help, Pitch Grips: Splitters",
-            "url": "https://help.drivelinebaseball.com/portal/en/kb/articles/pitch-grips-splitters",
-            "retrievedAt": "2026-06-05"
+            "id": "driveline-slider",
+            "label": "Driveline Baseball, How to Throw a Slider",
+            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-slider/",
+            "retrievedAt": "2026-06-04"
           },
           "confidence": "reputable-analysis",
-          "note": "Paraphrased from Driveline. Described as a loss of spin, in words, not a measured figure."
+          "note": "Paraphrased. The off-center grip and let-it-slide-off cue are Driveline's; the further-around rotation is the sweeper variation."
         },
         {
-          "value": "Bruce Sutter's unusually large hands let him spread the split far enough to execute it; he learned it from instructor Fred Martin after his fastball faded post-surgery and never changed the grip after the first day.",
+          "value": "A big-league pitcher will often carry two distinct slider grips — one for the sweeper, one for the gyro slider — and pick by intent: the sweeper to sweep a same-handed hitter off the plate, the gyro slider to bury one with a late, short bite.",
           "source": {
-            "id": "sutter-hof",
-            "label": "National Baseball Hall of Fame, Sutter remembered as pioneer of the split-finger",
-            "url": "https://baseballhall.org/discover/Sutter-remembered-as-pioneer-of-split-fingered-fastball",
-            "retrievedAt": "2026-06-05"
+            "id": "mlb-sweeper-explained",
+            "label": "MLB.com, Explaining the sweeper (slider vs sweeper break)",
+            "url": "https://www.mlb.com/news/sweeper-slider-latest-pitching-trend-explained",
+            "retrievedAt": "2026-06-04"
           },
           "confidence": "reputable-analysis",
-          "note": "From the Hall of Fame tribute to Sutter; the hand-size detail is corroborated on his Wikipedia page."
+          "note": "Paraphrased. MLB.com's explainer cites a pitcher describing his two separate slider grips."
         }
       ],
       "fingerPlacement": [
         {
-          "seamT": 0.265,
-          "lift": 0.03,
+          "seamT": 0.36,
+          "lift": 0.02,
           "label": "Index",
           "finger": "index",
-          "note": "Wedged to the outside of the ball, well off the middle finger."
+          "note": "Set further around the side of the ball than a slider — the hand is getting around it."
         },
         {
-          "seamT": 0.43,
-          "lift": 0.03,
+          "seamT": 0.4,
+          "lift": 0.02,
           "label": "Middle",
           "finger": "middle",
-          "note": "Wedged to the opposite side, the wide split that kills the spin."
+          "note": "Riding a seam on the outer third, the primary sidespin finger."
         },
         {
-          "seamT": 0.83,
+          "seamT": 0.72,
           "lift": 0,
           "label": "Thumb",
           "finger": "thumb",
-          "note": "Underneath on the leather, centered between the split fingers."
+          "note": "Underneath and around, helping the hand stay on the side at release."
         }
       ],
       "gripModel": {
-        "defaultView": "top",
+        "status": "filed",
+        "defaultView": "side",
         "ballDepth": "neutral",
-        "fingerSpacing": "wide",
-        "primaryPressureFinger": "index",
-        "thumbRole": "Thumb supports underneath, centered between the two split fingers.",
-        "palmGapCue": "The ball sits up between the split fingers, farther forward than a forkball.",
-        "releaseCue": "Throw it like the fastball and let the wide split deaden the spin.",
-        "visualCaveat": "Grip geometry is schematic and shows the wide split-finger family; the depth and spread vary with hand size, and large hands make it easier. On shorter fingers the split can look close to a two-seam; read whether the fingers sit outside the seam tracks instead of directly on them.",
+        "fingerSpacing": "touching",
+        "primaryPressureFinger": "middle",
+        "orientation": {
+          "knuckleLine": "Knuckles carried around the outside of the ball, past where a slider sits.",
+          "palmFacing": "Palm staying on the side through release — the frisbee hand, not a pull-down."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: a slider hold carried further around the side, middle finger riding a seam on the outer third for sidespin. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-sweeper",
+            "label": "MLB.com Statcast Glossary, Sweeper (ST)",
+            "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The around-the-side posture is what tilts the gyro slider toward pure sidespin; spiked and two-seam variants differ."
+        },
+        "thumbRole": "Thumb sits under and slightly around so the hand can stay on the side of the ball.",
+        "palmGapCue": "Firm but free — the ball has to roll from the side, not be muscled down.",
+        "releaseCue": "Sweep the fingers around the outside of the ball, like spinning a frisbee, instead of pulling straight down.",
+        "visualCaveat": "Grip geometry is schematic and shows the side-spin family; spiked and two-seam sweeper grips shift the finger posture.",
         "contacts": [
           {
             "finger": "index",
-            "label": "Index pad",
-            "seamT": 0.265,
-            "lift": 0.03,
-            "seamRelation": "Wedged to the outside of the ball",
-            "pressureRole": "Half of the wide split",
-            "cue": "Split wide, fingers off the seams",
-            "curl": 0.16
+            "label": "Index around the side",
+            "seamT": 0.36,
+            "lift": 0.02,
+            "seamOffset": -0.02,
+            "azimuth": 20,
+            "engagement": "pad",
+            "pressureTier": "support",
+            "seamRelation": "Further around the ball than a slider",
+            "pressureRole": "Sets the around-the-side path",
+            "cue": "Get around it",
+            "curl": 0.34
           },
           {
             "finger": "middle",
-            "label": "Middle pad",
-            "seamT": 0.43,
-            "lift": 0.03,
-            "seamRelation": "Wedged to the opposite side",
-            "pressureRole": "The other half of the split that kills the backspin",
-            "cue": "As wide as the hand allows, stiff wrist",
-            "curl": 0.16
+            "label": "Middle seam",
+            "seamT": 0.4,
+            "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 22,
+            "engagement": "pad",
+            "pressureTier": "primary",
+            "seamRelation": "Rides a seam on the outer third",
+            "pressureRole": "Primary sidespin pressure",
+            "cue": "Spin it off the side",
+            "curl": 0.38
           },
           {
             "finger": "thumb",
             "label": "Thumb",
-            "seamT": 0.83,
+            "seamT": 0.72,
             "lift": 0,
-            "seamRelation": "Under smooth leather, centered",
-            "pressureRole": "Balances the ball between the split fingers",
-            "cue": "Centered underneath",
+            "seamOffset": 0.05,
+            "azimuth": 40,
+            "engagement": "inside",
+            "pressureTier": "support",
+            "seamRelation": "Under and around as support",
+            "pressureRole": "Keeps the hand on the side of the ball",
+            "cue": "Support, stay around",
             "curl": 0.42
           }
         ]
       },
       "mechanics": {
-        "value": "It is thrown with the arm speed and release of a fastball. The wide split and a stiffer wrist dramatically reduce the backspin, weakening the Magnus lift that keeps a four-seamer riding, so gravity wins late and the ball drops sharply, the classic trap-door look.",
+        "value": "It is thrown a touch slower than a slider, with the hand staying on the side and the fingers sweeping around the outside instead of pulling down. The wide break is bought with that around-the-ball action and a spin axis tilted toward pure sidespin.",
         "source": {
-          "id": "gausman-conversation",
-          "label": "The Conversation, the physics of Kevin Gausman's splitter",
-          "url": "https://theconversation.com/how-the-physics-of-baseball-explains-blue-jay-kevin-gausmans-signature-pitch-268732",
-          "retrievedAt": "2026-06-05"
+          "id": "mlb-sweeper-explained",
+          "label": "MLB.com, Explaining the sweeper (slider vs sweeper break)",
+          "url": "https://www.mlb.com/news/sweeper-slider-latest-pitching-trend-explained",
+          "retrievedAt": "2026-06-04"
         },
         "confidence": "reputable-analysis",
-        "note": "Paraphrased from The Conversation's physics breakdown of Gausman's splitter."
-      },
-      "voice": {
-        "value": "I’d like to tell you I worked and worked at it but I’d be lying to you because it did come to me right away. The first day I threw it I’d get it to break ... I never adjusted my grip after the first day.",
-        "source": {
-          "id": "sutter-hof",
-          "label": "National Baseball Hall of Fame, Sutter remembered as pioneer of the split-finger",
-          "url": "https://baseballhall.org/discover/Sutter-remembered-as-pioneer-of-split-fingered-fastball",
-          "retrievedAt": "2026-06-05"
-        },
-        "confidence": "pitcher-own-words",
-        "note": "Bruce Sutter, recalling learning the split-finger from Fred Martin, in the Hall of Fame tribute."
+        "note": "Paraphrased from MLB.com's sweeper explainer; the grip and feel description is in the atlas's own words."
       },
       "physics": {
         "spinAxis": {
-          "value": "A fastball-like backspin axis out of the hand, so the two look identical at release; the deception lives in matching the fastball's tilt until the pitch separates in flight.",
+          "value": "Tilted toward pure sidespin: the axis lies nearly sideways for a right-hander, almost flat across the ball, so the spin does its Magnus work across the side. That is the sweeper's whole identity and the opposite of the gyro slider, whose axis points at the catcher and spins like a thrown football.",
           "source": {
-            "id": "wiki-splitter",
-            "label": "Wikipedia, Split-finger fastball",
-            "url": "https://en.wikipedia.org/wiki/Split-finger_fastball",
-            "retrievedAt": "2026-06-05"
+            "id": "mlb-glossary-sweeper",
+            "label": "MLB.com Statcast Glossary, Sweeper (ST)",
+            "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
+            "retrievedAt": "2026-06-06"
           },
-          "confidence": "reputable-analysis"
+          "confidence": "reputable-analysis",
+          "note": "MLB.com states the side-spin-vs-bullet-spin contrast that drives the axis difference. Described in words, no clock figure."
         },
         "shape": {
-          "value": "Rides the fastball's line out of the hand, then falls off the table late and hard, a trap-door drop that arrives just under the barrel. With the backspin stripped away it tumbles instead of carrying, and the floor seems to vanish at the last instant.",
+          "value": "A wide, mostly flat sweep to the glove side. It neither rides like a four-seam nor tumbles like a curve — almost all of its movement runs sideways, with little drop beyond gravity. It looks like a fastball, then runs off the plate well before it arrives.",
           "source": {
-            "id": "gausman-conversation",
-            "label": "The Conversation, the physics of Kevin Gausman's splitter",
-            "url": "https://theconversation.com/how-the-physics-of-baseball-explains-blue-jay-kevin-gausmans-signature-pitch-268732",
-            "retrievedAt": "2026-06-05"
+            "id": "mlb-sweeper-explained",
+            "label": "MLB.com, Explaining the sweeper (slider vs sweeper break)",
+            "url": "https://www.mlb.com/news/sweeper-slider-latest-pitching-trend-explained",
+            "retrievedAt": "2026-06-04"
           },
           "confidence": "reputable-analysis",
-          "note": "Described as shape, not a measured number. The fall is real; how much depends on the arm and the hand."
+          "note": "Described as shape, not a measured number. MLB.com defines the sweeper by its big horizontal movement with little vertical; how far it sweeps depends on the arm."
         },
         "teaching": {
-          "value": "Because it leaves the hand looking like the fastball, the hitter starts a fastball swing; then the lost backspin lets gravity pull it under the barrel at the last instant. Take the split away or put the backspin back and it just becomes a slow fastball.",
+          "value": "A gyro slider points its spin axis at the catcher and spirals like a football, so the spin makes almost no Magnus force and the pitch breaks late and short. A sweeper tilts that axis toward pure sidespin, so the same Magnus force that lifts a four-seam now pushes sideways — a wide, glove-side sweep with little drop. Same family as the slider, opposite Magnus budget.",
           "source": {
-            "id": "gausman-conversation",
-            "label": "The Conversation, the physics of Kevin Gausman's splitter",
-            "url": "https://theconversation.com/how-the-physics-of-baseball-explains-blue-jay-kevin-gausmans-signature-pitch-268732",
-            "retrievedAt": "2026-06-05"
+            "id": "mlb-glossary-sweeper",
+            "label": "MLB.com Statcast Glossary, Sweeper (ST)",
+            "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
+            "retrievedAt": "2026-06-06"
           },
           "confidence": "reputable-analysis",
-          "note": "Synthesized from The Conversation and Wikipedia: the weakened-Magnus drop off a fastball look is the whole pitch."
+          "note": "Synthesis of MLB.com's side-spin-vs-bullet-spin contrast and the Magnus framing the atlas uses throughout."
         }
       },
-      "rights": "original",
-      "gripImages": [
-        {
-          "src": "/grips/splitter-7175.webp",
-          "view": "top",
-          "caption": "Index and middle split wide, sitting just outside the seams rather than on them.",
-          "alt": "A hand gripping a baseball splitter style, index and middle fingers spread wide just outside the seams.",
-          "kind": "first-party",
-          "rights": "original",
-          "attribution": "Austin H.",
-          "capturedAt": "2026-06-06"
-        },
-        {
-          "src": "/grips/splitter-7177.webp",
-          "view": "top",
-          "caption": "Top-down: the gap between the two fingers is the whole pitch.",
-          "alt": "A top view of a split-finger grip, two fingers spread apart over the ball.",
-          "kind": "first-party",
-          "rights": "original",
-          "attribution": "Austin H.",
-          "capturedAt": "2026-06-06"
-        },
-        {
-          "src": "/grips/splitter-7176.webp",
-          "view": "side",
-          "caption": "From the side, the fingers straddle the seams with the ball set back in the hand.",
-          "alt": "A side view of a splitter grip, the fingers straddling the seams.",
-          "kind": "first-party",
-          "rights": "original",
-          "attribution": "Austin H.",
-          "capturedAt": "2026-06-06"
-        }
-      ]
+      "rights": "original"
     },
     "motion": {
       "spinAxis": {
-        "x": 0.92,
-        "y": 0.18,
-        "z": 0.16
+        "x": -0.12,
+        "y": -0.92,
+        "z": 0.37
       },
-      "forceLabel": "Magnus, weak",
-      "verticalShape": "flat",
-      "horizontalDir": "arm-side",
-      "breakView": "carry"
+      "forceLabel": "Magnus: glove-side sweep",
+      "gyro": false,
+      "verticalShape": "drop",
+      "horizontalDir": "glove-side",
+      "breakView": "movement"
     },
     "display": {
-      "slug": "splitter",
-      "shortName": "Splitter",
-      "specimenNo": "05",
-      "heroSub": "A fastball look, a trap-door drop.",
-      "heroIntro": "Wedge the fingers wide, throw it like the fastball, and let the lost backspin drop it off the table at the plate. The same arm, the same path, then the floor falls out.",
-      "foundationCaption": "It barely rides, so it falls almost like a spinless ball, late and under the barrel.",
-      "mastersIntro": "From the pitch's pioneer to its modern swing-and-miss kings. The visual is our own seam schematic. What sets each arm's splitter apart is in the read and the hand, not a gauge."
+      "slug": "sweeper",
+      "shortName": "Sweeper",
+      "specimenNo": "08",
+      "heroSub": "A frisbee, sideways.",
+      "heroIntro": "Take a slider grip and get further around the side of the ball. The axis tilts toward pure sidespin, and the same force that lifts a fastball now pushes it sideways: a wide, glove-side sweep with little drop. The defining pitch of the last few seasons.",
+      "foundationCaption": "Sidespin, not bullet spin. The Magnus force points sideways, so it sweeps wide and flat instead of biting late like a gyro slider.",
+      "mastersIntro": "Three reference sweepers, three ways to win with the side-spin sweep. The visual is our own seam schematic. What sets each version apart lives in the read, how the arm shapes the sweep, not a gauge."
     },
     "masterVariants": [
       {
         "tier": "verified-attributed",
-        "pitcher": "Bruce Sutter",
-        "context": "The pioneer. Taught the split-finger by instructor Fred Martin after arm surgery, he rode it to the Hall of Fame as one of the first dominant closers.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The first to ride this pitch to the Hall of Fame, and the proof of concept for the whole grip — a closer who turned one trap-door drop into a career after his fastball left him.",
-          "source": {
-            "id": "sutter-wiki",
-            "label": "Wikipedia, Bruce Sutter",
-            "url": "https://en.wikipedia.org/wiki/Bruce_Sutter",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis"
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Roger Clemens",
-        "context": "Added the splitter in the nineties, nicknamed it \"Mr. Splitty,\" and made it his out pitch, one of the most devastating in the pitch's history. He has his own chapter in the Craftsmen.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "Late-career reinvention in one pitch: he bolted \"Mr. Splitty\" onto a power arsenal and kept missing barrels long after the pure heat would have faded, which is why he stayed an ace into his forties.",
-          "source": {
-            "id": "clemens-wiki",
-            "label": "Wikipedia, Roger Clemens",
-            "url": "https://en.wikipedia.org/wiki/Roger_Clemens",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "official-data"
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Kevin Gausman",
-        "context": "The modern volume king. His splitter has produced more swinging strikes than any other pitcher's since the Statcast era began, by a wide margin.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The most prolific swing-and-miss splitter of the tracked era, and not close — he throws it like a fastball over and over and hitters keep waving under the late drop because the look never tips.",
-          "source": {
-            "id": "gausman-jays",
-            "label": "Jays Journal, Gausman's splitter is one of the best pitches in baseball",
-            "url": "https://jaysjournal.com/kevin-gausman-s-splitter-has-been-one-of-the-best-pitches-in-baseball-01js0g3za211",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis"
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
         "pitcher": "Shohei Ohtani",
-        "context": "The unhittable one. His trap-door splitter became, in a single season, about as unhittable as a pitch gets.",
+        "context": "The reference sweeper — \"maybe the best sweeper in the Majors,\" per MLB.com — and a study in reshaping a pitch year to year as he hunts the best shape.",
         "verifiedPro": true,
         "distinction": {
-          "value": "A splitter thrown hard enough to look like premium heat until the floor drops — for one season hitters who put a swing on it almost never made contact, which is as close to unhittable as the pitch comes.",
+          "value": "The widest, most violent sweep in the game, and never the same shape two years running — he keeps recutting it, hunting more reach off the side. The benchmark every other sweeper gets measured against by eye.",
           "source": {
-            "id": "ohtani-mlb-splitter",
-            "label": "MLB.com, Ohtani's splitter still the most unhittable pitch",
-            "url": "https://www.mlb.com/news/shohei-ohtani-splitter-still-most-unhittable-pitch",
-            "retrievedAt": "2026-06-05",
-            "season": "2021"
+            "id": "mlb-ohtani-2025-statcast",
+            "label": "MLB.com, Shohei Ohtani's 2025 pitching debut — a Statcast breakdown",
+            "url": "https://www.mlb.com/news/shohei-ohtani-2025-pitching-debut-statcast-breakdown",
+            "retrievedAt": "2026-06-06",
+            "season": "2025"
           },
-          "confidence": "reputable-analysis"
+          "confidence": "reputable-analysis",
+          "note": "MLB.com calls it maybe the best sweeper in the Majors and documents his year-to-year reshaping. Described as shape, no measured gauge."
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Freddy Peralta",
+        "context": "A swing-and-miss sweeper folded into a four-seam-heavy arsenal — shown because the shape is the lesson, not the sample size.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "A sharp, late sweep that plays off his fastball-first look: hitters geared for the ride get the floor pulled sideways instead. The break does the work; gravity carries most of the small drop.",
+          "source": {
+            "id": "savant-peralta",
+            "label": "Baseball Savant (Statcast), Freddy Peralta",
+            "url": "https://baseballsavant.mlb.com/savant-player/freddy-peralta-642547",
+            "retrievedAt": "2026-06-06",
+            "season": "2025"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Savant page documents the sweeper as a chase-oriented secondary on a small sample. Described as shape, no break or swing-miss figure."
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Yu Darvish",
+        "context": "The arsenal artist: the sweeper is one shape among many he files away, thrown sparingly and precisely rather than as a primary.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "One sweep among a deep deck of shapes — thrown sparingly and placed precisely, a glove-side look he reaches for to keep a hitter from sitting on anything. Craft over volume.",
+          "source": {
+            "id": "savant-darvish",
+            "label": "Baseball Savant (Statcast), Yu Darvish",
+            "url": "https://baseballsavant.mlb.com/savant-player/yu-darvish-506433",
+            "retrievedAt": "2026-06-06",
+            "season": "2025"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Savant page documents the sweeper as a low-usage pitch in a deep arsenal. Described as shape and intent, no break or usage figure."
         },
         "rights": "original"
       }
@@ -2040,18 +2847,18 @@
       ]
     },
     "guide": {
-      "family": "The trap door",
-      "tagline": "It looks like the fastball the whole way, then the floor drops out at the plate.",
-      "feel": "Throw it as hard as the fastball. The wide split does the work, not a softer arm.",
+      "family": "The wide one",
+      "tagline": "A slider grip turned around the side of the ball, so it sweeps wide and flat to the glove side instead of biting late.",
+      "feel": "Stay on the side of the ball and sweep your fingers around the outside, like spinning a frisbee. Not a downward pull.",
       "steps": [
-        "Wedge your index and middle fingers wide, to opposite sides of the ball, outside the seam tracks rather than directly on them.",
-        "Let the ball sit up between them, farther forward than a deep forkball.",
-        "Rest your thumb underneath, centered between the split fingers.",
-        "Throw it with fastball arm speed and a firm wrist; the split kills the spin for you."
+        "Start from your slider grip: index and middle on the outer third of the ball.",
+        "Rotate your hand further around the side, so you are getting around the ball, not on top of it.",
+        "Use a slightly wider arm path and let the fingers sweep across the outside at release.",
+        "Throw it with fastball intent; the wide break comes from the sidespin, not from muscling it."
       ],
       "does": {
-        "headline": "A fastball that quits on the hitter.",
-        "plain": "The wide grip strips the backspin a fastball lives on, so the ball stops riding and gravity takes it down late. The hitter has already swung where the fastball should be, and the pitch falls under the barrel."
+        "headline": "It spins on its side, so the air pushes it sideways.",
+        "plain": "A sweeper spins on its side, axis lying flat across the ball instead of pointing at the catcher. That turns the same air force that lifts a fastball into a sideways push, so the ball sweeps a long way to the glove side and barely drops. It looks like a fastball, then runs off the plate well before it gets there."
       }
     },
     "seam": {
@@ -2151,10 +2958,27 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "out-in-fingers",
         "fingerSpacing": "wide",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles opened into a shallow V along the narrow seam lanes.",
+          "palmFacing": "Palm to the plate at fastball intent; the split, not the wrist, takes the ride off."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited reporting: a light split laid on a two-seam orientation, fingers near the narrow lanes rather than wedged outside them, index pressure adding the tail. Schematic geometry from reporter paraphrase, not an athlete scan.",
+          "source": {
+            "id": "skenes-mlb-arsenal",
+            "label": "MLB.com, Explaining Skenes' expanding arsenal (Mike Petriello)",
+            "url": "https://www.mlb.com/news/paul-skenes-pitch-arsenal-breakdown",
+            "retrievedAt": "2026-06-05",
+            "season": "2025"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Statcast has no splinker label; the grip detail is reporter paraphrase of Skenes, marked as such."
+        },
         "thumbRole": "Thumb supports underneath, centered between the lightly split fingers.",
         "palmGapCue": "A light two-seam split, the ball held shallow, not wedged deep between the fingers.",
         "releaseCue": "Fastball arm and full intent; the light split and index pressure add the sink and tail.",
@@ -2165,6 +2989,10 @@
             "label": "Index pad",
             "seamT": 0.3,
             "lift": 0.025,
+            "seamOffset": 0.05,
+            "azimuth": 12,
+            "engagement": "pad",
+            "pressureTier": "primary",
             "seamRelation": "Lightly split on a two-seam orientation",
             "pressureRole": "Adds the arm-side tail with extra pressure",
             "cue": "Split, not wedged; press to tail",
@@ -2175,6 +3003,10 @@
             "label": "Middle pad",
             "seamT": 0.4,
             "lift": 0.025,
+            "seamOffset": 0.05,
+            "azimuth": 12,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Split off the index, held shallow",
             "pressureRole": "The other half of the light split",
             "cue": "Shallow split, not deep",
@@ -2185,6 +3017,10 @@
             "label": "Thumb",
             "seamT": 0.83,
             "lift": 0,
+            "seamOffset": 0,
+            "azimuth": 55,
+            "engagement": "inside",
+            "pressureTier": "support",
             "seamRelation": "Under smooth leather, centered",
             "pressureRole": "Balances the ball under the split fingers",
             "cue": "Centered underneath",
@@ -2391,885 +3227,6 @@
   },
   {
     "canonical": {
-      "id": "sweeper",
-      "name": "Sweeper",
-      "family": "breaking",
-      "grip": {
-        "value": "A slider grip rotated further around the side of the ball. The index and middle fingers sit toward the outer third, the hand \"gets around\" the ball at release rather than cutting down through it, and a wider arm path lets the fingers sweep across the outside. That tilts the spin axis toward pure sidespin.",
-        "source": {
-          "id": "mlb-glossary-sweeper",
-          "label": "MLB.com Statcast Glossary, Sweeper (ST)",
-          "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
-          "retrievedAt": "2026-06-06"
-        },
-        "confidence": "reputable-analysis",
-        "note": "Paraphrased. MLB.com: the sweeper is thrown with side-spin, \"getting around\" the ball, or with a two-seam grip — the gyro slider, by contrast, is thrown with bullet spin."
-      },
-      "gripDetails": [
-        {
-          "value": "MLB.com frames the sweeper grip as side-spin first: the pitcher gets around the outside of the ball, or uses a two-seam orientation, where a traditional gyro slider is thrown with bullet spin that spirals like a football.",
-          "source": {
-            "id": "mlb-glossary-sweeper",
-            "label": "MLB.com Statcast Glossary, Sweeper (ST)",
-            "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Paraphrased from the glossary entry, not quoted."
-        },
-        {
-          "value": "It is, mechanically, a slider family member — Driveline's slider grips, with the fingers set off-center and the ball allowed to roll from the hand, are the same starting point; the sweeper just rotates the hand further around the side for lateral spin.",
-          "source": {
-            "id": "driveline-slider",
-            "label": "Driveline Baseball, How to Throw a Slider",
-            "url": "https://www.drivelinebaseball.com/2020/06/how-to-throw-a-slider/",
-            "retrievedAt": "2026-06-04"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Paraphrased. The off-center grip and let-it-slide-off cue are Driveline's; the further-around rotation is the sweeper variation."
-        },
-        {
-          "value": "A big-league pitcher will often carry two distinct slider grips — one for the sweeper, one for the gyro slider — and pick by intent: the sweeper to sweep a same-handed hitter off the plate, the gyro slider to bury one with a late, short bite.",
-          "source": {
-            "id": "mlb-sweeper-explained",
-            "label": "MLB.com, Explaining the sweeper (slider vs sweeper break)",
-            "url": "https://www.mlb.com/news/sweeper-slider-latest-pitching-trend-explained",
-            "retrievedAt": "2026-06-04"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Paraphrased. MLB.com's explainer cites a pitcher describing his two separate slider grips."
-        }
-      ],
-      "fingerPlacement": [
-        {
-          "seamT": 0.36,
-          "lift": 0.02,
-          "label": "Index",
-          "finger": "index",
-          "note": "Set further around the side of the ball than a slider — the hand is getting around it."
-        },
-        {
-          "seamT": 0.4,
-          "lift": 0.02,
-          "label": "Middle",
-          "finger": "middle",
-          "note": "Riding a seam on the outer third, the primary sidespin finger."
-        },
-        {
-          "seamT": 0.72,
-          "lift": 0,
-          "label": "Thumb",
-          "finger": "thumb",
-          "note": "Underneath and around, helping the hand stay on the side at release."
-        }
-      ],
-      "gripModel": {
-        "defaultView": "side",
-        "ballDepth": "neutral",
-        "fingerSpacing": "touching",
-        "primaryPressureFinger": "middle",
-        "thumbRole": "Thumb sits under and slightly around so the hand can stay on the side of the ball.",
-        "palmGapCue": "Firm but free — the ball has to roll from the side, not be muscled down.",
-        "releaseCue": "Sweep the fingers around the outside of the ball, like spinning a frisbee, instead of pulling straight down.",
-        "visualCaveat": "Grip geometry is schematic and shows the side-spin family; spiked and two-seam sweeper grips shift the finger posture.",
-        "contacts": [
-          {
-            "finger": "index",
-            "label": "Index around the side",
-            "seamT": 0.36,
-            "lift": 0.02,
-            "seamRelation": "Further around the ball than a slider",
-            "pressureRole": "Sets the around-the-side path",
-            "cue": "Get around it",
-            "curl": 0.34
-          },
-          {
-            "finger": "middle",
-            "label": "Middle seam",
-            "seamT": 0.4,
-            "lift": 0.02,
-            "seamRelation": "Rides a seam on the outer third",
-            "pressureRole": "Primary sidespin pressure",
-            "cue": "Spin it off the side",
-            "curl": 0.38
-          },
-          {
-            "finger": "thumb",
-            "label": "Thumb",
-            "seamT": 0.72,
-            "lift": 0,
-            "seamRelation": "Under and around as support",
-            "pressureRole": "Keeps the hand on the side of the ball",
-            "cue": "Support, stay around",
-            "curl": 0.42
-          }
-        ]
-      },
-      "mechanics": {
-        "value": "It is thrown a touch slower than a slider, with the hand staying on the side and the fingers sweeping around the outside instead of pulling down. The wide break is bought with that around-the-ball action and a spin axis tilted toward pure sidespin.",
-        "source": {
-          "id": "mlb-sweeper-explained",
-          "label": "MLB.com, Explaining the sweeper (slider vs sweeper break)",
-          "url": "https://www.mlb.com/news/sweeper-slider-latest-pitching-trend-explained",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "reputable-analysis",
-        "note": "Paraphrased from MLB.com's sweeper explainer; the grip and feel description is in the atlas's own words."
-      },
-      "physics": {
-        "spinAxis": {
-          "value": "Tilted toward pure sidespin: the axis lies nearly sideways for a right-hander, almost flat across the ball, so the spin does its Magnus work across the side. That is the sweeper's whole identity and the opposite of the gyro slider, whose axis points at the catcher and spins like a thrown football.",
-          "source": {
-            "id": "mlb-glossary-sweeper",
-            "label": "MLB.com Statcast Glossary, Sweeper (ST)",
-            "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "MLB.com states the side-spin-vs-bullet-spin contrast that drives the axis difference. Described in words, no clock figure."
-        },
-        "shape": {
-          "value": "A wide, mostly flat sweep to the glove side. It neither rides like a four-seam nor tumbles like a curve — almost all of its movement runs sideways, with little drop beyond gravity. It looks like a fastball, then runs off the plate well before it arrives.",
-          "source": {
-            "id": "mlb-sweeper-explained",
-            "label": "MLB.com, Explaining the sweeper (slider vs sweeper break)",
-            "url": "https://www.mlb.com/news/sweeper-slider-latest-pitching-trend-explained",
-            "retrievedAt": "2026-06-04"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Described as shape, not a measured number. MLB.com defines the sweeper by its big horizontal movement with little vertical; how far it sweeps depends on the arm."
-        },
-        "teaching": {
-          "value": "A gyro slider points its spin axis at the catcher and spirals like a football, so the spin makes almost no Magnus force and the pitch breaks late and short. A sweeper tilts that axis toward pure sidespin, so the same Magnus force that lifts a four-seam now pushes sideways — a wide, glove-side sweep with little drop. Same family as the slider, opposite Magnus budget.",
-          "source": {
-            "id": "mlb-glossary-sweeper",
-            "label": "MLB.com Statcast Glossary, Sweeper (ST)",
-            "url": "https://www.mlb.com/glossary/pitch-types/sweeper",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Synthesis of MLB.com's side-spin-vs-bullet-spin contrast and the Magnus framing the atlas uses throughout."
-        }
-      },
-      "rights": "original"
-    },
-    "motion": {
-      "spinAxis": {
-        "x": -0.12,
-        "y": -0.92,
-        "z": 0.37
-      },
-      "forceLabel": "Magnus: glove-side sweep",
-      "gyro": false,
-      "verticalShape": "drop",
-      "horizontalDir": "glove-side",
-      "breakView": "movement"
-    },
-    "display": {
-      "slug": "sweeper",
-      "shortName": "Sweeper",
-      "specimenNo": "08",
-      "heroSub": "A frisbee, sideways.",
-      "heroIntro": "Take a slider grip and get further around the side of the ball. The axis tilts toward pure sidespin, and the same force that lifts a fastball now pushes the ball sideways — a wide, glove-side sweep with little drop. The defining pitch of the last few seasons.",
-      "foundationCaption": "Sidespin, not bullet spin: the Magnus force points sideways, so it sweeps wide and flat instead of biting late like a gyro slider.",
-      "mastersIntro": "Three reference sweepers, three ways to win with the side-spin sweep. The visual is our own seam schematic. What sets each version apart is in the read — how the arm shapes the sweep — not a gauge."
-    },
-    "masterVariants": [
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Shohei Ohtani",
-        "context": "The reference sweeper — \"maybe the best sweeper in the Majors,\" per MLB.com — and a study in reshaping a pitch year to year as he hunts the best shape.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The widest, most violent sweep in the game, and never the same shape two years running — he keeps recutting it, hunting more reach off the side. The benchmark every other sweeper gets measured against by eye.",
-          "source": {
-            "id": "mlb-ohtani-2025-statcast",
-            "label": "MLB.com, Shohei Ohtani's 2025 pitching debut — a Statcast breakdown",
-            "url": "https://www.mlb.com/news/shohei-ohtani-2025-pitching-debut-statcast-breakdown",
-            "retrievedAt": "2026-06-06",
-            "season": "2025"
-          },
-          "confidence": "reputable-analysis",
-          "note": "MLB.com calls it maybe the best sweeper in the Majors and documents his year-to-year reshaping. Described as shape, no measured gauge."
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Freddy Peralta",
-        "context": "A swing-and-miss sweeper folded into a four-seam-heavy arsenal — shown because the shape is the lesson, not the sample size.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "A sharp, late sweep that plays off his fastball-first look: hitters geared for the ride get the floor pulled sideways instead. The break does the work; gravity carries most of the small drop.",
-          "source": {
-            "id": "savant-peralta",
-            "label": "Baseball Savant (Statcast), Freddy Peralta",
-            "url": "https://baseballsavant.mlb.com/savant-player/freddy-peralta-642547",
-            "retrievedAt": "2026-06-06",
-            "season": "2025"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Savant page documents the sweeper as a chase-oriented secondary on a small sample. Described as shape, no break or swing-miss figure."
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Yu Darvish",
-        "context": "The arsenal artist: the sweeper is one shape among many he files away, thrown sparingly and precisely rather than as a primary.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "One sweep among a deep deck of shapes — thrown sparingly and placed precisely, a glove-side look he reaches for to keep a hitter from sitting on anything. Craft over volume.",
-          "source": {
-            "id": "savant-darvish",
-            "label": "Baseball Savant (Statcast), Yu Darvish",
-            "url": "https://baseballsavant.mlb.com/savant-player/yu-darvish-506433",
-            "retrievedAt": "2026-06-06",
-            "season": "2025"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Savant page documents the sweeper as a low-usage pitch in a deep arsenal. Described as shape and intent, no break or usage figure."
-        },
-        "rights": "original"
-      }
-    ],
-    "community": {
-      "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
-      "columns": [
-        "Rank",
-        "Variant",
-        "Adoption",
-        "Source tier"
-      ]
-    },
-    "guide": {
-      "family": "The wide one",
-      "tagline": "A slider grip turned around the side of the ball, so it sweeps wide and flat to the glove side instead of biting late.",
-      "feel": "Stay on the side of the ball and sweep your fingers around the outside, like spinning a frisbee. Not a downward pull.",
-      "steps": [
-        "Start from your slider grip: index and middle on the outer third of the ball.",
-        "Rotate your hand further around the side, so you are getting around the ball, not on top of it.",
-        "Use a slightly wider arm path and let the fingers sweep across the outside at release.",
-        "Throw it with fastball intent; the wide break comes from the sidespin, not from muscling it."
-      ],
-      "does": {
-        "headline": "It spins on its side, so the air pushes it sideways.",
-        "plain": "A sweeper spins almost like a frisbee — its axis lying on its side instead of pointing at the catcher. That turns the same air force that lifts a fastball into a sideways push, so the ball sweeps a long way to the glove side and barely drops. It looks like a fastball, then runs off the plate well before it gets there."
-      }
-    },
-    "seam": {
-      "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
-      "stitchCount": {
-        "value": "108 double stitches, 216 individual",
-        "source": {
-          "id": "wiki-baseball-ball",
-          "label": "Wikipedia, Baseball (ball)",
-          "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "reputable-analysis",
-        "note": "A manufacturing convention, not a number written into the rulebook, which fixes only weight and circumference."
-      },
-      "accuracyLevel": "seam-informed schematic",
-      "accuracyNote": {
-        "value": "The published closed-form figure-eight seam curve is laid on the sphere, but the exact regulation cover constants and the full 108-stitch pattern are approximated, not measured.",
-        "source": {
-          "id": "mathcurve",
-          "label": "mathcurve.com, Seam line of a tennis ball (Ferreol / Esculier)",
-          "url": "https://mathcurve.com/courbes3d.gb/couture/couture.shtml",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "reputable-analysis",
-        "approximate": true,
-        "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
-      },
-      "calibrationDoc": "docs/seam-calibration.md"
-    }
-  },
-  {
-    "canonical": {
-      "id": "cutter",
-      "name": "Cutter",
-      "family": "fastball",
-      "grip": {
-        "value": "A four-seam grip with both fingers shifted slightly toward one side of the ball — the glove side for the handedness — and thrown like a fastball. That off-center placement produces a short cutting movement at the plate without a slider's pronounced finger pull.",
-        "source": {
-          "id": "mlb-glossary-cutter",
-          "label": "MLB.com Glossary — Cutter (FC)",
-          "url": "https://www.mlb.com/glossary/pitch-types/cutter",
-          "retrievedAt": "2026-06-05"
-        },
-        "confidence": "official-data",
-        "note": "Paraphrased. MLB.com: both fingers placed toward one side (the right of the ball for a righty, the left for a lefty) to produce the cutting movement."
-      },
-      "gripDetails": [
-        {
-          "value": "A common build is a four-seam fastball grip with the ball set slightly off center in the hand — the same fastball, just nudged off the middle.",
-          "source": {
-            "id": "wiki-cut-fastball",
-            "label": "Wikipedia, Cut fastball",
-            "url": "https://en.wikipedia.org/wiki/Cut_fastball",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Paraphrased from Wikipedia's grip description."
-        },
-        {
-          "value": "The cut comes from that finger placement and a touch of supination at release, not from a big wrist action — it is a fastball that bites. Lean harder into the supination and the off-center grip and it drifts toward hard-slider territory.",
-          "source": {
-            "id": "mlb-glossary-cutter",
-            "label": "MLB.com Glossary — Cutter (FC)",
-            "url": "https://www.mlb.com/glossary/pitch-types/cutter",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Paraphrased. MLB confirms the grip-driven cut and fastball delivery; the supination/slider-drift framing is coaching-standard."
-        },
-        {
-          "value": "It is the most ride-or-die-able single pitch in the game: Mariano Rivera threw almost nothing but his cutter across his whole career, and Kenley Jansen leans on his nearly as hard — proof that one great cutter can be a whole career.",
-          "source": {
-            "id": "wiki-cut-fastball",
-            "label": "Wikipedia, Cut fastball",
-            "url": "https://en.wikipedia.org/wiki/Cut_fastball",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Paraphrased. Rivera and Jansen are among the most cutter-reliant arms ever tracked."
-        }
-      ],
-      "fingerPlacement": [
-        {
-          "seamT": 0,
-          "lift": 0.02,
-          "label": "Index",
-          "finger": "index",
-          "note": "On the leather, both fingers shifted slightly toward the glove side of the ball."
-        },
-        {
-          "seamT": 0.06,
-          "lift": 0.02,
-          "label": "Middle",
-          "finger": "middle",
-          "note": "Beside the index, carrying a touch more pressure to set the cut."
-        },
-        {
-          "seamT": 0.68,
-          "lift": 0,
-          "label": "Thumb",
-          "finger": "thumb",
-          "note": "Underneath, centered, as on a four-seam."
-        }
-      ],
-      "gripModel": {
-        "defaultView": "top",
-        "ballDepth": "neutral",
-        "fingerSpacing": "touching",
-        "primaryPressureFinger": "middle",
-        "thumbRole": "Thumb stays centered underneath, as on the four-seam it is built from.",
-        "palmGapCue": "Held like a fastball, not buried — the cut is from the grip, not from squeezing.",
-        "releaseCue": "Throw it like a four-seam with a hair of supination — let the ball cut off the fingers rather than pulling down the side like a slider.",
-        "visualCaveat": "Grip geometry is schematic; the more a pitcher supinates and shifts off-center, the closer it drifts to a hard slider.",
-        "contacts": [
-          {
-            "finger": "index",
-            "label": "Index off-center",
-            "seamT": 0,
-            "lift": 0.02,
-            "seamRelation": "Shifted toward the glove side from a four-seam",
-            "pressureRole": "Sets the off-center grip",
-            "cue": "Just off center",
-            "curl": 0.3
-          },
-          {
-            "finger": "middle",
-            "label": "Middle pressure",
-            "seamT": 0.06,
-            "lift": 0.02,
-            "seamRelation": "Beside the index, slightly more pressure",
-            "pressureRole": "Drives the late cut",
-            "cue": "Lead with this finger",
-            "curl": 0.32
-          },
-          {
-            "finger": "thumb",
-            "label": "Thumb",
-            "seamT": 0.68,
-            "lift": 0,
-            "seamRelation": "Centered underneath",
-            "pressureRole": "Fastball support",
-            "cue": "Stay centered",
-            "curl": 0.4
-          }
-        ]
-      },
-      "mechanics": {
-        "value": "It is thrown a hair softer than the four-seam, with the same arm action, so it tunnels off the fastball. The late glove-side cut comes from the off-center grip and a slightly supinated release rather than from a slider's downward finger pull.",
-        "source": {
-          "id": "mlb-glossary-cutter",
-          "label": "MLB.com Glossary — Cutter (FC)",
-          "url": "https://www.mlb.com/glossary/pitch-types/cutter",
-          "retrievedAt": "2026-06-05"
-        },
-        "confidence": "reputable-analysis",
-        "note": "Paraphrased. The fastball-minus feel and same-arm-action tunneling are coaching-standard, anchored to the MLB glossary's fastball-with-a-cut framing."
-      },
-      "physics": {
-        "spinAxis": {
-          "value": "A fastball axis tilted toward the glove side, just shy of upright for a right-hander, with a little of the spin turned gyro. That mix is why it rides like a fastball but cuts instead of running true.",
-          "source": {
-            "id": "mlb-glossary-cutter",
-            "label": "MLB.com Glossary — Cutter (FC)",
-            "url": "https://www.mlb.com/glossary/pitch-types/cutter",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The tilt is the coaching reference, not a glossary quote; MLB frames the cutter as a fastball that moves glove-side."
-        },
-        "shape": {
-          "value": "Rides almost like a four-seam, then bites short and late to the glove side at the very end — a small, sudden cut, far shorter than a slider's sweep. The harder a pitcher leans on it, the more ride he trades for that bite.",
-          "source": {
-            "id": "savant-clase",
-            "label": "Baseball Savant (Statcast), Emmanuel Clase",
-            "url": "https://baseballsavant.mlb.com/savant-player/emmanuel-clase-661403",
-            "retrievedAt": "2026-06-06",
-            "season": "2025"
-          },
-          "confidence": "official-data",
-          "note": "Described as shape, not a measured number. The cut is real and late; how far it bites depends on the arm — some ride high and fastball-like, some cut harder and shorter."
-        },
-        "teaching": {
-          "value": "A four-seam rides on pure backspin: the axis is sideways to flight, so the Magnus force points straight up and the ball carries. Tilt that axis toward the glove side and let a little of the spin go gyro, and the ball trades some of its ride for a short, late cut to the glove side — a fastball that bites just enough to miss the barrel.",
-          "source": {
-            "id": "mlb-glossary-cutter",
-            "label": "MLB.com Glossary — Cutter (FC)",
-            "url": "https://www.mlb.com/glossary/pitch-types/cutter",
-            "retrievedAt": "2026-06-05"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Synthesis of the four-seam Magnus model and the MLB glossary's fastball-with-a-cut description."
-        }
-      },
-      "rights": "original"
-    },
-    "motion": {
-      "spinAxis": {
-        "x": 0.85,
-        "y": -0.18,
-        "z": 0.5
-      },
-      "forceLabel": "Magnus, cut",
-      "gyro": false,
-      "verticalShape": "ride",
-      "horizontalDir": "glove-side",
-      "breakView": "movement"
-    },
-    "display": {
-      "slug": "cutter",
-      "shortName": "Cutter",
-      "specimenNo": "10",
-      "heroSub": "A fastball that bites.",
-      "heroIntro": "Take a four-seam grip, shift it slightly off-center, and throw it like a fastball. The ball rides almost like a heater, then cuts to the glove side at the last moment — just enough to find the end of the bat instead of the barrel. Rivera built a career on one.",
-      "foundationCaption": "It rides like a fastball but its axis is tilted glove-side, so a little of the lift becomes a short, late cut.",
-      "mastersIntro": "Three cutters across eras: the archetype, the modern extreme, and the cutter as a primary fastball. The visual is our own seam schematic. What sets each version apart is in the read, not a gauge."
-    },
-    "masterVariants": [
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Mariano Rivera",
-        "context": "The archetype: one cutter, thrown almost every pitch, all the way to the Hall of Fame. The proof that a single great pitch can be a whole career.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "A modest, almost gentle cut — but so late and so repeatable that hitters who knew it was coming still could not square it. The whole career rode on one pitch that bit just enough, every single time.",
-          "source": {
-            "id": "br-rivera-cutter",
-            "label": "Bleacher Report, Visual Breakdown of the Rise & Dominance of Mariano Rivera's Cutter",
-            "url": "https://bleacherreport.com/articles/1737396-visual-breakdown-of-the-rise-dominance-of-mariano-riveras-cutter",
-            "retrievedAt": "2026-06-06",
-            "season": "2007-2008"
-          },
-          "confidence": "reputable-analysis"
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Emmanuel Clase",
-        "context": "The modern extreme: a cutter thrown two of every three pitches, with a high-ride shape that behaves more like a fastball than a breaking ball.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The cutter pushed to fastball intent, riding high and biting hard at once — so heavy and so firm that it plays like a heater that happens to cut, and hitters have to honor it like a true breaking ball.",
-          "source": {
-            "id": "savant-clase",
-            "label": "Baseball Savant (Statcast), Emmanuel Clase",
-            "url": "https://baseballsavant.mlb.com/savant-player/emmanuel-clase-661403",
-            "retrievedAt": "2026-06-06",
-            "season": "2025"
-          },
-          "confidence": "official-data"
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Corbin Burnes",
-        "context": "The cutter as a primary fastball, leaned on hard enough to anchor a Cy Young arsenal — a shorter, harder-to-square shape than Clase's.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "A shorter, tighter cut than Clase's, leaned on as the everyday fastball — the bite is small and the ride is honest, which is exactly what makes it so hard to barrel across a whole start.",
-          "source": {
-            "id": "savant-burnes",
-            "label": "Baseball Savant (Statcast), Corbin Burnes",
-            "url": "https://baseballsavant.mlb.com/savant-player/corbin-burnes-669203",
-            "retrievedAt": "2026-06-06",
-            "season": "2025"
-          },
-          "confidence": "official-data"
-        },
-        "rights": "original"
-      }
-    ],
-    "community": {
-      "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
-      "columns": [
-        "Rank",
-        "Variant",
-        "Adoption",
-        "Source tier"
-      ]
-    },
-    "guide": {
-      "family": "The late cut",
-      "tagline": "A fastball thrown off-center, so it rides like a heater and then bites to the glove side at the end.",
-      "feel": "Throw it like your fastball. Shift the grip slightly off-center and let the ball cut off your fingers — do not pull down the side like a slider.",
-      "steps": [
-        "Start from your four-seam grip and shift both fingers slightly toward the glove side of the ball.",
-        "Let the middle finger carry a touch more pressure.",
-        "Throw it with full fastball arm speed and just a hair of supination.",
-        "Let the ball cut off the fingers; the bite is small and late, and that is the point."
-      ],
-      "does": {
-        "headline": "It rides like a fastball, then jumps to the glove side at the end.",
-        "plain": "A cutter looks like a fastball almost the whole way, then darts to the glove side right before it gets to the plate. That tiny, late move is enough to catch the thin part of the bat instead of the barrel — which is why a great one breaks so many bats."
-      }
-    },
-    "seam": {
-      "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
-      "stitchCount": {
-        "value": "108 double stitches, 216 individual",
-        "source": {
-          "id": "wiki-baseball-ball",
-          "label": "Wikipedia, Baseball (ball)",
-          "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "reputable-analysis",
-        "note": "A manufacturing convention, not a number written into the rulebook, which fixes only weight and circumference."
-      },
-      "accuracyLevel": "seam-informed schematic",
-      "accuracyNote": {
-        "value": "The published closed-form figure-eight seam curve is laid on the sphere, but the exact regulation cover constants and the full 108-stitch pattern are approximated, not measured.",
-        "source": {
-          "id": "mathcurve",
-          "label": "mathcurve.com, Seam line of a tennis ball (Ferreol / Esculier)",
-          "url": "https://mathcurve.com/courbes3d.gb/couture/couture.shtml",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "reputable-analysis",
-        "approximate": true,
-        "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
-      },
-      "calibrationDoc": "docs/seam-calibration.md"
-    }
-  },
-  {
-    "canonical": {
-      "id": "knuckleball",
-      "name": "Knuckleball",
-      "family": "offspeed",
-      "grip": {
-        "value": "The fingernails (or, for smaller hands, the bent knuckles) dig into the leather while the thumb braces underneath. The ball is held off the palm and pushed toward the plate with no wrist snap, so it leaves the hand with almost no rotation. Killing the spin is the entire goal.",
-        "source": {
-          "id": "mlb-glossary-knuckleball",
-          "label": "MLB.com Statcast Glossary, Knuckleball (KN)",
-          "url": "https://www.mlb.com/glossary/pitch-types/knuckleball",
-          "retrievedAt": "2026-06-06"
-        },
-        "confidence": "reputable-analysis",
-        "note": "Paraphrased. MLB.com: knuckles on the ball or hovering over it while the fingernails dig into the surface; the goal is to eliminate almost all spin."
-      },
-      "gripDetails": [
-        {
-          "value": "MLB.com names the grip for the no-spin goal: knuckles on or just over the ball with the fingernails dug into the surface, thrown to eliminate almost all rotation so the ball flutters unpredictably.",
-          "source": {
-            "id": "mlb-glossary-knuckleball",
-            "label": "MLB.com Statcast Glossary, Knuckleball (KN)",
-            "url": "https://www.mlb.com/glossary/pitch-types/knuckleball",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Paraphrased from the glossary, not quoted."
-        },
-        {
-          "value": "In practice most throwers use the fingertips and nails rather than true knuckles, with the thumb resting underneath for balance — young pitchers with smaller hands are the ones who actually use their knuckles.",
-          "source": {
-            "id": "wiki-knuckleball",
-            "label": "Wikipedia, Knuckleball",
-            "url": "https://en.wikipedia.org/wiki/Knuckleball",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Paraphrased. The fingertip-vs-knuckle distinction and the thumb-for-balance point are Wikipedia's, not the MLB glossary's."
-        },
-        {
-          "value": "The textbook target is to barely let the ball turn at all over the whole flight from hand to plate; the slowly changing seam position is what makes the path wander.",
-          "source": {
-            "id": "wiki-knuckleball",
-            "label": "Wikipedia, Knuckleball",
-            "url": "https://en.wikipedia.org/wiki/Knuckleball",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Paraphrased. The barely-any-rotation target is Wikipedia's."
-        }
-      ],
-      "fingerPlacement": [
-        {
-          "seamT": 0.06,
-          "lift": 0.04,
-          "label": "Index nail",
-          "finger": "index",
-          "note": "Fingernail dug into the leather just behind a seam, knuckle bent."
-        },
-        {
-          "seamT": 0.12,
-          "lift": 0.04,
-          "label": "Middle nail",
-          "finger": "middle",
-          "note": "Second fingernail beside the first; together they brace, not grip."
-        },
-        {
-          "seamT": 0.7,
-          "lift": 0,
-          "label": "Thumb",
-          "finger": "thumb",
-          "note": "Underneath for balance, so the ball can be pushed flat off the nails."
-        }
-      ],
-      "gripModel": {
-        "defaultView": "top",
-        "ballDepth": "out-in-fingers",
-        "fingerSpacing": "touching",
-        "primaryPressureFinger": "index",
-        "thumbRole": "Thumb sits underneath for balance while the fingernails hold the ball off the palm.",
-        "palmGapCue": "Ball held off the palm on the fingernails, never buried — the palm must not add spin.",
-        "releaseCue": "Push the ball flat toward the plate and let it leave with as little rotation as possible. No wrist snap.",
-        "visualCaveat": "Grip geometry is schematic; some throwers use bent knuckles instead of nails, and small hands change the placement.",
-        "contacts": [
-          {
-            "finger": "index",
-            "label": "Index nail",
-            "seamT": 0.06,
-            "lift": 0.04,
-            "seamRelation": "Nail dug in behind a seam",
-            "pressureRole": "Braces the ball to kill spin",
-            "cue": "Dig the nail in",
-            "curl": 0.7
-          },
-          {
-            "finger": "middle",
-            "label": "Middle nail",
-            "seamT": 0.12,
-            "lift": 0.04,
-            "seamRelation": "Nail beside the index",
-            "pressureRole": "Second brace point",
-            "cue": "Push, do not spin",
-            "curl": 0.7
-          },
-          {
-            "finger": "thumb",
-            "label": "Thumb",
-            "seamT": 0.7,
-            "lift": 0,
-            "seamRelation": "Underneath for balance",
-            "pressureRole": "Stabilizes the no-spin push",
-            "cue": "Balance underneath",
-            "curl": 0.3
-          }
-        ]
-      },
-      "mechanics": {
-        "value": "It is thrown soft, with an even, low-effort push instead of a hard arm whip, because arm speed adds the spin the pitch is trying to avoid. A firmer knuckleball trades some flutter for less reaction time, and many throwers carry two speeds.",
-        "source": {
-          "id": "fangraphs-dickey-knuckle",
-          "label": "FanGraphs, Tracking R.A. Dickey's Knuckleball",
-          "url": "https://blogs.fangraphs.com/tracking-r-a-dickeys-knuckleball/",
-          "retrievedAt": "2026-06-06"
-        },
-        "confidence": "reputable-analysis",
-        "note": "Paraphrased. The firm-knuckleball approach and the two-speed idea are from the FanGraphs Dickey analysis."
-      },
-      "physics": {
-        "spinAxis": {
-          "value": "Effectively none. The whole point is to kill rotation, and with almost no spin there is no stable axis and no meaningful Magnus force — which is why Statcast does not treat a knuckleball like a spinning pitch.",
-          "source": {
-            "id": "wiki-knuckleball",
-            "label": "Wikipedia, Knuckleball",
-            "url": "https://en.wikipedia.org/wiki/Knuckleball",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Inferred from the no-spin goal; the cited pages describe near-zero rotation, not a spin direction."
-        },
-        "shape": {
-          "value": "No fixed direction and no settled shape — a late, sudden flutter that darts one way then another, unpredictable to the hitter, the catcher, and the pitcher alike. With the spin killed, the seams catch the air differently from instant to instant. It is famously almost as hard to catch as it is to hit.",
-          "source": {
-            "id": "mlb-glossary-knuckleball",
-            "label": "MLB.com Statcast Glossary, Knuckleball (KN)",
-            "url": "https://www.mlb.com/glossary/pitch-types/knuckleball",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Described as shape, not a measured number. There is no fixed break direction — that unpredictability is the pitch."
-        },
-        "teaching": {
-          "value": "Every other pitch in the atlas moves because it spins. The knuckleball moves because it doesn't. Kill the rotation, and the raised seams — whose position when the ball leaves the hand is never quite the same twice — catch the air and wander the ball off line. No spin, no Magnus, no two pitches alike.",
-          "source": {
-            "id": "wiki-knuckleball",
-            "label": "Wikipedia, Knuckleball",
-            "url": "https://en.wikipedia.org/wiki/Knuckleball",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "Synthesis of the no-spin grip goal and the seam-drag movement mechanism."
-        }
-      },
-      "rights": "original"
-    },
-    "motion": {
-      "spinAxis": {
-        "x": -0.1,
-        "y": 0,
-        "z": 0.99
-      },
-      "forceLabel": "Almost no Magnus",
-      "gyro": false,
-      "verticalShape": "flat",
-      "horizontalDir": "none",
-      "breakView": "movement",
-      "indeterminateBreak": true
-    },
-    "display": {
-      "slug": "knuckleball",
-      "shortName": "Knuckleball",
-      "specimenNo": "09",
-      "heroSub": "The pitch that doesn't spin.",
-      "heroIntro": "Dig the fingernails in, brace the thumb, and push the ball flat with no spin. Strip away the rotation and the raised seams catch the air on their own, fluttering the ball late in any direction — almost as hard to catch as it is to hit.",
-      "foundationCaption": "With the spin killed, there is almost no Magnus force: the ball sits on the spinless reference and the seams do the steering, erratically.",
-      "mastersIntro": "Two documented knuckleballs, a generation apart. The visual is our own seam schematic; what sets each apart is in the read, not a gauge, and the movement is, by nature, not repeatable."
-    },
-    "masterVariants": [
-      {
-        "tier": "verified-attributed",
-        "pitcher": "R.A. Dickey",
-        "context": "The only knuckleballer to win a Cy Young Award (2012), and the model of the hard, two-speed knuckleball that traded some flutter for less reaction time.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The firm, two-speed knuckleball: thrown with more pace than the classic floater, he gave up a little flutter to cut the hitter's reaction time, and changed speeds off it to keep them guessing.",
-          "source": {
-            "id": "fangraphs-dickey-knuckle",
-            "label": "FanGraphs, Tracking R.A. Dickey's Knuckleball",
-            "url": "https://blogs.fangraphs.com/tracking-r-a-dickeys-knuckleball/",
-            "retrievedAt": "2026-06-06"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The firmer knuckleball, with a slower version off it — the read that defined his arm."
-        },
-        "rights": "original"
-      },
-      {
-        "tier": "verified-attributed",
-        "pitcher": "Matt Waldron",
-        "context": "The modern knuckleballer who kept the pitch alive in the current game — and threw it more and more, the clearest proof that less rotation is the goal.",
-        "verifiedPro": true,
-        "distinction": {
-          "value": "The knuckleball's survivor in the tracking era: he leaned on it harder season over season and pushed it to its quietest, slowest-turning extreme, where the ball barely rotates at all on its way to the plate.",
-          "source": {
-            "id": "fangraphs-waldron-knuckle",
-            "label": "FanGraphs, Matt Waldron and His Knuckleball Are Sticking Around",
-            "url": "https://blogs.fangraphs.com/matt-waldron-and-his-knuckleball-are-sticking-around/",
-            "retrievedAt": "2026-06-06",
-            "season": "2024"
-          },
-          "confidence": "reputable-analysis",
-          "note": "The read: he kept the pitch alive and chased the no-spin edge of it."
-        },
-        "rights": "original"
-      }
-    ],
-    "community": {
-      "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
-      "columns": [
-        "Rank",
-        "Variant",
-        "Adoption",
-        "Source tier"
-      ]
-    },
-    "guide": {
-      "family": "The flutter",
-      "tagline": "Pushed with no spin so the seams catch the air and the ball wanders late — almost as hard to catch as to hit.",
-      "feel": "Hold the ball off your palm on your fingernails. Push it flat toward the plate, no wrist, no spin. Stay smooth and slow.",
-      "steps": [
-        "Dig your index and middle fingernails into the leather, thumb underneath for balance.",
-        "Keep the ball off your palm so the palm cannot add spin.",
-        "Push the ball toward the plate with an even arm, not a whip.",
-        "Let it leave with as little rotation as you can manage — the less it spins, the more it moves."
-      ],
-      "does": {
-        "headline": "It barely spins, so the stitches steer it.",
-        "plain": "A knuckleball is thrown to not spin at all. Without spin there is nothing holding its path steady, so the raised stitches catch the moving air and nudge the ball one way, then another, late and unpredictably. Nobody — not the hitter, not the catcher, not even the pitcher — knows exactly where it will end up."
-      }
-    },
-    "seam": {
-      "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
-      "stitchCount": {
-        "value": "108 double stitches, 216 individual",
-        "source": {
-          "id": "wiki-baseball-ball",
-          "label": "Wikipedia, Baseball (ball)",
-          "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "reputable-analysis",
-        "note": "A manufacturing convention, not a number written into the rulebook, which fixes only weight and circumference."
-      },
-      "accuracyLevel": "seam-informed schematic",
-      "accuracyNote": {
-        "value": "The published closed-form figure-eight seam curve is laid on the sphere, but the exact regulation cover constants and the full 108-stitch pattern are approximated, not measured.",
-        "source": {
-          "id": "mathcurve",
-          "label": "mathcurve.com, Seam line of a tennis ball (Ferreol / Esculier)",
-          "url": "https://mathcurve.com/courbes3d.gb/couture/couture.shtml",
-          "retrievedAt": "2026-06-04"
-        },
-        "confidence": "reputable-analysis",
-        "approximate": true,
-        "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
-      },
-      "calibrationDoc": "docs/seam-calibration.md"
-    }
-  },
-  {
-    "canonical": {
       "id": "forkball",
       "name": "Forkball",
       "family": "offspeed",
@@ -3343,10 +3300,26 @@
         }
       ],
       "gripModel": {
+        "status": "filed",
         "defaultView": "top",
         "ballDepth": "deep-in-hand",
         "fingerSpacing": "wide",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles forced apart by the wedged ball, the fork riding to the finger bases.",
+          "palmFacing": "Palm to the plate until the wrist snaps down through release."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: the ball jammed to the base of the forked fingers, each riding the inside of its finger on the open leather outside the seams, visibly deeper than a splitter. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-forkball",
+            "label": "MLB.com Statcast Glossary, Forkball (FO)",
+            "url": "https://www.mlb.com/glossary/pitch-types/forkball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Splitter versus forkball is depth, not spread: the splitter rides the fingertips, the forkball is wedged to the knuckles."
+        },
         "thumbRole": "Thumb underneath supports a ball wedged deep against the base of the fingers.",
         "palmGapCue": "No gap — the ball is jammed all the way down between the forked fingers, deeper than a splitter.",
         "releaseCue": "Snap the wrist down as the ball squirts out from between the fingers; the deep grip kills the spin.",
@@ -3357,7 +3330,11 @@
             "label": "Index fork",
             "seamT": 0.18,
             "lift": 0,
-            "seamRelation": "Split wide, jammed deep",
+            "seamOffset": 0.13,
+            "azimuth": 15,
+            "engagement": "inside",
+            "pressureTier": "primary",
+            "seamRelation": "Split wide, jammed deep along the inside of the finger",
             "pressureRole": "One side of the deep fork",
             "cue": "Bury it deep",
             "curl": 0.2
@@ -3367,7 +3344,11 @@
             "label": "Middle fork",
             "seamT": 0.82,
             "lift": 0,
-            "seamRelation": "Split wider than a splitter",
+            "seamOffset": 0.13,
+            "azimuth": 15,
+            "engagement": "inside",
+            "pressureTier": "support",
+            "seamRelation": "Split wider than a splitter, wedged to the knuckles",
             "pressureRole": "Other side of the deep fork",
             "cue": "Wider than a split",
             "curl": 0.2
@@ -3377,6 +3358,10 @@
             "label": "Thumb",
             "seamT": 0.5,
             "lift": 0.02,
+            "seamOffset": 0,
+            "azimuth": 50,
+            "engagement": "pad",
+            "pressureTier": "support",
             "seamRelation": "Underneath as support",
             "pressureRole": "Holds the deep ball",
             "cue": "Support underneath",
@@ -3530,7 +3515,316 @@
       ],
       "does": {
         "headline": "It leaves with no spin, so it just falls.",
-        "plain": "A forkball is squeezed so deep between the fingers that it comes out almost without spinning. With no spin there is nothing holding it up, so it tumbles down late and hard, like the floor dropped out. It fools hitters who are geared up for a fastball — but the snap that makes it work is tough on the arm."
+        "plain": "A forkball is squeezed so deep between the fingers that it comes out almost without spinning. With no spin there is nothing holding it up, so it tumbles down late and hard, like the floor dropped out. It fools hitters who are geared up for a fastball. The snap that makes it work is tough on the arm."
+      }
+    },
+    "seam": {
+      "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "stitchCount": {
+        "value": "108 double stitches, 216 individual",
+        "source": {
+          "id": "wiki-baseball-ball",
+          "label": "Wikipedia, Baseball (ball)",
+          "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "reputable-analysis",
+        "note": "A manufacturing convention, not a number written into the rulebook, which fixes only weight and circumference."
+      },
+      "accuracyLevel": "seam-informed schematic",
+      "accuracyNote": {
+        "value": "The published closed-form figure-eight seam curve is laid on the sphere, but the exact regulation cover constants and the full 108-stitch pattern are approximated, not measured.",
+        "source": {
+          "id": "mathcurve",
+          "label": "mathcurve.com, Seam line of a tennis ball (Ferreol / Esculier)",
+          "url": "https://mathcurve.com/courbes3d.gb/couture/couture.shtml",
+          "retrievedAt": "2026-06-04"
+        },
+        "confidence": "reputable-analysis",
+        "approximate": true,
+        "note": "The canonical degree-6 cover constants were not pinnable, so the documented figure-eight closed form stands in. The honest label is seam-informed schematic, never seam-accurate."
+      },
+      "calibrationDoc": "docs/seam-calibration.md"
+    }
+  },
+  {
+    "canonical": {
+      "id": "knuckleball",
+      "name": "Knuckleball",
+      "family": "offspeed",
+      "grip": {
+        "value": "The fingernails (or, for smaller hands, the bent knuckles) dig into the leather while the thumb braces underneath. The ball is held off the palm and pushed toward the plate with no wrist snap, so it leaves the hand with almost no rotation. Killing the spin is the entire goal.",
+        "source": {
+          "id": "mlb-glossary-knuckleball",
+          "label": "MLB.com Statcast Glossary, Knuckleball (KN)",
+          "url": "https://www.mlb.com/glossary/pitch-types/knuckleball",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Paraphrased. MLB.com: knuckles on the ball or hovering over it while the fingernails dig into the surface; the goal is to eliminate almost all spin."
+      },
+      "gripDetails": [
+        {
+          "value": "MLB.com names the grip for the no-spin goal: knuckles on or just over the ball with the fingernails dug into the surface, thrown to eliminate almost all rotation so the ball flutters unpredictably.",
+          "source": {
+            "id": "mlb-glossary-knuckleball",
+            "label": "MLB.com Statcast Glossary, Knuckleball (KN)",
+            "url": "https://www.mlb.com/glossary/pitch-types/knuckleball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Paraphrased from the glossary, not quoted."
+        },
+        {
+          "value": "In practice most throwers use the fingertips and nails rather than true knuckles, with the thumb resting underneath for balance — young pitchers with smaller hands are the ones who actually use their knuckles.",
+          "source": {
+            "id": "wiki-knuckleball",
+            "label": "Wikipedia, Knuckleball",
+            "url": "https://en.wikipedia.org/wiki/Knuckleball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Paraphrased. The fingertip-vs-knuckle distinction and the thumb-for-balance point are Wikipedia's, not the MLB glossary's."
+        },
+        {
+          "value": "The textbook target is to barely let the ball turn at all over the whole flight from hand to plate; the slowly changing seam position is what makes the path wander.",
+          "source": {
+            "id": "wiki-knuckleball",
+            "label": "Wikipedia, Knuckleball",
+            "url": "https://en.wikipedia.org/wiki/Knuckleball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Paraphrased. The barely-any-rotation target is Wikipedia's."
+        }
+      ],
+      "fingerPlacement": [
+        {
+          "seamT": 0.06,
+          "lift": 0.04,
+          "label": "Index nail",
+          "finger": "index",
+          "note": "Fingernail dug into the leather just behind a seam, knuckle bent."
+        },
+        {
+          "seamT": 0.12,
+          "lift": 0.04,
+          "label": "Middle nail",
+          "finger": "middle",
+          "note": "Second fingernail beside the first; together they brace, not grip."
+        },
+        {
+          "seamT": 0.7,
+          "lift": 0,
+          "label": "Thumb",
+          "finger": "thumb",
+          "note": "Underneath for balance, so the ball can be pushed flat off the nails."
+        }
+      ],
+      "gripModel": {
+        "status": "filed",
+        "defaultView": "top",
+        "ballDepth": "out-in-fingers",
+        "fingerSpacing": "touching",
+        "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "Knuckles bent up and forward so only the nails meet the leather.",
+          "palmFacing": "Palm flat to the plate through a push release — no snap, no roll."
+        },
+        "provenance": {
+          "value": "Finger placement solved from the cited descriptions: index and middle fingernails dug in just behind a seam with the knuckles bent, thumb balancing beneath, the ball held off the palm. Schematic geometry, not an athlete scan.",
+          "source": {
+            "id": "mlb-glossary-knuckleball",
+            "label": "MLB.com Statcast Glossary, Knuckleball (KN)",
+            "url": "https://www.mlb.com/glossary/pitch-types/knuckleball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Some throwers brace with bent knuckles instead of nails; the no-spin push is the constant."
+        },
+        "thumbRole": "Thumb sits underneath for balance while the fingernails hold the ball off the palm.",
+        "palmGapCue": "Ball held off the palm on the fingernails, never buried — the palm must not add spin.",
+        "releaseCue": "Push the ball flat toward the plate and let it leave with as little rotation as possible. No wrist snap.",
+        "visualCaveat": "Grip geometry is schematic; some throwers use bent knuckles instead of nails, and small hands change the placement.",
+        "contacts": [
+          {
+            "finger": "index",
+            "label": "Index nail",
+            "seamT": 0.06,
+            "lift": 0.04,
+            "seamOffset": -0.03,
+            "azimuth": 70,
+            "engagement": "nail",
+            "pressureTier": "primary",
+            "seamRelation": "Nail dug in behind a seam",
+            "pressureRole": "Braces the ball to kill spin",
+            "cue": "Dig the nail in",
+            "curl": 0.7
+          },
+          {
+            "finger": "middle",
+            "label": "Middle nail",
+            "seamT": 0.12,
+            "lift": 0.04,
+            "seamOffset": -0.03,
+            "azimuth": 70,
+            "engagement": "nail",
+            "pressureTier": "support",
+            "seamRelation": "Nail beside the index",
+            "pressureRole": "Second brace point",
+            "cue": "Push, do not spin",
+            "curl": 0.7
+          },
+          {
+            "finger": "thumb",
+            "label": "Thumb",
+            "seamT": 0.7,
+            "lift": 0,
+            "seamOffset": 0.04,
+            "azimuth": 50,
+            "engagement": "pad",
+            "pressureTier": "support",
+            "seamRelation": "Underneath for balance",
+            "pressureRole": "Stabilizes the no-spin push",
+            "cue": "Balance underneath",
+            "curl": 0.3
+          }
+        ]
+      },
+      "mechanics": {
+        "value": "It is thrown soft, with an even, low-effort push instead of a hard arm whip, because arm speed adds the spin the pitch is trying to avoid. A firmer knuckleball trades some flutter for less reaction time, and many throwers carry two speeds.",
+        "source": {
+          "id": "fangraphs-dickey-knuckle",
+          "label": "FanGraphs, Tracking R.A. Dickey's Knuckleball",
+          "url": "https://blogs.fangraphs.com/tracking-r-a-dickeys-knuckleball/",
+          "retrievedAt": "2026-06-06"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Paraphrased. The firm-knuckleball approach and the two-speed idea are from the FanGraphs Dickey analysis."
+      },
+      "physics": {
+        "spinAxis": {
+          "value": "Effectively none. The whole point is to kill rotation, and with almost no spin there is no stable axis and no meaningful Magnus force — which is why Statcast does not treat a knuckleball like a spinning pitch.",
+          "source": {
+            "id": "wiki-knuckleball",
+            "label": "Wikipedia, Knuckleball",
+            "url": "https://en.wikipedia.org/wiki/Knuckleball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Inferred from the no-spin goal; the cited pages describe near-zero rotation, not a spin direction."
+        },
+        "shape": {
+          "value": "No fixed direction and no settled shape — a late, sudden flutter that darts one way then another, unpredictable to the hitter, the catcher, and the pitcher alike. With the spin killed, the seams catch the air differently from instant to instant. It is famously almost as hard to catch as it is to hit.",
+          "source": {
+            "id": "mlb-glossary-knuckleball",
+            "label": "MLB.com Statcast Glossary, Knuckleball (KN)",
+            "url": "https://www.mlb.com/glossary/pitch-types/knuckleball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Described as shape, not a measured number. There is no fixed break direction — that unpredictability is the pitch."
+        },
+        "teaching": {
+          "value": "Every other pitch in the atlas moves because it spins. The knuckleball moves because it doesn't. Kill the rotation, and the raised seams — whose position when the ball leaves the hand is never quite the same twice — catch the air and wander the ball off line. No spin, no Magnus, no two pitches alike.",
+          "source": {
+            "id": "wiki-knuckleball",
+            "label": "Wikipedia, Knuckleball",
+            "url": "https://en.wikipedia.org/wiki/Knuckleball",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "Synthesis of the no-spin grip goal and the seam-drag movement mechanism."
+        }
+      },
+      "rights": "original"
+    },
+    "motion": {
+      "spinAxis": {
+        "x": -0.1,
+        "y": 0,
+        "z": 0.99
+      },
+      "forceLabel": "Almost no Magnus",
+      "gyro": false,
+      "verticalShape": "flat",
+      "horizontalDir": "none",
+      "breakView": "movement",
+      "indeterminateBreak": true
+    },
+    "display": {
+      "slug": "knuckleball",
+      "shortName": "Knuckleball",
+      "specimenNo": "09",
+      "heroSub": "The pitch that doesn't spin.",
+      "heroIntro": "Dig the fingernails in, brace the thumb, and push the ball flat with no spin. Strip away the rotation and the raised seams catch the air on their own, fluttering the ball late in any direction — almost as hard to catch as it is to hit.",
+      "foundationCaption": "With the spin killed, there is almost no Magnus force: the ball sits on the spinless reference and the seams do the steering, erratically.",
+      "mastersIntro": "Two documented knuckleballs, a generation apart. The visual is our own seam schematic; what sets each apart is in the read, not a gauge, and the movement is, by nature, not repeatable."
+    },
+    "masterVariants": [
+      {
+        "tier": "verified-attributed",
+        "pitcher": "R.A. Dickey",
+        "context": "The only knuckleballer to win a Cy Young Award (2012), and the model of the hard, two-speed knuckleball that traded some flutter for less reaction time.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "The firm, two-speed knuckleball: thrown with more pace than the classic floater, he gave up a little flutter to cut the hitter's reaction time, and changed speeds off it to keep them guessing.",
+          "source": {
+            "id": "fangraphs-dickey-knuckle",
+            "label": "FanGraphs, Tracking R.A. Dickey's Knuckleball",
+            "url": "https://blogs.fangraphs.com/tracking-r-a-dickeys-knuckleball/",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The firmer knuckleball, with a slower version off it — the read that defined his arm."
+        },
+        "rights": "original"
+      },
+      {
+        "tier": "verified-attributed",
+        "pitcher": "Matt Waldron",
+        "context": "The modern knuckleballer who kept the pitch alive in the current game — and threw it more and more, the clearest proof that less rotation is the goal.",
+        "verifiedPro": true,
+        "distinction": {
+          "value": "The knuckleball's survivor in the tracking era: he leaned on it harder season over season and pushed it to its quietest, slowest-turning extreme, where the ball barely rotates at all on its way to the plate.",
+          "source": {
+            "id": "fangraphs-waldron-knuckle",
+            "label": "FanGraphs, Matt Waldron and His Knuckleball Are Sticking Around",
+            "url": "https://blogs.fangraphs.com/matt-waldron-and-his-knuckleball-are-sticking-around/",
+            "retrievedAt": "2026-06-06",
+            "season": "2024"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The read: he kept the pitch alive and chased the no-spin edge of it."
+        },
+        "rights": "original"
+      }
+    ],
+    "community": {
+      "enabled": true,
+      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
+      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "columns": [
+        "Rank",
+        "Variant",
+        "Adoption",
+        "Source tier"
+      ]
+    },
+    "guide": {
+      "family": "The flutter",
+      "tagline": "Pushed with no spin so the seams catch the air and the ball wanders late. The catcher reads it about as well as the hitter does, which is to say barely.",
+      "feel": "Hold the ball off your palm on your fingernails. Push it flat toward the plate, no wrist, no spin. Stay smooth and slow.",
+      "steps": [
+        "Dig your index and middle fingernails into the leather, thumb underneath for balance.",
+        "Keep the ball off your palm so the palm cannot add spin.",
+        "Push the ball toward the plate with an even arm, not a whip.",
+        "Let it leave with as little rotation as you can manage — the less it spins, the more it moves."
+      ],
+      "does": {
+        "headline": "It barely spins, so the stitches steer it.",
+        "plain": "A knuckleball is thrown to not spin at all. Without spin there is nothing holding its path steady, so the raised stitches catch the moving air and nudge the ball one way, then another, late and unpredictably. Where it ends up is a mystery to everyone: the hitter, the catcher, even the pitcher who let it go."
       }
     },
     "seam": {
@@ -3614,70 +3908,33 @@
           "note": "Paraphrased. The Sewell origin and the Maurice Van Robays \"nothing pitch\" naming are documented in The Hardball Times."
         }
       ],
-      "fingerPlacement": [
-        {
-          "seamT": 0.02,
-          "lift": 0,
-          "label": "Index",
-          "finger": "index",
-          "note": "Across the seams, as on a fastball or curve — the grip barely matters."
-        },
-        {
-          "seamT": 0.08,
-          "lift": 0,
-          "label": "Middle",
-          "finger": "middle",
-          "note": "Beside the index; the pitch is about the lob, not the grip."
-        },
-        {
-          "seamT": 0.66,
-          "lift": 0,
-          "label": "Thumb",
-          "finger": "thumb",
-          "note": "Underneath for control of a very slow release."
-        }
-      ],
+      "fingerPlacement": [],
       "gripModel": {
+        "status": "unfiled",
         "defaultView": "top",
         "ballDepth": "neutral",
         "fingerSpacing": "slight-spread",
         "primaryPressureFinger": "index",
+        "orientation": {
+          "knuckleLine": "No canonical knuckle line — the hold is whatever the lob trusts.",
+          "palmFacing": "Up and under the ball through the slow, exaggerated release."
+        },
+        "provenance": {
+          "value": "No source supports one canonical eephus grip. The cited references describe an ordinary fastball or curve hold lobbed on a high arc — the pitch lives in the trajectory, not in the fingers.",
+          "source": {
+            "id": "mlb-glossary-eephus",
+            "label": "MLB.com Statcast Glossary, Eephus (EP)",
+            "url": "https://www.mlb.com/glossary/pitch-types/eephus",
+            "retrievedAt": "2026-06-06"
+          },
+          "confidence": "unverified",
+          "note": "The grip stays undrawn on purpose: any fingers placed here would be invented geometry, and this atlas does not invent. Read the release cue instead."
+        },
         "thumbRole": "Thumb underneath for control; the grip is ordinary because the arc, not the spin, is the pitch.",
         "palmGapCue": "Held loosely like a fastball or curve — almost any grip works.",
         "releaseCue": "Throw it on a high, exaggerated overhand arc with drastically reduced arm speed, aiming to peak well above the batter and drop in.",
         "visualCaveat": "Grip geometry is schematic and barely matters here; the eephus is defined by arc and timing, not grip.",
-        "contacts": [
-          {
-            "finger": "index",
-            "label": "Index",
-            "seamT": 0.02,
-            "lift": 0,
-            "seamRelation": "Across the seams",
-            "pressureRole": "Ordinary backspin grip",
-            "cue": "Any normal grip",
-            "curl": 0.3
-          },
-          {
-            "finger": "middle",
-            "label": "Middle",
-            "seamT": 0.08,
-            "lift": 0,
-            "seamRelation": "Beside the index",
-            "pressureRole": "Ordinary backspin grip",
-            "cue": "Lob it",
-            "curl": 0.3
-          },
-          {
-            "finger": "thumb",
-            "label": "Thumb",
-            "seamT": 0.66,
-            "lift": 0,
-            "seamRelation": "Underneath",
-            "pressureRole": "Controls a slow release",
-            "cue": "Stay under it",
-            "curl": 0.4
-          }
-        ]
+        "contacts": []
       },
       "mechanics": {
         "value": "It is lobbed in at a small fraction of fastball pace on a towering rainbow that climbs well above head height before dropping into the zone on a steep angle. It is a once-a-game weapon: it works on timing, not stuff, and a hitter who is ready for it can crush it.",
@@ -3744,9 +4001,9 @@
       "shortName": "Eephus",
       "specimenNo": "12",
       "heroSub": "The rainbow.",
-      "heroIntro": "Lob it. The eephus floats in on a high arc at a fraction of fastball pace, peaking well above the batter before dropping into the zone — a pitch whose only weapon is time. The easiest pitch in baseball to hit, and one of the hardest to time.",
-      "foundationCaption": "It carries normal backspin, but thrown this slow, gravity — not spin — shapes the giant arc the plot cannot draw.",
-      "mastersIntro": "Two eephus throwers, eighty years apart: the man who invented it and the modern artist who still dares it. The visual is our own seam schematic; what sets each version apart is in the read, not a gauge."
+      "heroIntro": "Lob it. The eephus floats in on a high arc at a fraction of fastball pace, peaking well above the batter before dropping into the zone. Its only weapon is time. The easiest pitch in baseball to hit, and one of the hardest to time.",
+      "foundationCaption": "It carries normal backspin, but thrown this slow, gravity shapes the giant arc the plot cannot draw. Spin barely figures in.",
+      "mastersIntro": "Two eephus throwers, eighty years apart: the man who invented it, and the modern artist who still dares it. The visual is our own seam schematic. What sets each version apart lives in the read, not a gauge."
     },
     "masterVariants": [
       {
@@ -3812,7 +4069,7 @@
     },
     "guide": {
       "family": "The lob",
-      "tagline": "A high, slow rainbow at a crawl — its only weapon is throwing off a hitter's timing.",
+      "tagline": "A high, slow rainbow at a crawl. Its only weapon is throwing off a hitter's timing.",
       "feel": "Lob it on a high arc with way less arm speed than a fastball. Aim to peak above the batter and drop it into the top of the zone.",
       "steps": [
         "Take any ordinary grip — a fastball or curve hold is fine.",
@@ -3822,7 +4079,7 @@
       ],
       "does": {
         "headline": "It floats in so slowly that timing falls apart.",
-        "plain": "An eephus is a giant, slow rainbow — lobbed in at a fraction of fastball pace. It does not dart or dive; it just hangs in the air much longer than a hitter expects, then drops into the zone. A batter geared up for heat has to wait, and waiting is the hardest thing to do at the plate."
+        "plain": "An eephus is a giant, slow rainbow, lobbed in at a fraction of fastball pace. It does not dart or dive. It just hangs in the air much longer than a hitter expects, then drops into the zone. A batter geared up for heat has to wait, and waiting is the hardest thing to do at the plate."
       }
     },
     "seam": {

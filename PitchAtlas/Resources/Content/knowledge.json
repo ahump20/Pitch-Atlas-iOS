@@ -4,17 +4,17 @@
     "navLabel": "Mechanics",
     "eyebrow": "The delivery",
     "title": "The Kinetic Chain: Force from ground to glove",
-    "summary": "Pitching force starts in the legs and trunk; sequence and timing transfer it to the arm. Breaks in the chain overload the shoulder and elbow.",
-    "sub": "The pitch emerges from the lower body, not the arm. Energy flows proximal-to-distal—legs drive, hips rotate, core twists, shoulders and arm whip through. Each segment must decelerate as the next accelerates, or the small muscles of the shoulder and elbow absorb dangerous loads.",
+    "summary": "The pitch is built in the legs and trunk, then handed to the arm. Sequence and timing transfer the force; a break in the chain makes the shoulder and elbow pay for it.",
+    "sub": "The pitch comes out of the lower body, not the arm. Force flows from the big segments to the small ones — legs drive, hips turn, the trunk whips, the arm and hand finish it. Each segment has to slow down as the next one fires. Lose that order and the small muscles of the shoulder and elbow are left to do work they were never built for.",
     "accent": "powder",
     "educational": false,
     "sections": [
       {
-        "heading": "The Chain: Four Pillars of Throwing",
+        "heading": "The Chain: how force travels through you",
         "paragraphs": [
-          "The kinetic chain is not a movement pattern; it is a coordinated transfer of force through your entire body. It begins the instant your back foot commits to the mound. Energy originates in the legs, amplifies through the trunk and hips, and arrives at the shoulder and arm already moving.",
-          "Think of it as a whip. The base (legs and core) starts the force; the middle (hips and shoulders) stores and amplifies it; the tip (arm and hand) releases it toward the target. Break the whip at any point with sluggish legs, stiff hips, or a collapsed core, and the tip must work harder. That compensation loads the elbow and shoulder with forces they cannot safely absorb.",
-          "The chain has four main segments: lower extremity, pelvis, trunk and scapula, and shoulder-elbow complex. Elite pitchers activate these in strict order, with each segment handing force to the next. That timing is everything."
+          "The kinetic chain is not a single move you make with your arm. It is a relay — force handed from one part of the body to the next, starting the instant your back foot commits to the mound. The energy is born in the legs, gathered through the hips and trunk, and arrives at the shoulder already moving fast. The arm doesn't generate the pitch so much as deliver what the body built.",
+          "Think of a whip. The base — your legs and core — starts the motion. The middle — hips and shoulders — stores and amplifies it. The tip — arm and hand — lets it go toward the target. Crack the whip cleanly and the tip barely has to work. Break it anywhere — sluggish legs, stiff hips, a core that collapses — and the tip has to make up the difference. That make-up work is what lands on the elbow and shoulder as stress they can't safely absorb.",
+          "There are four links worth feeling: the lower half, the hips, the trunk and shoulder blade, and the shoulder-elbow at the end. Good arms fire them in strict order, each one passing force to the next. The order is the whole lesson. Get the timing right and the arm feels free; get it wrong and the arm feels like it's doing everything alone."
         ],
         "claims": [
           {
@@ -50,14 +50,14 @@
         ]
       },
       {
-        "heading": "Leg Drive and the Foundation",
+        "heading": "Leg drive: the pitch starts in the ground",
         "paragraphs": [
-          "The pitch starts in the ground. Your back leg drives forward, extending the hip and knee to accelerate your body down the mound. This is not a gentle stride—it is an explosive movement that generates most of the initial kinetic energy. The lead leg plants closed relative to the mound centerline, with your stride length ideally around 85% of your height. As your lead foot makes contact, your lead knee is still flexed at roughly 45 degrees.",
-          "During this phase, your back hip is rotating open, your front knee begins to straighten, and your pelvis is accelerating toward home plate. The sequencing is critical: your pelvis begins rotating before your upper trunk, creating load in the obliques and core. This happens passively; if you force it, you lose the elastic recoil that transfers force into the throw. The better your hip and ankle mobility, the cleaner this sequence unfolds and the less compensatory stress lands on your elbow."
+          "The first force in the throw comes up out of the dirt. Your back leg pushes you down the mound — not a soft glide, a real shove that sets the whole delivery's pace. The front leg reaches out and lands a touch closed, toward the arm side of straight, so the hips have something firm to turn into. When the front foot touches down, the lead knee is still soft and bent, ready to take the load and then brace against it.",
+          "As you stride, the back hip is already opening, the front knee is starting to firm up, and the pelvis is accelerating toward the plate. The feel to chase: the hips lead, the chest waits. The pelvis begins to turn before the upper body follows — and that should happen on its own, out of good timing, not because you yank it open. Force it and you spend the elastic load early. The freer your hips and ankles move, the cleaner this unfolds, and the less the elbow has to cover for a lower half that didn't do its share."
         ],
         "claims": [
           {
-            "value": "Stride length should equal approximately 85% of pitcher height, with a closed lead foot position relative to the mound centerline.",
+            "value": "Stride length is a meaningful contributor to delivery, with a closed lead-foot landing relative to the mound centerline.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -67,7 +67,7 @@
             }
           },
           {
-            "value": "Trail hip total rotational arc is related to when the trunk starts rotating; restricted back-leg hip rotation dampens forward trunk movement.",
+            "value": "Trail-hip rotational range relates to when the trunk starts rotating; restricted back-leg hip rotation dampens forward trunk movement.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc8016430",
@@ -77,7 +77,7 @@
             }
           },
           {
-            "value": "Lead knee flexion at foot contact is approximately 45°; at ball release it is approximately 30°.",
+            "value": "The lead knee is flexed at foot contact and braces toward extension by release; that bracing anchors the lower half so the trunk can rotate over it.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -89,15 +89,15 @@
         ]
       },
       {
-        "heading": "Hip-Shoulder Separation: The Spring",
+        "heading": "Hip-shoulder separation: the spring you wind",
         "paragraphs": [
-          "At foot plant, your hips are already rotating toward home plate while your shoulders lag behind—they are still closed. This gap between hip angle and shoulder angle is hip-shoulder separation, often called the X-factor. It measures the difference in rotation between your pelvis and upper trunk, and it typically reaches 30 to 60 degrees in elite pitchers. This gap is elastic. Your oblique muscles and core fascia stretch and store energy, like a spring being wound.",
-          "The moment your lead foot plants, your front knee begins to straighten, anchoring your lower body. At the same time, your hips continue to rotate into the ball. Your shoulders, still closed, resist this rotation. Then, in a fraction of a second, your trunk whips through to close that gap. That explosive rotation of the torso releases all the stored elastic energy directly toward the arm.",
-          "The risk: if your hips fail to rotate cleanly (due to hip mobility limits or weak glutes), your shoulders must lag even further to create artificial separation. Your shoulder then overloads to compensate. Conversely, if your pelvis and torso rotate in unison with no lag, you lose the stretch-and-release and your shoulder must do the work alone. Both are injury traps."
+          "At foot plant, the hips are already turning toward the plate while the shoulders stay closed and lag behind. That gap between the lower body and the upper body is hip-shoulder separation — the wind in the spring. Your obliques and the fascia across your core stretch as the gap opens, and they store that stretch like a drawn bow. You don't see it as a number; you feel it as a coil across the belly and back, the chest held shut a beat longer than the hips.",
+          "Then the front knee firms up, the lower half anchors, the hips keep driving into the ball, and the chest finally whips through to close the gap. That late, fast unwinding of the trunk is what releases the stored energy into the arm. The cue is patience, not effort: let the hips get ahead, hold the chest closed, and let the trunk snap through last.",
+          "Here's the trap. If the hips can't turn cleanly — tight hips, weak glutes — the only way to feel separation is to drag the shoulders back even further, and now the shoulder is overstretched to fake a coil the lower half should have made. The opposite failure is just as costly: if the hips and chest turn together with no lag, there's no stretch to release, and the arm is left to supply the speed on its own. Both roads end at the same place — the arm doing the body's job."
         ],
         "claims": [
           {
-            "value": "Hip-shoulder separation is the difference between the shoulder angle and hip angle in the transverse plane; 35–60 degrees of peak separation appears to be optimal.",
+            "value": "Hip-shoulder separation is the difference between the upper-trunk and pelvis rotation in the transverse plane; holding a window of peak separation is associated with better trunk force transfer.",
             "confidence": "reputable-analysis",
             "source": {
               "id": "k-rocklandpeakperformance-com-pitching-biomechanics-hip-sh",
@@ -127,7 +127,7 @@
             }
           },
           {
-            "value": "Lead hip internal rotation correlated with elbow flexion angle at ball release; limited lead-leg internal rotation associates with early pelvic rotation that alters elbow positioning during release.",
+            "value": "Limited lead-leg internal rotation is associated with early pelvic rotation that alters elbow positioning at release.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc8016430",
@@ -136,30 +136,17 @@
               "retrievedAt": "2026-06-06"
             }
           }
-        ],
-        "pullStat": {
-          "label": "Peak Hip-Shoulder Separation",
-          "claim": {
-            "value": "35–60 degrees",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-rocklandpeakperformance-com-pitching-biomechanics-hip-sh",
-              "label": "Pitching Biomechanics: Understanding Hip Shoulder Separation",
-              "url": "https://rocklandpeakperformance.com/pitching-biomechanics-hip-shoulder-separation/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        }
+        ]
       },
       {
-        "heading": "Arm Cocking: Maximum External Rotation and Elbow Load",
+        "heading": "Lay-back: the riskiest position in the throw",
         "paragraphs": [
-          "By the time your arm reaches maximum external rotation—the end of the arm-cocking phase—most of the kinetic chain work is already done. Your hips have rotated to face home plate, your trunk is whipping through, and your scapula is setting the shoulder in a position to decelerate. At this instant, your shoulder is abducted about 90 degrees, your elbow is flexed to roughly 90 degrees at shoulder height, and your shoulder is externally rotated to approximately 170 degrees.",
-          "This is the most mechanically dangerous position in the delivery. Your shoulder socket is at its limit of range, and your elbow experiences peak valgus torque, a force trying to bend it backward into the stands. The ulnar collateral ligament (UCL) at the medial elbow bears much of this valgus load. If your kinetic chain falters, then your shoulder must decelerate a violently moving arm with no help from the trunk. The result: elbow stress that can exceed the tissues' breaking point."
+          "By the time the arm reaches its deepest lay-back — the moment the forearm cocks back and the palm faces nearly up to the sky — most of the chain's work is already done. The hips are facing the plate, the chest is whipping through, and the shoulder blade is setting the arm in position to be slowed down. The arm is wound to the edge of what the shoulder can give, loaded and about to fire.",
+          "This is the most dangerous instant in the delivery. The shoulder is at the far end of its range, and the inside of the elbow takes its hardest load — a force trying to pry the elbow open the wrong way. The ligament on the inside of the elbow, the UCL, holds the line against most of that load. When the chain is intact, the trunk is still feeding the arm and sharing the work. When the chain broke upstream, the shoulder and elbow meet that load alone — and that is where the tissue can be pushed past what it can take."
         ],
         "claims": [
           {
-            "value": "At maximum external rotation (end of arm cocking), shoulder abduction is approximately 90°, shoulder horizontal abduction is approximately 20°, and shoulder external rotation is approximately 170°.",
+            "value": "At maximum external rotation (the end of arm cocking), the shoulder is at the extreme of its rotational range while the elbow is loaded at shoulder height.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -169,7 +156,7 @@
             }
           },
           {
-            "value": "At maximum external rotation, elbow flexion is approximately 90°, elevated to shoulder height.",
+            "value": "Shoulder internal rotation becomes extremely fast during the acceleration phase — one reason the delivery must be sequenced before the arm fires.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -179,17 +166,7 @@
             }
           },
           {
-            "value": "Shoulder internal rotation becomes extremely fast during the acceleration phase, one reason the delivery must be sequenced before the arm fires.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
-              "label": "The Clinician's Guide to Baseball Pitching Biomechanics",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9950989/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "The ulnar collateral ligament (UCL) is a primary static stabilizer of the medial elbow joint against approximately 55% of the valgus load.",
+            "value": "The ulnar collateral ligament (UCL) is a primary static stabilizer of the medial elbow against the majority of the valgus load.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc8130712",
@@ -198,30 +175,18 @@
               "retrievedAt": "2026-06-06"
             }
           }
-        ],
-        "pullStat": {
-          "label": "Shoulder Rotation Speed",
-          "claim": {
-            "value": "Extremely fast during acceleration",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
-              "label": "The Clinician's Guide to Baseball Pitching Biomechanics",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9950989/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        }
+        ]
       },
       {
-        "heading": "Acceleration and Release",
+        "heading": "Wrist, fingers, and the shape the chain delivers",
         "paragraphs": [
-          "From maximum external rotation to ball release is the acceleration phase: a short, explosive internal rotation of the shoulder, elbow extension, and wrist action through the ball.",
-          "If your kinetic chain is intact, the muscles of your trunk and back are still firing to help brake the arm as it accelerates. Your scapula is moving fluidly with your trunk, and your rotator cuff is co-contracting to stabilize the shoulder. But if your chain broke upstream, then your shoulder and elbow are now accelerating alone, without the help they need."
+          "Everything to this point built and aimed the energy. The wrist and fingers decide what it becomes. The chain delivers the speed; the hand writes the spin. This is the seam where biomechanics meets the grip — the same throw can leave as a four-seam that holds its line or a breaking ball that dives, and the difference lives in the last few inches at the fingertips.",
+          "Feel it as a handoff. The arm comes through on its slot — the angle the hand travels, set by where the shoulder and trunk put it — and the slot tilts the axis the ball will spin on. A higher slot stands the spin up toward true backspin and a ball that fights gravity; a lower slot lays the axis over and turns ride into run. Then the fingers finish it. Staying behind the ball with even pressure sends it off clean and straight. Letting the ball come off the side of the fingers, or pulling down across it, tilts and rifles the spin into a breaking shape. The pitch is the chain's force, stamped by the hand at the very end.",
+          "This is also why a tired or out-of-sync delivery flattens good pitches before the grip ever fails. If the chain broke upstream and the arm is dragging, the slot drops, the hand gets late, and the spin the grip was built to make never gets put on cleanly. Command and shape both start where the force does — in the ground — and the fingers only ever finish what the body already set up."
         ],
         "claims": [
           {
-            "value": "Elbow extension accelerates rapidly during the throwing phase.",
+            "value": "Release kinematics — including forearm and wrist action at ball release — shape the spin and therefore the movement the pitch carries.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -231,7 +196,7 @@
             }
           },
           {
-            "value": "At ball release, shoulder abduction is approximately 90°, elbow flexion is approximately 25°, and lead knee flexion is approximately 30°.",
+            "value": "Arm-slot and release point are governed by the trunk and shoulder position the kinetic chain delivers, linking lower-body sequence to the angle the ball leaves on.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -241,41 +206,32 @@
             }
           },
           {
-            "value": "The proper kinetic sequence involves lead knee extension, pelvis rotation, upper trunk rotation, elbow extension, and shoulder internal rotation, progressing from foot contact through ball release.",
-            "confidence": "official-data",
+            "value": "The wrist and fingers impart the final spin; finger pressure and the path of the hand off the ball determine spin direction and the resulting movement shape.",
+            "confidence": "reputable-analysis",
             "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
-              "label": "The Clinician's Guide to Baseball Pitching Biomechanics",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9950989/",
+              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3445080",
+              "label": "The Kinetic Chain in Overhand Pitching",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3445080/",
               "retrievedAt": "2026-06-06"
             }
           }
         ]
       },
       {
-        "heading": "Deceleration and Follow-Through: Where Arm Injuries Happen",
+        "heading": "Release and braking: where arms break",
         "paragraphs": [
-          "The follow-through is where pitchers are made or broken. It begins the instant the ball leaves your hand and continues until you regain balance and lower your arm. If the kinetic chain is strong and sequenced well, the big muscles of your back, lats, and posterior shoulder do the braking work eccentrically. Your forearm naturally pronates, your trunk flexes over your front leg, and your hips and core absorb the deceleration forces.",
-          "But if your kinetic chain broke, if your trunk did not transfer force, then your shoulder and elbow are doing the braking alone. The biceps brachii and brachialis muscles try to slow the arm. The UCL tries to stabilize. The rotator cuff tries to hold the shoulder in place. These small, vulnerable structures were not designed to dissipate the full force of deceleration. That is why the follow-through is called active braking."
+          "From deepest lay-back to release is the fast part — a short, violent unspooling: the shoulder turns in, the elbow snaps straight, the wrist and fingers come through the ball. When the chain held, the trunk and back are still firing through this, helping brake the arm even as it accelerates. When the chain broke, the shoulder and elbow are accelerating alone, with none of the help they were counting on.",
+          "Then comes the follow-through, and this is where pitchers are made or broken. It starts the instant the ball leaves the hand and runs until you've caught your balance and lowered the arm. Done right, the big muscles of the back and the rear of the shoulder do the slowing-down work, the forearm rolls over on its own, and the trunk folds out over the front leg so the hips and core soak up the stop. The whole body brakes the arm.",
+          "Done wrong — when the trunk never passed the force along — the small structures are left to stop a fast-moving arm by themselves. The muscles around the elbow strain to slow it, the UCL strains to hold the joint, the rotator cuff strains to keep the shoulder seated. Those tissues were never meant to absorb the full stop alone. That is why the follow-through is real work, not a flourish: it is the body actively braking, and a body that braked the throw is a body that can throw again tomorrow."
         ],
         "claims": [
           {
-            "value": "The follow-through begins immediately after ball release and ends when the pitcher has decelerated and regained balance.",
-            "confidence": "reputable-analysis",
+            "value": "The proper kinetic sequence runs lead-knee bracing, pelvis rotation, upper-trunk rotation, elbow extension, then shoulder internal rotation — foot contact through ball release.",
+            "confidence": "official-data",
             "source": {
-              "id": "k-baseballscouter-com-pitching-follow-through-mechanics",
-              "label": "The Pitching Follow Through: Key to Power and Health",
-              "url": "https://baseballscouter.com/pitching-follow-through-mechanics/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "During deceleration, the big muscles of the back and posterior shoulder slow the arm while the forearm naturally pronates, reducing stress on the shoulder and elbow.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-baseballscouter-com-pitching-follow-through-mechanics",
-              "label": "The Pitching Follow Through: Key to Power and Health",
-              "url": "https://baseballscouter.com/pitching-follow-through-mechanics/",
+              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
+              "label": "The Clinician's Guide to Baseball Pitching Biomechanics",
+              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9950989/",
               "retrievedAt": "2026-06-06"
             }
           },
@@ -286,6 +242,16 @@
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
               "label": "The Clinician's Guide to Baseball Pitching Biomechanics",
               "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9950989/",
+              "retrievedAt": "2026-06-06"
+            }
+          },
+          {
+            "value": "During deceleration, the big muscles of the back and posterior shoulder slow the arm while the forearm naturally pronates, reducing stress on the shoulder and elbow.",
+            "confidence": "reputable-analysis",
+            "source": {
+              "id": "k-baseballscouter-com-pitching-follow-through-mechanics",
+              "label": "The Pitching Follow Through: Key to Power and Health",
+              "url": "https://baseballscouter.com/pitching-follow-through-mechanics/",
               "retrievedAt": "2026-06-06"
             }
           },
@@ -302,27 +268,23 @@
         ]
       }
     ],
-    "confidenceNote": "Biomechanical claims are sourced from peer-reviewed literature and coaching analysis. Joint-angle and force references stay in the source list where they belong; the teaching prose keeps the focus on sequence, timing, and safe force transfer.",
+    "confidenceNote": "The teaching here is feel and sequence — what to do with your body, not what angle to hit. The biomechanics literature backing each point is peer-reviewed and coaching analysis; where those studies report joint angles, stride figures, or force percentages, that precision stays in the source list on the right, because nobody reading this has been measured and a number stated as instruction would be invented. Read the prose for the craft; follow the sources for the figures.",
     "related": [
       {
-        "label": "The delivery, phase by phase",
-        "to": "/learn/mechanics"
-      },
-      {
-        "label": "Arm Health",
-        "to": "/learn/arm-health"
+        "label": "Spin & Shape",
+        "to": "/learn/spin"
       },
       {
         "label": "Pitch Design",
         "to": "/learn/pitch-design"
       },
       {
-        "label": "Youth",
-        "to": "/learn/youth"
+        "label": "Arm Health",
+        "to": "/learn/arm-health"
       },
       {
-        "label": "Spin & Shape",
-        "to": "/learn/spin"
+        "label": "Youth",
+        "to": "/learn/youth"
       }
     ]
   },
@@ -341,7 +303,7 @@
         "paragraphs": [
           "Pitch design is the iterative process of reading a pitch's current shape, identifying the missing lane in the arsenal, changing one mechanical variable, and validating against live bats. Unlike the old bullpen-only approach, it gives the pitcher a clear feedback loop: grip, throw, watch the shape, adjust.",
           "The sequence starts with a plain-language goal. Does the pitch need later ride, heavier arm-side run, sharper glove-side bite, softer fade, or more deadened tumble? Once the goal is named, the pitcher and coach test one thing at a time: grip depth, finger pressure, seam orientation, axis intent, or release feel.",
-          "The change is surgical. A grip cue either moves the pitch toward the intended shape or it does not. Video and tracking can help, but the field-manual question remains the same: can the pitcher feel it, repeat it, and make a hitter respond to it?"
+          "The change is surgical. A grip cue either moves the pitch toward the intended shape or it does not. Video and tracking can help, but the archive question remains the same: can the pitcher feel it, repeat it, and make a hitter respond to it?"
         ],
         "claims": [
           {
@@ -672,7 +634,7 @@
         "paragraphs": [
           "The bullpen version is controlled: film the release, overlay the fastball against the breaking ball, and make both pitches pass through the same early look. The game version is messier. Counts, hitter swings, fatigue, and command decide whether that pair is still the right call.",
           "That is why tunneling is a tool, not a religion. A near-perfect tunnel is useless if it puts the pitch in the wrong place for the count. A less elegant pair can be perfect if it gets the hitter to protect the wrong lane.",
-          "The field-manual rule: build the tunnel in practice, then sequence like a pitcher. Watch the hitter. Keep the first look honest. Let the late shape tell the lie."
+          "The archive rule: build the tunnel in practice, then sequence like a pitcher. Watch the hitter. Keep the first look honest. Let the late shape tell the lie."
         ],
         "claims": [
           {
@@ -996,11 +958,11 @@
   },
   {
     "slug": "arm-health",
-    "navLabel": "Arm Health & Workload",
-    "eyebrow": "The modifiable risks",
-    "title": "Arm Health and Workload Management in Baseball Pitchers",
-    "summary": "Rising UCL injury epidemic driven by overuse and fatigue; evidence-based prevention through workload limits, rest, and monitoring",
-    "sub": "The ulnar collateral ligament has become baseball's injury flashpoint. Most Tommy John surgeries now occur in teenagers—a reversal from two decades ago when the procedure was rare outside the majors. The science is clear: the threshold between development and damage is workload and fatigue.",
+    "navLabel": "Safety Source Record",
+    "eyebrow": "The source boundary",
+    "title": "Safety Source Record for Pitchers",
+    "summary": "Published source context on fatigue, workload, UCL research, and the limits of what Pitch Atlas can responsibly claim.",
+    "sub": "This wing files safety literature as source context only. It does not diagnose pain, prescribe rehab, set workload, or guarantee injury prevention.",
     "accent": "seam",
     "educational": true,
     "sections": [
@@ -1320,11 +1282,11 @@
   },
   {
     "slug": "youth",
-    "navLabel": "Youth Development",
-    "eyebrow": "The pathway",
-    "title": "Youth Development Pathway",
-    "summary": "Age-appropriate progression from fastball through change-up, pitch count limits by age, and the injury risks of early specialization.",
-    "sub": "Young pitchers thrive when they build mechanics on a fastball foundation, master an off-speed pitch safely, and rest deliberately. Specialization and year-round throwing damage arms that are still growing.",
+    "navLabel": "Youth Safety Sources",
+    "eyebrow": "The source boundary",
+    "title": "Youth Safety Source Record",
+    "summary": "What published youth-pitching authorities say about pitch counts, rest, specialization, and the limits of a website's advice.",
+    "sub": "This wing files published safety guidance as source context only. It does not choose pitches, set workloads, diagnose pain, or prescribe a throwing plan.",
     "accent": "seam",
     "educational": true,
     "sections": [
@@ -1732,7 +1694,7 @@
         "paragraphs": [
           "The screwball is nearly gone because the teaching line broke. Christy Mathewson, Carl Hubbell, Fernando Valenzuela, and John Franco kept the pitch visible in earlier eras, but modern development systems rarely teach it.",
           "The injury fear is real as culture, but the evidence is thinner than the fear. Coaches repeat the warning, fewer pitchers learn the pitch, and fewer coaches remain who can teach it safely. That loop turns a rare pitch into a museum piece.",
-          "A future revival would need more than nostalgia. It would need a credible coach, careful progression, and honest injury research. Until then, the screwball belongs in the lost-pitches wing with a clear uncertainty label."
+          "A future revival would need credible coaching, careful progression, and honest source boundaries. Until then, the screwball belongs in the lost-pitches wing with a clear uncertainty label."
         ],
         "claims": [
           {
@@ -1763,7 +1725,7 @@
         "paragraphs": [
           "Seam-shifted wake gave coaches a better language for something pitchers had felt for a long time: seam presentation can make a ball move differently than spin alone would suggest.",
           "That idea connects the sinker, kick-change, and some modern changeups. It puts the grip back at the center. Where the seams sit, which finger leaves last, and how the ball exits the hand can change the shape a hitter sees.",
-          "This is the strongest modern argument for Pitch Atlas as a field manual. The future of pitch design is not just better dashboards. It is better grip language tied to honest source labels."
+          "This is the strongest modern argument for Pitch Atlas as a living archive. The future of pitch design is not just better dashboards. It is better grip language tied to honest source labels."
         ],
         "claims": [
           {
@@ -1824,7 +1786,7 @@
         "paragraphs": [
           "The platoon advantage is the edge a pitcher gains when the ball is harder for the hitter to see and the pitch shape works away from the barrel. Same-handed matchups usually give breaking balls a cleaner lane: the slider or sweeper moves away from the hitter instead of back into the bat path.",
           "That is why a right-handed slider can feel like a weapon against a right-handed hitter and a risk against a left-handed hitter. The shape did not change. The matchup did.",
-          "For a field manual, the rule is simple: ask where the shape finishes relative to that hitter’s barrel, not just what the pitch is called."
+          "For the archive, the rule is simple: ask where the shape finishes relative to that hitter’s barrel, not just what the pitch is called."
         ],
         "claims": [
           {

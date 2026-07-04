@@ -31,6 +31,7 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertFalse(store.repertoire.entries.isEmpty, "no repertoire entries decoded")
         XCTAssertFalse(store.craftsmen.isEmpty, "no craftsmen decoded")
         XCTAssertFalse(store.lostPitches.entries.isEmpty, "no lost pitches decoded")
+        XCTAssertFalse(store.archiveImages.isEmpty, "no archive images decoded")
         XCTAssertFalse(store.knowledge.isEmpty, "no knowledge wings decoded")
         XCTAssertFalse(store.grips.entries.isEmpty, "no grips decoded")
         XCTAssertFalse(store.sources.isEmpty, "no sources decoded")
@@ -45,6 +46,7 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(store.repertoire.entries.count, store.manifest.counts["repertoire.json"])
         XCTAssertEqual(store.craftsmen.count, store.manifest.counts["craftsmen.json"])
         XCTAssertEqual(store.lostPitches.entries.count, store.manifest.counts["lost-pitches.json"])
+        XCTAssertEqual(store.archiveImages.count, store.manifest.counts["archive-images.json"])
         XCTAssertEqual(store.knowledge.count, store.manifest.counts["knowledge.json"])
         XCTAssertEqual(store.grips.entries.count, store.manifest.counts["grips.json"])
         XCTAssertEqual(store.sources.count, store.manifest.counts["sources.json"])
@@ -95,14 +97,14 @@ final class PitchAtlasTests: XCTestCase {
 
     /// The owner's grip photography: every photo referenced by the content must
     /// resolve to a real bundled image and carry first-party/original rights.
-    /// Counts pin the 17 labeled stills (12 on specimens, 17 in the library) so
+    /// Counts pin the labeled stills (9 on specimens, 17 in the library) so
     /// a dropped bundle file or dead reference fails loudly.
     func testGripPhotographyIsBundledAndRightsClean() {
         let store = PitchStore()
 
         let specimenPhotos = store.pitches.flatMap { $0.canonical.gripImages ?? [] }
         let libraryPhotos = store.grips.entries.flatMap(\.photos)
-        XCTAssertEqual(specimenPhotos.count, 12, "four-seam, two-seam, twelve-six, splitter carry 3 photos each")
+        XCTAssertEqual(specimenPhotos.count, 9, "four-seam, two-seam, twelve-six carry 3 photos each; the league-taxonomy splitter specimen carries none (the owner's split-finger lives in the library)")
         XCTAssertEqual(libraryPhotos.count, 17, "the grip library carries all 17 labeled stills")
 
         for photo in specimenPhotos + libraryPhotos {
@@ -116,10 +118,40 @@ final class PitchAtlasTests: XCTestCase {
         // The real-still ladder: a film's poster fronts it, else the first
         // photo, and every still it returns resolves in the bundle.
         let stills = store.pitches.compactMap { $0.canonical.realStill }
-        XCTAssertEqual(stills.count, 4, "four specimens carry a real still face")
+        XCTAssertEqual(stills.count, 3, "four-seam, two-seam, twelve-six carry a real still face")
         for still in stills {
             XCTAssertNotNil(BundledImage.load(still.src),
                             "real still missing from bundle: \(still.src)")
+        }
+    }
+
+    /// Lost Pitches are no longer text-only in the native app: every entry must
+    /// have one bundled, rights-labeled archive plate. Public-domain plates carry
+    /// a source; original studies do not pretend to have one.
+    func testLostPitchArchiveImagesAreBundledAndRightsClean() {
+        let store = PitchStore()
+
+        XCTAssertEqual(store.archiveImages.count, store.lostPitches.entries.count)
+
+        for pitch in store.lostPitches.entries {
+            let image = store.archiveImage(forLostPitch: pitch.slug)
+            XCTAssertNotNil(image, "missing archive plate for \(pitch.slug)")
+            guard let image else { continue }
+
+            XCTAssertNotNil(BundledImage.load(image.imageSrc),
+                            "archive image missing from bundle: \(image.imageSrc)")
+            XCTAssertFalse(image.alt.isEmpty)
+            XCTAssertFalse(image.caption.isEmpty)
+            XCTAssertFalse(image.qualityNote.isEmpty)
+
+            switch image.rights {
+            case .publicDomain:
+                XCTAssertNotNil(image.source, "public-domain plate must cite its source: \(image.id)")
+            case .original:
+                XCTAssertNil(image.source, "original plate should not imply an external image source: \(image.id)")
+            default:
+                XCTFail("archive image has unsupported rights status: \(image.id)")
+            }
         }
     }
 
