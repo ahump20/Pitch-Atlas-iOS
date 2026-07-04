@@ -25,7 +25,7 @@ The content lives in the **web repo** `~/code/Pitch-Atlas/src/data/` and is gene
 
 ## Architecture
 
-Native everything, except the interactive Three.js pitch specimen, which is hosted in a `WKWebView` island (`Core/Specimen/PitchAtlasSchemeHandler.swift`) loading the sanitized web `dist/` from a custom `pitchatlas://` URL scheme. State via `@Observable` + `@Environment` DI (no `ObservableObject`/Combine). Navigation: 5-tab `TabView` + per-tab `NavigationStack` + a `DeepLinkInbox` for `pitchatlas://` routes.
+Native SwiftUI for the v1 binary: tab shell, searchable index, grip library, craftsmen hall, sources browser, and `SeamBall` specimens. State via `@Observable` + `@Environment` DI (no `ObservableObject`/Combine). Navigation: 5-tab `TabView` + per-tab `NavigationStack` + a `DeepLinkInbox` for `pitchatlas://` routes. The offline Three.js/WebView island is a v1.1 plan only; it is not part of the first submitted binary.
 
 ## v1 scope (locked)
 
@@ -39,8 +39,8 @@ xcodegen generate
 ./scripts/build.sh test       # build + test
 ```
 
-CI is **Xcode Cloud** (configured in the Xcode project). Three release rules: build numbers are monotonic per app and bump in lockstep across configs; an `action_required` result means a compile error, not an approval gate; release branches merge back to `main` the same day they archive. The content generator + dist sanitizer run as CI pre-build steps so every archive carries fresh, clean content.
+CI is **Xcode Cloud** (configured in the Xcode project). Three release rules: build numbers are monotonic per app and bump in lockstep across configs; an `action_required` result means a compile error, not an approval gate; release branches merge back to `main` the same day they archive. The post-clone step generates the Xcode project. Content refresh is a local pre-release step that must be committed before archive.
 
 ## Patterns
 
-Authored for Pitch Atlas: native SwiftUI token-enum theming (`Color(hex:)` + `Font.custom(relativeTo:)` + system fallbacks), a custom `WKWebView` URL-scheme handler that serves the offline specimen bundle (a custom scheme is required because Vite/Three.js bundles break under `file://`), a `PrivacyInfo.xcprivacy` manifest, and Xcode Cloud CI.
+Authored for Pitch Atlas: native SwiftUI token-enum theming (`Color(hex:)` + `Font.custom(relativeTo:)` + system fallbacks), native seam specimens, CoreMotion foil treatment, a `PrivacyInfo.xcprivacy` manifest, and Xcode Cloud CI.

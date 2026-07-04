@@ -17,6 +17,7 @@ import SwiftUI
 
 struct AboutView: View {
     @Environment(PitchStore.self) private var store
+    @AppStorage(BlazeCompanionPreference.key) private var showBlazeCompanion = BlazeCompanionPreference.defaultValue
 
     var body: some View {
         ZStack {
@@ -28,12 +29,13 @@ struct AboutView: View {
                     whatThisIsCard
                     provenanceModelCard
                     honestyCard
+                    blazePreferenceCard
                     footer
                     statusNote
                 }
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.lg)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle("About")
@@ -138,6 +140,24 @@ struct AboutView: View {
                 ? "How it stays honest. Content is generated from the companion web reference and bundled, so it works fully offline. Sources last checked, not recorded in this build. Checked, not auto-refreshed."
                 : "How it stays honest. Content is generated from the companion web reference and bundled, so it works fully offline. Sources last checked \(checked). Checked, not auto-refreshed."
         )
+    }
+
+    // MARK: - Companion preference
+
+    private var blazePreferenceCard: some View {
+        Toggle(isOn: $showBlazeCompanion) {
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+                SectionLabel(text: "Companion")
+                Text("Show field companion")
+                    .font(PitchAtlasTheme.hanken(15))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+            }
+        }
+        .toggleStyle(.switch)
+        .tint(PitchAtlasTheme.cyan)
+        .leatherPress()
+        .accessibilityLabel("Show field companion")
+        .accessibilityValue(showBlazeCompanion ? "On" : "Off")
     }
 
     // MARK: - Footer

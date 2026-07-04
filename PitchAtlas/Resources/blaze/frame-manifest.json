@@ -1,0 +1,21 @@
+{
+  "source": {
+    "pet": "pet.json",
+    "spritesheet": "spritesheet.webp",
+    "spritesheet_sha256": "992ed0f946edd8ea694c04977f22de162f191fd5aa5e8abc910d816320fa0a7b",
+    "pet_sha256": "d5f6fc46f71fd672375e40263cf5fb08dda5d81bd66b505e3a32d63358af24d2",
+    "cell_width": 192,
+    "cell_height": 208,
+    "columns": 8,
+    "rows": 9
+  },
+  "states": {
+    "idle": { "row": 0, "columns": [0, 1, 2, 3, 4, 5], "duration_ms": 7600, "loop": true },
+    "chasing": { "label": "trot/chase", "row": 1, "columns": [0, 1, 2, 3, 4, 5, 6, 7], "duration_ms": 980, "loop": true },
+    "caught": { "label": "catch", "row": 3, "columns": [0, 1, 2, 3], "duration_ms": 860, "loop": false },
+    "sniffing": { "label": "sniff", "row": 5, "columns": [0, 1, 2, 3], "duration_ms": 2200, "loop": false },
+    "napping": { "label": "nap", "row": 7, "columns": [0, 1, 2, 3, 4, 5], "duration_ms": 5600, "loop": true },
+    "concerned": { "row": 8, "columns": [0, 1, 2, 3], "duration_ms": 1100, "loop": false },
+    "still": { "row": 0, "columns": [0], "duration_ms": 0, "loop": false }
+  }
+}

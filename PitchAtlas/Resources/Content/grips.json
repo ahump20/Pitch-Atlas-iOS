@@ -1,7 +1,7 @@
 {
-  "intro": "Every grip here answers one question: how much resistance is the hand putting on the ball? The four-seam has almost none, so it leaves the fastest and the truest. Stack on fingers and surface — the three-finger and football changes — and the ball drags out softer while the arm still sells a fastball. That is the whole game at the plate: a hitter sits on the fastball and adjusts, because if he sits off-speed the fastball is already in the mitt.",
+  "intro": "Every grip here answers one question: how much resistance is the hand putting on the ball? The four-seam has almost none, so it leaves clean and true. Stack on fingers and surface — the three-finger and football changes — and the ball drags out softer while the arm still sells a fastball. That is the whole game at the plate: a hitter sits on the fastball and adjusts, because if he sits off-speed the fastball is already in the mitt.",
   "arsenal": "In games I worked a four-pitch mix: the four-seam and two-seam fastballs, the three-finger changeup, and the 12-6 curve. The splitter and the football change were situational — pitches I carried and threw here and there, not ones I leaned on. What follows is a pitcher’s own account of his own pitches, not tracked data.",
-  "commandNote": "I never noticed a big difference in movement or control from switching pitches — or from switching it up — because I never really had issues with velocity, command, or movement. Those were fundamentals, drilled into me. And I would seamlessly, sometimes intentionally, drop down to three-quarters. It felt the same to me, but it gives a different look to a hitter who is already guessing anyway.",
+  "commandNote": "I never noticed a big difference in shape or control from switching pitches — or from switching it up — because I never really had issues with pace, command, or movement. Those were fundamentals, drilled into me. And I would seamlessly, sometimes intentionally, drop down to three-quarters. It felt the same to me, but it gives a different look to a hitter who is already guessing anyway.",
   "attackPlan": {
     "intro": "I always established the four-seam high and inside — the first pitch of the game, and pretty much everything after it, until a hitter could catch up to something hard and on the hands. From there I liked to dot the four-seam low and away on the corner, and high and in on the corner, often as the strikeout pitch later in the count.",
     "sequenceTitle": "The lefty putaway",
@@ -29,7 +29,7 @@
       }
     ]
   },
-  "proofLimit": "Grip photo only; does not prove velocity, spin, movement, command, injury risk, or outcome.",
+  "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
   "entries": [
     {
       "id": "four-seam",
@@ -39,9 +39,15 @@
       "shortCue": "Fingertips cross the seam path",
       "visibleCue": "Two-finger fastball family grip with the fingertips crossing the seam path instead of riding inside two parallel seams.",
       "claimTier": "pitcher-own-words",
-      "proofLimit": "Grip photo only; does not prove velocity, spin, movement, command, injury risk, or outcome.",
-      "note": "Two fingers on the ball, and the four-seam should be a dead giveaway. The fingertips cross the seam slightly — the very ends of the pads catching across it, not riding parallel to it. There is barely any pressure on it at all, and that is why it goes the fastest and the truest. It is the bread and butter of everything: the easiest pitch to place in the zone and the most consistent pitch in the game.",
+      "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
+      "note": "Two fingers on the ball, and the four-seam should be a dead giveaway. The fingertips cross the seam slightly — the very ends of the pads catching across it, not riding parallel to it. There is barely any pressure on it at all, and that is why it leaves clean and true. It is the bread and butter of everything: the easiest pitch to place in the zone and the most consistent pitch in the game.",
       "movement": "My best pitch, and the one I had pinpoint command of — it went straight and I could put it anywhere in the zone. The life came late: it tended to explode into the glove at the very last second. That last-second hop is the carry the four-seam is known for — the eye reads it as rising when it is really just falling less than expected.",
+      "clip": {
+        "mp4": "/grips/four-seam-grip.mp4",
+        "webm": "/grips/four-seam-grip.webm",
+        "poster": "/grips/four-seam-grip-poster.webp",
+        "alt": "A looping close-up of Austin's four-seam grip: two fingertips laid across the seam, the ball held out toward the camera."
+      },
       "photos": [
         {
           "src": "/grips/four-seam-7163.webp",
@@ -50,7 +56,7 @@
           "alt": "A right hand gripping a baseball four-seam style, two fingertips crossing the horseshoe seam with the thumb underneath.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -60,7 +66,7 @@
           "alt": "The underside of a four-seam grip, the thumb supporting the ball centered below the two top fingers.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -70,7 +76,7 @@
           "alt": "A side view of a four-seam fastball grip, fingertips crossing the seam.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
       ]
@@ -83,9 +89,15 @@
       "shortCue": "Fingers ride the lace tracks",
       "visibleCue": "Two fingers are lined with the seams like train tracks, which is the visible tell Austin uses to separate it from the four-seam.",
       "claimTier": "pitcher-own-words",
-      "proofLimit": "Grip photo only; does not prove velocity, spin, movement, command, injury risk, or outcome.",
+      "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "Two fingers on the ball again, but here they line up with the seams like the ball is running down a train track — both fingers riding along the narrow seams instead of crossing them. That is the tell that separates it from the four-seam.",
       "movement": "The second pitch I mastered. I lived with it in on the hands to right-handed hitters, because it had explosive late tail — it ran arm-side at the very last second, right in on a righty.",
+      "clip": {
+        "mp4": "/grips/two-seam-grip.mp4",
+        "webm": "/grips/two-seam-grip.webm",
+        "poster": "/grips/two-seam-grip-poster.webp",
+        "alt": "A looping close-up of Austin's two-seam grip: two fingers running along the narrow seams like train tracks."
+      },
       "photos": [
         {
           "src": "/grips/two-seam-7166.webp",
@@ -94,7 +106,7 @@
           "alt": "A hand gripping a baseball two-seam style, index and middle fingers running along the two narrow parallel seams.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -104,7 +116,7 @@
           "alt": "A two-seam fastball grip viewed from the front, fingers resting on the parallel seams.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -114,7 +126,7 @@
           "alt": "The underside of a two-seam grip, the thumb supporting from below.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
       ]
@@ -127,9 +139,15 @@
       "shortCue": "Two fingers set against the seam",
       "visibleCue": "Two fingers are set against the seam with the thumb acting as the main opposing support cue.",
       "claimTier": "pitcher-own-words",
-      "proofLimit": "Grip photo only; does not prove velocity, spin, movement, command, injury risk, or outcome.",
+      "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "Two fingers lined up and cornered against the seam, with no other pressure on the ball but the thumb. The grip is so distinct you do not even need to see the release slot to know it is a 12-6 — the fingers tucked tight to one seam give it away.",
       "movement": "A genuine 12-6 when it was working: it came in with real loop and then fell off the table at the last second. The down-mover in my mix — more loop than the changeup, and a sharper drop.",
+      "clip": {
+        "mp4": "/grips/twelve-six-grip.mp4",
+        "webm": "/grips/twelve-six-grip.webm",
+        "poster": "/grips/twelve-six-grip-poster.webp",
+        "alt": "A looping close-up of Austin's 12-6 curveball grip: two fingers tucked together and cornered against one seam."
+      },
       "photos": [
         {
           "src": "/grips/twelve-six-7170.webp",
@@ -138,7 +156,7 @@
           "alt": "A hand gripping a baseball for a 12-6 curveball, two fingers together cornered against one seam.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -148,7 +166,7 @@
           "alt": "A side view of a 12-6 curveball grip, two fingers against the seam with the thumb under the ball.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -158,7 +176,7 @@
           "alt": "A 12-6 curveball grip held in the hand, the fingers bent over the seam.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
       ]
@@ -171,9 +189,9 @@
       "shortCue": "Fingers outside the lace tracks",
       "visibleCue": "The tell is subtle: it can look close to a two-seam in Austin's hand, but the cue is the fingers spreading outside the lace tracks instead of sitting on them.",
       "claimTier": "pitcher-own-words",
-      "proofLimit": "Grip photo only; does not prove velocity, spin, movement, command, injury risk, or outcome.",
+      "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "Gripped almost exactly like the two-seam, except the fingers spread out wider — just outside the laces instead of right on them. With short, stubby fingers like mine you can barely see the difference. Those same short fingers are the reason I have never been able to throw a circle change.",
-      "movement": "I threw this some as a harder version of the changeup — it let me stay at full arm velocity and feel more like a fastball than a traditional change at release, then drop. The fastball-tilt change, not a soft one.",
+      "movement": "I threw this some as a harder version of the changeup — it let me stay at full arm speed and feel more like a fastball than a traditional change at release, then drop. The fastball-tilt change, not a soft one.",
       "photos": [
         {
           "src": "/grips/splitter-7175.webp",
@@ -182,7 +200,7 @@
           "alt": "A hand gripping a baseball splitter style, index and middle fingers spread wide just outside the seams.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -192,7 +210,7 @@
           "alt": "A top view of a split-finger grip, two fingers spread apart over the ball.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -202,7 +220,7 @@
           "alt": "A side view of a splitter grip, the fingers straddling the seams.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
       ]
@@ -215,7 +233,7 @@
       "shortCue": "Four fingers and more hand surface",
       "visibleCue": "The fingers sit close together with more hand surface on the ball, matching the football-change or palmball family cue.",
       "claimTier": "pitcher-own-words",
-      "proofLimit": "Grip photo only; does not prove velocity, spin, movement, command, injury risk, or outcome.",
+      "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "My football change. The giveaway is the hand together, all four fingers touching the ball. The more fingers you put on it, the more it slows down coming out — instead of getting slingshotted off the fingertips and snapped with the wrist, the whole hand drags the speed off it while the arm still looks like a fastball.",
       "movement": "I only threw this much for about one summer, here and there. It sat between my curve and my three-finger change: the same release slot as the 12-6 — palm pointed back toward me instead of out at the batter — but a break in between the two.",
       "photos": [
@@ -226,7 +244,7 @@
           "alt": "A hand gripping a baseball with all four fingers together across the top, the football change or palmball grip.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -236,7 +254,7 @@
           "alt": "A side view of a football-change grip with the ball set deep in the palm under four fingers.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
       ]
@@ -249,9 +267,15 @@
       "shortCue": "Three close fingers on the ball",
       "visibleCue": "Three close fingers sit on the ball, adding contact area and pressure compared with a two-finger fastball grip.",
       "claimTier": "pitcher-own-words",
-      "proofLimit": "Grip photo only; does not prove velocity, spin, movement, command, injury risk, or outcome.",
+      "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "Three fingers set very close together across the ball. Same idea as the football change, just a touch less hand on it — more fingers than a fastball means more surface and more drag, so it leaves softer than the arm speed says it should.",
       "movement": "My fourth pitch, and one I threw a lot in games. It came in looking like a fastball and dropped with less break than the curve — not as sharp or as consistent, but it sold the fastball look right up until it died.",
+      "clip": {
+        "mp4": "/grips/three-finger-change-grip.mp4",
+        "webm": "/grips/three-finger-change-grip.webm",
+        "poster": "/grips/three-finger-change-grip-poster.webp",
+        "alt": "A looping close-up of Austin's three-finger changeup grip: three fingers set close together across the top of the ball."
+      },
       "photos": [
         {
           "src": "/grips/three-finger-change-7174.webp",
@@ -260,7 +284,7 @@
           "alt": "A hand gripping a baseball with three fingers close together across the top, a three-finger changeup grip.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -270,7 +294,7 @@
           "alt": "A side view of a three-finger changeup grip.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
         {
@@ -280,7 +304,7 @@
           "alt": "The underside of a three-finger changeup grip.",
           "kind": "first-party",
           "rights": "original",
-          "attribution": "Austin Humphrey",
+          "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         }
       ]
@@ -294,7 +318,7 @@
       "shortCue": "No Austin grip photo attached",
       "visibleCue": "No Austin grip photo is attached here. The app should not imply that these photos show Austin throwing a circle change.",
       "claimTier": "pitcher-own-words",
-      "proofLimit": "Grip photo only; does not prove velocity, spin, movement, command, injury risk, or outcome.",
+      "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
       "note": "Austin says he could not throw a circle change comfortably because his hands were too small to form the grip.",
       "photos": []
     }

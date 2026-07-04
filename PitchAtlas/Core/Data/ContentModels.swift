@@ -174,6 +174,22 @@ enum BreakView: String, Codable, Hashable, CaseIterable {
     }
 }
 
+enum VerticalShape: String, Codable, Hashable, CaseIterable {
+    case ride, flat, drop
+    init(from decoder: Decoder) throws {
+        let raw = try decoder.singleValueContainer().decode(String.self)
+        self = VerticalShape(rawValue: raw) ?? .flat
+    }
+
+    var label: String {
+        switch self {
+        case .ride: return "ride"
+        case .flat: return "flat"
+        case .drop: return "drop"
+        }
+    }
+}
+
 enum SeamAccuracyLevel: String, Codable, Hashable, CaseIterable {
     case seamAccurate = "seam-accurate"
     case schematic = "seam-informed schematic"
@@ -257,10 +273,11 @@ struct BreakReading: Codable, Hashable {
 
 struct PhysicsReference: Codable, Hashable {
     let spinAxis: Claim
-    let spinRateRpm: Claim
+    let spinRateRpm: Claim?
     let activeSpinPct: Claim?
-    let primaryBreak: BreakReading
+    let primaryBreak: BreakReading?
     let secondaryBreak: BreakReading?
+    let shape: Claim?
     let teaching: Claim
 }
 
@@ -283,10 +300,12 @@ struct PitchMotion: Codable, Hashable {
     let spinAxis: Vec3
     let forceLabel: String
     let gyro: Bool?
-    let ivbInches: Double
-    let horizontalInches: Double
+    let verticalShape: VerticalShape?
+    let ivbInches: Double?
+    let horizontalInches: Double?
     let horizontalDir: HorizontalDir
     let breakView: BreakView
+    let indeterminateBreak: Bool?
 }
 
 struct PitchDisplay: Codable, Hashable {
@@ -311,10 +330,14 @@ struct MasterVariantRecord: Codable, Hashable {
     let pitcher: String
     let context: String
     let verifiedPro: Bool
-    let numbers: [LabeledClaim]
+    let numbers: [LabeledClaim]?
+    let distinction: Claim?
+    let accolades: [LabeledClaim]?
     let quote: Claim?
     let rights: RightsStatus
     let safety: SafetyFlag?
+
+    var recordNumbers: [LabeledClaim] { numbers ?? accolades ?? [] }
 }
 
 struct CommunityVariantPreview: Codable, Hashable {
@@ -433,11 +456,13 @@ struct Craftsman: Codable, Hashable, Identifiable {
     let intro: String
     let signature: Claim
     let mentalEdge: Claim?
-    let numbers: [LabeledClaim]
+    let numbers: [LabeledClaim]?
+    let biography: [LabeledClaim]?
     let quote: Claim?
     let legendNote: Claim?
     let rights: RightsStatus
     var id: String { slug }
+    var recordNumbers: [LabeledClaim] { numbers ?? biography ?? [] }
 }
 
 // MARK: - Lost Pitches (lost-pitches.json → LostPitchesRoot)

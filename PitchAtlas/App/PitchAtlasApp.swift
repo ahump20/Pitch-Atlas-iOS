@@ -55,6 +55,7 @@ enum AppTab: String, CaseIterable, Identifiable {
 
 struct RootView: View {
     @Environment(PitchStore.self) private var store
+    @AppStorage(BlazeCompanionPreference.key) private var showBlazeCompanion = BlazeCompanionPreference.defaultValue
     @State private var router = DeepLinkRouter()
 
     /// DEBUG-only launch override so QA can open straight to a tab; production always starts on Atlas.
@@ -69,26 +70,52 @@ struct RootView: View {
 
     var body: some View {
         @Bindable var router = router
-        TabView(selection: $router.selection) {
-            NavigationStack(path: $router.atlasPath) { AtlasView() }
-                .tabItem { Label(AppTab.atlas.title, systemImage: AppTab.atlas.systemImage) }
-                .tag(AppTab.atlas)
-            NavigationStack(path: $router.indexPath) { IndexView() }
-                .tabItem { Label(AppTab.index.title, systemImage: AppTab.index.systemImage) }
-                .tag(AppTab.index)
-            NavigationStack(path: $router.gripsPath) { GripsView() }
-                .tabItem { Label(AppTab.grips.title, systemImage: AppTab.grips.systemImage) }
-                .tag(AppTab.grips)
-            NavigationStack(path: $router.craftsmenPath) { CraftsmenView() }
-                .tabItem { Label(AppTab.craftsmen.title, systemImage: AppTab.craftsmen.systemImage) }
-                .tag(AppTab.craftsmen)
-            NavigationStack(path: $router.sourcesPath) { SourcesView() }
-                .tabItem { Label(AppTab.sources.title, systemImage: AppTab.sources.systemImage) }
-                .tag(AppTab.sources)
+        ZStack(alignment: .bottomLeading) {
+            TabView(selection: $router.selection) {
+                NavigationStack(path: $router.atlasPath) { AtlasView() }
+                    .tabItem { Label(AppTab.atlas.title, systemImage: AppTab.atlas.systemImage) }
+                    .tag(AppTab.atlas)
+                NavigationStack(path: $router.indexPath) { IndexView() }
+                    .tabItem { Label(AppTab.index.title, systemImage: AppTab.index.systemImage) }
+                    .tag(AppTab.index)
+                NavigationStack(path: $router.gripsPath) { GripsView() }
+                    .tabItem { Label(AppTab.grips.title, systemImage: AppTab.grips.systemImage) }
+                    .tag(AppTab.grips)
+                NavigationStack(path: $router.craftsmenPath) { CraftsmenView() }
+                    .tabItem { Label(AppTab.craftsmen.title, systemImage: AppTab.craftsmen.systemImage) }
+                    .tag(AppTab.craftsmen)
+                NavigationStack(path: $router.sourcesPath) { SourcesView() }
+                    .tabItem { Label(AppTab.sources.title, systemImage: AppTab.sources.systemImage) }
+                    .tag(AppTab.sources)
+            }
+            .safeAreaInset(edge: .bottom) {
+                if reservesBlazeSpace {
+                    Color.clear
+                        .frame(height: 78)
+                        .allowsHitTesting(false)
+                }
+            }
+            .tint(PitchAtlasTheme.cyan)
+            .onOpenURL { url in router.handle(url, store: store) }
+            .task { applyDebugLaunch() }
+
+            BlazeCompanion(tab: router.selection, pathDepth: selectedPathDepth)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance - PitchAtlasSpacing.xs)
         }
-        .tint(PitchAtlasTheme.cyan)
-        .onOpenURL { url in router.handle(url, store: store) }
-        .task { applyDebugLaunch() }
+    }
+
+    private var selectedPathDepth: Int {
+        switch router.selection {
+        case .atlas: return router.atlasPath.count
+        case .index: return router.indexPath.count
+        case .grips: return router.gripsPath.count
+        case .craftsmen: return router.craftsmenPath.count
+        case .sources: return router.sourcesPath.count
+        }
+    }
+
+    private var reservesBlazeSpace: Bool {
+        showBlazeCompanion && BlazeRouteMood.mood(for: router.selection, pathDepth: selectedPathDepth) != .hidden
     }
 
     /// DEBUG-only: push a detail straight from a launch env so QA can screenshot it

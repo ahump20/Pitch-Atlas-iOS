@@ -32,7 +32,7 @@ struct AtlasView: View {
                     freshness
                 }
                 .padding(PitchAtlasSpacing.lg)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle("Atlas")
@@ -71,7 +71,7 @@ struct AtlasView: View {
                 .buttonStyle(.plain)
             }
 
-            Text("How every pitch is gripped and thrown — the index, the filed specimens, the grip library, the craftsmen, and the lost pitches. Offline, and every number wears its source.")
+            Text("Every pitch, gripped and sourced. Index, specimens, grip library, craftsmen, lost pitches. Offline.")
                 .font(PitchAtlasTheme.hanken(16))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)

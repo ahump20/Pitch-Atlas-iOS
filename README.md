@@ -9,7 +9,7 @@ A native iPhone reference for how pitches are gripped and thrown. Standalone pro
 A reference manual you can hold — offline, brand-true, tactile:
 
 - The **pitch index** — every pitch a coach, a pitcher, or the tracking taxonomy would call a pitch, honestly labeled (standard / niche / rare / alias / illusion / not-a-pitch / banned).
-- **Filed specimens** — the interactive, seam-true pitch ball with its drag-spin and the live spin axis, the same physics engine the web ships (Magnus derived from spin axis), hosted in a sealed native island.
+- **Filed specimens** — native SwiftUI seam specimens with spin-axis orientation, sourced break indicators, and a CoreMotion foil rake.
 - The **Grip Library** — first-party grip photography and a pitcher's own first-person account, tagged "not tracked data."
 - The **Craftsmen** hall and the **Lost Pitches** wing.
 - A full **Sources** screen — every number wears its confidence tier.
@@ -18,7 +18,7 @@ No login. Free. iPhone first. The community/Field-Notes layer is a deliberate **
 
 ## Architecture (one line)
 
-Native SwiftUI app that renders everything natively, with the one hard-to-port piece — the Three.js pitch specimen — carved into a self-contained `WKWebView` island fed by the real web build through a custom URL-scheme handler. The native shell is what makes it an app (and what clears App Store Guideline 4.2); the island reuses the real engine so the physics can't drift.
+Native SwiftUI app that renders the v1 experience fully natively: tab shell, searchable index, grip library, craftsmen hall, sources browser, and the seam specimen. The planned v1.1 Three.js island is kept out of the first binary so App Review sees an offline app, not a wrapped website.
 
 ## Build
 
@@ -41,12 +41,11 @@ PitchAtlas/
   App/         @main entry, 5-tab shell, deep-link routing
   Core/
     Data/      Codable models (mirror the web types.ts) + PitchStore
-    Specimen/  PitchAtlasSchemeHandler + SpecimenWebView (the island)
     Theme/     PitchAtlasTheme (void-tuned tokens, foil/gold, fonts) + spacing
     DeepLink/  pitchatlas:// routing
     Config/    feature flags
   Features/    Atlas / Index / PitchDetail / Grips / Craftsmen / LostPitches / Learn / Sources / About
-  Resources/   generated Content/*.json, grips/*.webp, specimen/dist/, Fonts/
+  Resources/   generated Content/*.json, grips/*.webp, Fonts/
 tools/generate-content/   the web-data -> bundled-JSON generator
 docs/          COMPLIANCE.md, APP-REVIEW-NOTES.md
 scripts/       build / ship helpers

@@ -34,7 +34,7 @@ struct CraftsmanDetailView: View {
                         edgeCard(edge)
                     }
 
-                    if !craftsman.numbers.isEmpty {
+                    if !craftsman.recordNumbers.isEmpty {
                         numbersSection
                     }
 
@@ -52,7 +52,7 @@ struct CraftsmanDetailView: View {
                 }
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.md)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle(craftsman.name)
@@ -137,7 +137,7 @@ struct CraftsmanDetailView: View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "The Record")
             VStack(spacing: PitchAtlasSpacing.sm) {
-                ForEach(Array(craftsman.numbers.enumerated()), id: \.offset) { index, number in
+                ForEach(Array(craftsman.recordNumbers.enumerated()), id: \.offset) { index, number in
                     GaugeView(label: number.label, claim: number.claim, accent: index == 0)
                 }
             }
