@@ -9,7 +9,7 @@ Native iPhone app for the craft of pitching. Standalone product, separate from B
 - A bundled pitch/grip reference manual that stays usable while logged out.
 - Native SwiftUI screens for Atlas, Index, Grips, Craftsmen, Sources, About, Account/Safety, pitch details, and community panels.
 - Supabase-backed community/auth using the existing Pitch Atlas project `cloeoulvrrfcbitrjpso`.
-- Account-gated field notes, discussion posts, reports, blocks, image uploads, and account deletion.
+- Anonymous-first field notes, discussion posts, reports, blocks, and account deletion; image uploads require a claimed account.
 - Image-only upload from PhotosPicker. No video upload. No live camera capture. No push notifications.
 - No Firebase, Appwrite, CloudKit, or BSI backend.
 

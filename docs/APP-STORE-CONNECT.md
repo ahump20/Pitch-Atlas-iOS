@@ -1,7 +1,26 @@
 # Pitch Atlas App Store Connect Pack
 
-Status: 2026-07-03 submitted release for `com.pitchatlas.app`; build
+Status: 2026-07-07 resubmitted release for `com.pitchatlas.app`; build
 `1.1.0 (11)` is in App Store Connect as `WAITING_FOR_REVIEW`.
+
+Update, 2026-07-07: Apple rejected the July 3 submission under Guideline 2.3
+because review could not locate the anonymous Community posting feature that the
+metadata describes. Root cause: the feature was present, but the submitted App
+Review notes only said "open a pitch detail and scroll to Community"; the panel
+sits several long swipes down the pitch-detail page, and the first visible state
+can be an honest empty state. XcodeBuildMCP rechecked the path on the iPhone 17
+Pro simulator: launch, tap the featured `00 Four-seam` specimen, swipe up about
+four long swipes, and the `Field Notes | Discussion` Community control appears
+with the "no account needed" empty state. App Store Review notes were patched to
+start with that exact Guideline 2.3 resolution path (`3001` characters), the
+rejected review item was marked `resolved`, and review submission
+`7f3ac406-4831-42b9-b7be-b284a494a781` was resubmitted at
+`2026-07-07T09:02:43.862Z`. Final App Store Connect readback reports `1.1.0` as
+`WAITING_FOR_REVIEW`; build `11`
+(`04554def-bc16-4176-bfbf-396979f7d496`) remains `VALID` /
+`APP_STORE_ELIGIBLE`. During the API trace, a new empty review submission
+`c9a20d43-1d03-40a2-aa23-c3ae24ea457e` was created but no item was attached to
+it; it is not the active submitted review.
 
 Update, 2026-07-03 evening: Austin approved briefly releasing the older approved
 `1.0.1 (10)` build to unlock the stuck App Store version slot. App Store Connect
@@ -187,7 +206,8 @@ Truth table for this binary:
 Expected posture: answer the questionnaire honestly and let App Store Connect compute the rating. The reference content is baseball instruction; community contribution is gated by guidelines acceptance and a 17+ posting/upload confirmation (sign-in is optional — contribution is anonymous-first).
 
 - User-generated content: yes.
-- Posting and uploads require sign-in.
+- Posting, reporting, and blocking work anonymously after guidelines and 17+
+  confirmation. Image uploads require a claimed account.
 - Reporting, blocking, guidelines, image terms, and in-app account deletion are present.
 - No gambling, unrestricted web access, camera capture, video upload, or medical treatment advice.
 
@@ -218,9 +238,12 @@ For every final screenshot report, verify the rendered state first, then include
 
 - Production Supabase project `cloeoulvrrfcbitrjpso` exposes `block_user`, `unblock_user`, and `my_blocked_users` to authenticated clients.
 - Clean 6.9-inch simulator testing passed: 65 tests, 0 failures. App Store Connect build `11` resolves to pre-release version `1.1.0`, build `11`, min OS `17.0`, `APP_STORE_ELIGIBLE`, and `ITSAppUsesNonExemptEncryption=false`.
-- App Store Connect build `11` is `VALID` but cannot yet be submitted because the only editable review slot is blocked by `1.0.1 (10)` in `PENDING_DEVELOPER_RELEASE`.
+- App Store Connect build `11` is `VALID`; review submission
+  `7f3ac406-4831-42b9-b7be-b284a494a781` is `WAITING_FOR_REVIEW` after the
+  2026-07-07 Guideline 2.3 notes fix.
 - Internal TestFlight has build `11` in `Pitch Atlas Internal`; `Pitch Atlas Internal Testers` and the external public-link group were not changed.
-- The new screenshots are captured locally and ready, but not uploaded to App Store Connect because no `1.1.0` App Store version exists yet.
+- The new screenshots were uploaded to the `1.1.0` App Store version's
+  `APP_IPHONE_67` set on 2026-07-03.
 
 ## Internal Brand Guardrail
 
