@@ -19,7 +19,24 @@
     "height": 720,
     "qualityNote": "High enough for a full plate; original source is 861 by 1545 pixels.",
     "relatedSlug": "satchel-paige-hesitation-pitch",
-    "relatedLabel": "Satchel Paige's Hesitation Pitch"
+    "relatedLabel": "Satchel Paige's Hesitation Pitch",
+    "video": {
+      "url": "https://www.loc.gov/collections/baseball-films/about-this-collection/",
+      "embedUrl": "https://www.loc.gov/collections/baseball-films/?fa=subject:newsreels",
+      "caption": {
+        "value": "Library of Congress baseball-film newsreels are filed here as Paige-era pitching context; they do not isolate one authenticated hesitation-pitch release.",
+        "source": {
+          "id": "loc-baseball-films-newsreels",
+          "label": "Library of Congress, Baseball Films collection filtered to newsreels",
+          "url": "https://www.loc.gov/collections/baseball-films/?fa=subject:newsreels",
+          "retrievedAt": "2026-07-04",
+          "season": "public domain moving-image collection"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "rights": "linked-only",
+      "previewSrc": "/archive/lost-pitches/satchel-paige-1942-plate.jpg"
+    }
   },
   {
     "id": "hilton-smith-curveball-study",
@@ -137,7 +154,24 @@
     "height": 720,
     "qualityNote": "Small source crop at 230 by 329 pixels, held inside a matte.",
     "relatedSlug": "phil-cockrell-spitball",
-    "relatedLabel": "Phil Cockrell's Spitball"
+    "relatedLabel": "Phil Cockrell's Spitball",
+    "video": {
+      "url": "https://www.loc.gov/collections/baseball-films/about-this-collection/",
+      "embedUrl": "https://www.loc.gov/collections/baseball-films/?fa=subject:newsreels",
+      "caption": {
+        "value": "The linked Library of Congress newsreel pool is used as deadball-era spitball context footage, not as direct frame proof of Cockrell throwing a named pitch.",
+        "source": {
+          "id": "loc-baseball-films-collection",
+          "label": "Library of Congress, Baseball Films collection (1898 to 1960)",
+          "url": "https://www.loc.gov/collections/baseball-films/about-this-collection/",
+          "retrievedAt": "2026-07-04",
+          "season": "public domain moving-image collection"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "rights": "linked-only",
+      "previewSrc": "/archive/lost-pitches/phil-cockrell-1924-plate.jpg"
+    }
   },
   {
     "id": "negro-league-all-star-1936-plate",

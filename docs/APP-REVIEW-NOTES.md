@@ -4,18 +4,31 @@ Paste into App Store Connect for build `1.1.0 (11)`.
 
 Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community participation is anonymous-first: no sign-in screen gates posting. Contributing creates a Supabase anonymous account silently on the first write, and the user can optionally claim that account (Sign in with Apple or email) to keep it across devices. Image uploads are the one community feature that requires a claimed (permanent) account, enforced server-side.
 
+## Guideline 2.3 Resolution
+
+Apple reported that Community posting could not be located. It is present in build `1.1.0 (11)` on each filed pitch detail. The fastest review path is:
+
+1. Launch the app on iPhone.
+2. On the first `Atlas` screen, tap the large featured `00 Four-seam` specimen card.
+3. On the `Four-seam` pitch detail, swipe up about four long swipes. Stop when the segmented control `Field Notes | Discussion` is fully above the bottom tab bar.
+4. This is the Community panel. The first visible state may say no one has filed a note yet; that is the honest empty state, not a missing feature.
+5. To post anonymously in `Field Notes`, scroll slightly below the empty state, turn on `I accept the community guidelines` and `I confirm I am 17 or older before posting or uploading`, then enter a required grip/feel cue and tap `Submit field note`.
+6. To post anonymously in `Discussion`, tap the `Discussion` segment in the same Community panel, enter a `Discussion post`, and tap `Submit post`.
+7. No sign-in is shown before either text post path. The app creates a Supabase anonymous account silently on first write.
+
+I rechecked this path on July 7, 2026: the app opens the featured pitch, the Community panel appears after the pitch detail sections, and the panel exposes `Field Notes`, `Discussion`, and the no-account-needed empty state.
+
 ## Reviewer Path
 
 1. Launch the app.
 2. Browse Atlas, Index, Grips, Craftsmen, and Sources without signing in.
-3. Open a pitch detail and scroll to Community. No sign-in is required to contribute.
-4. Accept the community guidelines and 17+ confirmation.
-5. Submit a Field Note or Discussion post — this works without any account setup; an anonymous account is created behind the scenes on the first contribution.
-6. Use the item menu to report content or block a different user. These also work anonymously.
-7. Open Atlas, then Account and Safety: the account shows as "Anonymous contributor" with a "Claim this record" block. Claim it with Sign in with Apple or an email confirmation link; the same account (and its posts) is preserved.
-8. For image upload, claim the account first (uploads require a permanent account), then accept image terms and choose a still image with PhotosPicker.
-9. Review the private blocked list in Account and Safety.
-10. Return to Account and Safety to delete the account (works for anonymous and claimed accounts).
+3. Use the Guideline 2.3 path above to open the Community panel.
+4. Submit a Field Note or Discussion post. This works without account setup; an anonymous account is created behind the scenes on first contribution.
+5. Use the item menu to report content or block a different user. These also work anonymously.
+6. Open Atlas, then Account and Safety: the account shows as "Anonymous contributor" with a "Claim this record" block. Claim it with Sign in with Apple or an email confirmation link; the same account (and its posts) is preserved.
+7. For image upload, claim the account first (uploads require a permanent account), then accept image terms and choose a still image with PhotosPicker.
+8. Review the private blocked list in Account and Safety.
+9. Return to Account and Safety to delete the account (works for anonymous and claimed accounts).
 
 ## Guideline 5.1.1(v) Posture
 
@@ -68,6 +81,6 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 Build `1.1.0 (11)` was verified on the MacBook with the 6.9-inch Pitch Atlas screenshot simulator on 2026-07-03: 65 tests passed, 0 failed. App Store Connect reports build `11` as `VALID`, `APP_STORE_ELIGIBLE`, uploaded `2026-07-03T09:05:52-07:00`, with min OS `17.0` and `ITSAppUsesNonExemptEncryption=false`.
 
-Build `11` supersedes builds `6` through `10` for the next public update. App Store Connect readback on 2026-07-03 showed build `11` in the internal TestFlight group `Pitch Atlas Internal`. After the older approved `1.0.1 (10)` release was manually released to unlock the slot, `1.1.0 (11)` was created, attached to build `11`, and submitted for App Review as review submission `7f3ac406-4831-42b9-b7be-b284a494a781` at `2026-07-03T22:50:48.918Z`. App Store Connect reports `1.1.0` as `WAITING_FOR_REVIEW`.
+Build `11` supersedes builds `6` through `10` for the next public update. App Store Connect readback on 2026-07-03 showed build `11` in the internal TestFlight group `Pitch Atlas Internal`. After the older approved `1.0.1 (10)` release was manually released to unlock the slot, `1.1.0 (11)` was created, attached to build `11`, and submitted for App Review as review submission `7f3ac406-4831-42b9-b7be-b284a494a781` at `2026-07-03T22:50:48.918Z`. On 2026-07-07, App Store Connect reported that submission as `UNRESOLVED_ISSUES` / `REJECTED` for Guideline 2.3 because Apple could not locate Community posting. The review notes above now give the exact checked path to the feature.
 
 Screenshot proof for build `11` is in `docs/review-evidence/2026-07-03-build-11-screens/`.

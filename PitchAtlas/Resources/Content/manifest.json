@@ -2,13 +2,13 @@
   "counts": {
     "pitches.json": 12,
     "repertoire.json": 42,
-    "craftsmen.json": 12,
+    "craftsmen.json": 13,
     "lost-pitches.json": 15,
     "knowledge.json": 10,
     "grips.json": 7,
-    "sources.json": 293,
+    "sources.json": 302,
     "archive-images.json": 15,
     "teaching-clips.json": 3
   },
-  "sourcesLastChecked": "2026-06-27"
+  "sourcesLastChecked": "2026-07-05"
 }

@@ -1776,6 +1776,20 @@
     "season": "public domain image source"
   },
   {
+    "id": "loc-baseball-films-collection",
+    "label": "Library of Congress, Baseball Films collection (1898 to 1960)",
+    "url": "https://www.loc.gov/collections/baseball-films/about-this-collection/",
+    "retrievedAt": "2026-07-04",
+    "season": "public domain moving-image collection"
+  },
+  {
+    "id": "loc-baseball-films-newsreels",
+    "label": "Library of Congress, Baseball Films collection filtered to newsreels",
+    "url": "https://www.loc.gov/collections/baseball-films/?fa=subject:newsreels",
+    "retrievedAt": "2026-07-04",
+    "season": "public domain moving-image collection"
+  },
+  {
     "id": "garrido-life-yours-to-win",
     "label": "Augie Garrido, Life Is Yours to Win (Simon & Schuster, 2011), quotations confirmed via the SimmonsField book review",
     "url": "http://simmonsfield.blogspot.com/2011/08/augie-garridos-life-is-yours-to-win.html",
@@ -1835,5 +1849,51 @@
     "label": "Wikipedia, Candy Cummings",
     "url": "https://en.wikipedia.org/wiki/Candy_Cummings",
     "retrievedAt": "2026-06-27"
+  },
+  {
+    "id": "cijntje-wiki",
+    "label": "Wikipedia, Jurrangelo Cijntje",
+    "url": "https://en.wikipedia.org/wiki/Jurrangelo_Cijntje",
+    "retrievedAt": "2026-07-05"
+  },
+  {
+    "id": "cijntje-bref",
+    "label": "Baseball-Reference, Jurrangelo Cijntje (college & minor-league register)",
+    "url": "https://www.baseball-reference.com/register/player.fcgi?id=cijntj000jur",
+    "retrievedAt": "2026-07-05"
+  },
+  {
+    "id": "cijntje-sis",
+    "label": "Sports Info Solutions, MLB Draft Scouting Report: Jurrangelo Cijntje",
+    "url": "https://www.sportsinfosolutions.com/2024/07/17/mlb-draft-scouting-report-jurrangelo-cijntje-mariners/",
+    "retrievedAt": "2026-07-05",
+    "season": "2024 pre-draft"
+  },
+  {
+    "id": "cijntje-ba",
+    "label": "Baseball America, Jurrangelo Cijntje player page",
+    "url": "https://www.baseballamerica.com/players/19980-jurrangelo-cijntje/",
+    "retrievedAt": "2026-07-05"
+  },
+  {
+    "id": "cijntje-hollander",
+    "label": "Yahoo Sports, Seattle Mariners executive expands plan for Jurrangelo Cijntje",
+    "url": "https://sports.yahoo.com/articles/seattle-mariners-executive-expands-plan-213001288.html",
+    "retrievedAt": "2026-07-05",
+    "season": "2026"
+  },
+  {
+    "id": "cijntje-cardinals",
+    "label": "Sports Illustrated, Cardinals address switch-pitcher Jurrangelo Cijntje's role",
+    "url": "https://www.si.com/mlb/cardinals/onsi/st-louis-cardinals-news/cardinals-address-switch-pitcher-jurrangelo-cijntje-s-role-in-st-louis-pat3",
+    "retrievedAt": "2026-07-05",
+    "season": "2026"
+  },
+  {
+    "id": "cijntje-draft-quote",
+    "label": "Yahoo Sports, What Mississippi State's Jurrangelo Cijntje said on pitching with both arms",
+    "url": "https://sports.yahoo.com/mississippi-state-baseballs-jurrangelo-cijntje-225548074.html",
+    "retrievedAt": "2026-07-05",
+    "season": "2024 draft day"
   }
 ]
