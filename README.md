@@ -34,8 +34,23 @@ The bundled reference content is generated from the Pitch Atlas web repo and com
 - App URL scheme: `pitchatlas://`
 - Privacy/support URLs: `https://pitch-atlas.com/privacy` and `https://pitch-atlas.com/support`
 
-## Release Blockers
+## Pre-archive checks
 
-- Verify the live Supabase project health, community RPCs, blocked-content behavior, media upload/readback, and `delete-account` before TestFlight.
-- Recheck Supabase branch/migration health from `ahump20/Pitch-Atlas`. Prior release notes recorded `MIGRATIONS_FAILED`; repair it if the live console still reports that.
-- Verify Apple Developer/App Store Connect for `com.pitchatlas.app`: Sign in with Apple, signing, Xcode Cloud release workflow, screenshots, privacy labels, age rating, reviewer notes, and the highest processed build.
+**The app is shipped.** `apps.apple.com/us/app/pitch-atlas/id6778277388` returns 200 at
+**version 1.1.0**, matching `MARKETING_VERSION` in `project.yml`. Verified 2026-07-23.
+
+This section used to be titled "Release Blockers" and read as a pre-launch checklist. It
+outlived the launch it described, and a note in the vault had been carrying the resulting
+contradiction — repo says blocked, store says live — as an unresolved conflict for weeks.
+These are recurring checks to run before each archive, not gates standing between the app
+and its first release:
+
+- Verify live Supabase project health, community RPCs, blocked-content behavior, media
+  upload/readback, and `delete-account`.
+- Recheck Supabase branch/migration health from `ahump20/Pitch-Atlas`. Earlier release notes
+  recorded `MIGRATIONS_FAILED`; repair it if the live console still reports that.
+- Verify App Store Connect for `com.pitchatlas.app`: Sign in with Apple, signing, the Xcode
+  Cloud release workflow, screenshots, privacy labels, age rating, reviewer notes, and the
+  highest processed build.
+
+If this section ever reads as a gate again, check the store listing before believing it.

@@ -21,7 +21,11 @@ Native SwiftUI iPhone app for **Pitch Atlas** — a sourced, interactive referen
 
 ## Content source of truth
 
-The content lives in the **web repo** `~/code/Pitch-Atlas/src/data/` and is generated into `PitchAtlas/Resources/Content/*.json` by `tools/generate-content`. Never hand-author content JSON in this repo. The generator's drift guard reads expected record counts **from source at generate time** — never hardcode counts.
+The content lives in the **web repo** and is generated into `PitchAtlas/Resources/Content/*.json` by `tools/generate-content`. Never hand-author content JSON in this repo. The generator's drift guard reads expected record counts **from source at generate time** — never hardcode counts.
+
+**Which web repo:** `github.com/ahump20/Pitch-Atlas` @ `main`. The generator resolves a sibling of this repo (`../../../Pitch-Atlas` from `tools/generate-content/`, i.e. `~/Pitch-Atlas`) unless `PITCH_ATLAS_WEB` overrides it. Trust that resolution, not a path written here.
+
+> Corrected 2026-07-23. This line used to name `~/code/Pitch-Atlas`. That is a second checkout of the same repo, sitting on `redesign/v2-refractor-case` at **144 commits behind `main` with 0 commits ahead** — a stale copy the generator never reads. Generating content from it would have bundled a month-old atlas into the binary. Same failure that cost the BSI work months: a written path outliving the tree it described. Confirm with `git -C <path> log -1` before trusting any path in any doc.
 
 ## Architecture
 
