@@ -437,7 +437,7 @@
         "confidence": "reputable-analysis"
       },
       "movement": {
-        "value": "Thrown with the same arm action as a fastball but markedly slower; hitters cannot read the reduced speed until the ball is nearly on top of them, so they commit early. It is usually the first off-speed pitch a young pitcher is taught.",
+        "value": "Thrown with the same arm action as a fastball but markedly slower; hitters cannot read the reduced speed until the ball is nearly on top of them, so they commit early.",
         "source": {
           "id": "wiki-changeup",
           "label": "Changeup — Wikipedia (standard/straight and three-finger changeup, grip and timing separation)",
@@ -457,7 +457,7 @@
         "confidence": "reputable-analysis"
       },
       "notableThrowers": "Taught widely as a first off-speed pitch; less common at the major-league level than the circle change.",
-      "plain": "The simplest changeup, and usually the first one a young pitcher learns. Lay three close fingers over the ball, seat it back toward the palm, and the same fastball arm motion comes out slower. The hitter swings early because he can't tell it's slow until it's nearly on him.",
+      "plain": "Lay three close fingers over the ball and seat it back toward the palm. The same fastball arm motion comes out slower, and the hitter commits before the speed difference is clear.",
       "studyFirstSlug": "circle-change",
       "contextNote": {
         "value": "The three-finger change and the circle change are the two named changeup grips taught side by side. The filed Circle Change is the modern default; this is the simpler one most arms learn first.",
@@ -532,7 +532,7 @@
         "confidence": "reputable-analysis"
       },
       "movement": {
-        "value": "Released by pronating the forearm (turning the palm outward), which produces arm-side fade and run in the same direction as a screwball, while carrying less elbow stress than a true screwball. It is the default modern changeup.",
+        "value": "Released by pronating the forearm (turning the palm outward), which produces arm-side fade and run in the same direction as a screwball. It is the default modern changeup.",
         "source": {
           "id": "wiki-circle-changeup",
           "label": "Circle changeup — Wikipedia (OK-circle grip, pronation/arm-side run, Pedro Martinez)",
@@ -822,7 +822,7 @@
         "ghost fork (Senga variant)"
       ],
       "grip": {
-        "value": "The splitter's ancestor: the ball is jammed deeper and forked wider between the index and middle fingers, and the pitch is thrown hard while snapping the wrist. Kodai Senga's 'ghost fork' is not jammed as deep as a true forkball because of the injury risk that has kept most pitchers away from the deep grip.",
+        "value": "The splitter's ancestor: the ball is jammed deeper and forked wider between the index and middle fingers, and the pitch is thrown hard while snapping the wrist. Kodai Senga's 'ghost fork' uses a shallower version of the hold.",
         "source": {
           "id": "wiki-forkball",
           "label": "Forkball — Wikipedia (deep wide grip, wrist snap, tumble, near-extinct, Senga ghost fork, splitter ancestor)",
@@ -842,7 +842,7 @@
         "confidence": "reputable-analysis"
       },
       "relationship": {
-        "value": "The deep-grip, wrist-snapped ancestor of the splitter, now nearly extinct because of its injury reputation. It survives mainly through Japanese-developed pitchers — Kodai Senga's 'ghost fork' and Roki Sasaki's extremely low-spin forkball.",
+        "value": "The deep-grip, wrist-snapped ancestor of the splitter is now rare in the majors. It survives mainly through Japanese-developed pitchers, including Kodai Senga's 'ghost fork' and Roki Sasaki's extremely low-spin forkball.",
         "source": {
           "id": "fangraphs-sasaki",
           "label": "FanGraphs — 'Roki Sasaki Is Putting It All Together' (NPB-developed forkball, low-spin, knuckleball-like movement)",
@@ -1232,7 +1232,7 @@
         "confidence": "reputable-analysis"
       },
       "movement": {
-        "value": "Breaks in the opposite direction of a curveball or slider, moving in toward a same-handed hitter. It is one of the rarest pitches in the game and now nearly extinct — a longstanding belief that the unnatural pronation wrecks arms has kept most pitchers away, a reputation SABR's analysis of Carl Hubbell pushes back on while noting the prejudice persists; Hubbell and later Fernando Valenzuela were its great practitioners.",
+        "value": "Breaks in the opposite direction of a curveball or slider, moving in toward a same-handed hitter. It is one of the rarest pitches in the game and now nearly extinct; Carl Hubbell and Fernando Valenzuela remain its best-known practitioners.",
         "source": {
           "id": "sabr-hubbell-screwball",
           "label": "Hubbell's Elbow: Don't Blame the Screwball — Society for American Baseball Research",
@@ -1240,7 +1240,7 @@
           "retrievedAt": "2026-06-05"
         },
         "confidence": "reputable-analysis",
-        "note": "The 'fear of arm injury keeps it nearly dead' framing is the prevailing belief rather than settled medical fact — the SABR article explicitly argues the screwball was wrongly blamed for Hubbell's elbow. No injury or medical claim is asserted here, only the pitch's reputation and rarity."
+        "note": "The SABR source supports the pitch's reverse break, rarity, and Hubbell attribution."
       },
       "notableThrowers": "Carl Hubbell, Fernando Valenzuela, Christy Mathewson",
       "plain": "A pitch that breaks the 'wrong' way, in toward a same-handed hitter, the opposite of a curve. It's thrown by twisting the wrist backward from how a curve is thrown. One of the rarest pitches in the game, and it has nearly disappeared.",
