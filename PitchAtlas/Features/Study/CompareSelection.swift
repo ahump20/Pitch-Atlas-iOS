@@ -127,7 +127,12 @@ struct CompareView: View {
                     if store.pitches.isEmpty { Text("No filed specimens are available in this bundle.") }
                 }.padding(20)
             }.background(PitchAtlasTheme.void).foregroundStyle(PitchAtlasTheme.bone)
-                .navigationTitle("Compare").toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+                .navigationTitle("Compare")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         }
     }
 }
