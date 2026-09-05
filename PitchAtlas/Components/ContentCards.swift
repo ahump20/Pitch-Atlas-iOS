@@ -242,12 +242,12 @@ struct PitchSpecimenCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: isHero ? PitchAtlasSpacing.sm : PitchAtlasSpacing.xs) {
             HStack(alignment: .center, spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: entry.display.specimenNo, color: PitchAtlasTheme.cyanDeep, size: isHero ? 9 : 7)
+                SectionLabel(text: entry.display.specimenNo, color: PitchAtlasTheme.cardbackInk3, size: isHero ? 9 : 7)
                 Spacer(minLength: PitchAtlasSpacing.xs)
                 Text(entry.canonical.family.label.uppercased())
                     .font(PitchAtlasTheme.martian(isHero ? 8 : 7))
                     .tracking(1.2)
-                    .foregroundStyle(entry.canonical.family.accent)
+                    .foregroundStyle(PitchAtlasTheme.cardbackInk3)
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
             }
@@ -258,7 +258,7 @@ struct PitchSpecimenCard: View {
 
             if isHero {
                 HStack(alignment: .firstTextBaseline, spacing: PitchAtlasSpacing.xs) {
-                    SectionLabel(text: entry.canonical.grip.confidence.label, color: PitchAtlasTheme.cyanDeep, size: 8)
+                    SectionLabel(text: entry.canonical.grip.confidence.label, color: PitchAtlasTheme.cardbackInk3, size: 8)
                     Spacer(minLength: PitchAtlasSpacing.xs)
                     Text(entry.canonical.grip.source?.label ?? "Source gap visible")
                         .font(PitchAtlasTheme.hanken(11))

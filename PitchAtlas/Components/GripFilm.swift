@@ -44,13 +44,7 @@ struct GripFilmCard: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "From the hand", color: PitchAtlasTheme.cyanDeep, size: 8)
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
-                if let attribution = film.clip.attribution {
-                    SectionLabel(text: attribution, color: PitchAtlasTheme.ink3, size: 8)
-                }
-            }
+            GripMediaCredit(attribution: film.clip.attribution)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Grip film. \(film.clip.alt) \(film.clip.caption)")
@@ -134,17 +128,33 @@ struct GripStillCard: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "From the hand", color: PitchAtlasTheme.cyanDeep, size: 8)
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
-                if let attribution = photo.attribution {
-                    SectionLabel(text: attribution, color: PitchAtlasTheme.ink3, size: 8)
-                }
-            }
+            GripMediaCredit(attribution: photo.attribution)
         }
         .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Grip photo. \(photo.alt) \(photo.caption)")
+    }
+}
+
+/// Keep provenance attached to the media at narrow widths and large text sizes.
+private struct GripMediaCredit: View {
+    let attribution: String?
+
+    var body: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: PitchAtlasSpacing.xs) { labels }
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) { labels }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    @ViewBuilder
+    private var labels: some View {
+        SectionLabel(text: "From the hand", color: PitchAtlasTheme.cardbackInk3, size: 8)
+        SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
+        if let attribution {
+            SectionLabel(text: attribution, color: PitchAtlasTheme.ink3, size: 8)
+        }
     }
 }
 
