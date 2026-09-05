@@ -1,5 +1,6 @@
 import XCTest
 import UIKit
+import AVFoundation
 @testable import PitchAtlas
 
 final class PitchAtlasTests: XCTestCase {
@@ -268,6 +269,29 @@ final class PitchAtlasTests: XCTestCase {
             XCTAssertFalse(film.clip.caption.isEmpty)
             XCTAssertFalse(film.clip.alt.isEmpty)
         }
+    }
+
+    @MainActor
+    func testGripFilmKeepsPosterDuringLoadingAndPlaybackFailure() async throws {
+        let view = LoopingPlayerUIView(frame: CGRect(x: 0, y: 0, width: 240, height: 176))
+        let poster = try XCTUnwrap(UIImage(systemName: "baseball.fill"))
+        view.load(url: URL(fileURLWithPath: "/missing-pitch-atlas-grip-film.mp4"), poster: poster)
+        defer { view.teardown() }
+
+        let imageView = try XCTUnwrap(view.subviews.compactMap { $0 as? UIImageView }.first)
+        let videoLayer = try XCTUnwrap(view.layer.sublayers?.compactMap { $0 as? AVPlayerLayer }.first)
+        XCTAssertTrue(imageView.image === poster)
+        XCTAssertFalse(imageView.isHidden, "Loading must retain the original grip poster")
+        XCTAssertEqual(imageView.contentMode, .scaleAspectFit)
+
+        let failed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+            videoLayer.player?.status == .failed || videoLayer.player?.currentItem?.status == .failed
+        }, object: view)
+        await fulfillment(of: [failed], timeout: 5)
+        XCTAssertFalse(imageView.isHidden, "Failed playback must retain the original grip poster")
+        view.teardown()
+        XCTAssertNil(videoLayer.player)
+        XCTAssertFalse(imageView.isHidden)
     }
 
     /// The web's craft-over-numbers rename (`numbers` → `record`) must carry

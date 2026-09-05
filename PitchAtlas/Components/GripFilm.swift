@@ -53,7 +53,7 @@ struct GripFilmCard: View {
     @ViewBuilder
     private var face: some View {
         if let clipURL, !reduceMotion || motionApproved {
-            LoopingClipView(url: clipURL)
+            LoopingClipView(url: clipURL, poster: BundledImage.load(film.poster))
                 .accessibilityLabel(film.clip.alt)
         } else if clipURL != nil, offersMotionControl {
             // Reduce Motion: the still leads; motion waits for an explicit ask.
@@ -162,10 +162,11 @@ private struct GripMediaCredit: View {
 
 private struct LoopingClipView: UIViewRepresentable {
     let url: URL
+    let poster: UIImage?
 
     func makeUIView(context: Context) -> LoopingPlayerUIView {
         let view = LoopingPlayerUIView()
-        view.load(url: url)
+        view.load(url: url, poster: poster)
         return view
     }
 
@@ -178,8 +179,13 @@ private struct LoopingClipView: UIViewRepresentable {
 
 final class LoopingPlayerUIView: UIView {
     private let playerLayer = AVPlayerLayer()
+    private let posterView = UIImageView()
     private var queue: AVQueuePlayer?
     private var looper: AVPlayerLooper?
+    private var displayObservation: NSKeyValueObservation?
+    private var playerObservation: NSKeyValueObservation?
+    private var currentItemObservation: NSKeyValueObservation?
+    private var itemStatusObservation: NSKeyValueObservation?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -187,12 +193,18 @@ final class LoopingPlayerUIView: UIView {
         // cropping fingers or seam position to fill a decorative viewport.
         playerLayer.videoGravity = .resizeAspect
         layer.addSublayer(playerLayer)
+        posterView.contentMode = .scaleAspectFit
+        posterView.clipsToBounds = true
+        posterView.isAccessibilityElement = false
+        addSubview(posterView)
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) { nil }
 
-    func load(url: URL) {
+    func load(url: URL, poster: UIImage?) {
+        posterView.image = poster
+        posterView.isHidden = false
         // Muted ambient playback: never interrupts or ducks the user's audio.
         try? AVAudioSession.sharedInstance().setCategory(.ambient, options: [.mixWithOthers])
         let player = AVQueuePlayer()
@@ -201,6 +213,17 @@ final class LoopingPlayerUIView: UIView {
         looper = AVPlayerLooper(player: player, templateItem: AVPlayerItem(url: url))
         playerLayer.player = player
         queue = player
+        // An item may be ready before its first frame reaches the display layer.
+        // Keep the original grip visible through loading and failed playback.
+        displayObservation = playerLayer.observe(\.isReadyForDisplay, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.refreshPosterVisibility() }
+        }
+        playerObservation = player.observe(\.status, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.refreshPosterVisibility() }
+        }
+        currentItemObservation = player.observe(\.currentItem, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.observeCurrentItem() }
+        }
         player.play()
 
         // didMoveToWindow pauses a clip that scrolls off-screen, but a backgrounded
@@ -214,20 +237,39 @@ final class LoopingPlayerUIView: UIView {
                            name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
+    private func observeCurrentItem() {
+        itemStatusObservation = queue?.currentItem?.observe(\.status, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.refreshPosterVisibility() }
+        }
+        refreshPosterVisibility()
+    }
+
+    private func refreshPosterVisibility() {
+        let failed = queue?.status == .failed || queue?.currentItem?.status == .failed
+        posterView.isHidden = queue != nil && playerLayer.isReadyForDisplay && !failed
+        playerLayer.isHidden = failed
+    }
+
     @objc private func appWillResignActive() { queue?.pause() }
     @objc private func appDidBecomeActive() { if window != nil { queue?.play() } }
 
     func teardown() {
         NotificationCenter.default.removeObserver(self)
+        displayObservation = nil
+        playerObservation = nil
+        currentItemObservation = nil
+        itemStatusObservation = nil
         queue?.pause()
         looper = nil
         playerLayer.player = nil
         queue = nil
+        posterView.isHidden = false
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
         playerLayer.frame = bounds
+        posterView.frame = bounds
     }
 
     // Pause offscreen, resume onscreen — four loops in one scroll stay cheap.
