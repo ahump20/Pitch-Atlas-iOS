@@ -224,6 +224,7 @@ struct GripPhotoTile: View {
 // MARK: - Pitch specimen card (foil front)
 
 struct PitchSpecimenCard: View {
+    @Environment(\.compareSelection) private var comparison
     enum Style {
         case hero
         case rail
@@ -290,6 +291,8 @@ struct PitchSpecimenCard: View {
         .shadow(color: .black.opacity(isHero ? 0.42 : 0.28), radius: isHero ? 18 : 10, x: 0, y: isHero ? 14 : 7)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
+        .contextMenu { Button("Compare this pitch") { comparison.add(entry.slug); Haptics.selection() } }
+        .accessibilityAction(named: "Compare this pitch") { comparison.add(entry.slug) }
     }
 
     @ViewBuilder

@@ -4,8 +4,8 @@ import SwiftUI
 // Pitch Atlas — SwiftUI Token Map
 // =============================================================================
 // Direct port of the web design system's rendered tokens. Source of truth:
-// the web repo's src/index.css refractor layer. Current public surface: cool
-// near-black field, cyan interaction, seam-bright red, bone, and controlled
+// the web repo's src/index.css refractor layer. Native archive surface: warm
+// charcoal field, cyan interaction, seam-bright red, bone, and controlled
 // refractor foil. Cream lives on card backs and printed-data panels, not as the
 // app field.
 // Pattern: an enum of static tokens + Color(hex:) + Font.custom(relativeTo:)
@@ -18,13 +18,13 @@ enum PitchAtlasTheme {
 
     // MARK: - Surfaces
     /// App background, every screen, sitewide — the web's cool black field.
-    static let void = Color(hex: 0x070509)
+    static let void = Color(hex: 0x15120F)
     /// Raised content cards — the "leather-press" surface.
     static let press = Color(hex: 0x221E18)
     /// Alternating panels, secondary card fill.
-    static let paper2 = Color(hex: 0x141016)
+    static let paper2 = Color(hex: 0x2C241D)
     /// Deepest insets, edge frames.
-    static let paper3 = Color(hex: 0x0C2340)
+    static let paper3 = Color(hex: 0x3D3023)
 
     // MARK: - Text
     /// Primary text on the field.

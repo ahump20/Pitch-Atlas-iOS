@@ -34,6 +34,8 @@ extension Finger {
 struct SeamShape: Shape {
     /// In-plane spin-axis angle, radians.
     var rotation: Double
+    var orientation: GripView = .top
+    var hand: Handedness = .right
 
     var animatableData: Double {
         get { rotation }
@@ -47,11 +49,11 @@ struct SeamShape: Shape {
         let steps = 240
         for i in 0...steps {
             let t = Double(i) / Double(steps) * 2 * .pi
-            let p = SeamMath.seamPoint(t)
+            let p = studyProjection(SeamMath.seamPoint(t), orientation: orientation)
             // rotate the projection in-plane to reflect spin-axis orientation
             let rx = p.x * cos(rotation) - p.y * sin(rotation)
             let ry = p.x * sin(rotation) + p.y * cos(rotation)
-            let point = CGPoint(x: c.x + CGFloat(rx) * r, y: c.y - CGFloat(ry) * r)
+            let point = CGPoint(x: c.x + CGFloat(hand == .left ? -rx : rx) * r, y: c.y - CGFloat(ry) * r)
             if i == 0 { path.move(to: point) } else { path.addLine(to: point) }
         }
         path.closeSubpath()
@@ -154,6 +156,9 @@ struct SeamBall: View {
     /// the small rail/Atlas balls stay clean; the large detail specimen passes the
     /// pitch's real `fingerPlacement` so a reader can see where the hand sits.
     var contacts: [SeamAnchoredPoint] = []
+    var orientation: GripView = .top
+    var hand: Handedness = .right
+    var showMovement = true
 
     /// In-plane orientation of the spin axis (radians).
     private var axisAngle: Double { atan2(motion.spinAxis.y, motion.spinAxis.x) }
@@ -164,10 +169,10 @@ struct SeamBall: View {
     private func seamPoint(at seamT: Double) -> CGPoint {
         let r = size / 2 * 0.92
         let c = CGPoint(x: size / 2, y: size / 2)
-        let p = SeamMath.seamPoint(seamT * 2 * .pi)
+        let p = studyProjection(SeamMath.seamPoint(seamT * 2 * .pi), orientation: orientation)
         let rx = p.x * cos(axisAngle) - p.y * sin(axisAngle)
         let ry = p.x * sin(axisAngle) + p.y * cos(axisAngle)
-        return CGPoint(x: c.x + CGFloat(rx) * r, y: c.y - CGFloat(ry) * r)
+        return CGPoint(x: c.x + CGFloat(hand == .left ? -rx : rx) * r, y: c.y - CGFloat(ry) * r)
     }
 
     var body: some View {
@@ -176,7 +181,7 @@ struct SeamBall: View {
             Circle()
                 .fill(
                     RadialGradient(
-                        colors: [PitchAtlasTheme.paper3, PitchAtlasTheme.press, PitchAtlasTheme.void],
+                        colors: [PitchAtlasTheme.cardbackPaper, Color(hex: 0xC5A77A), Color(hex: 0x6B4B30)],
                         center: .init(x: 0.38, y: 0.34),
                         startRadius: 2,
                         endRadius: size * 0.62
@@ -187,13 +192,13 @@ struct SeamBall: View {
                 )
 
             // The seam
-            SeamShape(rotation: axisAngle)
+            SeamShape(rotation: axisAngle, orientation: orientation, hand: hand)
                 .stroke(PitchAtlasTheme.seamBright,
                         style: StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
                 .shadow(color: PitchAtlasTheme.seamBright.opacity(0.35), radius: 3)
 
             // Motion overlay: gyro dot / flutter ring / break arrow.
-            MotionCueOverlay(motion: motion, size: size)
+            if showMovement { MotionCueOverlay(motion: motion, size: size) }
 
             // Finger contacts, numbered, sitting on the seam where the hand grips.
             ForEach(Array(contacts.enumerated()), id: \.offset) { _, contact in
@@ -242,4 +247,15 @@ struct SeamBall: View {
         }
         return parts.joined(separator: " ")
     }
+}
+
+/// Orthographic camera changes applied identically to seams and finger markers.
+private func studyProjection(_ point: SIMD3<Double>, orientation: GripView) -> SIMD3<Double> {
+    let projected: SIMD3<Double>
+    switch orientation {
+    case .top: projected = point
+    case .side: projected = SIMD3(point.z, point.y, -point.x)
+    case .thumb: projected = SIMD3(point.x, point.z, -point.y)
+    }
+    return projected
 }

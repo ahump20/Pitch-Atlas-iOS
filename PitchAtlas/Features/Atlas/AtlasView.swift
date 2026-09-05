@@ -23,6 +23,7 @@ struct AtlasView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     masthead
+                    StudyTray()
                     if case .failed(let msg) = store.status {
                         ErrorStateView(reason: msg)
                     } else if store.pitches.isEmpty {
@@ -62,7 +63,7 @@ struct AtlasView: View {
                 .padding(.leading, PitchAtlasSpacing.sm)
 
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                Text("The pitch, struck as a specimen.")
+                Text("The archive, within reach.")
                     .font(PitchAtlasTheme.newsreader(27))
                     .foregroundStyle(PitchAtlasTheme.bone)
                     .fixedSize(horizontal: false, vertical: true)

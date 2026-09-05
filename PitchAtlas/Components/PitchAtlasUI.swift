@@ -10,15 +10,16 @@ import SwiftUI
 
 // MARK: - Field background
 
-/// Shared app field: the web's cool black stage with faint rule lines and controlled
-/// powder/seam light. It keeps large surfaces from falling back to flat brown.
+/// Shared warm archive field with fine rules; Reduce Transparency uses solid charcoal.
 struct FieldBackdrop: View {
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     var body: some View {
         ZStack {
             PitchAtlasTheme.void
-            LinearGradient(
+            if !reduceTransparency {
+                LinearGradient(
                 colors: [
-                    Color(hex: 0x16121F).opacity(0.30),
+                    Color(hex: 0xA87C4B).opacity(0.18),
                     .clear,
                     PitchAtlasTheme.void,
                 ],
@@ -27,7 +28,7 @@ struct FieldBackdrop: View {
             )
             RadialGradient(
                 colors: [
-                    PitchAtlasTheme.cyan.opacity(0.095),
+                    PitchAtlasTheme.cardbackPaper.opacity(0.065),
                     .clear,
                 ],
                 center: .topLeading,
@@ -54,6 +55,7 @@ struct FieldBackdrop: View {
             )
             FieldRuleMesh()
                 .opacity(0.20)
+            }
         }
         .ignoresSafeArea()
     }

@@ -35,6 +35,7 @@ struct PitchDetailView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     hero
+                    PitchStudy(entry: entry)
                     foundation
                     teaching
                     gripLab

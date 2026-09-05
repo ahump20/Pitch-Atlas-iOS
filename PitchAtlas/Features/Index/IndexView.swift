@@ -86,6 +86,7 @@ struct IndexView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     masthead
+                    StudyTray()
                     searchField
                     familyChips
                     statusChips
