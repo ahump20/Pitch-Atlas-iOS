@@ -283,7 +283,7 @@ struct PitchSpecimenCard: View {
             if isHero, let film = entry.canonical.gripFilm {
                 GripFilmCard(film: film, height: mediaHeight, offersMotionControl: false, showsCaption: false)
             } else if let still = entry.canonical.realStill {
-                BundledImage(src: still.src, alt: still.alt, contentMode: .fit)
+                BundledImage(src: still.src, alt: still.alt, contentMode: .fill)
                     .frame(height: mediaHeight)
                     .frame(maxWidth: .infinity)
             } else {

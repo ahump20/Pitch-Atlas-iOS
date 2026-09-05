@@ -68,7 +68,7 @@ Simulator evidence is retained on Pro under `/Users/AustinHumphrey/Pitch-Atlas/a
 
 ## Material study revision — 2026-09-05
 
-All specimen frames and source/reading panels now share worn burnt-orange cover stock with deterministic grain, pressed inset edges and layered shadows. Ivory secondary text replaces low-contrast grey on the orange surfaces. Cream remains a native control neutral, not a page canvas. Original photographs use aspect-fit framing.
+All specimen frames and source/reading panels now share worn burnt-orange cover stock with deterministic grain, pressed inset edges and layered shadows. Ivory secondary text replaces low-contrast grey on the orange surfaces. Cream remains a native control neutral, not a page canvas. Original photographs retain aspect-fit framing in detail and inspection. Collectible card thumbnails use centered fill within their clipped windows so the grip reads at card size; source/owner labels remain unchanged.
 
 The comparison is one A/B study surface with coordinated controls and an explicit divider. Each specimen retains its seam-informed schematic qualification; Movement retains its qualitative/not-tracked qualification. Lesson subtitles use the matching bundled navigation reason, falling back to the lesson summary. Claim and source labels remain attached to their reading cards.
 
