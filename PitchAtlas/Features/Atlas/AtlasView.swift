@@ -24,6 +24,13 @@ struct AtlasView: View {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     masthead
                     StudyTray()
+                    VStack(alignment: .leading, spacing: 12) {
+                        SectionLabel(text: "WAYS INTO THE ARCHIVE")
+                        NavigationLink { CraftsmenView() } label: { Label("Start with a practitioner", systemImage: "person.crop.rectangle") }.frame(minHeight: 44)
+                        NavigationLink { LearnView() } label: { Label("Follow a lesson", systemImage: "book") }.frame(minHeight: 44)
+                        NavigationLink { LostPitchesView() } label: { Label("Explore the lost-pitches wing", systemImage: "clock.arrow.circlepath") }.frame(minHeight: 44)
+                    }
+
                     if case .failed(let msg) = store.status {
                         ErrorStateView(reason: msg)
                     } else if store.pitches.isEmpty {

@@ -14,6 +14,7 @@ struct PitchDetailView: View {
 
     /// Drives the grip-fact layout: at accessibility text sizes the fixed label
     /// column can't hold "PRESSURE FINGER" without clipping, so the row stacks.
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// The shared content store, read for the same-family rail.
@@ -36,12 +37,13 @@ struct PitchDetailView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     hero {
-                        withAnimation(dynamicTypeSize.isAccessibilitySize ? nil : .easeOut(duration: 0.25)) {
+                        withAnimation((reduceMotion || dynamicTypeSize.isAccessibilitySize) ? nil : .easeOut(duration: 0.25)) {
                             proxy.scrollTo("grip-study", anchor: .top)
                         }
                     }
                     PitchStudy(entry: entry)
                         .id("grip-study")
+                    archiveConnections
                     foundation
                     teaching
                     gripLab
@@ -70,6 +72,30 @@ struct PitchDetailView: View {
         }
         .navigationTitle(display.shortName)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var archiveConnections: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if !store.practitioners(for: entry).isEmpty || !store.lessons(for: entry).isEmpty {
+                SectionLabel(text: "FOLLOW THE ARCHIVE")
+            }
+            ForEach(store.practitioners(for: entry)) { person in
+                NavigationLink { CraftsmanDetailView(craftsman: person) } label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label(person.name, systemImage: "person.crop.rectangle")
+                        Text("Filed signature: \(person.signaturePitch) · \(person.era)").font(.caption)
+                    }.frame(minHeight: 44, alignment: .leading)
+                }
+            }
+            ForEach(store.lessons(for: entry)) { wing in
+                NavigationLink { KnowledgeWingView(wing: wing) } label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label(wing.title, systemImage: "book")
+                        Text("This lesson points to this specimen.").font(.caption)
+                    }.frame(minHeight: 44, alignment: .leading)
+                }
+            }
+        }
     }
 
     // MARK: Hero + specimen
@@ -107,6 +133,17 @@ struct PitchDetailView: View {
                 .font(PitchAtlasTheme.newsreaderItalic(17))
                 .foregroundStyle(PitchAtlasTheme.bone2)
 
+            // The specimen face: real footage first, then real photography,
+            // the drawn SeamBall only where nothing real is on file.
+            if let film = canonical.gripFilm {
+                GripFilmCard(film: film, height: dynamicTypeSize.isAccessibilitySize ? 190 : 230)
+                    .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
+            } else if let photo = heroPhoto {
+                GripStillCard(photo: photo)
+            } else {
+                specimenCard
+            }
+
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: PitchAtlasSpacing.sm) {
                     studyButton(action: studyAction)
@@ -118,17 +155,6 @@ struct PitchDetailView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-
-            // The specimen face: real footage first, then real photography,
-            // the drawn SeamBall only where nothing real is on file.
-            if let film = canonical.gripFilm {
-                GripFilmCard(film: film, height: dynamicTypeSize.isAccessibilitySize ? 190 : 230)
-                    .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
-            } else if let photo = heroPhoto {
-                GripStillCard(photo: photo)
-            } else {
-                specimenCard
-            }
 
             Text(display.heroIntro)
                 .font(PitchAtlasTheme.hanken(14))

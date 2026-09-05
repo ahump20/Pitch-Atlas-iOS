@@ -49,7 +49,7 @@ struct CompareButton: View {
     @Environment(\.compareSelection) private var selection
     var body: some View {
         Button { selection.add(slug); Haptics.selection() } label: {
-            Label(selection.slugs.contains(slug) ? "In comparison" : "Compare this pitch", systemImage: "square.split.2x1")
+            Label(selection.slugs.contains(slug) ? "In comparison" : "Compare", systemImage: "square.split.2x1")
         }.buttonStyle(.bordered).controlSize(.large)
     }
 }
@@ -76,13 +76,12 @@ struct CompareView: View {
     @Environment(\.compareSelection) private var selection
     @Environment(PitchStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     var body: some View {
         @Bindable var selection = selection
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    Text("Two grips. A closer look.").font(PitchAtlasTheme.newsreader(30))
-                    Text("Sourced, not corrected. Movement is qualitative; these views are not tracked flight data.").font(.subheadline)
                     if let error = selection.error { Text(error).accessibilityLabel("Invalid comparison. \(error)") }
                     if case .failed(let reason) = store.status { ErrorStateView(reason: reason) }
                     if let pending = selection.pending {
@@ -94,21 +93,45 @@ struct CompareView: View {
                             Button("Keep current pair") { selection.pending = nil }
                         }.leatherPress()
                     }
-                    Picker("Compare view", selection: $selection.mode) {
-                        ForEach(CompareSelection.Mode.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) }
-                    }.pickerStyle(.menu)
+                    if dynamicTypeSize.isAccessibilitySize {
+                        modePicker.pickerStyle(.menu)
+                    } else {
+                        modePicker.pickerStyle(.segmented)
+                    }
                     inspectionControls(hand: $selection.hand, orientation: $selection.orientation)
                     if selection.slugs.count < 2 {
                         Text(selection.slugs.isEmpty ? "Your study table is empty. Choose the first pitch below." : "Choose one more pitch to compare.").font(.headline)
                     }
+                    if selection.mode == .grips {
+                        GeometryReader { geometry in
+                            HStack(alignment: .top, spacing: 12) {
+                                ForEach(selection.slugs, id: \.self) { slug in
+                                    if let entry = store.pitch(slug: slug) {
+                                        VStack(spacing: 10) {
+                                            Text(entry.display.shortName).font(.headline).dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                                                .frame(maxWidth: .infinity, minHeight: 44)
+                                            SeamBall(motion: entry.motion,
+                                                     size: min(180, (geometry.size.width - 12) / 2 - 12),
+                                                     contacts: entry.canonical.fingerPlacement,
+                                                     orientation: selection.orientation, hand: selection.hand,
+                                                     showMovement: false)
+                                                .dynamicTypeSize(.large)
+                                                .accessibilityLabel("\(entry.canonical.name), \(selection.hand.rawValue) hand, \(selection.orientation.rawValue) seam-informed schematic")
+                                        }.frame(maxWidth: .infinity)
+                                    }
+                                }
+                            }
+                        }.frame(height: dynamicTypeSize.isAccessibilitySize ? 290 : 250)
+                        Text("Seam-informed schematics · same hand and view. Left hand is mirrored; these are not measured grip geometries.")
+                            .font(.caption)
+                    }
+                    Text("Sourced, not corrected. Movement is qualitative, not tracked flight data.").font(.caption)
                     ForEach(selection.slugs, id: \.self) { slug in
                         if let entry = store.pitch(slug: slug) {
-                            VStack(alignment: .leading, spacing: 16) {
-                                HStack { Text(entry.canonical.name).font(PitchAtlasTheme.anton(28)); Spacer(); Button("Remove") { selection.remove(slug) } }
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text(entry.canonical.name).font(PitchAtlasTheme.newsreader(24))
                                 switch selection.mode {
-                                case .grips:
-                                    StudyBall(entry: entry, hand: selection.hand, orientation: selection.orientation)
-                                    ClaimText(claim: entry.canonical.grip)
+                                case .grips: ClaimText(claim: entry.canonical.grip)
                                 case .cues:
                                     ClaimText(claim: entry.canonical.mechanics)
                                     ForEach(Array(entry.canonical.gripDetails.enumerated()), id: \.offset) { _, claim in ClaimText(claim: claim) }
@@ -116,6 +139,8 @@ struct CompareView: View {
                                     if let shape = entry.canonical.physics.shape { ClaimText(claim: shape) }
                                     ClaimText(claim: entry.canonical.physics.teaching)
                                 }
+                                Button("Remove \(entry.display.shortName)") { selection.remove(slug) }
+                                    .frame(minHeight: 44)
                             }.leatherPress()
                         }
                     }
@@ -135,10 +160,24 @@ struct CompareView: View {
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         }
     }
+    private var modePicker: some View {
+        @Bindable var selection = selection
+        return Picker("Compare view", selection: $selection.mode) {
+            ForEach(CompareSelection.Mode.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) }
+        }
+    }
+
 }
 
 @ViewBuilder func inspectionControls(hand: Binding<Handedness>, orientation: Binding<GripView>) -> some View {
-    VStack(alignment: .leading) {
+    ViewThatFits(in: .horizontal) {
+        HStack { inspectionPickers(hand: hand, orientation: orientation) }
+        VStack(alignment: .leading) { inspectionPickers(hand: hand, orientation: orientation) }
+    }
+}
+
+@ViewBuilder private func inspectionPickers(hand: Binding<Handedness>, orientation: Binding<GripView>) -> some View {
+    Group {
         Picker("Hand", selection: hand) { ForEach(Handedness.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) } }.pickerStyle(.menu)
         Picker("Orientation", selection: orientation) { ForEach(GripView.allCases, id: \.self) { Text($0.rawValue.capitalized).tag($0) } }.pickerStyle(.menu)
     }
@@ -153,6 +192,7 @@ struct StudyBall: View {
         VStack(spacing: 12) {
             SeamBall(motion: entry.motion, size: 220, contacts: entry.canonical.fingerPlacement,
                      orientation: orientation, hand: hand, showMovement: false)
+                .dynamicTypeSize(.large)
                 .scaleEffect(zoom).frame(maxWidth: .infinity).frame(height: 280).clipped()
                 .accessibilityLabel("\(entry.canonical.name), \(hand.rawValue) hand, \(orientation.rawValue) seam-informed schematic")
             Slider(value: $zoom, in: 1...1.7) { Text("Inspection zoom") }
@@ -164,6 +204,8 @@ struct StudyBall: View {
 
 struct PitchStudy: View {
     let entry: PitchAtlasEntry
+    @Environment(PitchStore.self) private var store
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var step = "Hold"
     @State private var variant = -1
     @State private var hand: Handedness = .right
@@ -172,8 +214,11 @@ struct PitchStudy: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             SectionLabel(text: "GRIP STUDY")
-            Text("Learn it by hand.").font(PitchAtlasTheme.newsreader(28))
-            Picker("Study step", selection: $step) { ForEach(steps, id: \.self) { Text($0).tag($0) } }.pickerStyle(.menu)
+            if dynamicTypeSize.isAccessibilitySize {
+                stepPicker.pickerStyle(.menu)
+            } else {
+                stepPicker.pickerStyle(.segmented)
+            }
             inspectionControls(hand: $hand, orientation: $orientation)
             StudyBall(entry: entry, hand: hand, orientation: orientation)
             switch step {
@@ -191,6 +236,11 @@ struct PitchStudy: View {
             }.pickerStyle(.menu)
             if entry.masterVariants.indices.contains(variant) {
                 let item = entry.masterVariants[variant]
+                if let person = store.craftsmen.first(where: { $0.name == item.pitcher && $0.signaturePitchSlug == entry.slug }) {
+                    NavigationLink { CraftsmanDetailView(craftsman: person) } label: {
+                        Label("Meet \(person.name)", systemImage: "person.crop.rectangle")
+                    }.frame(minHeight: 44)
+                }
                 Text(item.context).font(.subheadline)
                 if let distinction = item.distinction { ClaimText(claim: distinction) }
                 if let quote = item.quote { ClaimText(claim: quote) }
@@ -203,6 +253,12 @@ struct PitchStudy: View {
             .onChange(of: orientation) { _, _ in Haptics.selection() }
             .onChange(of: variant) { _, _ in Haptics.selection() }
     }
+    private var stepPicker: some View {
+        Picker("Study step", selection: $step) {
+            ForEach(steps, id: \.self) { Text($0).tag($0) }
+        }
+    }
+
 }
 
 // A default keeps isolated previews and independently hosted reference views usable.

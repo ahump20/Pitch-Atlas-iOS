@@ -27,6 +27,7 @@ struct CraftsmanDetailView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
                     header
+                    if let specimen = filedSpecimen { specimenLink(specimen) }
                     introCard
                     howCard
 
@@ -46,9 +47,6 @@ struct CraftsmanDetailView: View {
                         legendCard(legendNote)
                     }
 
-                    if let specimen = filedSpecimen {
-                        specimenLink(specimen)
-                    }
                 }
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.md)

@@ -36,4 +36,22 @@ final class CompareSelectionTests: XCTestCase {
         XCTAssertNotNil(state.error)
         XCTAssertEqual(state.slugs, pitches.map(\.slug))
     }
+    func testArchiveConnectionsResolveExplicitBundledRelationships() throws {
+        let store = PitchStore()
+        let fourSeam = try XCTUnwrap(store.pitch(slug: "four-seam"))
+        XCTAssertTrue(store.practitioners(for: fourSeam).contains { $0.slug == "nolan-ryan" })
+        XCTAssertFalse(store.practitioners(for: fourSeam).contains { $0.slug == "bob-gibson" })
+        XCTAssertTrue(store.lessons(for: fourSeam).contains { $0.slug == "sequencing" })
+        for pitch in store.pitches {
+            XCTAssertTrue(store.practitioners(for: pitch).allSatisfy { $0.signaturePitchSlug == pitch.slug })
+            XCTAssertTrue(store.lessons(for: pitch).allSatisfy { $0.related?.contains { $0.to == "/pitch/" + pitch.slug } == true })
+        }
+    }
+    func testRelatedLinkSupportsOptionalNavigationContext() throws {
+        let decoder = JSONDecoder()
+        let legacy = try decoder.decode(KnowledgeRelatedLink.self, from: Data(#"{"label":"Pitch","to":"/pitch/four-seam"}"#.utf8))
+        XCTAssertNil(legacy.reason)
+        let contextual = try decoder.decode(KnowledgeRelatedLink.self, from: Data(#"{"label":"Pitch","to":"/pitch/four-seam","reason":"Navigation context"}"#.utf8))
+        XCTAssertEqual(contextual.reason, "Navigation context")
+    }
 }
