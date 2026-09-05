@@ -3,6 +3,82 @@ import simd
 @testable import PitchAtlas
 
 final class CompareSelectionTests: XCTestCase {
+    func testGripSearchAndNavigationUseBundledRecordTextAndExplicitLinks() throws {
+        let store = PitchStore()
+        let four = try XCTUnwrap(store.gripEntry(id: "four-seam"))
+        XCTAssertTrue(four.matchesStudySearch("  FOUR  seam \n"))
+        XCTAssertTrue(four.matchesStudySearch("fastball"))
+        XCTAssertTrue(four.matchesStudySearch("  \n"))
+        XCTAssertFalse(four.matchesStudySearch("no-such-grip"))
+        XCTAssertEqual(four.filedSpecimen(in: store)?.slug, "four-seam")
+        let basic = try XCTUnwrap(store.gripEntry(id: "split-finger"))
+        XCTAssertNil(basic.filedSpecimen(in: store), "A similar name must not invent a specimen link")
+        XCTAssertNotNil(basic.repertoireId.flatMap { store.repertoireEntry(id: $0) })
+        var object = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(four)) as? [String: Any])
+        object["specimenSlug"] = "not-bundled"
+        let missing = try JSONDecoder().decode(GripEntry.self, from: JSONSerialization.data(withJSONObject: object))
+        XCTAssertNil(missing.filedSpecimen(in: store), "Missing references must not fall back to a guessed id")
+    }
+
+    func testSpecimenInspectionPreservesComparisonAndReturnsToWorkspace() throws {
+        let store = PitchStore()
+        let state = CompareSelection()
+        let four = try XCTUnwrap(store.pitch(slug: "four-seam"))
+        state.add(four.slug)
+        state.inspect("slider", store: store)
+        XCTAssertNil(state.inspection)
+        state.add("slider")
+        state.mode = .cues; state.hand = .left; state.orientation = .thumb
+        state.selectVariant(0, for: four)
+        state.inspect("slider", store: store)
+        XCTAssertEqual(state.inspection?.slug, "slider")
+        state.inspection = nil // Native Back dismisses only this destination.
+        XCTAssertEqual(state.slugs, ["four-seam", "slider"])
+        XCTAssertEqual(state.mode, .cues)
+        XCTAssertEqual(state.hand, .left)
+        XCTAssertEqual(state.orientation, .thumb)
+        XCTAssertEqual(state.variantIndex(for: four), 0)
+        state.inspect("four-seam", store: store)
+        state.add("four-seam") // Compare inside inspection returns to the existing workspace.
+        XCTAssertNil(state.inspection)
+        XCTAssertEqual(state.slugs, ["four-seam", "slider"])
+        XCTAssertEqual(state.mode, .cues)
+    }
+
+    func testVariantCuesKeepCanonicalClaimsAndNeverFillMissingVariantEvidence() throws {
+        let store = PitchStore()
+        let state = CompareSelection()
+        let four = try XCTUnwrap(store.pitch(slug: "four-seam"))
+        XCTAssertFalse(four.masterVariants.isEmpty)
+        state.selectVariant(0, for: four)
+        state.selectVariant(99_999, for: four)
+        XCTAssertEqual(state.variantIndex(for: four), 0)
+        for entry in store.pitches {
+            for (index, variant) in entry.masterVariants.enumerated() {
+                XCTAssertEqual(CueComparisonField.grip.claims(in: entry, variantIndex: index), [entry.canonical.grip])
+                XCTAssertEqual(CueComparisonField.cue.claims(in: entry, variantIndex: index), [entry.canonical.mechanics])
+                XCTAssertEqual(CueComparisonField.distinction.claims(in: entry, variantIndex: index), variant.distinction.map { [$0] } ?? [])
+                XCTAssertEqual(CueComparisonField.voice.claims(in: entry, variantIndex: index), variant.quote.map { [$0] } ?? [])
+            }
+        }
+        state.selectVariant(-1, for: four)
+        XCTAssertEqual(state.variantIndex(for: four), -1)
+        XCTAssertTrue(CueComparisonField.distinction.claims(in: four, variantIndex: -1).isEmpty)
+    }
+
+    func testSpecimenSourceLedgerIncludesCanonicalAndVariantSourcesWithoutDuplicates() throws {
+        let store = PitchStore()
+        let four = try XCTUnwrap(store.pitch(slug: "four-seam"))
+        let ids = four.studySources.map(\.id)
+        XCTAssertEqual(ids.count, Set(ids).count)
+        XCTAssertTrue(ids.contains(try XCTUnwrap(four.canonical.grip.source).id))
+        for variant in four.masterVariants {
+            for source in [variant.distinction?.source, variant.quote?.source].compactMap({ $0 }) {
+                XCTAssertTrue(ids.contains(source.id))
+            }
+        }
+    }
+
     func testThirdPitchRequiresExplicitReplacementAndDuplicateKeepsPair() {
         let state = CompareSelection()
         state.add("four-seam"); state.add("slider"); state.add("four-seam")

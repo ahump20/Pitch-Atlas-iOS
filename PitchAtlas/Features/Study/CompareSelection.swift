@@ -11,9 +11,28 @@ import Observation
     var presented = false
     var pending: String?
     var error: String?
+    struct Inspection: Hashable { let slug: String }
+    var inspection: Inspection?
+    private var variants: [String: Int] = [:]
+
+    func inspect(_ slug: String, store: PitchStore) {
+        guard slugs.contains(slug), store.pitch(slug: slug) != nil else { return }
+        inspection = Inspection(slug: slug)
+    }
+
+    func variantIndex(for entry: PitchAtlasEntry) -> Int {
+        let index = variants[entry.slug] ?? -1
+        return entry.masterVariants.indices.contains(index) ? index : -1
+    }
+
+    func selectVariant(_ index: Int, for entry: PitchAtlasEntry) {
+        guard index == -1 || entry.masterVariants.indices.contains(index) else { return }
+        variants[entry.slug] = index
+    }
 
     func add(_ slug: String) {
         error = nil
+        inspection = nil
         if slugs.contains(slug) { presented = true; return }
         if slugs.count < 2 { slugs.append(slug) } else { pending = slug }
         presented = true
@@ -23,10 +42,14 @@ import Observation
         slugs[index] = pending
         self.pending = nil
     }
-    func remove(_ slug: String) { slugs.removeAll { $0 == slug } }
+    func remove(_ slug: String) {
+        slugs.removeAll { $0 == slug }
+        if inspection?.slug == slug { inspection = nil }
+    }
     @discardableResult func handle(_ url: URL, store: PitchStore) -> Bool {
         guard url.scheme == "pitchatlas", url.host == "compare" else { return false }
         presented = true
+        inspection = nil
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
         func value(_ key: String) -> String? { items.first { $0.name == key }?.value }
         guard let a = value("a"), let b = value("b"), a != b,
@@ -98,6 +121,7 @@ struct CompareView: View {
                         Text("Qualitative movement · not tracked flight data.")
                             .font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
                     }
+                    if selection.mode == .cues && !selection.slugs.isEmpty { cueComparison }
                     ForEach(selection.slugs, id: \.self) { slug in
                         if let entry = store.pitch(slug: slug) {
                             VStack(alignment: .leading, spacing: 12) {
@@ -105,8 +129,7 @@ struct CompareView: View {
                                 switch selection.mode {
                                 case .grips: ClaimText(claim: entry.canonical.grip)
                                 case .cues:
-                                    ClaimText(claim: entry.canonical.mechanics)
-                                    ForEach(Array(entry.canonical.gripDetails.enumerated()), id: \.offset) { _, claim in ClaimText(claim: claim) }
+                                    EmptyView()
                                 case .movement:
                                     if let shape = entry.canonical.physics.shape { ClaimText(claim: shape) }
                                     ClaimText(claim: entry.canonical.physics.teaching)
@@ -130,6 +153,65 @@ struct CompareView: View {
                 .toolbarBackground(.visible, for: .navigationBar)
                 .toolbarColorScheme(.dark, for: .navigationBar)
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+                .navigationDestination(item: $selection.inspection) { target in
+                    if let entry = store.pitch(slug: target.slug) {
+                        PitchDetailView(entry: entry)
+                    } else {
+                        EmptyStateView(message: "This specimen is not in the bundle. Return to comparison to choose another.")
+                    }
+                }
+        }
+    }
+
+    private var cueComparison: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Read the difference").font(PitchAtlasTheme.newsreader(26))
+            Text("Grip and finger rows describe the canonical model. Variant distinctions and words keep their own sources; selecting a variant does not change the geometry.")
+                .font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
+            ForEach(selection.slugs, id: \.self) { slug in
+                if let entry = store.pitch(slug: slug) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(entry.display.shortName).font(.headline)
+                        Picker("\(entry.display.shortName) variant", selection: Binding(
+                            get: { selection.variantIndex(for: entry) },
+                            set: { selection.selectVariant($0, for: entry); Haptics.selection() }
+                        )) {
+                            Text("Canonical grip").tag(-1)
+                            ForEach(Array(entry.masterVariants.enumerated()), id: \.offset) { index, variant in
+                                Text(variant.pitcher).tag(index)
+                            }
+                        }.pickerStyle(.menu)
+                        let index = selection.variantIndex(for: entry)
+                        if entry.masterVariants.indices.contains(index) {
+                            Text(entry.masterVariants[index].context).font(.subheadline)
+                        }
+                    }
+                }
+            }
+            ForEach(CueComparisonField.allCases) { field in
+                VStack(alignment: .leading, spacing: 12) {
+                    Text(field.rawValue).font(.headline)
+                    let layout = dynamicTypeSize.isAccessibilitySize
+                        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 18))
+                        : AnyLayout(HStackLayout(alignment: .top, spacing: 16))
+                    layout {
+                        ForEach(selection.slugs, id: \.self) { slug in
+                            if let entry = store.pitch(slug: slug) {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    Text(entry.display.shortName).font(.subheadline.weight(.semibold))
+                                    let claims = field.claims(in: entry, variantIndex: selection.variantIndex(for: entry))
+                                    if claims.isEmpty {
+                                        Text("Not documented.").font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
+                                    }
+                                    ForEach(Array(claims.enumerated()), id: \.offset) { _, claim in
+                                        ClaimText(claim: claim, valueFont: PitchAtlasTheme.hanken(14))
+                                    }
+                                }.frame(maxWidth: .infinity, alignment: .topLeading)
+                            }
+                        }
+                    }
+                }.leatherPress()
+            }
         }
     }
     private var studySurface: some View {
@@ -202,6 +284,20 @@ struct CompareView: View {
                 Text("Seam-informed schematics · same hand and view. Left hand is mirrored; these are not measured grip geometries.")
                     .font(.caption).foregroundStyle(PitchAtlasTheme.bone2)
             }
+            let linksLayout = dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+                : AnyLayout(HStackLayout(alignment: .top, spacing: 8))
+            linksLayout {
+                ForEach(selection.slugs, id: \.self) { slug in
+                    if let entry = store.pitch(slug: slug) {
+                        Button { selection.inspect(slug, store: store); Haptics.selection() } label: {
+                            Label("Open \(entry.display.shortName)", systemImage: "hand.raised.fingers.spread")
+                                .frame(maxWidth: .infinity, minHeight: 44)
+                        }.buttonStyle(.bordered)
+                            .accessibilityLabel("Open \(entry.canonical.name) specimen")
+                    }
+                }
+            }
         }
         .padding(16)
         .tint(PitchAtlasTheme.bone)
@@ -216,6 +312,77 @@ struct CompareView: View {
         }
     }
 
+}
+
+/// Aligned reading fields keep canonical claims separate from attributed variants.
+enum CueComparisonField: String, CaseIterable, Identifiable {
+    case grip = "Canonical grip"
+    case fingers = "Canonical finger placement"
+    case cue = "Canonical cue"
+    case distinction = "Variant distinction"
+    case voice = "In their words"
+    var id: String { rawValue }
+
+    func claims(in entry: PitchAtlasEntry, variantIndex: Int) -> [Claim] {
+        let variant = entry.masterVariants.indices.contains(variantIndex) ? entry.masterVariants[variantIndex] : nil
+        switch self {
+        case .grip: return [entry.canonical.grip]
+        case .fingers: return entry.canonical.gripDetails
+        case .cue: return [entry.canonical.mechanics]
+        case .distinction: return variant?.distinction.map { [$0] } ?? []
+        case .voice:
+            if let variant { return variant.quote.map { [$0] } ?? [] }
+            return entry.canonical.voice.map { [$0] } ?? []
+        }
+    }
+}
+
+struct ArchiveChapter: Identifiable, Hashable {
+    let id: String
+    let title: String
+}
+
+enum SpecimenChapter: String, CaseIterable {
+    case grip = "Grip", variants = "Variants", lessons = "Lessons", discussion = "Discussion", sources = "Sources"
+    var chapter: ArchiveChapter { ArchiveChapter(id: "specimen-" + rawValue.lowercased(), title: rawValue) }
+}
+
+/// Native scrolling with direct chapter choices; no scroll takeover or inferred progress.
+struct ArchiveChapterNavigation: View {
+    let chapters: [ArchiveChapter]
+    var compact = false
+    let scroll: (String) -> Void
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    var body: some View {
+        Group {
+            if compact || dynamicTypeSize.isAccessibilitySize {
+                Menu {
+                    ForEach(chapters) { chapter in
+                        Button(chapter.title) { scroll(chapter.id); Haptics.selection() }
+                    }
+                } label: {
+                    Label("Chapters · \(chapters.count)", systemImage: "list.bullet")
+                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .leading)
+                }.accessibilityLabel("Choose a chapter")
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 18) {
+                        ForEach(chapters) { chapter in
+                            Button(chapter.title) { scroll(chapter.id); Haptics.selection() }
+                                .frame(minHeight: 44)
+                                .accessibilityLabel("Go to \(chapter.title)")
+                        }
+                    }
+                }
+            }
+        }
+        .font(.subheadline.weight(.medium))
+        .padding(.horizontal, PitchAtlasSpacing.lg)
+        .foregroundStyle(PitchAtlasTheme.bone)
+        .background(PitchAtlasTheme.void)
+        .overlay(alignment: .bottom) { Rectangle().fill(PitchAtlasTheme.machined).frame(height: 1) }
+    }
 }
 
 @ViewBuilder func inspectionControls(hand: Binding<Handedness>, orientation: Binding<GripView>) -> some View {
@@ -256,7 +423,8 @@ struct PitchStudy: View {
     @Environment(PitchStore.self) private var store
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var step = "Hold"
-    @State private var variant = -1
+    @Environment(\.compareSelection) private var comparison
+    private var variant: Int { comparison.variantIndex(for: entry) }
     @State private var hand: Handedness = .right
     @State private var orientation: GripView = .top
     private let steps = ["Hold", "Fingers", "Seam", "Cue"]
@@ -279,7 +447,9 @@ struct PitchStudy: View {
             case "Cue": ClaimText(claim: entry.canonical.mechanics)
             default: ClaimText(claim: entry.canonical.grip)
             }
-            Picker("Variant", selection: $variant) {
+            Picker("Variant", selection: Binding(
+                get: { variant }, set: { comparison.selectVariant($0, for: entry) }
+            )) {
                 Text("Canonical grip").tag(-1)
                 ForEach(Array(entry.masterVariants.enumerated()), id: \.offset) { index, item in Text(item.pitcher).tag(index) }
             }.pickerStyle(.menu)

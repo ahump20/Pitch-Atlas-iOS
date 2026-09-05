@@ -13,6 +13,11 @@ import SwiftUI
 
 struct GripsView: View {
     @Environment(PitchStore.self) private var store
+    @State private var query = ""
+
+    private var filteredEntries: [GripEntry] {
+        store.grips.entries.filter { $0.matchesStudySearch(query) }
+    }
 
     var body: some View {
         ZStack {
@@ -22,6 +27,8 @@ struct GripsView: View {
         }
         .navigationTitle("Grips")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }
+        .navigationDestination(for: RepertoireEntry.self) { RepertoireDetailView(entry: $0) }
     }
 
     // MARK: - Four states
@@ -56,16 +63,31 @@ struct GripsView: View {
             // up players) at once on first paint.
             LazyVStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                 masthead
-                honestyBanner
-                arsenalCard
-                commandCard
-                attackPlanCard
-
-                ForEach(store.grips.entries) { entry in
+                searchField
+                StudyTray()
+                DisclosureGroup("Read Austin’s field notes") {
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+                        Text(store.grips.intro).font(PitchAtlasTheme.newsreader(18))
+                        honestyBanner
+                        arsenalCard
+                        commandCard
+                        attackPlanCard
+                    }.padding(.top, PitchAtlasSpacing.sm)
+                }
+                Text("\(filteredEntries.count) of \(store.grips.entries.count) grip records")
+                    .font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
+                if filteredEntries.isEmpty {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("No grips match “\(query)”.")
+                        Button("Clear search") { query = "" }.buttonStyle(.bordered)
+                    }.leatherPress()
+                }
+                ForEach(filteredEntries) { entry in
                     gripEntrySection(entry)
                 }
             }
             .padding(PitchAtlasSpacing.lg)
+            .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             .emitsBlazeScrollProgress()
         }
     }
@@ -82,18 +104,30 @@ struct GripsView: View {
                 .antonSkew()
                 .padding(.vertical, PitchAtlasSpacing.xs)
 
-            if !store.grips.intro.isEmpty {
-                Text(store.grips.intro)
+                Text("Find a grip. Follow it into the archive.")
                     .font(PitchAtlasTheme.newsreader(18))
                     .foregroundStyle(PitchAtlasTheme.bone2)
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
-            }
             BlazeInlineCompanionView(style: .grips, mood: .sniffing)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("The Grip Library. Grips. \(store.grips.intro)")
+        .accessibilityLabel("The Grip Library. Find a grip. Follow it into the archive.")
+    }
+
+    private var searchField: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "magnifyingglass").accessibilityHidden(true)
+            TextField("Search grips, families or cues", text: $query)
+                .textInputAutocapitalization(.never).autocorrectionDisabled()
+                .accessibilityLabel("Search grip library")
+            if !query.isEmpty {
+                Button { query = "" } label: {
+                    Image(systemName: "xmark.circle.fill").frame(width: 44, height: 44)
+                }.accessibilityLabel("Clear grip search")
+            }
+        }.pitchTextFieldSurface()
     }
 
     // MARK: - Honesty banner (proof limit, shown once near the top)
@@ -222,6 +256,27 @@ struct GripsView: View {
             }
             .padding(.bottom, PitchAtlasSpacing.xs2)
 
+            if let specimen = entry.filedSpecimen(in: store) {
+                ViewThatFits(in: .horizontal) {
+                    HStack {
+                        NavigationLink(value: specimen) { Label("Study this grip", systemImage: "hand.raised.fingers.spread") }
+                        CompareButton(slug: specimen.slug)
+                    }
+                    VStack(alignment: .leading) {
+                        NavigationLink(value: specimen) { Label("Study this grip", systemImage: "hand.raised.fingers.spread") }
+                        CompareButton(slug: specimen.slug)
+                    }
+                }.buttonStyle(.bordered).controlSize(.large)
+                    .foregroundStyle(PitchAtlasTheme.bone)
+            } else if let id = entry.repertoireId, let basic = store.repertoireEntry(id: id) {
+                NavigationLink(value: basic) { Label("Read the pitch file", systemImage: "book") }
+                    .buttonStyle(.bordered).controlSize(.large)
+                    .foregroundStyle(PitchAtlasTheme.bone)
+            } else {
+                Text("A fuller specimen is not filed for this grip.")
+                    .font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
+            }
+
             // The owner's cues.
             if !entry.shortCue.isEmpty {
                 Text(entry.shortCue)
@@ -298,8 +353,8 @@ struct GripsView: View {
             .padding(.top, PitchAtlasSpacing.xs2)
         }
         .leatherPress()
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(entryAccessibilityLabel(entry))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(entry.label)
     }
 
     // MARK: - Accessibility
@@ -323,5 +378,18 @@ struct GripsView: View {
         if !entry.proofLimit.isEmpty { parts.append("Proof limit. \(entry.proofLimit)") }
         parts.append(entry.claimTier.label)
         return parts.joined(separator: ". ")
+    }
+}
+
+extension GripEntry {
+    /// Search only existing record text; navigation uses the explicit authored slug.
+    func matchesStudySearch(_ query: String) -> Bool {
+        let words = query.split(whereSeparator: \.isWhitespace)
+        let text = [label, family.rawValue, shortCue, visibleCue, note].joined(separator: " ")
+        return words.allSatisfy { text.localizedCaseInsensitiveContains(String($0)) }
+    }
+
+    func filedSpecimen(in store: PitchStore) -> PitchAtlasEntry? {
+        specimenSlug.flatMap { store.pitch(slug: $0) }
     }
 }

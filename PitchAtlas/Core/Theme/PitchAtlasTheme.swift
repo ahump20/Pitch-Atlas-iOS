@@ -171,7 +171,7 @@ enum PitchAtlasTheme {
         case "pitcher-own-words": return powder
         case "coach-observed": return tealGlow
         case "reputable-analysis": return amberBright
-        case "secondhand-attributed", "community-firsthand": return sandBright
+        case "secondhand-attributed", "community-firsthand": return cardbackColor(forConfidence: raw)
         default: return ink3 // unverified + unknown -> honest gray
         }
     }

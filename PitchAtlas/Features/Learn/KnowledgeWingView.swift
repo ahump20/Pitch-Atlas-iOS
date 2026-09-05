@@ -13,15 +13,23 @@ import SwiftUI
 struct KnowledgeWingView: View {
     @Environment(PitchStore.self) private var store
     @Environment(\.compareSelection) private var comparison
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let wing: KnowledgeWing
+
+    private var chapters: [ArchiveChapter] {
+        [ArchiveChapter(id: "lesson-overview", title: "Overview")]
+        + wing.sections.enumerated().map { ArchiveChapter(id: "lesson-section-\($0.offset)", title: $0.element.heading) }
+        + [ArchiveChapter(id: "lesson-sources", title: "Sources and related reading")]
+    }
 
     var body: some View {
         ZStack {
             FieldBackdrop()
 
+            ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    header
+                    header.id("lesson-overview")
 
                     if wing.educational == true {
                         educationalBanner
@@ -29,11 +37,17 @@ struct KnowledgeWingView: View {
 
                     sections
 
-                    footer
+                    footer.id("lesson-sources")
                 }
                 .padding(.horizontal, PitchAtlasSpacing.md)
                 .padding(.top, PitchAtlasSpacing.md)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                ArchiveChapterNavigation(chapters: chapters, compact: true) { id in
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) { proxy.scrollTo(id, anchor: .top) }
+                }
+            }
             }
         }
         .navigationTitle(wing.navLabel.isEmpty ? wing.title : wing.navLabel)
@@ -79,8 +93,8 @@ struct KnowledgeWingView: View {
 
     private var sections: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-            ForEach(Array(wing.sections.enumerated()), id: \.offset) { _, section in
-                WingSectionView(section: section)
+            ForEach(Array(wing.sections.enumerated()), id: \.offset) { index, section in
+                WingSectionView(section: section).id("lesson-section-\(index)")
             }
         }
     }

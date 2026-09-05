@@ -17,6 +17,8 @@ struct GripPhotoZoomViewer: View {
     let caption: String
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     @State private var scale: CGFloat = 1
     @State private var lastScale: CGFloat = 1
@@ -26,10 +28,11 @@ struct GripPhotoZoomViewer: View {
     private let maxScale: CGFloat = 4
 
     var body: some View {
+        let image = BundledImage.load(src)
         ZStack {
             Color.black.ignoresSafeArea()
 
-            if let image = BundledImage.load(src) {
+            if let image {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
@@ -39,7 +42,15 @@ struct GripPhotoZoomViewer: View {
                     .simultaneousGesture(pan)
                     .onTapGesture(count: 2) { toggleZoom() }
                     .accessibilityLabel(alt)
-                    .accessibilityHint("Pinch to zoom, double tap to toggle, drag to pan.")
+                    .accessibilityValue("\(Int(scale * 100)) percent zoom")
+                    .accessibilityHint("Adjust the zoom or use the controls below. Drag to pan.")
+                    .accessibilityAdjustableAction { direction in
+                        switch direction {
+                        case .increment: setZoom(scale + 0.5)
+                        case .decrement: setZoom(scale - 0.5)
+                        @unknown default: break
+                        }
+                    }
             } else {
                 VStack(spacing: PitchAtlasSpacing.sm) {
                     SealMark(size: 64)
@@ -67,6 +78,19 @@ struct GripPhotoZoomViewer: View {
                     .padding(PitchAtlasSpacing.md)
                 }
                 Spacer()
+                if image != nil {
+                    VStack(spacing: 8) {
+                        Text("\(Int(scale * 100))% zoom").font(.subheadline.monospacedDigit())
+                        ViewThatFits(in: .horizontal) {
+                            HStack { zoomOut; zoomIn; resetZoom }
+                            VStack { HStack { zoomOut; zoomIn }; resetZoom }
+                        }
+                    }
+                    .padding(PitchAtlasSpacing.md)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.black.opacity(reduceTransparency ? 1 : 0.85))
+                    .foregroundStyle(.white)
+                }
                 if !caption.isEmpty {
                     Text(caption)
                         .font(PitchAtlasTheme.hanken(13))
@@ -77,6 +101,30 @@ struct GripPhotoZoomViewer: View {
                         .background(.black.opacity(0.45))
                 }
             }
+        }
+    }
+
+    private var zoomOut: some View {
+        Button("Zoom out") { setZoom(scale - 0.5) }
+            .frame(minHeight: 44).buttonStyle(.bordered).disabled(scale <= 1)
+    }
+
+    private var zoomIn: some View {
+        Button("Zoom in") { setZoom(scale + 0.5) }
+            .frame(minHeight: 44).buttonStyle(.bordered).disabled(scale >= maxScale)
+    }
+
+    private var resetZoom: some View {
+        Button("Reset") { setZoom(1) }
+            .frame(minHeight: 44).buttonStyle(.bordered)
+            .accessibilityLabel("Reset photo zoom and position")
+    }
+
+    private func setZoom(_ value: CGFloat) {
+        withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {
+            scale = min(maxScale, max(1, value))
+            lastScale = scale
+            if scale == 1 { resetPan() }
         }
     }
 
@@ -102,13 +150,7 @@ struct GripPhotoZoomViewer: View {
     }
 
     private func toggleZoom() {
-        withAnimation(.easeInOut(duration: 0.2)) {
-            if scale > 1 {
-                scale = 1; lastScale = 1; resetPan()
-            } else {
-                scale = 2.5; lastScale = 2.5
-            }
-        }
+        setZoom(scale > 1 ? 1 : 2.5)
     }
 
     private func resetPan() {
