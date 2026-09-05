@@ -173,7 +173,9 @@ final class LoopingPlayerUIView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        playerLayer.videoGravity = .resizeAspectFill
+        // Grip footage is evidence. Preserve the full original frame rather than
+        // cropping fingers or seam position to fill a decorative viewport.
+        playerLayer.videoGravity = .resizeAspect
         layer.addSublayer(playerLayer)
     }
 

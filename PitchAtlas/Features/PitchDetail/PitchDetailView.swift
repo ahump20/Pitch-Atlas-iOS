@@ -32,10 +32,16 @@ struct PitchDetailView: View {
     var body: some View {
         ZStack {
             FieldBackdrop()
-            ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    hero
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
+                    hero {
+                        withAnimation(dynamicTypeSize.isAccessibilitySize ? nil : .easeOut(duration: 0.25)) {
+                            proxy.scrollTo("grip-study", anchor: .top)
+                        }
+                    }
                     PitchStudy(entry: entry)
+                        .id("grip-study")
                     foundation
                     teaching
                     gripLab
@@ -59,6 +65,7 @@ struct PitchDetailView: View {
                 }
                 .padding(PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+                }
             }
         }
         .navigationTitle(display.shortName)
@@ -67,13 +74,18 @@ struct PitchDetailView: View {
 
     // MARK: Hero + specimen
 
-    private var hero: some View {
+    private func hero(studyAction: @escaping () -> Void) -> some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             HStack {
                 SectionLabel(text: "SPECIMEN \(display.specimenNo)", color: PitchAtlasTheme.cyanDeep, size: 9)
                 Spacer()
                 SectionLabel(text: canonical.family.label, color: canonical.family.accent, size: 9)
             }
+            // Filing metadata remains readable without consuming the entire
+            // accessibility viewport; the title and actions continue to scale.
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+            .lineLimit(1)
+            .minimumScaleFactor(0.55)
 
             // The preservation grade — how richly this specimen is documented,
             // the same stamp the web card wears. Gold is the real 1/1 chase.
@@ -82,9 +94,12 @@ struct PitchDetailView: View {
                 color: entry.specimenGrade.key == .gold ? PitchAtlasTheme.amberBright : PitchAtlasTheme.bone2,
                 size: 9
             )
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+            .lineLimit(1)
+            .minimumScaleFactor(0.55)
 
             Text(canonical.name.uppercased())
-                .font(PitchAtlasTheme.anton(40))
+                .font(PitchAtlasTheme.anton(dynamicTypeSize.isAccessibilitySize ? 34 : 36))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
 
@@ -92,10 +107,22 @@ struct PitchDetailView: View {
                 .font(PitchAtlasTheme.newsreaderItalic(17))
                 .foregroundStyle(PitchAtlasTheme.bone2)
 
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: PitchAtlasSpacing.sm) {
+                    studyButton(action: studyAction)
+                    CompareButton(slug: entry.slug)
+                }
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+                    studyButton(action: studyAction)
+                    CompareButton(slug: entry.slug)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
             // The specimen face: real footage first, then real photography,
             // the drawn SeamBall only where nothing real is on file.
             if let film = canonical.gripFilm {
-                GripFilmCard(film: film)
+                GripFilmCard(film: film, height: dynamicTypeSize.isAccessibilitySize ? 190 : 230)
                     .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
             } else if let photo = heroPhoto {
                 GripStillCard(photo: photo)
@@ -103,13 +130,20 @@ struct PitchDetailView: View {
                 specimenCard
             }
 
-            BlazeInlineCompanionView(style: .pitch, mood: .chasing)
-
             Text(display.heroIntro)
-                .font(PitchAtlasTheme.hanken(16))
-                .foregroundStyle(PitchAtlasTheme.bone)
+                .font(PitchAtlasTheme.hanken(14))
+                .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
         }
+    }
+
+    private func studyButton(action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Label("Study this grip", systemImage: "hand.raised.fingers.spread")
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+        .controlSize(.large)
     }
 
     // MARK: Drawn specimen (SeamBall)
