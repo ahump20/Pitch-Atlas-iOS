@@ -180,7 +180,7 @@
     "plateKind": "venue",
     "imageSrc": "/archive/lost-pitches/negro-league-all-star-1936-plate.jpg",
     "alt": "Public-domain archive plate from the 1936 Negro League All-Star Game at Comiskey Park.",
-    "caption": "The doctored-ball recovery file gets the recovered stage: crowd, venue, date. The claims stay in the sourced record.",
+    "caption": "The doctored-ball reconstruction file gets its historical stage: crowd, venue, date. The claims stay in the sourced record.",
     "source": {
       "id": "commons-negro-league-all-star-1936",
       "label": "Wikimedia Commons, 1936 Negro League All-Star Game",
@@ -191,9 +191,9 @@
     "rights": "public-domain",
     "width": 960,
     "height": 720,
-    "qualityNote": "Strong source at 2912 by 1639 pixels, safe for a broad contextual crop.",
+    "qualityNote": "Strong source at 2912 by 1639 pixels, enough for a broad contextual crop.",
     "relatedSlug": "doctored-ball-divergence-and-recovery",
-    "relatedLabel": "The Doctored-Ball Divergence and the Recovery"
+    "relatedLabel": "The Doctored-Ball Divergence and the Reconstruction"
   },
   {
     "id": "cannonball-redding-1912-plate",
@@ -257,11 +257,11 @@
   {
     "id": "william-bell-1924-plate",
     "title": "William Bell, 1924",
-    "label": "Public-domain workhorse plate",
+    "label": "Public-domain portrait plate",
     "plateKind": "portrait",
     "imageSrc": "/archive/lost-pitches/william-bell-1924-plate.jpg",
     "alt": "Public-domain archive plate built from a 1924 photograph crop of William Bell Sr.",
-    "caption": "Bell's innings-heavy record gets a sourced artifact, not a fabricated mechanical profile.",
+    "caption": "Bell's career record gets a sourced artifact, not a fabricated mechanical profile.",
     "source": {
       "id": "commons-william-bell-1924",
       "label": "Wikimedia Commons, William Bell 1924",
@@ -274,7 +274,7 @@
     "height": 720,
     "qualityNote": "Small source crop at 226 by 321 pixels, held inside a matte.",
     "relatedSlug": "william-bell-sr-workhorse",
-    "relatedLabel": "William Bell Sr., Workhorse"
+    "relatedLabel": "William Bell Sr."
   },
   {
     "id": "paige-bee-ball-study",

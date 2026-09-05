@@ -338,8 +338,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -712,8 +712,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -1138,8 +1138,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -1516,8 +1516,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -1614,7 +1614,7 @@
           "note": "Paraphrased from Driveline. Described as a loss of spin, in words, not a measured figure."
         },
         {
-          "value": "Bruce Sutter's unusually large hands let him spread the split far enough to execute it; he learned it from instructor Fred Martin after his fastball faded post-surgery and never changed the grip after the first day.",
+          "value": "Bruce Sutter's unusually large hands let him spread the split far enough to execute it; instructor Fred Martin taught it to him, and Sutter never changed the grip after the first day.",
           "source": {
             "id": "sutter-hof",
             "label": "National Baseball Hall of Fame, Sutter remembered as pioneer of the split-finger",
@@ -1801,7 +1801,7 @@
       {
         "tier": "verified-attributed",
         "pitcher": "Bruce Sutter",
-        "context": "The pioneer. Taught the split-finger by instructor Fred Martin after arm surgery, he rode it to the Hall of Fame as one of the first dominant closers.",
+        "context": "The pioneer. Instructor Fred Martin taught him the split-finger, and he rode it to the Hall of Fame as one of the first dominant closers.",
         "verifiedPro": true,
         "distinction": {
           "value": "The first to ride this pitch to the Hall of Fame, and the proof of concept for the whole grip — a closer who turned one trap-door drop into a career after his fastball left him.",
@@ -1870,8 +1870,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -2200,8 +2200,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -2533,8 +2533,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -2865,8 +2865,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -3203,8 +3203,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -3301,7 +3301,7 @@
           "note": "Paraphrased. The Contreras softball-stretch detail is from Baseball Prospectus."
         },
         {
-          "value": "What separates a forkball from a splitter today is mostly how wide the fingers fork and how hard it is thrown: Roki Sasaki throws both, a wider, slower fork and a narrower, harder splitter, and Statcast files them separately. It is common in Japan and seldom adopted in the majors, where it has a reputation as an arm-taxing pitch.",
+          "value": "What separates a forkball from a splitter today is mostly how wide the fingers fork and how hard it is thrown: Roki Sasaki throws both, a wider, slower fork and a narrower, harder splitter, and Statcast files them separately. It is common in Japan and seldom adopted in the majors.",
           "source": {
             "id": "wiki-forkball",
             "label": "Forkball — Wikipedia (deep wide grip, wrist snap, tumble, near-extinct, Senga ghost fork, splitter ancestor)",
@@ -3359,7 +3359,7 @@
         "thumbRole": "Thumb underneath supports a ball wedged deep against the base of the fingers.",
         "palmGapCue": "No gap — the ball is jammed all the way down between the forked fingers, deeper than a splitter.",
         "releaseCue": "Snap the wrist down as the ball squirts out from between the fingers; the deep grip kills the spin.",
-        "visualCaveat": "Grip geometry is schematic; the deep, wide fork demands extreme finger flexibility and is hard on the arm.",
+        "visualCaveat": "Grip geometry is schematic; the deep, wide fork demands unusual finger reach and flexibility.",
         "contacts": [
           {
             "finger": "index",
@@ -3406,7 +3406,7 @@
         ]
       },
       "mechanics": {
-        "value": "It is thrown with a fastball arm action, but the ball squirts out from between the deep-forked fingers with almost no spin rather than being spun. The downward wrist snap that gives it its tumble also puts real torque on the elbow, which is why MLB.com calls it one of the more taxing pitches to throw.",
+        "value": "It is thrown with fastball arm action, but the ball squirts out from between the deep-forked fingers with almost no spin. The downward wrist snap and deep grip separate its release from the shallower splitter.",
         "source": {
           "id": "mlb-glossary-forkball",
           "label": "MLB.com Statcast Glossary, Forkball (FO)",
@@ -3414,7 +3414,7 @@
           "retrievedAt": "2026-06-06"
         },
         "confidence": "reputable-analysis",
-        "note": "Paraphrased. The squirt-out release and the taxing-on-the-arm point are from the MLB glossary."
+        "note": "Paraphrased from the MLB glossary description of the grip depth, wrist snap, and release."
       },
       "physics": {
         "spinAxis": {
@@ -3440,7 +3440,7 @@
           "note": "Described as shape, not a measured number. The tumble is the read; how far it falls depends on the arm. The arm-side fade is a modern ghost-fork variation."
         },
         "teaching": {
-          "value": "Most pitches fight gravity: backspin makes a Magnus force that holds the ball up. The forkball does the opposite. Jamming the ball deep and snapping it out kills the spin, so there is almost no lift, and gravity tumbles the ball down hard and late. The price for that free fall is torque on the arm.",
+          "value": "Most pitches fight gravity: backspin makes a Magnus force that holds the ball up. The forkball does the opposite. Jamming the ball deep and snapping it out kills the spin, so there is almost no lift and gravity tumbles the ball down hard and late.",
           "source": {
             "id": "mlb-glossary-forkball",
             "label": "MLB.com Statcast Glossary, Forkball (FO)",
@@ -3448,7 +3448,7 @@
             "retrievedAt": "2026-06-06"
           },
           "confidence": "reputable-analysis",
-          "note": "Synthesis of the low-spin grip and the MLB glossary's downward-snap / taxing description."
+          "note": "Synthesis of the low-spin grip and the MLB glossary's downward-snap description."
         }
       },
       "rights": "original"
@@ -3470,7 +3470,7 @@
       "shortName": "Forkball",
       "specimenNo": "11",
       "heroSub": "Jammed deep, tumbles down.",
-      "heroIntro": "Wedge the ball all the way down between two split fingers, wider than a splitter, and snap the wrist as it squirts out. It leaves with almost no spin, so there is nothing to hold it up — gravity takes over and it tumbles down late. The catch: it is hard on the arm.",
+      "heroIntro": "Wedge the ball all the way down between two split fingers, wider than a splitter, and snap the wrist as it squirts out. It leaves with almost no spin, so there is nothing to hold it up and gravity takes over late.",
       "foundationCaption": "Almost no spin means almost no lift, so gravity dominates: the ball plots near the spinless ball and falls off the table.",
       "mastersIntro": "Three forkballs: the modern ghost fork, the deadest-spin version anyone has thrown, and the arm that brought the pitch to the majors. The visual is our own seam schematic. What sets each version apart is in the read, not a gauge."
     },
@@ -3530,8 +3530,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -3542,7 +3542,7 @@
     "guide": {
       "family": "The tumble",
       "tagline": "Jammed deep between two fingers and snapped out with no spin, so gravity tumbles it down late.",
-      "feel": "Bury the ball deep between your fingers, wider than a split. Snap your wrist down as it squirts out. Expect it to feel hard on the arm.",
+      "feel": "Bury the ball deep between your fingers, wider than a split. Snap your wrist down as it squirts out and feel the ball leave with little rotation.",
       "steps": [
         "Split your index and middle fingers wide and wedge the ball deep, toward the base of the fingers.",
         "Keep your thumb underneath to hold it in place.",
@@ -3551,7 +3551,7 @@
       ],
       "does": {
         "headline": "It leaves with no spin, so it just falls.",
-        "plain": "A forkball is squeezed so deep between the fingers that it comes out almost without spinning. With no spin there is nothing holding it up, so it tumbles down late and hard, like the floor dropped out. It fools hitters who are geared up for a fastball. The snap that makes it work is tough on the arm."
+        "plain": "A forkball is squeezed so deep between the fingers that it comes out almost without spinning. With no spin there is nothing holding it up, so it tumbles down late and hard, like the floor dropped out. It fools hitters who are geared up for a fastball."
       }
     },
     "seam": {
@@ -3617,7 +3617,7 @@
           "note": "Paraphrased from the glossary, not quoted."
         },
         {
-          "value": "In practice most throwers use the fingertips and nails rather than true knuckles, with the thumb resting underneath for balance — young pitchers with smaller hands are the ones who actually use their knuckles.",
+          "value": "In practice most throwers use the fingertips and nails rather than true knuckles, with the thumb underneath for balance. Bent knuckles are another documented contact point when the nail placement does not fit the hand.",
           "source": {
             "id": "wiki-knuckleball",
             "label": "Wikipedia, Knuckleball",
@@ -3843,8 +3843,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",
@@ -4102,8 +4102,8 @@
     ],
     "community": {
       "enabled": true,
-      "safetyNote": "When the community layer opens, every note will carry a source and confidence label, a content filter will block abusive language, and any note can be flagged. A note hides automatically once enough people report it.",
-      "provenanceNote": "When they open, every community variant will carry the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
+      "safetyNote": "Field Notes are live for grip and technique only. No medical, injury, workload, or youth-training prescriptions. Every note carries a source and confidence label, and contributors can report problems.",
+      "provenanceNote": "Every community variant carries the same source and confidence labels as the records above. Nothing appears here unsourced, and no count is shown until it is real.",
       "columns": [
         "Rank",
         "Variant",

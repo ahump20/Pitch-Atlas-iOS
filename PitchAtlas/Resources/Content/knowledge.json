@@ -3,22 +3,22 @@
     "slug": "mechanics",
     "navLabel": "Mechanics",
     "eyebrow": "The delivery",
-    "title": "The Kinetic Chain: Force from ground to glove",
-    "summary": "The pitch is built in the legs and trunk, then handed to the arm. Sequence and timing transfer the force; a break in the chain makes the shoulder and elbow pay for it.",
-    "sub": "The pitch comes out of the lower body, not the arm. Force flows from the big segments to the small ones — legs drive, hips turn, the trunk whips, the arm and hand finish it. Each segment has to slow down as the next one fires. Lose that order and the small muscles of the shoulder and elbow are left to do work they were never built for.",
+    "title": "The Kinetic Chain: Motion from Ground to Hand",
+    "summary": "The pitch begins in the lower half, moves through the hips and trunk, and finishes at the hand. Sequence and timing make the delivery one connected motion.",
+    "sub": "Legs start the move, hips turn, the trunk follows, and the arm and hand finish it. Each segment passes momentum to the next; the order is the lesson.",
     "accent": "powder",
     "educational": false,
     "sections": [
       {
-        "heading": "The Chain: how force travels through you",
+        "heading": "The chain: how motion travels",
         "paragraphs": [
-          "The kinetic chain is not a single move you make with your arm. It is a relay — force handed from one part of the body to the next, starting the instant your back foot commits to the mound. The energy is born in the legs, gathered through the hips and trunk, and arrives at the shoulder already moving fast. The arm doesn't generate the pitch so much as deliver what the body built.",
-          "Think of a whip. The base — your legs and core — starts the motion. The middle — hips and shoulders — stores and amplifies it. The tip — arm and hand — lets it go toward the target. Crack the whip cleanly and the tip barely has to work. Break it anywhere — sluggish legs, stiff hips, a core that collapses — and the tip has to make up the difference. That make-up work is what lands on the elbow and shoulder as stress they can't safely absorb.",
-          "There are four links worth feeling: the lower half, the hips, the trunk and shoulder blade, and the shoulder-elbow at the end. Good arms fire them in strict order, each one passing force to the next. The order is the whole lesson. Get the timing right and the arm feels free; get it wrong and the arm feels like it's doing everything alone."
+          "The kinetic chain is not a single arm move. It is a relay that begins when the back foot commits to the mound, gathers through the hips and trunk, and reaches the hand already moving fast.",
+          "Think of a whip. The base starts the motion, the middle carries and speeds it up, and the tip releases it. The pitcher feels one connected move even though each segment reaches its fastest point at a different time.",
+          "Four links are useful to watch: the lower half, the hips, the trunk and shoulder blade, then the arm and hand. Their order makes the delivery readable."
         ],
         "claims": [
           {
-            "value": "The kinetic chain represents a coordinated effort of muscle units from the entire body, culminating with explosive motion of the upper extremity.",
+            "value": "The kinetic chain coordinates muscle groups across the body and culminates in rapid upper-extremity motion.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3445080",
@@ -28,17 +28,7 @@
             }
           },
           {
-            "value": "Reduced kinetic energy delivered from the hip and trunk forces the shoulder to work harder to maintain the throw.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3445080",
-              "label": "The Kinetic Chain in Overhand Pitching: Its Potential Role for Performance Enhancement and Injury Prevention",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3445080/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Energy builds as it moves from larger proximal muscles (lower body) to smaller distal muscles (upper body), with quicker deceleration of proximal segments corresponding to better energy transfer to the next segment.",
+            "value": "Energy moves from larger proximal segments toward smaller distal segments, with each segment slowing as the next one accelerates.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3445080",
@@ -52,12 +42,12 @@
       {
         "heading": "Leg drive: the pitch starts in the ground",
         "paragraphs": [
-          "The first force in the throw comes up out of the dirt. Your back leg pushes you down the mound — not a soft glide, a real shove that sets the whole delivery's pace. The front leg reaches out and lands a touch closed, toward the arm side of straight, so the hips have something firm to turn into. When the front foot touches down, the lead knee is still soft and bent, ready to take the load and then brace against it.",
-          "As you stride, the back hip is already opening, the front knee is starting to firm up, and the pelvis is accelerating toward the plate. The feel to chase: the hips lead, the chest waits. The pelvis begins to turn before the upper body follows — and that should happen on its own, out of good timing, not because you yank it open. Force it and you spend the elastic load early. The freer your hips and ankles move, the cleaner this unfolds, and the less the elbow has to cover for a lower half that didn't do its share."
+          "The first move comes from the drive leg pushing the body down the mound. The stride foot reaches toward the plate while the pelvis begins to move and turn.",
+          "At foot contact, the lead knee is still flexed. It then firms as the trunk rotates over the front side. The feel is simple: the hips lead and the chest waits."
         ],
         "claims": [
           {
-            "value": "Stride length is a meaningful contributor to delivery, with a closed lead-foot landing relative to the mound centerline.",
+            "value": "Stride length and lead-foot position contribute to how the delivery reaches foot contact.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -67,7 +57,7 @@
             }
           },
           {
-            "value": "Trail-hip rotational range relates to when the trunk starts rotating; restricted back-leg hip rotation dampens forward trunk movement.",
+            "value": "Trail-hip rotational range relates to when the trunk begins rotating and how the body moves forward.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc8016430",
@@ -77,7 +67,7 @@
             }
           },
           {
-            "value": "The lead knee is flexed at foot contact and braces toward extension by release; that bracing anchors the lower half so the trunk can rotate over it.",
+            "value": "The lead knee is flexed at foot contact and moves toward extension by release, creating a firm front side for trunk rotation.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -89,15 +79,15 @@
         ]
       },
       {
-        "heading": "Hip-shoulder separation: the spring you wind",
+        "heading": "Hip-shoulder separation: the spring in the middle",
         "paragraphs": [
-          "At foot plant, the hips are already turning toward the plate while the shoulders stay closed and lag behind. That gap between the lower body and the upper body is hip-shoulder separation — the wind in the spring. Your obliques and the fascia across your core stretch as the gap opens, and they store that stretch like a drawn bow. You don't see it as a number; you feel it as a coil across the belly and back, the chest held shut a beat longer than the hips.",
-          "Then the front knee firms up, the lower half anchors, the hips keep driving into the ball, and the chest finally whips through to close the gap. That late, fast unwinding of the trunk is what releases the stored energy into the arm. The cue is patience, not effort: let the hips get ahead, hold the chest closed, and let the trunk snap through last.",
-          "Here's the trap. If the hips can't turn cleanly — tight hips, weak glutes — the only way to feel separation is to drag the shoulders back even further, and now the shoulder is overstretched to fake a coil the lower half should have made. The opposite failure is just as costly: if the hips and chest turn together with no lag, there's no stretch to release, and the arm is left to supply the speed on its own. Both roads end at the same place — the arm doing the body's job."
+          "At foot plant, the hips have started turning while the shoulders remain closed. That gap between pelvis rotation and upper-trunk rotation is hip-shoulder separation.",
+          "The lower half leads, the trunk follows, and the hand arrives last. On video, the useful read is timing: when the pelvis starts, when the chest follows, and whether the release stays connected to both.",
+          "Separation is not a number to copy from another pitcher. It is the visible space between two parts of one delivery, shaped by that pitcher’s own motion."
         ],
         "claims": [
           {
-            "value": "Hip-shoulder separation is the difference between the upper-trunk and pelvis rotation in the transverse plane; holding a window of peak separation is associated with better trunk force transfer.",
+            "value": "Hip-shoulder separation is the rotational difference between the pelvis and upper trunk.",
             "confidence": "reputable-analysis",
             "source": {
               "id": "k-rocklandpeakperformance-com-pitching-biomechanics-hip-sh",
@@ -107,17 +97,7 @@
             }
           },
           {
-            "value": "Holding hip-shoulder separation longer can improve force transfer through the trunk.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-rocklandpeakperformance-com-pitching-biomechanics-hip-sh",
-              "label": "Pitching Biomechanics: Understanding Hip Shoulder Separation",
-              "url": "https://rocklandpeakperformance.com/pitching-biomechanics-hip-shoulder-separation/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Hip-shoulder separation relates to trunk rotation and pitching kinematics.",
+            "value": "Hip-shoulder separation relates to trunk rotation and other pitching kinematics.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc7727427",
@@ -125,28 +105,18 @@
               "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7727427/",
               "retrievedAt": "2026-06-06"
             }
-          },
-          {
-            "value": "Limited lead-leg internal rotation is associated with early pelvic rotation that alters elbow positioning at release.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc8016430",
-              "label": "The Relationship Between Hip Range of Motion and Pitching Kinematics Related to Increased Elbow Valgus Loads in Collegiate Baseball Pitchers",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8016430/",
-              "retrievedAt": "2026-06-06"
-            }
           }
         ]
       },
       {
-        "heading": "Lay-back: the riskiest position in the throw",
+        "heading": "Arm cocking: the last handoff before release",
         "paragraphs": [
-          "By the time the arm reaches its deepest lay-back — the moment the forearm cocks back and the palm faces nearly up to the sky — most of the chain's work is already done. The hips are facing the plate, the chest is whipping through, and the shoulder blade is setting the arm in position to be slowed down. The arm is wound to the edge of what the shoulder can give, loaded and about to fire.",
-          "This is the most dangerous instant in the delivery. The shoulder is at the far end of its range, and the inside of the elbow takes its hardest load — a force trying to pry the elbow open the wrong way. The ligament on the inside of the elbow, the UCL, holds the line against most of that load. When the chain is intact, the trunk is still feeding the arm and sharing the work. When the chain broke upstream, the shoulder and elbow meet that load alone — and that is where the tissue can be pushed past what it can take."
+          "As the chest begins to rotate, the forearm lays back while the upper arm stays near shoulder height. Biomechanics calls the deepest point maximum external rotation.",
+          "The position is one frame in a moving sequence, not a pose to hold. The trunk is already turning, the elbow is moving forward, and the hand is about to accelerate toward release."
         ],
         "claims": [
           {
-            "value": "At maximum external rotation (the end of arm cocking), the shoulder is at the extreme of its rotational range while the elbow is loaded at shoulder height.",
+            "value": "Maximum external rotation marks the end of arm cocking, with the shoulder at the far point of external rotation and the elbow near shoulder height.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -156,22 +126,12 @@
             }
           },
           {
-            "value": "Shoulder internal rotation becomes extremely fast during the acceleration phase — one reason the delivery must be sequenced before the arm fires.",
+            "value": "Shoulder internal rotation accelerates rapidly after maximum external rotation as the hand moves toward release.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
               "label": "The Clinician's Guide to Baseball Pitching Biomechanics",
               "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9950989/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "The ulnar collateral ligament (UCL) is a primary static stabilizer of the medial elbow against the majority of the valgus load.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc8130712",
-              "label": "The ulnar collateral ligament loading paradox between in-vitro and in-vivo studies on baseball pitching (narrative review)",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8130712/",
               "retrievedAt": "2026-06-06"
             }
           }
@@ -180,13 +140,13 @@
       {
         "heading": "Wrist, fingers, and the shape the chain delivers",
         "paragraphs": [
-          "Everything to this point built and aimed the energy. The wrist and fingers decide what it becomes. The chain delivers the speed; the hand writes the spin. This is the seam where biomechanics meets the grip — the same throw can leave as a four-seam that holds its line or a breaking ball that dives, and the difference lives in the last few inches at the fingertips.",
-          "Feel it as a handoff. The arm comes through on its slot — the angle the hand travels, set by where the shoulder and trunk put it — and the slot tilts the axis the ball will spin on. A higher slot stands the spin up toward true backspin and a ball that fights gravity; a lower slot lays the axis over and turns ride into run. Then the fingers finish it. Staying behind the ball with even pressure sends it off clean and straight. Letting the ball come off the side of the fingers, or pulling down across it, tilts and rifles the spin into a breaking shape. The pitch is the chain's force, stamped by the hand at the very end.",
-          "This is also why a tired or out-of-sync delivery flattens good pitches before the grip ever fails. If the chain broke upstream and the arm is dragging, the slot drops, the hand gets late, and the spin the grip was built to make never gets put on cleanly. Command and shape both start where the force does — in the ground — and the fingers only ever finish what the body already set up."
+          "Everything before the hand built and aimed the motion. The wrist and fingers decide what spin leaves with it. This is where delivery meets grip.",
+          "Arm slot describes the angle of the hand’s path at release. The trunk and shoulder establish that path; the fingers finish the ball from there.",
+          "When the earlier sequence changes, release position and spin can change with it. Command and shape begin before the fingertips, even though the fingertips make the final mark."
         ],
         "claims": [
           {
-            "value": "Release kinematics — including forearm and wrist action at ball release — shape the spin and therefore the movement the pitch carries.",
+            "value": "Forearm and wrist action at release contribute to the spin and movement a pitch carries.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -196,7 +156,7 @@
             }
           },
           {
-            "value": "Arm-slot and release point are governed by the trunk and shoulder position the kinetic chain delivers, linking lower-body sequence to the angle the ball leaves on.",
+            "value": "Arm slot and release point reflect the trunk and shoulder position delivered by the earlier sequence.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -206,7 +166,7 @@
             }
           },
           {
-            "value": "The wrist and fingers impart the final spin; finger pressure and the path of the hand off the ball determine spin direction and the resulting movement shape.",
+            "value": "The wrist and fingers impart the final spin direction as the ball leaves the hand.",
             "confidence": "reputable-analysis",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3445080",
@@ -218,15 +178,15 @@
         ]
       },
       {
-        "heading": "Release and braking: where arms break",
+        "heading": "Release and finish: how the sequence completes",
         "paragraphs": [
-          "From deepest lay-back to release is the fast part — a short, violent unspooling: the shoulder turns in, the elbow snaps straight, the wrist and fingers come through the ball. When the chain held, the trunk and back are still firing through this, helping brake the arm even as it accelerates. When the chain broke, the shoulder and elbow are accelerating alone, with none of the help they were counting on.",
-          "Then comes the follow-through, and this is where pitchers are made or broken. It starts the instant the ball leaves the hand and runs until you've caught your balance and lowered the arm. Done right, the big muscles of the back and the rear of the shoulder do the slowing-down work, the forearm rolls over on its own, and the trunk folds out over the front leg so the hips and core soak up the stop. The whole body brakes the arm.",
-          "Done wrong — when the trunk never passed the force along — the small structures are left to stop a fast-moving arm by themselves. The muscles around the elbow strain to slow it, the UCL strains to hold the joint, the rotator cuff strains to keep the shoulder seated. Those tissues were never meant to absorb the full stop alone. That is why the follow-through is real work, not a flourish: it is the body actively braking, and a body that braked the throw is a body that can throw again tomorrow."
+          "From deepest layback to release, the shoulder turns, the elbow extends, and the wrist and fingers carry the ball through the release window.",
+          "After release, the arm continues across the body while the trunk folds over the front side. The finish is the last visible part of the same sequence, not a separate flourish.",
+          "Film it as one connected motion: lead leg, pelvis, trunk, elbow, shoulder, hand, then the body moving through the finish."
         ],
         "claims": [
           {
-            "value": "The proper kinetic sequence runs lead-knee bracing, pelvis rotation, upper-trunk rotation, elbow extension, then shoulder internal rotation — foot contact through ball release.",
+            "value": "The measured sequence runs from lead-knee bracing to pelvis rotation, upper-trunk rotation, elbow extension, and shoulder internal rotation.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
@@ -236,39 +196,19 @@
             }
           },
           {
-            "value": "During arm deceleration, slowing the upper extremity after rapid internal rotation generates heavy distraction forces through the shoulder.",
+            "value": "The follow-through continues after release as the trunk flexes and the throwing arm decelerates across the body.",
             "confidence": "official-data",
             "source": {
               "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc9950989",
               "label": "The Clinician's Guide to Baseball Pitching Biomechanics",
               "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9950989/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "During deceleration, the big muscles of the back and posterior shoulder slow the arm while the forearm naturally pronates, reducing stress on the shoulder and elbow.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-baseballscouter-com-pitching-follow-through-mechanics",
-              "label": "The Pitching Follow Through: Key to Power and Health",
-              "url": "https://baseballscouter.com/pitching-follow-through-mechanics/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Proper hip extension and trunk flexion control are necessary for effective eccentric braking of the throwing arm during deceleration.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-baseballscouter-com-pitching-follow-through-mechanics",
-              "label": "The Pitching Follow Through: Key to Power and Health",
-              "url": "https://baseballscouter.com/pitching-follow-through-mechanics/",
               "retrievedAt": "2026-06-06"
             }
           }
         ]
       }
     ],
-    "confidenceNote": "The teaching here is feel and sequence — what to do with your body, not what angle to hit. The biomechanics literature backing each point is peer-reviewed and coaching analysis; where those studies report joint angles, stride figures, or force percentages, that precision stays in the source list on the right, because nobody reading this has been measured and a number stated as instruction would be invented. Read the prose for the craft; follow the sources for the figures.",
+    "confidenceNote": "The teaching here is sequence and observable motion, not a target angle or body outcome. The cited biomechanics literature supports the order and vocabulary; the prose keeps measured figures in their sources instead of turning them into universal instructions.",
     "related": [
       {
         "label": "Spin & Shape",
@@ -279,11 +219,11 @@
         "to": "/learn/pitch-design"
       },
       {
-        "label": "Arm Health",
+        "label": "Health & Workload Boundary",
         "to": "/learn/arm-health"
       },
       {
-        "label": "Youth",
+        "label": "Youth Training Boundary",
         "to": "/learn/youth"
       }
     ]
@@ -402,7 +342,7 @@
       {
         "heading": "Measurement Technology Stack",
         "paragraphs": [
-          "Modern pitch design relies on layered feedback. Ball-tracking systems show flight and release information. High-speed video shows what the hand, fingers, and seams were doing at release. Biomechanical tools show whether the delivery can repeat the cue without putting the arm in a bad position.",
+          "Modern pitch design relies on layered feedback. Ball-tracking systems show flight and release information. High-speed video shows what the hand, fingers, and seams were doing at release. Motion-capture tools show whether the delivery repeats the cue from throw to throw.",
           "Those tools are useful because they make the conversation more specific. They do not replace the conversation. A pitcher still has to know what the grip feels like, what the intended shape is, and whether the pitch belongs with the rest of the arsenal.",
           "The loop is tight: change one cue, throw it, inspect the shape and release, then keep or discard the cue. The best design sessions do not chase novelty. They remove guesswork."
         ],
@@ -443,7 +383,7 @@
         "heading": "Dedicated Pitch Design Facilities",
         "paragraphs": [
           "Driveline Baseball and Tread Athletics are two major North American pitch design facilities. Driveline, headquartered in Seattle, helped popularize the modern pitch design method and publishes on grip mechanics, axis, seam orientation, and arsenal fit.",
-          "Tread Athletics operates a 33,000 square foot facility in Pineville, North Carolina with in-person coaching, biomechanical analysis, and proprietary technology for pitch design. Tread's process accounts for an athlete's unique anatomy and leverages data to create and implement pitch shapes suited to live game conditions, not just bullpen parameters.",
+          "Tread Athletics operates a 33,000 square foot facility in Pineville, North Carolina with in-person coaching, biomechanical analysis, and proprietary technology for pitch design. Its process combines delivery and release data with pitch-shape goals suited to live game conditions, not just bullpen parameters.",
           "Both facilities stress the validation phase: testing designed pitches in live at-bats with data collection and video analysis to confirm that bullpen gains translate to game performance. If results diverge from lab predictions, the design returns to the controlled setting to isolate variables and understand the gap. This is the honest constraint of pitch design—bullpen shape does not always equal game effectiveness."
         ],
         "claims": [
@@ -958,633 +898,99 @@
   },
   {
     "slug": "arm-health",
-    "navLabel": "Safety Source Record",
-    "eyebrow": "The source boundary",
-    "title": "Safety Source Record for Pitchers",
-    "summary": "Published source context on fatigue, throwing volume, UCL research, and the limits of what Pitch Atlas can responsibly claim.",
-    "sub": "This wing files safety literature as source context only. It does not diagnose pain, prescribe rehab, set throwing volume, or claim a plan prevents injury.",
+    "navLabel": "Health & Workload Boundary",
+    "eyebrow": "Outside the atlas",
+    "title": "Health and Workload Stay Outside Pitch Atlas",
+    "summary": "A route-stable boundary: Pitch Atlas covers pitching craft, not medical, injury, workload, durability, or health-outcome claims.",
+    "sub": "This page remains so the boundary is visible. It contains no medical, injury, workload, rehabilitation, recovery, durability, or health-outcome claims.",
     "accent": "seam",
     "educational": true,
+    "boundaryOnly": true,
     "sections": [
       {
-        "heading": "The UCL literature: scale and youth shift",
+        "heading": "What Pitch Atlas does not publish",
         "paragraphs": [
-          "Tommy John surgery (UCL reconstruction) appears often enough in the baseball literature that Pitch Atlas treats it as a source-boundary topic, not a coaching topic. The cited review says modern procedure counts have shifted toward teenagers aged 15-19, where earlier eras clustered more heavily around professional pitchers.",
-          "The same source points to year-round participation, multiple teams, uneven pitch-count enforcement, and low Pitch Smart compliance as possible cultural drivers. That is filed here as published context. It is not a diagnosis of any pitcher, team, tournament, or training plan."
-        ],
-        "claims": [
-          {
-            "value": "More than half of all Tommy John surgeries are performed on teenagers aged 15-19",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-theconversation-com-50-years-after-the-first-procedure-t",
-              "label": "The Conversation, 50 years after Tommy John surgery analysis",
-              "url": "https://theconversation.com/50-years-after-the-first-procedure-tommy-john-surgery-is-more-common-than-ever-especially-for-young-athletes-236293",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "90% of surveyed youth baseball teams do not comply with Pitch Smart guidelines",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-theconversation-com-50-years-after-the-first-procedure-t",
-              "label": "The Conversation, survey on Pitch Smart compliance",
-              "url": "https://theconversation.com/50-years-after-the-first-procedure-tommy-john-surgery-is-more-common-than-ever-especially-for-young-athletes-236293",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ],
-        "pullStat": {
-          "label": "Youth surgeries",
-          "claim": {
-            "value": ">50% of procedures",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-theconversation-com-50-years-after-the-first-procedure-t",
-              "label": "The Conversation",
-              "url": "https://theconversation.com/50-years-after-the-first-procedure-tommy-john-surgery-is-more-common-than-ever-especially-for-young-athletes-236293",
-              "retrievedAt": "2026-06-06"
-            },
-            "note": "Ages 15-19; dramatic reversal from professional-dominated decades prior"
-          }
-        }
+          "Pitch Atlas does not diagnose, assess pain, compare injury risk, prescribe rehabilitation or recovery, set throwing volume, or make claims about health outcomes and durability.",
+          "A source label or disclaimer does not create an exception. Those subjects stay outside the product even when published research exists."
+        ]
       },
       {
-        "heading": "Throwing Intensity and Elbow Stress",
+        "heading": "What remains in scope",
         "paragraphs": [
-          "Biomechanics papers connect higher throwing intensity with greater stress on the ulnar collateral ligament and the structures that stabilize the elbow. The technical term is valgus torque: the rotational force that pulls the elbow open during a throw.",
-          "The source record is not simple. Researchers found that some collegiate pitchers showed a clear relationship between ball speed and elbow torque while others did not. Mechanics, arm slot, sequencing efficiency, and anatomy all change the interpretation.",
-          "Pitch Atlas can file that relationship. It cannot turn a radar reading, effort cue, or pitch type into an individual risk score."
-        ],
-        "claims": [
-          {
-            "value": "Collegiate pitcher research found that the relationship between ball speed and elbow torque varies meaningfully by individual pitcher.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc10611893",
-              "label": "PMC/NIH, collegiate pitcher biomechanics study",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10611893/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Professional and high school pitchers showed different absolute elbow loads, but relative elbow stress became comparable after normalizing for body size.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc6390228",
-              "label": "PMC/NIH, segmental power analysis in baseball pitching",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6390228/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "When normalized to body weight and height, both professional and high school pitchers experienced comparable relative elbow stress",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc6390228",
-              "label": "PMC/NIH, segmental power analysis in baseball pitching",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6390228/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ],
-        "pullStat": {
-          "label": "Elbow stress driver",
-          "claim": {
-            "value": "Valgus torque rises with throwing intensity",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc10611893",
-              "label": "PMC/NIH biomechanics research",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10611893/",
-              "retrievedAt": "2026-06-06"
-            },
-            "note": "Effect varies by pitcher mechanics and individual tolerance"
-          }
-        }
+          "The atlas documents grips, pitch families, qualitative shape, source provenance, historical craft, and what named pitchers have said about their own pitches.",
+          "It does not rate a grip, pitch, delivery, cue, or training choice as safe, safer, risky, protective, restorative, or suitable for an individual body."
+        ]
       },
       {
-        "heading": "Fatigue: The Dominant Modifiable Risk Factor",
+        "heading": "Why the route remains",
         "paragraphs": [
-          "ASMI and peer-reviewed papers repeatedly name fatigue as a risk signal in pitching injury research. One youth-pitching paper reports that adolescent pitchers who underwent elbow or shoulder surgery were more likely to have pitched while fatigued than uninjured peers.",
-          "The biomechanics explanation is also source-bound: when fatigue changes timing, hip-to-shoulder separation, arm slot, or force transfer, the shoulder and elbow can take a different load than they did earlier in the outing.",
-          "That is where this page stops. It records what the literature says about fatigue and mechanics; it does not decide whether a pitcher keeps throwing, rests, rehabs, or changes a role."
-        ],
-        "claims": [
-          {
-            "value": "Adolescent pitchers who underwent elbow or shoulder surgery were significantly more likely to have routinely pitched with arm fatigue",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3435945",
-              "label": "PMC/NIH, prevention of elbow injuries in youth baseball pitchers",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3435945/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Pitching while fatigued, competitive pitching volume, playing on multiple teams, year-round pitching, and poor mechanics are strongly linked to UCL injury",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-tommy-john-injuries-in-b",
-              "label": "ASMI Position Statement for Tommy John Injuries",
-              "url": "https://asmi.org/position-statement-for-tommy-john-injuries-in-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ],
-        "pullStat": {
-          "label": "Fatigue as injury driver",
-          "claim": {
-            "value": "Strongly linked to UCL injury",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-tommy-john-injuries-in-b",
-              "label": "ASMI Position Statement",
-              "url": "https://asmi.org/position-statement-for-tommy-john-injuries-in-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            },
-            "note": "ASMI lists fatigue among the modifiable factors in its UCL injury position statement."
-          }
-        }
-      },
-      {
-        "heading": "The 100-Inning Threshold and Annual Workload",
-        "paragraphs": [
-          "A 10-year prospective study of 481 youth pitchers aged 9-14 is the source behind the 100-inning figure. The study associated more than 100 innings in a year with a higher rate of serious throwing injury outcomes than lower annual totals.",
-          "The number is an observed threshold in that cohort, not a personalized cap generated by Pitch Atlas. It belongs in the record because it is one of the clearest published links between annual volume and injury outcome.",
-          "Other cited literature discusses months played per year and time away from overhead throwing. This page records those source positions without building a throwing calendar for a specific athlete."
-        ],
-        "claims": [
-          {
-            "value": "Youth pitchers who pitched >100 innings annually were 3.5 times more likely to suffer arm injury (95% CI = 1.16-10.44)",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pubmed-ncbi-nlm-nih-gov-21098816",
-              "label": "PubMed, 10-year prospective cohort study of 481 youth pitchers aged 9-14",
-              "url": "https://pubmed.ncbi.nlm.nih.gov/21098816/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Pitchers who played competitively more than 8 months per year had 5.05 times greater injury risk versus shorter-season pitchers",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3435945",
-              "label": "PMC/NIH, prevention of elbow injuries in youth baseball pitchers",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3435945/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "The cited youth-pitching paper records an annual no-overhead-throwing interval of 2-3 months, with 4 months preferred.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3435945",
-              "label": "PMC/NIH, prevention of elbow injuries in youth baseball pitchers",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3435945/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ],
-        "pullStat": {
-          "label": "Innings threshold",
-          "claim": {
-            "value": "100/year",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pubmed-ncbi-nlm-nih-gov-21098816",
-              "label": "10-year ASMI prospective cohort, 481 youth pitchers",
-              "url": "https://pubmed.ncbi.nlm.nih.gov/21098816/",
-              "retrievedAt": "2026-06-06"
-            },
-            "note": "Observed association in prospective follow-up, not an individualized workload rule."
-          }
-        }
-      },
-      {
-        "heading": "Acute-to-Chronic Workload: Managing the Spike",
-        "paragraphs": [
-          "Counting season totals can miss short-term spikes. Acute-to-chronic workload ratio is a model for comparing recent throwing volume with a longer baseline, usually a rolling multi-week average.",
-          "Some workload-monitoring literature flags weekly spikes beyond a baseline band of roughly 10-20%. The cited source also warns that ratio models are incomplete because they measure external load, not how one pitcher adapts physiologically or compensates mechanically.",
-          "The useful archive point is vocabulary. Pitch Atlas can explain what the model tries to measure and why researchers debate its limits; it cannot infer readiness from the ratio alone."
-        ],
-        "claims": [
-          {
-            "value": "Some workload-monitoring literature flags acute load increases beyond a 10-20% chronic-baseline band in a single week.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-blog-armcare-com-rethinking-acute-to-chronic-workload-fo",
-              "label": "Workload monitoring research for baseball pitchers",
-              "url": "https://blog.armcare.com/rethinking-acute-to-chronic-workload-for-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Acute-to-chronic workload ratio models measure external load but may not fully capture individual physiological adaptation or mechanical compensation during pitch spikes",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-blog-armcare-com-rethinking-acute-to-chronic-workload-fo",
-              "label": "ArmCare blog, rethinking acute-to-chronic workload for pitchers",
-              "url": "https://blog.armcare.com/rethinking-acute-to-chronic-workload-for-pitchers/",
-              "retrievedAt": "2026-06-06"
-            },
-            "note": "Some experts caution that ACWR alone is insufficient; functional assessment of mechanics and recovery is also needed"
-          }
-        ],
-        "pullStat": {
-          "label": "Spike model band",
-          "claim": {
-            "value": "+10-20% per week",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-blog-armcare-com-rethinking-acute-to-chronic-workload-fo",
-              "label": "Workload monitoring research",
-              "url": "https://blog.armcare.com/rethinking-acute-to-chronic-workload-for-pitchers/",
-              "retrievedAt": "2026-06-06"
-            },
-            "note": "A model threshold in the cited literature, not a Pitch Atlas clearance rule."
-          }
-        }
-      },
-      {
-        "heading": "What the literature groups together",
-        "paragraphs": [
-          "Across the cited sources, the same buckets keep appearing: throwing volume, fatigue signals, months played, mechanics, intensity, pain reporting, and coordination among the adults around a pitcher.",
-          "Those are source categories, not a Pitch Atlas checklist. The atlas can show where the literature clusters. It leaves medical judgment, coaching decisions, and athlete-specific throwing plans to qualified people working with the pitcher."
-        ],
-        "claims": [
-          {
-            "value": "The reviewed youth-pitching guidelines discuss fatigue monitoring, overhead throwing volume, pitch-count limits, overlapping seasons, mechanics, radar readings, pitcher-catcher overlap, pain evaluation, and multi-sport participation.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc3435945",
-              "label": "PMC/NIH, prevention of elbow injuries in youth baseball pitchers",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3435945/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Approximately 80% of pitchers return to competitive play after Tommy John surgery; approximately 30% require a second operation",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-theconversation-com-50-years-after-the-first-procedure-t",
-              "label": "The Conversation, 50 years after Tommy John surgery analysis",
-              "url": "https://theconversation.com/50-years-after-the-first-procedure-tommy-john-surgery-is-more-common-than-ever-especially-for-young-athletes-236293",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "ASMI's professional-position statement discusses mechanics, pitch effort, discomfort reporting, fatigue, team communication, controlled-effort drills, annual time away, recovery, and intensity-based risk.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-tommy-john-injuries-in-b",
-              "label": "ASMI Position Statement for Tommy John Injuries",
-              "url": "https://asmi.org/position-statement-for-tommy-john-injuries-in-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ],
-        "pullStat": {
-          "label": "Surgical outcome record",
-          "claim": {
-            "value": "~80% full return post-surgery",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-theconversation-com-50-years-after-the-first-procedure-t",
-              "label": "The Conversation",
-              "url": "https://theconversation.com/50-years-after-the-first-procedure-tommy-john-surgery-is-more-common-than-ever-especially-for-young-athletes-236293",
-              "retrievedAt": "2026-06-06"
-            },
-            "note": "The same source reports that about 30% require a second operation."
-          }
-        }
+          "Existing links to this page should resolve instead of disappearing or silently becoming a different lesson.",
+          "The route now records only the boundary. It carries no sourced safety conclusions, thresholds, comparisons, plans, or personal recommendations."
+        ]
       }
     ],
-    "confidenceNote": "All surviving claims tie to verifiable working sources: peer-reviewed studies indexed on PubMed Central/NIH, ASMI official position statements, and reputable sports health publications. Volume thresholds come from prospective cohort data. Biomechanical stress claims are sourced from primary PMC research. Acute-to-chronic workload discussion acknowledges model limitations per the cited source. X/Twitter statistic on MLB prevalence removed due to link failure; youth surgery demographic shift confirmed through reputable secondary analysis. No figures invented; all claims tied to working URLs or explicitly marked unverified when sources were unreachable.",
+    "confidenceNote": "This is a scope boundary, not a sourced teaching page. It intentionally contains no medical, injury, workload, rehabilitation, recovery, durability, or health-outcome claims.",
     "related": [
       {
-        "label": "Pitch Design & Mechanics",
+        "label": "Pitch Design",
         "to": "/learn/pitch-design"
       },
-      {
-        "label": "Youth Baseball Guidelines",
-        "to": "/learn/youth"
-      },
-      {
-        "label": "Workload & Recovery",
-        "to": "/learn/metrics"
-      },
-      {
-        "label": "Pitching Trends",
-        "to": "/learn/trends"
-      }
-    ]
-  },
-  {
-    "slug": "youth",
-    "navLabel": "Youth Safety Sources",
-    "eyebrow": "The source boundary",
-    "title": "Youth Safety Source Record",
-    "summary": "What published youth-pitching authorities say about pitch-count tables, rest intervals, specialization research, and the limits of a website's advice.",
-    "sub": "This wing files published safety guidance as source context only. It does not choose pitches, set throwing volume, diagnose pain, or prescribe a plan.",
-    "accent": "seam",
-    "educational": true,
-    "sections": [
-      {
-        "heading": "Pitch-type progression in published guidance",
-        "paragraphs": [
-          "ASMI's adolescent-pitching statement describes a progression from basic throwing to fastball pitching, then change-up pitching, before breaking balls enter the discussion. Pitch Atlas records that sequence as source context, not as an age gate for a specific athlete.",
-          "Two coaching sources describe the change-up as an early off-speed teaching pitch because its hand and wrist action can mirror the fastball. That is a source claim about teaching logic. It is not a Pitch Atlas recommendation to add the pitch.",
-          "The same ASMI source treats curveballs and sliders as later skills and separates pitch type from the larger questions of fatigue, mechanics, and physical maturity. The archive keeps that boundary visible instead of telling a young pitcher what to throw next."
-        ],
-        "claims": [
-          {
-            "value": "ASMI presents a progression from basic throwing to fastball pitching, then change-up pitching, before breaking balls.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "American Sports Medicine Institute | Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "The cited Dugout Captain change-up guide describes the pitch as using hand and wrist positions that mirror the fastball.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-www-dugoutcaptain-com-drill-how-to-coach-the-change-up",
-              "label": "Dugout Captain, change-up coaching article",
-              "url": "https://www.dugoutcaptain.com/drill/how-to-coach-the-change-up/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "The cited Chad Moeller Baseball article describes three-finger and circle-change grips for smaller hands.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-chadmoellerbaseball-com-the-best-pitch-for-a-young-ball-",
-              "label": "Chad Moeller Baseball, change-up article",
-              "url": "https://chadmoellerbaseball.com/the-best-pitch-for-a-young-ball-player-to-learn-the-changeup/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "ASMI places fastball and change-up mechanics before curveballs or sliders in its adolescent-pitcher progression.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "American Sports Medicine Institute | Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ]
-      },
-      {
-        "heading": "MLB Pitch Smart published tables",
-        "paragraphs": [
-          "MLB and USA Baseball publish Pitch Smart as age-group tables for daily pitch totals and calendar-day rest intervals. Pitch Atlas files the tables as official source material, not as a workload tool.",
-          "The tables list daily maximums by age band and rest intervals by pitch-count band. Those numbers belong here because they are the official published figures a visitor may want to trace back to the source.",
-          "The same source includes a three-consecutive-calendar-day restriction and annual innings guidance. This page records those source entries without applying them to a player, league, or season."
-        ],
-        "claims": [
-          {
-            "value": "Pitch Smart lists daily maximums of 75 pitches for ages 9-10, 85 for ages 11-12, 95 for ages 13-14, and 95-105 for ages 15-18.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
-              "label": "MLB Pitch Smart | Pitching Guidelines",
-              "url": "https://www.mlb.com/pitch-smart/pitching-guidelines",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Pitch Smart lists rest intervals for ages 9-14 by pitch-count band: 1-20, 21-35, 36-50, 51-65, and 66+.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
-              "label": "MLB Pitch Smart | Pitching Guidelines",
-              "url": "https://www.mlb.com/pitch-smart/pitching-guidelines",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Pitch Smart lists rest intervals for ages 15-18 by pitch-count band: 1-30, 31-45, 46-60, 61-80, and 81+.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
-              "label": "MLB Pitch Smart | Pitching Guidelines",
-              "url": "https://www.mlb.com/pitch-smart/pitching-guidelines",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Pitch Smart includes a restriction on pitching on three consecutive calendar days, regardless of pitch count.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
-              "label": "MLB Pitch Smart | Pitching Guidelines",
-              "url": "https://www.mlb.com/pitch-smart/pitching-guidelines",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Pitch Smart publishes annual innings guidance for ages 9-12, 13-14, and 15-18.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
-              "label": "MLB Pitch Smart | Pitching Guidelines",
-              "url": "https://www.mlb.com/pitch-smart/pitching-guidelines",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ]
-      },
-      {
-        "heading": "Annual rest in ASMI guidance",
-        "paragraphs": [
-          "ASMI's adolescent-pitcher statement includes time away from competitive pitching and overhead throwing in its published guidance. The source frames those intervals alongside fatigue, pitch volume, and overuse.",
-          "Pitch Atlas records the guidance as a source position. It does not set a calendar for a young athlete or decide how a family, coach, physician, or league should apply it."
-        ],
-        "claims": [
-          {
-            "value": "ASMI's adolescent-pitcher statement lists 2-3 months away from overhead throwing per year, with 4 months preferred, and at least 4 months away from competitive baseball pitching.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "American Sports Medicine Institute | Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Overuse (pitch volume and fatigue) is the principal risk factor for youth pitching injuries, more influential than pitch type alone.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "American Sports Medicine Institute | Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "ASMI's statement names fatigue signs such as declining ball pace, decreased accuracy, upright trunk posture, dropped elbow during pitching, and increased time between pitches.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "American Sports Medicine Institute | Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ]
-      },
-      {
-        "heading": "The Cost of Early Specialization",
-        "paragraphs": [
-          "Single-sport specialization appears in the youth-baseball literature as a population-level risk topic. The sources define specialization around year-round baseball, multiple teams, overlapping seasons, and limited participation in other sports.",
-          "In a study of 102 professional baseball players, 49% had specialized before high school, with a mean specialization age of 8.9 years. Early specializers sustained 2.3 times more serious injuries in their professional careers than non-specialized peers. Another youth-pitching study associated specialization with a higher rate of shoulder and elbow injury.",
-          "Those studies do not diagnose one athlete from a profile. They belong here because they show how researchers frame the culture around youth baseball volume."
-        ],
-        "claims": [
-          {
-            "value": "49% of professional baseball players in one study specialized in baseball before high school, with a mean specialization age of 8.9 years (range 4-17).",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc5613849",
-              "label": "PMC | Early Sport Specialization: Effectiveness and Risk of Injury in Professional Baseball Players",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5613849/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Early specializers (before high school) sustained a mean of 0.54 serious injuries during their professional careers, compared to 0.23 for non-specialized players—a 2.3-fold difference (P=0.044).",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc5613849",
-              "label": "PMC | Early Sport Specialization: Effectiveness and Risk of Injury in Professional Baseball Players",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5613849/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "63.4% of professional players surveyed believed that early sport specialization was not required to play professional baseball.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc5613849",
-              "label": "PMC | Early Sport Specialization: Effectiveness and Risk of Injury in Professional Baseball Players",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5613849/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Among youth baseball pitchers aged 9-12, all 21 arm injuries recorded in one prospective study occurred in specialized athletes; specialized players had a 6.7-fold higher odds ratio for shoulder/elbow injury compared to non-specialized peers (P=0.03).",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc6805058",
-              "label": "PMC | Sport Specialization and Increased Injury Frequency in Youth Baseball Players",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6805058/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "57.9% of specialized youth baseball players and their parents were unaware of the athlete's specialization status; only 31% self-identified as specialized, while 83% met research-based specialization criteria.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-pmc-ncbi-nlm-nih-gov-articles-pmc6805058",
-              "label": "PMC | Sport Specialization and Increased Injury Frequency in Youth Baseball Players",
-              "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6805058/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Training volume exceeding an athlete's age in hours per week (e.g., 12 years old training more than 12 hours weekly) doubles serious overuse injury risk.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-ncys-org-blog-early-sports-specialization-risks",
-              "label": "National Council of Youth Sports | Early Sports Specialization Risks",
-              "url": "https://ncys.org/blog-early-sports-specialization-risks/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ]
-      },
-      {
-        "heading": "Practical Safeguards for Youth Pitchers",
-        "paragraphs": [
-          "Beyond pitch counts and rest intervals, ASMI's position statement lists pitcher-catcher overlap, radar-gun pressure, overlapping teams, fatigue signs, and pain reporting among the concerns it wants adults to notice.",
-          "Pitch Atlas does not turn that list into instructions. It files the source categories so the boundary is visible: grip and craft live here; athlete-specific medical and workload decisions do not."
-        ],
-        "claims": [
-          {
-            "value": "ASMI identifies pitcher-catcher overlap as a concern because the combination increases total throws.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "American Sports Medicine Institute | Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "ASMI identifies radar-gun pressure as a youth-pitching concern because it can push throwers toward harder effort.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "American Sports Medicine Institute | Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "ASMI identifies overlapping seasons on multiple teams as a concern because throwing volume and fatigue can accumulate.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "American Sports Medicine Institute | Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ]
-      },
-      {
-        "heading": "The Long View: Rest Now, Durability Later",
-        "paragraphs": [
-          "The pattern across these sources is plain: youth-pitching literature keeps returning to mechanics, throwing volume, months played, fatigue, specialization, and adult oversight.",
-          "That pattern is useful for an archive because it explains why safety-source pages exist next to grip-source pages. It still does not make Pitch Atlas a medical, coaching, or workload authority."
-        ],
-        "claims": [
-          {
-            "value": "ASMI's adolescent-pitcher statement lists at least 4 months away from competitive pitching every year for ages 15-18, including at least 2-3 continuous months away from overhead throwing.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "American Sports Medicine Institute | Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          }
-        ]
-      }
-    ],
-    "confidenceNote": "All claims tie to primary or named secondary sources: Pitch Smart pitch-count and rest tables from official MLB.com guidelines; ASMI source positions from the published Position Statement for Adolescent Baseball Pitchers; specialization research from peer-reviewed studies indexed in PMC. Change-up instruction remains attributed to coaching websites. Quantitative claims carry official-data or reputable-analysis confidence backed by working URLs.",
-    "related": [
       {
         "label": "Mechanics",
         "to": "/learn/mechanics"
       },
       {
-        "label": "Arm Health",
-        "to": "/learn/arm-health"
+        "label": "Youth Training Boundary",
+        "to": "/learn/youth"
+      }
+    ]
+  },
+  {
+    "slug": "youth",
+    "navLabel": "Youth Training Boundary",
+    "eyebrow": "Outside the atlas",
+    "title": "Youth Training Decisions Stay Outside Pitch Atlas",
+    "summary": "A route-stable boundary: Pitch Atlas does not publish age-based pitch selection, workload, rest, readiness, or training prescriptions.",
+    "sub": "This page remains so the boundary is visible. It contains no age-based pitch, workload, rest, readiness, health, or training claims.",
+    "accent": "seam",
+    "educational": true,
+    "boundaryOnly": true,
+    "sections": [
+      {
+        "heading": "What Pitch Atlas does not publish",
+        "paragraphs": [
+          "Pitch Atlas does not tell a young athlete which pitch to learn, when to add it, how much to throw, when to rest, or whether a training choice fits that athlete.",
+          "It does not reproduce age tables, pitch-count rules, readiness tests, specialization guidance, or youth health conclusions, even when an outside authority publishes them."
+        ]
       },
       {
-        "label": "Circle Change",
-        "to": "/pitch/circle-change"
+        "heading": "What remains in scope",
+        "paragraphs": [
+          "The atlas preserves grips, pitch families, qualitative shape, source provenance, historical craft, and firsthand accounts from named pitchers.",
+          "Those records are not an age gate, development sequence, training plan, workload tool, or recommendation for a young athlete."
+        ]
+      },
+      {
+        "heading": "Why the route remains",
+        "paragraphs": [
+          "Existing links to this page should resolve instead of disappearing or silently becoming a different lesson.",
+          "The route now records only the boundary. It carries no sourced youth-training conclusions, thresholds, schedules, comparisons, or personal recommendations."
+        ]
+      }
+    ],
+    "confidenceNote": "This is a scope boundary, not a sourced teaching page. It intentionally contains no age-based pitch, workload, rest, readiness, health, or youth-training claims.",
+    "related": [
+      {
+        "label": "Pitch Index",
+        "to": "/repertoire"
       },
       {
         "label": "Pitch Design",
         "to": "/learn/pitch-design"
+      },
+      {
+        "label": "Health & Workload Boundary",
+        "to": "/learn/arm-health"
       }
     ]
   },
@@ -1693,21 +1099,10 @@
         "heading": "The Screwball Is a Broken Teaching Line",
         "paragraphs": [
           "The screwball is nearly gone because the teaching line broke. Christy Mathewson, Carl Hubbell, Fernando Valenzuela, and John Franco kept the pitch visible in earlier eras, but modern development systems rarely teach it.",
-          "The injury fear is real as culture, but the evidence is thinner than the fear. Coaches repeat the warning, fewer pitchers learn the pitch, and fewer coaches remain who can teach it safely. That loop turns a rare pitch into a museum piece.",
-          "A future revival would need credible coaching, careful progression, and honest source boundaries. Until then, the screwball belongs in the lost-pitches wing with a clear uncertainty label."
+          "Fewer pitchers learn it, fewer coaches retain firsthand experience with it, and the names used for its grip and release vary across eras. That broken chain turns a rare pitch into a museum piece.",
+          "A future revival would need credible firsthand instruction and honest source boundaries. Until then, the screwball belongs in the lost-pitches wing with a clear uncertainty label."
         ],
         "claims": [
-          {
-            "value": "The screwball’s decline is commonly attributed to perceived injury risk and a loss of teaching expertise.",
-            "confidence": "reputable-analysis",
-            "source": {
-              "id": "k-en-wikipedia-org-wiki-screwball",
-              "label": "Wikipedia: Screwball",
-              "url": "https://en.wikipedia.org/wiki/Screwball",
-              "retrievedAt": "2026-06-06"
-            },
-            "note": "The injury-risk claim remains partly anecdotal because pitch-specific biomechanical research is limited."
-          },
           {
             "value": "Historical screwball pitchers include Christy Mathewson, Carl Hubbell, Fernando Valenzuela, and John Franco.",
             "confidence": "reputable-analysis",
@@ -1927,8 +1322,8 @@
     "navLabel": "The Canon",
     "eyebrow": "The lineage",
     "title": "The Canon: Foundational Texts and Thought Lineages in Pitching",
-    "summary": "Curated reading path spanning classic pitching philosophy, biomechanics, psychology, and modern analytical frameworks. Solutions, not idols.",
-    "sub": "From the craft essays of Tom Seaver and Bob Gibson to the biomechanical work of ASMI and the data-driven analyses of FanGraphs and Baseball Prospectus, the canon traces how pitching knowledge has accumulated. These texts and methodologies form the intellectual backbone for understanding what works, why it works, and how to teach it.",
+    "summary": "A curated reading path through classic pitching philosophy, mental routines, measurement, scouting, and modern analytical language. Solutions, not idols.",
+    "sub": "From the craft writing of Tom Seaver and Bob Gibson to motion capture, Statcast, FanGraphs, and Baseball Prospectus, the canon traces how pitching knowledge has accumulated and how its vocabulary changed.",
     "accent": "powder",
     "educational": false,
     "sections": [
@@ -2012,50 +1407,30 @@
         ]
       },
       {
-        "heading": "Biomechanics, safety literature, and the modern scientific foundation",
+        "heading": "Biomechanics and the modern measurement lineage",
         "paragraphs": [
-          "The American Sports Medicine Institute (ASMI), founded in 1987 by orthopedic surgeon Dr. James R. Andrews and led by research director Dr. Glenn Fleisig, is one of the main sources for pitching biomechanics and safety literature. ASMI's research uses video analysis and computer modeling to quantify forces acting on the shoulder, elbow, and trunk during the throwing motion.",
-          "ASMI's Position Statement for Adolescent Baseball Pitchers records published guidance on overhead throwing, annual innings, fastball mechanics, and breaking pitches. Pitch Atlas treats that as source material, not as its own medical or workload prescription.",
-          "Driveline Baseball and Tread Athletics represent the modern analytical and biomechanical coaching frontier. Both organizations employ motion capture technology and detailed mechanical analysis to quantify individual pitcher mechanics and test coaching cues. Their work belongs in the canon because it changed the vocabulary of pitch development, not because this archive can prescribe an individual program."
+          "High-speed video and motion capture changed the language of pitching instruction. A delivery could be compared frame by frame, with the pelvis, trunk, arm, hand, and release described as one timed sequence instead of a collection of poses.",
+          "Driveline Baseball and Tread Athletics helped bring those tools into modern pitch development alongside ball tracking and high-speed release video. Their place in the canon comes from the vocabulary they spread: sequence, release, seam presentation, shape, and arsenal fit.",
+          "Pitch Atlas uses that vocabulary to describe craft. It does not turn a measurement system into a universal body target or personal training program."
         ],
         "claims": [
           {
-            "value": "ASMI was founded in 1987 by Dr. James R. Andrews and led by research director Dr. Glenn Fleisig, employing video and computer analysis to study throwing mechanics and injury risk factors.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-en-wikipedia-org-wiki-american-sports-medicine-institute",
-              "label": "American Sports Medicine Institute research",
-              "url": "https://en.wikipedia.org/wiki/American_Sports_Medicine_Institute",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "ASMI's Position Statement for Adolescent Baseball Pitchers lists annual overhead-throwing intervals, an annual innings figure, and a progression around fastball mechanics before breaking pitches.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-asmi-org-position-statement-for-adolescent-baseball-pitc",
-              "label": "ASMI Position Statement for Adolescent Baseball Pitchers",
-              "url": "https://asmi.org/position-statement-for-adolescent-baseball-pitchers/",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "MLB's Pitch Smart program publishes age-group pitch-count tables and rest intervals for pitchers ages 7-22 based on ASMI research and recommendations.",
-            "confidence": "official-data",
-            "source": {
-              "id": "k-www-mlb-com-pitch-smart-pitching-guidelines",
-              "label": "MLB.com Pitch Smart",
-              "url": "https://www.mlb.com/pitch-smart/pitching-guidelines",
-              "retrievedAt": "2026-06-06"
-            }
-          },
-          {
-            "value": "Driveline Baseball employs markered and markerless motion capture, Rapsodo, and Trackman for biomechanical analysis and has conducted research on the interaction of command and mechanics in pitching.",
+            "value": "Driveline Baseball uses motion capture, Rapsodo, and Trackman in its published pitching research and development work.",
             "confidence": "reputable-analysis",
             "source": {
               "id": "k-www-drivelinebaseball-com-pitching-research-biomechanics",
               "label": "Driveline Baseball Research",
               "url": "https://www.drivelinebaseball.com/pitching-research-biomechanics/",
+              "retrievedAt": "2026-06-06"
+            }
+          },
+          {
+            "value": "Tread Athletics operates an in-person pitch-design facility with ball tracking, high-speed video, and biomechanical analysis.",
+            "confidence": "reputable-analysis",
+            "source": {
+              "id": "k-treadathletics-com-college",
+              "label": "Tread Athletics: College Baseball Pitching Development",
+              "url": "https://treadathletics.com/college/",
               "retrievedAt": "2026-06-06"
             }
           }
@@ -2132,7 +1507,7 @@
         ]
       }
     ],
-    "confidenceNote": "Foundational texts verified via publisher catalogs and library archives (Hearst Books, Anchor/Penguin Random House, Simon & Schuster). ASMI position statement and MLB Pitch Smart sourced from official websites. Biomechanics research from Driveline and analytical frameworks from FanGraphs and Baseball Prospectus sourced from published research and methodology documentation. All URLs tested. One date correction made: Gibson/Jackson 'Sixty Feet, Six Inches' published 2009, not 2010. FanGraphs mechanics grading claim removed for lacking direct source documentation. Driveline award attribution clarified: the 2025 Dr. Mike Marshall award went to individual researchers (Pelletier and Lambert) at the organization, not Driveline Baseball as a unit.",
+    "confidenceNote": "Foundational texts were verified through publisher catalogs and library archives. Modern measurement sources come from published facility materials; analytical frameworks come from FanGraphs and Baseball Prospectus methodology pages. One date correction remains recorded: Gibson and Jackson's 'Sixty Feet, Six Inches' was published in 2009, not 2010.",
     "related": [
       {
         "label": "Pitch mechanics fundamentals",
