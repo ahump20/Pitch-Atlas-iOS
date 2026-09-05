@@ -143,6 +143,8 @@ struct PitchDetailView: View {
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
+        .tint(PitchAtlasTheme.cardbackPaper)
+        .foregroundStyle(PitchAtlasTheme.cardbackInk)
         .controlSize(.large)
     }
 
