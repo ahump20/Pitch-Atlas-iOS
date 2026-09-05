@@ -184,6 +184,8 @@ final class LoopingPlayerUIView: UIView {
     private var looper: AVPlayerLooper?
     private var displayObservation: NSKeyValueObservation?
     private var playerObservation: NSKeyValueObservation?
+    private var looperObservation: NSKeyValueObservation?
+    private(set) var playbackFailed = false
     private var currentItemObservation: NSKeyValueObservation?
     private var itemStatusObservation: NSKeyValueObservation?
 
@@ -221,6 +223,9 @@ final class LoopingPlayerUIView: UIView {
         playerObservation = player.observe(\.status, options: [.initial, .new]) { [weak self] _, _ in
             DispatchQueue.main.async { self?.refreshPosterVisibility() }
         }
+        looperObservation = looper?.observe(\.status, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.refreshPosterVisibility() }
+        }
         currentItemObservation = player.observe(\.currentItem, options: [.initial, .new]) { [weak self] _, _ in
             DispatchQueue.main.async { self?.observeCurrentItem() }
         }
@@ -245,9 +250,9 @@ final class LoopingPlayerUIView: UIView {
     }
 
     private func refreshPosterVisibility() {
-        let failed = queue?.status == .failed || queue?.currentItem?.status == .failed
-        posterView.isHidden = queue != nil && playerLayer.isReadyForDisplay && !failed
-        playerLayer.isHidden = failed
+        playbackFailed = queue?.status == .failed || queue?.currentItem?.status == .failed || looper?.status == .failed
+        posterView.isHidden = queue?.currentItem != nil && playerLayer.isReadyForDisplay && !playbackFailed
+        playerLayer.isHidden = playbackFailed
     }
 
     @objc private func appWillResignActive() { queue?.pause() }
@@ -257,6 +262,7 @@ final class LoopingPlayerUIView: UIView {
         NotificationCenter.default.removeObserver(self)
         displayObservation = nil
         playerObservation = nil
+        looperObservation = nil
         currentItemObservation = nil
         itemStatusObservation = nil
         queue?.pause()

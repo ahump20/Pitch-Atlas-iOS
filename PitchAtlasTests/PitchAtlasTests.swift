@@ -285,7 +285,7 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(imageView.contentMode, .scaleAspectFit)
 
         let failed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-            videoLayer.player?.status == .failed || videoLayer.player?.currentItem?.status == .failed
+            view.playbackFailed
         }, object: view)
         await fulfillment(of: [failed], timeout: 5)
         XCTAssertFalse(imageView.isHidden, "Failed playback must retain the original grip poster")
