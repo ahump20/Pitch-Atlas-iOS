@@ -270,25 +270,7 @@ struct PitchSpecimenCard: View {
         }
         .padding(padding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: max(cornerRadius - 5, 8), style: .continuous)
-                .fill(PitchAtlasTheme.void)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: max(cornerRadius - 5, 8), style: .continuous)
-                .strokeBorder(PitchAtlasTheme.bone.opacity(0.72), lineWidth: isHero ? 2 : 1.4)
-        )
-        .padding(isHero ? 6 : 4)
-        .background(
-            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .fill(PitchAtlasTheme.foil)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .strokeBorder(.black.opacity(0.55), lineWidth: 1)
-        )
-        .foilRake(radius: cornerRadius, intensity: isHero ? 0.9 : 0.55)
-        .shadow(color: .black.opacity(isHero ? 0.42 : 0.28), radius: isHero ? 18 : 10, x: 0, y: isHero ? 14 : 7)
+        .background { ArchiveCoverSurface(radius: cornerRadius) }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
         .contextMenu { Button("Compare this pitch") { comparison.add(entry.slug); Haptics.selection() } }
@@ -301,11 +283,11 @@ struct PitchSpecimenCard: View {
             if isHero, let film = entry.canonical.gripFilm {
                 GripFilmCard(film: film, height: mediaHeight, offersMotionControl: false, showsCaption: false)
             } else if let still = entry.canonical.realStill {
-                BundledImage(src: still.src, alt: still.alt)
+                BundledImage(src: still.src, alt: still.alt, contentMode: .fit)
                     .frame(height: mediaHeight)
                     .frame(maxWidth: .infinity)
             } else {
-                SeamBall(motion: entry.motion, size: isHero ? 210 : 96)
+                SeamBall(motion: entry.motion, size: isHero ? mediaHeight - 12 : 96)
                     .frame(height: mediaHeight)
                     .frame(maxWidth: .infinity)
             }

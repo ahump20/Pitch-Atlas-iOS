@@ -1,4 +1,5 @@
 import XCTest
+import simd
 @testable import PitchAtlas
 
 final class CompareSelectionTests: XCTestCase {
@@ -54,4 +55,23 @@ final class CompareSelectionTests: XCTestCase {
         let contextual = try decoder.decode(KnowledgeRelatedLink.self, from: Data(#"{"label":"Pitch","to":"/pitch/four-seam","reason":"Navigation context"}"#.utf8))
         XCTAssertEqual(contextual.reason, "Navigation context")
     }
+    func testSharedGripCameraFacesLeadContactsAndPreservesGeometry() throws {
+        let store = PitchStore()
+        let first = try XCTUnwrap(store.pitch(slug: "four-seam"))
+        let second = try XCTUnwrap(store.pitch(slug: "slider"))
+        let camera = GripStudyOrientation.quaternion(reference: first.canonical.fingerPlacement, view: .top)
+        let lead = first.canonical.fingerPlacement.filter { $0.finger != .thumb }
+        XCTAssertFalse(lead.isEmpty)
+        for contact in lead {
+            XCTAssertGreaterThan(camera.act(SeamMath.seamPoint(contact.seamT * 2 * .pi)).z, 0)
+        }
+        for pitch in [first, second] {
+            for contact in pitch.canonical.fingerPlacement {
+                let point = SeamMath.seamPoint(contact.seamT * 2 * .pi)
+                XCTAssertEqual(simd_length(camera.act(point)), simd_length(point), accuracy: 0.0000001)
+                XCTAssertLessThan(simd_distance(camera.inverse.act(camera.act(point)), point), 0.0000001)
+            }
+        }
+    }
+
 }

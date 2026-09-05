@@ -67,7 +67,7 @@ struct StudyTray: View {
                     .font(.subheadline)
             }.frame(maxWidth: .infinity, alignment: .leading).padding(20)
                 .foregroundStyle(PitchAtlasTheme.cardbackInk)
-                .background(PitchAtlasTheme.cardbackPaper, in: RoundedRectangle(cornerRadius: 12))
+                .background { ArchiveCoverSurface(radius: 12) }
         }.buttonStyle(.plain)
     }
 }
@@ -93,39 +93,11 @@ struct CompareView: View {
                             Button("Keep current pair") { selection.pending = nil }
                         }.leatherPress()
                     }
-                    if dynamicTypeSize.isAccessibilitySize {
-                        modePicker.pickerStyle(.menu)
-                    } else {
-                        modePicker.pickerStyle(.segmented)
+                    studySurface
+                    if selection.mode == .movement {
+                        Text("Qualitative movement · not tracked flight data.")
+                            .font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
                     }
-                    inspectionControls(hand: $selection.hand, orientation: $selection.orientation)
-                    if selection.slugs.count < 2 {
-                        Text(selection.slugs.isEmpty ? "Your study table is empty. Choose the first pitch below." : "Choose one more pitch to compare.").font(.headline)
-                    }
-                    if selection.mode == .grips {
-                        GeometryReader { geometry in
-                            HStack(alignment: .top, spacing: 12) {
-                                ForEach(selection.slugs, id: \.self) { slug in
-                                    if let entry = store.pitch(slug: slug) {
-                                        VStack(spacing: 10) {
-                                            Text(entry.display.shortName).font(.headline).dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-                                                .frame(maxWidth: .infinity, minHeight: 44)
-                                            SeamBall(motion: entry.motion,
-                                                     size: min(180, (geometry.size.width - 12) / 2 - 12),
-                                                     contacts: entry.canonical.fingerPlacement,
-                                                     orientation: selection.orientation, hand: selection.hand,
-                                                     showMovement: false)
-                                                .dynamicTypeSize(.large)
-                                                .accessibilityLabel("\(entry.canonical.name), \(selection.hand.rawValue) hand, \(selection.orientation.rawValue) seam-informed schematic")
-                                        }.frame(maxWidth: .infinity)
-                                    }
-                                }
-                            }
-                        }.frame(height: dynamicTypeSize.isAccessibilitySize ? 290 : 250)
-                        Text("Seam-informed schematics · same hand and view. Left hand is mirrored; these are not measured grip geometries.")
-                            .font(.caption)
-                    }
-                    Text("Sourced, not corrected. Movement is qualitative, not tracked flight data.").font(.caption)
                     ForEach(selection.slugs, id: \.self) { slug in
                         if let entry = store.pitch(slug: slug) {
                             VStack(alignment: .leading, spacing: 12) {
@@ -160,6 +132,83 @@ struct CompareView: View {
                 .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         }
     }
+    private var studySurface: some View {
+        @Bindable var selection = selection
+        return VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("THE STUDY TABLE").font(PitchAtlasTheme.martian(10))
+                    .tracking(1.5)
+                Spacer()
+                Text("\(selection.slugs.count) / 2").font(PitchAtlasTheme.martian(10))
+            }.foregroundStyle(PitchAtlasTheme.bone2)
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+            Text("Side by side").font(PitchAtlasTheme.newsreader(28))
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+            if dynamicTypeSize.isAccessibilitySize {
+                Menu {
+                    modePicker.pickerStyle(.menu)
+                    inspectionPickers(hand: $selection.hand, orientation: $selection.orientation)
+                } label: {
+                    Label("View", systemImage: "slider.horizontal.3")
+                        .frame(minHeight: 44)
+                }
+                Text("\(selection.mode.rawValue.capitalized) · \(selection.hand.rawValue.capitalized) · \(selection.orientation.rawValue.capitalized)")
+                    .font(.caption).foregroundStyle(PitchAtlasTheme.bone2)
+            } else {
+                modePicker.pickerStyle(.segmented)
+                inspectionControls(hand: $selection.hand, orientation: $selection.orientation)
+            }
+            Rectangle().fill(PitchAtlasTheme.sandBright.opacity(0.5)).frame(height: 1)
+            if selection.slugs.count < 2 {
+                Text(selection.slugs.isEmpty ? "Choose the first filed pitch below." : "Choose one more filed pitch below.")
+                    .font(.subheadline)
+            }
+            if !selection.slugs.isEmpty {
+                GeometryReader { geometry in
+                    HStack(alignment: .top, spacing: 10) {
+                        ForEach(Array(selection.slugs.enumerated()), id: \.element) { index, slug in
+                            if let entry = store.pitch(slug: slug) {
+                                if index == 1 {
+                                    Rectangle().fill(PitchAtlasTheme.sandBright.opacity(0.35))
+                                        .frame(width: 1)
+                                }
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("\(index == 0 ? "A" : "B")  /  \(entry.display.specimenNo)")
+                                        .font(PitchAtlasTheme.martian(10))
+                                        .foregroundStyle(PitchAtlasTheme.bone2)
+                                    Text(entry.display.shortName)
+                                        .font(PitchAtlasTheme.newsreader(22))
+                                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .topLeading)
+                                    if selection.mode == .grips {
+                                        SeamBall(motion: entry.motion,
+                                                 size: min(180, (geometry.size.width - 21) / 2 - 4),
+                                                 contacts: entry.canonical.fingerPlacement,
+                                                 orientation: selection.orientation, hand: selection.hand,
+                                                 showMovement: false,
+                                                 referenceContacts: selection.slugs.first.flatMap { store.pitch(slug: $0)?.canonical.fingerPlacement })
+                                            .dynamicTypeSize(.large)
+                                            .shadow(color: .black.opacity(0.45), radius: 9, x: 0, y: 8)
+                                            .accessibilityLabel("Specimen \(index == 0 ? "A" : "B"), \(entry.canonical.name), \(selection.hand.rawValue) hand, \(selection.orientation.rawValue) seam-informed schematic")
+                                    }
+                                }
+                                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                                .frame(maxWidth: .infinity)
+                            }
+                        }
+                    }
+                }.frame(height: selection.mode == .grips ? (dynamicTypeSize.isAccessibilitySize ? 260 : 225) : (dynamicTypeSize.isAccessibilitySize ? 110 : 76))
+            }
+            if selection.mode == .grips {
+                Text("Seam-informed schematics · same hand and view. Left hand is mirrored; these are not measured grip geometries.")
+                    .font(.caption).foregroundStyle(PitchAtlasTheme.bone2)
+            }
+        }
+        .padding(16)
+        .tint(PitchAtlasTheme.bone)
+        .background { ArchiveCoverSurface(radius: 18) }
+
+    }
+
     private var modePicker: some View {
         @Bindable var selection = selection
         return Picker("Compare view", selection: $selection.mode) {

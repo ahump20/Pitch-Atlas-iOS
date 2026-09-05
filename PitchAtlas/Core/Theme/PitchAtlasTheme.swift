@@ -20,19 +20,19 @@ enum PitchAtlasTheme {
     /// App background, every screen, sitewide — the web's cool black field.
     static let void = Color(hex: 0x15120F)
     /// Raised content cards — the "leather-press" surface.
-    static let press = Color(hex: 0x221E18)
+    static let press = Color(hex: 0x482116)
     /// Alternating panels, secondary card fill.
-    static let paper2 = Color(hex: 0x2C241D)
+    static let paper2 = Color(hex: 0x78361E)
     /// Deepest insets, edge frames.
-    static let paper3 = Color(hex: 0x3D3023)
+    static let paper3 = Color(hex: 0x9A4D2C)
 
     // MARK: - Text
     /// Primary text on the field.
     static let bone = Color(hex: 0xF6F1E6)
     /// Secondary text, captions.
-    static let bone2 = Color(hex: 0xC9C2B0)
+    static let bone2 = Color(hex: 0xE8D8C7)
     /// Muted / tertiary, hairlines, the "unverified" tier.
-    static let ink3 = Color(hex: 0x8A8576)
+    static let ink3 = Color(hex: 0xE8D8C7)
 
     // MARK: - Accent
     // Legacy names stay so call sites retone in place. These map to the web
@@ -58,25 +58,25 @@ enum PitchAtlasTheme {
     static let violet = Color(hex: 0xA92A22) // breaking - seam-burgundy
     static let navyLift = Color(hex: 0x15406E) // fastball - lifted navy
 
-    // MARK: - The cream card back (data panels print on paper, like a real card
+    // MARK: - Burnt-orange archive covers (data panels print on paper, like a real card
     // back: the ladder, the freshness line, the source ledger)
-    static let cardbackPaper = Color(hex: 0xF2E9D5)
-    static let cardbackPaper2 = Color(hex: 0xEAE0C8)
-    static let cardbackInk = Color(hex: 0x211D17)
-    static let cardbackInk2 = Color(hex: 0x4A443A)
-    static let cardbackInk3 = Color(hex: 0x6E675A)
-    static let cardbackLine = Color(hex: 0x211D17, opacity: 0.22)
-    static let cardbackNavy = Color(hex: 0x1F3A5F)
-    static let cardbackForest = Color(hex: 0x2F5D46)
-    static let cardbackBurgundy = Color(hex: 0x6E2B35)
-    static let cardbackGoldInk = Color(hex: 0x8A6B24)
-    /// cream-panel tier inks (the bright void dots fail contrast on paper)
+    static let cardbackPaper = Color(hex: 0x93401F)
+    static let cardbackPaper2 = Color(hex: 0x6D2D17)
+    static let cardbackInk = Color(hex: 0xFFF1DE)
+    static let cardbackInk2 = Color(hex: 0xF3D4B8)
+    static let cardbackInk3 = Color(hex: 0xE8D8C7)
+    static let cardbackLine = Color(hex: 0xFFF1DE, opacity: 0.22)
+    static let cardbackNavy = Color(hex: 0xBADAF1)
+    static let cardbackForest = Color(hex: 0xBDE7BD)
+    static let cardbackBurgundy = Color(hex: 0xFFD1C5)
+    static let cardbackGoldInk = Color(hex: 0xF1D1A0)
+    /// Cover tier inks, light enough to read on burnt-orange stock
     static func cardbackColor(forConfidence raw: String) -> Color {
         switch raw {
-        case "official-data": return Color(hex: 0x1E7A4A)
-        case "pitcher-own-words", "coach-observed": return Color(hex: 0x2C5A8C)
-        case "reputable-analysis": return Color(hex: 0x8A6118)
-        case "secondhand-attributed", "community-firsthand": return Color(hex: 0x6E5E3A)
+        case "official-data": return Color(hex: 0xBDE7BD)
+        case "pitcher-own-words", "coach-observed": return Color(hex: 0xBADAF1)
+        case "reputable-analysis": return Color(hex: 0xF1D1A0)
+        case "secondhand-attributed", "community-firsthand": return Color(hex: 0xEDC7AA)
         default: return cardbackInk3
         }
     }

@@ -64,3 +64,12 @@ Archive connections are derived from the bundle: practitioner `signaturePitchSlu
 Atlas exposes practitioner, lesson and lost-pitches entry paths without adding a tab. The original film remains labeled Austin H. / not tracked data; a practitioner relationship never relabels the pictured hand.
 
 Simulator evidence is retained on Pro under `/Users/AustinHumphrey/Pitch-Atlas/artifacts/native/archive-world/`: normal and accessibility comparison stills, original-film detail, practitioner entry, study, sourced connections, preserved return context, reduced-motion/transparency presentation, and an uninterrupted practitioner → specimen → Fingers study → comparison pair → study return → practitioner recording. This is iPhone 17 Pro simulator / iOS 26.5 evidence, not physical-device or TestFlight proof. Core bundle decoding is tested locally and bundle JSON hashes match the authoritative Air source. First-launch airplane-mode verification, full VoiceOver traversal, and physical performance remain unproved. The native app's runtime-only external community/media services retain their existing network boundaries.
+
+
+## Material study revision — 2026-09-05
+
+All specimen frames and source/reading panels now share worn burnt-orange cover stock with deterministic grain, pressed inset edges and layered shadows. Ivory secondary text replaces low-contrast grey on the orange surfaces. Cream remains a native control neutral, not a page canvas. Original photographs use aspect-fit framing.
+
+The comparison is one A/B study surface with coordinated controls and an explicit divider. Each specimen retains its seam-informed schematic qualification; Movement retains its qualitative/not-tracked qualification. Lesson subtitles use the matching bundled navigation reason, falling back to the lesson summary. Claim and source labels remain attached to their reading cards.
+
+Static leather uses natural off-white shading, a recessed neutral seam join and curved dark red lacing; rear seam and contacts are occluded by the opaque ball. The shared seam function and source contact parameters are unchanged. Comparison derives one facing quaternion from specimen A's non-thumb contacts (all contacts when necessary), then applies that same transform to both seams and both contact sets. Top/side/thumb camera rotations match the web reference study; neither ball independently rotates to make its own grip look similar. The SceneKit surface uses matte off-white albedo, restrained normal grain and dark seam/thread materials, retaining the existing geometry.

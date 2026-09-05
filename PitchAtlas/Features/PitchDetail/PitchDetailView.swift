@@ -91,7 +91,8 @@ struct PitchDetailView: View {
                 NavigationLink { KnowledgeWingView(wing: wing) } label: {
                     VStack(alignment: .leading, spacing: 4) {
                         Label(wing.title, systemImage: "book")
-                        Text("This lesson points to this specimen.").font(.caption)
+                        Text(wing.related?.first(where: { $0.to == "/pitch/" + entry.slug })?.reason ?? wing.summary)
+                            .font(.subheadline).fixedSize(horizontal: false, vertical: true)
                     }.frame(minHeight: 44, alignment: .leading)
                 }
             }

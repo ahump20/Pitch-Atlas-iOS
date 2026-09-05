@@ -1,14 +1,11 @@
 import SwiftUI
 
 // =============================================================================
-// CardBackPanel — the cream card back, native
+// CardBackPanel — the burnt-orange archive cover, native
 // =============================================================================
-// Real vintage card backs print the data on cream stock inside a gold frame;
-// this panel is that register, ported from the web's .rfx-cardback: Scorecard
-// Cream paper, the double border (gold frame outside, charcoal hairline
-// inside), and charcoal ink content. Data panels (the grading scale, the
-// freshness ledger, source lists) print on paper — the charcoal table stays
-// the field around them.
+// Worn orange stock, inset pressed edges and layered contact shadows.
+// Ivory reading ink preserves source-label contrast on the darkest and lightest
+// cover tones. The surrounding app canvas remains charcoal.
 // =============================================================================
 
 struct CardBackPanel<Content: View>: View {
@@ -18,27 +15,10 @@ struct CardBackPanel<Content: View>: View {
         content
             .padding(PitchAtlasSpacing.lg)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(PitchAtlasTheme.cardbackPaper)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .strokeBorder(PitchAtlasTheme.cardbackLine, lineWidth: 1)
-                    .padding(3)
-            )
-            .padding(4)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: 0xC9A85C), Color(hex: 0x8A6B24), Color(hex: 0xC9A85C)],
-                            startPoint: .topLeading, endPoint: .bottomTrailing
-                        )
-                    )
-            )
-            .shadow(color: .black.opacity(0.5), radius: 14, x: 0, y: 10)
+            .foregroundStyle(PitchAtlasTheme.cardbackInk)
+            .background { ArchiveCoverSurface(radius: 14) }
     }
+
 }
 
 /// The card-back header strip: a small slab title set between two hard ink
