@@ -35,3 +35,9 @@ Additional retained simulator evidence from this pass:
 - `pitch-atlas-compare-invalid-after-fix.png` — invalid deep-link presentation after the navigation-title contrast fix.
 - `pitch-atlas-index-retained-comparison.png` — Index after Done and a tab deep link, with Four-Seam Fastball + Slider still in the study table.
 - `pitch-atlas-compare-reduced-motion-transparency.png` — comparison rendered while Reduce Motion and Reduce Transparency were both enabled.
+
+## Matched redesign baseline
+
+The pre-study baseline was rebuilt from exact revision `dbfb3ca404156f6f8508a2e963a2f93e6d68b1a5` in a detached temporary worktree. That revision already contained the DEBUG-only `PA_PITCH=four-seam` launch hook used for both captures. The baseline QA project changed only its temporary bundle identifier to `com.pitchatlas.baselineqa`, allowing it to install alongside `com.pitchatlas.app` without replacing the current app or its data. No baseline modification was committed.
+
+`pitch-atlas-baseline-dbfb3ca-four-seam.png` and `pitch-atlas-current-four-seam-matched.png` are genuine simulator captures from the same iPhone 17 Pro simulator, iOS 26.5 runtime, portrait viewport, normal `large` Dynamic Type setting, four-seam detail route, and nine-second post-launch settling interval. Their SHA-256 values are `b2e1bff75a71b13422c188abb55e146415f32632355452db8ad9bef9830eec52` and `1e5ab3c8991c3d848b3ca726a025c30d8af58818b73aaba6dc00caca70c7f887`, respectively. The separate baseline app was uninstalled after capture, and the current app was relaunched. Earlier comparison screenshots labeled “before fix” predate only the navigation-title contrast repair and are not redesign baselines.
