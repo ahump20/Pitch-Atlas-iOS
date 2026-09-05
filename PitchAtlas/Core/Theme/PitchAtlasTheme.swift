@@ -6,8 +6,8 @@ import SwiftUI
 // Direct port of the web design system's rendered tokens. Source of truth:
 // the web repo's src/index.css refractor layer. Native archive surface: warm
 // charcoal field, cyan interaction, seam-bright red, bone, and controlled
-// refractor foil. Cream lives on card backs and printed-data panels, not as the
-// app field.
+// refractor foil. Worn orange is reserved for the signature collectible;
+// reading panels stay on neutral dark stock.
 // Pattern: an enum of static tokens + Color(hex:) + Font.custom(relativeTo:)
 // with system fallbacks. Palette and typefaces are Pitch Atlas's own.
 //
@@ -20,11 +20,11 @@ enum PitchAtlasTheme {
     /// App background, every screen, sitewide — the web's cool black field.
     static let void = Color(hex: 0x15120F)
     /// Raised content cards — the "leather-press" surface.
-    static let press = Color(hex: 0x482116)
+    static let press = Color(hex: 0x221E18)
     /// Alternating panels, secondary card fill.
-    static let paper2 = Color(hex: 0x78361E)
+    static let paper2 = Color(hex: 0x2C241D)
     /// Deepest insets, edge frames.
-    static let paper3 = Color(hex: 0x9A4D2C)
+    static let paper3 = Color(hex: 0x3D3023)
 
     // MARK: - Text
     /// Primary text on the field.
@@ -58,10 +58,9 @@ enum PitchAtlasTheme {
     static let violet = Color(hex: 0xA92A22) // breaking - seam-burgundy
     static let navyLift = Color(hex: 0x15406E) // fastball - lifted navy
 
-    // MARK: - Burnt-orange archive covers (data panels print on paper, like a real card
-    // back: the ladder, the freshness line, the source ledger)
-    static let cardbackPaper = Color(hex: 0x93401F)
-    static let cardbackPaper2 = Color(hex: 0x6D2D17)
+    // MARK: - Dark archive reading stock (the signature collectible owns orange)
+    static let cardbackPaper = Color(hex: 0x24221F)
+    static let cardbackPaper2 = Color(hex: 0x191817)
     static let cardbackInk = Color(hex: 0xFFF1DE)
     static let cardbackInk2 = Color(hex: 0xF3D4B8)
     static let cardbackInk3 = Color(hex: 0xE8D8C7)
@@ -70,7 +69,7 @@ enum PitchAtlasTheme {
     static let cardbackForest = Color(hex: 0xBDE7BD)
     static let cardbackBurgundy = Color(hex: 0xFFD1C5)
     static let cardbackGoldInk = Color(hex: 0xF1D1A0)
-    /// Cover tier inks, light enough to read on burnt-orange stock
+    /// Warm tier inks remain legible on dark reading stock and the signature cover.
     static func cardbackColor(forConfidence raw: String) -> Color {
         switch raw {
         case "official-data": return Color(hex: 0xBDE7BD)

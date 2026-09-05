@@ -234,6 +234,17 @@ struct PitchSpecimenCard: View {
     var style: Style = .hero
 
     private var isHero: Bool { style == .hero }
+    private var isSignature: Bool { entry.specimenGrade.key == .gold }
+    private var collectibleEdge: LinearGradient {
+        switch entry.specimenGrade.key {
+        case .gold: return PitchAtlasTheme.gold
+        case .inMotion: return PitchAtlasTheme.foil
+        case .firstParty: return PitchAtlasTheme.chrome
+        case .reference:
+            return LinearGradient(colors: [Color(hex: 0x9EA6AB), Color(hex: 0x454B50), Color(hex: 0xC3CACD)],
+                                  startPoint: .topLeading, endPoint: .bottomTrailing)
+        }
+    }
     private var mediaHeight: CGFloat { isHero ? 176 : 118 }
     private var titleSize: CGFloat { isHero ? 29 : 17 }
     private var padding: CGFloat { isHero ? PitchAtlasSpacing.md : PitchAtlasSpacing.sm }
@@ -270,7 +281,30 @@ struct PitchSpecimenCard: View {
         }
         .padding(padding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background { ArchiveCoverSurface(radius: cornerRadius) }
+        .background { ArchiveCoverSurface(radius: cornerRadius, signature: isSignature) }
+        .overlay {
+            if !isSignature {
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .strokeBorder(PitchAtlasTheme.chrome, lineWidth: isHero ? 4 : 3)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                            .strokeBorder(collectibleEdge, lineWidth: isHero ? 4 : 3)
+                            .opacity(entry.specimenGrade.key == .inMotion ? 0.30 : 0.75)
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: max(2, cornerRadius - 3), style: .continuous)
+                            .inset(by: 3)
+                            .strokeBorder(.black.opacity(0.75), lineWidth: 0.9)
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: max(2, cornerRadius - 5), style: .continuous)
+                            .inset(by: 5)
+                            .strokeBorder(PitchAtlasTheme.bone.opacity(0.28), lineWidth: 0.8)
+                    }
+                    .accessibilityHidden(true)
+                    .allowsHitTesting(false)
+            }
+        }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
         .contextMenu { Button("Compare this pitch") { comparison.add(entry.slug); Haptics.selection() } }

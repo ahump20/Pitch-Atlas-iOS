@@ -99,12 +99,25 @@ struct SectionLabel: View {
 // MARK: - Leather-press card
 
 /// The content surface: solid press fill + 1px bone hairline. Never glass.
-/// Original worn stock shared by every native card. Texture is deterministic and decorative.
+/// Neutral archive stock; the signature collectible alone opts into worn orange.
+/// Texture is deterministic and decorative.
 struct ArchiveCoverSurface: View {
     var radius: CGFloat = 18
+    var signature = false
+
+    private var stock: [Color] {
+        signature
+            ? [Color(hex: 0x93411F), Color(hex: 0x6D2E18), Color(hex: 0x3D1D13)]
+            : [Color(hex: 0x24201C), PitchAtlasTheme.press, Color(hex: 0x141312)]
+    }
+    private var edge: [Color] {
+        signature
+            ? [Color(hex: 0xE09A65).opacity(0.75), Color(hex: 0x37170F), Color(hex: 0xB76B3E).opacity(0.65)]
+            : [PitchAtlasTheme.bone.opacity(0.28), .black.opacity(0.65), PitchAtlasTheme.bone.opacity(0.13)]
+    }
     var body: some View {
         RoundedRectangle(cornerRadius: radius, style: .continuous)
-            .fill(LinearGradient(colors: [Color(hex: 0x93411F), Color(hex: 0x6D2E18), Color(hex: 0x3D1D13)],
+            .fill(LinearGradient(colors: stock,
                                  startPoint: .topLeading, endPoint: .bottomTrailing))
             .overlay {
                 Canvas { context, size in
@@ -121,19 +134,19 @@ struct ArchiveCoverSurface: View {
                         let y: CGFloat = i.isMultiple(of: 2) ? 2.5 : size.height - 3
                         var wear = Path()
                         wear.move(to: CGPoint(x: x, y: y)); wear.addLine(to: CGPoint(x: x + CGFloat(2 + i % 5), y: y))
-                        context.stroke(wear, with: .color(Color(hex: 0xD49868).opacity(0.32)), lineWidth: 1)
+                        context.stroke(wear, with: .color(signature ? Color(hex: 0xD49868).opacity(0.32) : PitchAtlasTheme.bone.opacity(0.055)), lineWidth: 1)
                     }
                 }.clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
             }
             .overlay {
                 RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .strokeBorder(LinearGradient(colors: [Color(hex: 0xE09A65).opacity(0.75), Color(hex: 0x37170F), Color(hex: 0xB76B3E).opacity(0.65)],
+                    .strokeBorder(LinearGradient(colors: edge,
                                                  startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
             }
             .overlay {
                 RoundedRectangle(cornerRadius: max(2, radius - 5), style: .continuous)
                     .inset(by: 5).strokeBorder(.black.opacity(0.25), lineWidth: 1)
-                    .shadow(color: Color(hex: 0xEDAB78).opacity(0.22), radius: 0, y: 1)
+                    .shadow(color: signature ? Color(hex: 0xEDAB78).opacity(0.22) : PitchAtlasTheme.bone.opacity(0.08), radius: 0, y: 1)
             }
             .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 3)
             .shadow(color: .black.opacity(0.35), radius: 12, x: 0, y: 12)
@@ -150,7 +163,7 @@ struct LeatherPress: ViewModifier {
     }
 }
 
-/// The specimen uses the same worn stock and pressed rim as the archive cards.
+/// Media and study frames use neutral archive stock; collectible fronts own the foil.
 struct SpecimenCardFrame: ViewModifier {
     var padding: CGFloat
     var radius: CGFloat

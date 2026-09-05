@@ -1,11 +1,11 @@
 import SwiftUI
 
 // =============================================================================
-// CardBackPanel — the burnt-orange archive cover, native
+// CardBackPanel — neutral archive reading stock, native
 // =============================================================================
-// Worn orange stock, inset pressed edges and layered contact shadows.
-// Ivory reading ink preserves source-label contrast on the darkest and lightest
-// cover tones. The surrounding app canvas remains charcoal.
+// Dark stock, inset pressed edges and layered contact shadows.
+// Warm reading ink keeps source labels clear. Orange remains reserved for
+// the signature collectible rather than every reading surface.
 // =============================================================================
 
 struct CardBackPanel<Content: View>: View {
