@@ -74,29 +74,40 @@ enum IndexSort: String, CaseIterable, Identifiable {
 struct IndexView: View {
     @Environment(PitchStore.self) private var store
 
+    private static let topScrollTarget = "index:top"
+
     @State private var query = ""
     @State private var family: RepertoireFamily? = nil
     @State private var status: RepertoireStatus? = nil
     @State private var sort: IndexSort = .family
+    @State private var visibleScrollTarget: String?
 
     var body: some View {
         ZStack {
             FieldBackdrop()
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    masthead
-                    StudyTray()
-                    searchField
-                    familyChips
-                    statusChips
-                    sortControls
-                    content
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
+                        masthead
+                            .id(Self.topScrollTarget)
+                        StudyTray()
+                        searchField
+                        familyChips
+                        statusChips
+                        sortControls
+                        content
+                    }
+                    .padding(.horizontal, PitchAtlasSpacing.lg)
+                    .padding(.top, PitchAtlasSpacing.md)
+                    .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+                    .emitsBlazeScrollProgress()
                 }
-                .padding(.horizontal, PitchAtlasSpacing.lg)
-                .padding(.top, PitchAtlasSpacing.md)
-                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-                .emitsBlazeScrollProgress()
+                .scrollPosition(id: $visibleScrollTarget, anchor: .top)
+                .onChange(of: query) { resetScrollPosition(using: proxy) }
+                .onChange(of: family) { resetScrollPosition(using: proxy) }
+                .onChange(of: status) { resetScrollPosition(using: proxy) }
+                .onChange(of: sort) { resetScrollPosition(using: proxy) }
             }
         }
         .navigationTitle("Index")
@@ -290,13 +301,17 @@ struct IndexView: View {
 
             VStack(spacing: 0) {
                 ForEach(Array(group.entries.enumerated()), id: \.element.id) { idx, entry in
-                    if idx > 0 { HairlineDivider() }
-                    NavigationLink(value: entry) {
-                        RepertoireRow(entry: entry)
+                    VStack(spacing: 0) {
+                        if idx > 0 { HairlineDivider() }
+                        NavigationLink(value: entry) {
+                            RepertoireRow(entry: entry)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
+                    .id(scrollTarget(for: entry))
                 }
             }
+            .scrollTargetLayout()
             .specimenCardFrame(
                 padding: PitchAtlasSpacing.xs,
                 radius: PitchAtlasRadius.card,
@@ -307,6 +322,15 @@ struct IndexView: View {
     }
 
     // MARK: - Filtering + grouping
+
+    private func scrollTarget(for entry: RepertoireEntry) -> String {
+        "index:entry:\(entry.id)"
+    }
+
+    private func resetScrollPosition(using proxy: ScrollViewProxy) {
+        visibleScrollTarget = nil
+        proxy.scrollTo(Self.topScrollTarget, anchor: .top)
+    }
 
     /// Entries matching the live search query (name + aka), case-insensitive.
     private var searchedEntries: [RepertoireEntry] {
