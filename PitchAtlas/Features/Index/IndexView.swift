@@ -347,13 +347,13 @@ struct IndexView: View {
     }
 
     private func rememberVisibleScrollTarget(from frames: [String: CGRect]) {
+        // A row below the controls is not a scroll anchor until it has actually
+        // crossed the viewport's top edge. No match keeps nil at page top and
+        // retains the last genuine row while a family heading crosses the edge.
         let crossingTopEdge = frames
             .filter { $0.value.minY <= 0 && $0.value.maxY > 0 }
             .max { $0.value.minY < $1.value.minY }
-        let firstBelowTopEdge = frames
-            .filter { $0.value.minY > 0 }
-            .min { $0.value.minY < $1.value.minY }
-        guard let target = crossingTopEdge?.key ?? firstBelowTopEdge?.key,
+        guard let target = crossingTopEdge?.key,
               target != lastVisibleScrollTarget else { return }
         lastVisibleScrollTarget = target
     }
