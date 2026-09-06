@@ -552,7 +552,11 @@ struct PitchDetailView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: PitchAtlasSpacing.sm) {
                         ForEach(kin) { sib in
-                            NavigationLink(value: sib) { siblingPill(sib) }
+                            NavigationLink {
+                                PitchDetailView(entry: sib)
+                            } label: {
+                                siblingPill(sib)
+                            }
                                 .buttonStyle(.plain)
                         }
                     }
@@ -579,6 +583,8 @@ struct PitchDetailView: View {
         }
         .padding(.vertical, PitchAtlasSpacing.xs)
         .padding(.horizontal, PitchAtlasSpacing.sm)
+        .frame(minHeight: 44)
+        .contentShape(Rectangle())
         .overlay(Capsule().stroke(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(sib.canonical.name), open specimen")
