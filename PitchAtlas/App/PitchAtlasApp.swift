@@ -103,6 +103,7 @@ struct RootView: View {
     @Environment(PitchStore.self) private var store
     @Environment(AuthSessionStore.self) private var auth
     @State private var router = DeepLinkRouter()
+    @State private var comparison = CompareSelection()
 
     /// DEBUG-only launch override so QA can open straight to a tab; production always starts on Atlas.
     static var initialTab: AppTab {
@@ -143,6 +144,8 @@ struct RootView: View {
                 .tabItem { Label(AppTab.sources.title, systemImage: AppTab.sources.systemImage) }
                 .tag(AppTab.sources)
         }
+        .environment(\.compareSelection, comparison)
+        .sheet(isPresented: $comparison.presented) { CompareView().environment(\.compareSelection, comparison) }
         .tint(PitchAtlasTheme.powder)
         .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
@@ -150,7 +153,7 @@ struct RootView: View {
         .toolbarColorScheme(.dark, for: .navigationBar, .tabBar)
         .onOpenURL { url in
             auth.handle(url: url)
-            router.handle(url, store: store)
+            if !comparison.handle(url, store: store) { router.handle(url, store: store) }
         }
         .task { applyDebugLaunch() }
     }

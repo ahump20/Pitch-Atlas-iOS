@@ -11,15 +11,25 @@ import SwiftUI
 // =============================================================================
 
 struct KnowledgeWingView: View {
+    @Environment(PitchStore.self) private var store
+    @Environment(\.compareSelection) private var comparison
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let wing: KnowledgeWing
+
+    private var chapters: [ArchiveChapter] {
+        [ArchiveChapter(id: "lesson-overview", title: "Overview")]
+        + wing.sections.enumerated().map { ArchiveChapter(id: "lesson-section-\($0.offset)", title: $0.element.heading) }
+        + [ArchiveChapter(id: "lesson-sources", title: "Sources and related reading")]
+    }
 
     var body: some View {
         ZStack {
             FieldBackdrop()
 
+            ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    header
+                    header.id("lesson-overview")
 
                     if wing.educational == true {
                         educationalBanner
@@ -27,11 +37,17 @@ struct KnowledgeWingView: View {
 
                     sections
 
-                    footer
+                    footer.id("lesson-sources")
                 }
                 .padding(.horizontal, PitchAtlasSpacing.md)
                 .padding(.top, PitchAtlasSpacing.md)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                ArchiveChapterNavigation(chapters: chapters, compact: true) { id in
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) { proxy.scrollTo(id, anchor: .top) }
+                }
+            }
             }
         }
         .navigationTitle(wing.navLabel.isEmpty ? wing.title : wing.navLabel)
@@ -77,8 +93,8 @@ struct KnowledgeWingView: View {
 
     private var sections: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-            ForEach(Array(wing.sections.enumerated()), id: \.offset) { _, section in
-                WingSectionView(section: section)
+            ForEach(Array(wing.sections.enumerated()), id: \.offset) { index, section in
+                WingSectionView(section: section).id("lesson-section-\(index)")
             }
         }
     }
@@ -104,18 +120,37 @@ struct KnowledgeWingView: View {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
                     SectionLabel(text: "RELATED")
                     ForEach(Array(related.enumerated()), id: \.offset) { _, link in
-                        Text(link.label)
-                            .font(PitchAtlasTheme.hanken(13))
-                            .foregroundStyle(PitchAtlasTheme.ink3)
-                            .fixedSize(horizontal: false, vertical: true)
+                        VStack(alignment: .leading, spacing: 4) {
+                            relatedLink(link)
+                            if let reason = link.reason, !reason.isEmpty {
+                                Text(reason).font(.subheadline)
+                                    .foregroundStyle(PitchAtlasTheme.bone2)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("Related. " + related.map(\.label).joined(separator: ". "))
+
             }
         }
     }
+    @ViewBuilder private func relatedLink(_ link: KnowledgeRelatedLink) -> some View {
+        let parts = link.to.split(separator: "/").map(String.init)
+        if parts.count == 2, parts[0] == "learn", let destination = store.wing(slug: parts[1]) {
+            NavigationLink { KnowledgeWingView(wing: destination) } label: { Label(link.label, systemImage: "book") }.frame(minHeight: 44)
+        } else if parts.count == 2, parts[0] == "pitch", let entry = store.pitch(slug: parts[1]) {
+            NavigationLink { PitchDetailView(entry: entry) } label: { Label(link.label, systemImage: "baseball") }.frame(minHeight: 44)
+        } else if link.to == "/repertoire" {
+            NavigationLink { IndexView() } label: { Label(link.label, systemImage: "square.grid.2x2") }.frame(minHeight: 44)
+        } else if link.to == "/compare" {
+            Button { comparison.presented = true } label: { Label(link.label, systemImage: "square.split.2x1") }.frame(minHeight: 44)
+        } else if let url = URL(string: "https://pitch-atlas.com" + link.to), link.to.hasPrefix("/") {
+            Link(destination: url) { Label(link.label + " · web", systemImage: "arrow.up.right.square") }.frame(minHeight: 44)
+        }
+    }
+
 }
 
 // MARK: - One section

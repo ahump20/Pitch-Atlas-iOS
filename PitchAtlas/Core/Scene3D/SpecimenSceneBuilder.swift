@@ -35,7 +35,7 @@ enum SpecimenSceneBuilder {
     // Geometry spec (mirrors the web ball).
     static let tubeSegments = 512
     static let tubeRadialSegments = 12
-    static let tubeRadius = 0.0135
+    static let tubeRadius = 0.0055
     static let stitchCount = 216
     static let stitchTemplateVertexCount = stitchTemplate.positions.count
 
@@ -87,10 +87,10 @@ enum SpecimenSceneBuilder {
         leather.lightingModel = .physicallyBased
         leather.diffuse.contents = maps.albedo
         leather.normal.contents = maps.normal
-        leather.normal.intensity = 0.85
+        leather.normal.intensity = 0.42
         leather.roughness.contents = maps.roughness
         leather.metalness.contents = 0.0
-        leather.clearCoat.contents = 0.35
+        leather.clearCoat.contents = 0.0
         leather.clearCoatRoughness.contents = 0.42
         sphere.materials = [leather]
         let sphereNode = SCNNode(geometry: sphere)
@@ -100,10 +100,10 @@ enum SpecimenSceneBuilder {
         guard let tube = makeSeamTube() else { return nil }
         let thread = SCNMaterial()
         thread.lightingModel = .physicallyBased
-        thread.diffuse.contents = UIColor(hexRGB: 0xB81127)
-        thread.roughness.contents = 0.42
+        thread.diffuse.contents = UIColor(hexRGB: 0x594A40)
+        thread.roughness.contents = 0.88
         thread.metalness.contents = 0.0
-        thread.clearCoat.contents = 0.5
+        thread.clearCoat.contents = 0.0
         thread.clearCoatRoughness.contents = 0.22
         thread.isDoubleSided = true
         tube.materials = [thread]
@@ -115,15 +115,15 @@ enum SpecimenSceneBuilder {
         guard let stitches = makeStitchGeometry() else { return nil }
         let stitchMaterial = SCNMaterial()
         stitchMaterial.lightingModel = .physicallyBased
-        stitchMaterial.diffuse.contents = UIColor(hexRGB: 0xD6213B)
-        stitchMaterial.roughness.contents = 0.34
+        stitchMaterial.diffuse.contents = UIColor(hexRGB: 0x9E2B35)
+        stitchMaterial.roughness.contents = 0.78
         stitchMaterial.metalness.contents = 0.0
-        stitchMaterial.clearCoat.contents = 0.6
+        stitchMaterial.clearCoat.contents = 0.0
         stitchMaterial.clearCoatRoughness.contents = 0.16
         // a tiny deep-red emission: the waxed crown catching rim light — a
         // glint, not a glow (web: emissive #3a0810 × 0.15)
         stitchMaterial.emission.contents = UIColor(hexRGB: 0x3A0810)
-        stitchMaterial.emission.intensity = 0.15
+        stitchMaterial.emission.intensity = 0.0
         stitchMaterial.isDoubleSided = true
         stitches.materials = [stitchMaterial]
         let stitchNode = SCNNode(geometry: stitches)
@@ -144,7 +144,7 @@ enum SpecimenSceneBuilder {
         // ── studio rig ────────────────────────────────────────────────────────
         scene.lightingEnvironment.contents = makeEnvironmentGradient()
         scene.lightingEnvironment.intensity = 1.0
-        addDirectionalLight(to: scene, color: UIColor(hexRGB: 0xFFF1DD), intensity: 2900,
+        addDirectionalLight(to: scene, color: UIColor(hexRGB: 0xFFFCF4), intensity: 2100,
                             from: SCNVector3(2.6, 3.2, 5.2))   // warm key
         addDirectionalLight(to: scene, color: UIColor(hexRGB: 0xC8DAF2), intensity: 550,
                             from: SCNVector3(-4.2, -1.4, 2.2)) // cool fill

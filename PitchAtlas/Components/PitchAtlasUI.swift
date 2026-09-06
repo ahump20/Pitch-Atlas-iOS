@@ -10,15 +10,16 @@ import SwiftUI
 
 // MARK: - Field background
 
-/// Shared app field: the web's cool black stage with faint rule lines and controlled
-/// powder/seam light. It keeps large surfaces from falling back to flat brown.
+/// Shared warm archive field with fine rules; Reduce Transparency uses solid charcoal.
 struct FieldBackdrop: View {
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     var body: some View {
         ZStack {
             PitchAtlasTheme.void
-            LinearGradient(
+            if !reduceTransparency {
+                LinearGradient(
                 colors: [
-                    Color(hex: 0x16121F).opacity(0.30),
+                    Color(hex: 0xA87C4B).opacity(0.18),
                     .clear,
                     PitchAtlasTheme.void,
                 ],
@@ -27,7 +28,7 @@ struct FieldBackdrop: View {
             )
             RadialGradient(
                 colors: [
-                    PitchAtlasTheme.cyan.opacity(0.095),
+                    PitchAtlasTheme.cardbackPaper.opacity(0.065),
                     .clear,
                 ],
                 center: .topLeading,
@@ -54,6 +55,7 @@ struct FieldBackdrop: View {
             )
             FieldRuleMesh()
                 .opacity(0.20)
+            }
         }
         .ignoresSafeArea()
     }
@@ -97,107 +99,79 @@ struct SectionLabel: View {
 // MARK: - Leather-press card
 
 /// The content surface: solid press fill + 1px bone hairline. Never glass.
-struct LeatherPress: ViewModifier {
-    var padding: CGFloat
-    var radius: CGFloat
+/// Neutral archive stock; the signature collectible alone opts into worn orange.
+/// Texture is deterministic and decorative.
+struct ArchiveCoverSurface: View {
+    var radius: CGFloat = 18
+    var signature = false
 
-    func body(content: Content) -> some View {
-        content
-            .padding(padding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                ZStack {
-                    RoundedRectangle(cornerRadius: radius, style: .continuous)
-                        .fill(PitchAtlasTheme.press)
-                    RoundedRectangle(cornerRadius: radius, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [
-                                    PitchAtlasTheme.paper2.opacity(0.72),
-                                    PitchAtlasTheme.press.opacity(0.12),
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                    RoundedRectangle(cornerRadius: radius, style: .continuous)
-                        .fill(
-                            RadialGradient(
-                                colors: [
-                                    PitchAtlasTheme.powder.opacity(0.10),
-                                    .clear,
-                                ],
-                                center: .topTrailing,
-                                startRadius: 0,
-                                endRadius: 240
-                            )
-                        )
-                }
-            )
-            .overlay(
+    private var stock: [Color] {
+        signature
+            ? [Color(hex: 0x93411F), Color(hex: 0x6D2E18), Color(hex: 0x3D1D13)]
+            : [Color(hex: 0x24201C), PitchAtlasTheme.press, Color(hex: 0x141312)]
+    }
+    private var edge: [Color] {
+        signature
+            ? [Color(hex: 0xE09A65).opacity(0.75), Color(hex: 0x37170F), Color(hex: 0xB76B3E).opacity(0.65)]
+            : [PitchAtlasTheme.bone.opacity(0.28), .black.opacity(0.65), PitchAtlasTheme.bone.opacity(0.13)]
+    }
+    var body: some View {
+        RoundedRectangle(cornerRadius: radius, style: .continuous)
+            .fill(LinearGradient(colors: stock,
+                                 startPoint: .topLeading, endPoint: .bottomTrailing))
+            .overlay {
+                Canvas { context, size in
+                    for i in 0..<180 {
+                        let x = CGFloat((Double(i) * 0.754877666).truncatingRemainder(dividingBy: 1)) * size.width
+                        let y = CGFloat((Double(i) * 0.569840296).truncatingRemainder(dividingBy: 1)) * size.height
+                        var stroke = Path()
+                        stroke.move(to: CGPoint(x: x, y: y))
+                        stroke.addLine(to: CGPoint(x: x + CGFloat(2 + i % 8), y: y + 0.7))
+                        context.stroke(stroke, with: .color(.black.opacity(0.11)), lineWidth: 0.5)
+                    }
+                    for i in 0..<35 {
+                        let x = CGFloat((i * 47) % 997) / 997 * size.width
+                        let y: CGFloat = i.isMultiple(of: 2) ? 2.5 : size.height - 3
+                        var wear = Path()
+                        wear.move(to: CGPoint(x: x, y: y)); wear.addLine(to: CGPoint(x: x + CGFloat(2 + i % 5), y: y))
+                        context.stroke(wear, with: .color(signature ? Color(hex: 0xD49868).opacity(0.32) : PitchAtlasTheme.bone.opacity(0.055)), lineWidth: 1)
+                    }
+                }.clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+            }
+            .overlay {
                 RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
-            )
+                    .strokeBorder(LinearGradient(colors: edge,
+                                                 startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: max(2, radius - 5), style: .continuous)
+                    .inset(by: 5).strokeBorder(.black.opacity(0.25), lineWidth: 1)
+                    .shadow(color: signature ? Color(hex: 0xEDAB78).opacity(0.22) : PitchAtlasTheme.bone.opacity(0.08), radius: 0, y: 1)
+            }
+            .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 3)
+            .shadow(color: .black.opacity(0.35), radius: 12, x: 0, y: 12)
+            .accessibilityHidden(true).allowsHitTesting(false)
     }
 }
 
-/// The specimen surface: a leather-press card with a refractor edge and inset
-/// print rules. This borrows the physical-card language without copying any
-/// outside card layout.
+struct LeatherPress: ViewModifier {
+    var padding: CGFloat
+    var radius: CGFloat
+    func body(content: Content) -> some View {
+        content.padding(padding).frame(maxWidth: .infinity, alignment: .leading)
+            .background { ArchiveCoverSurface(radius: radius) }
+    }
+}
+
+/// Media and study frames use neutral archive stock; collectible fronts own the foil.
 struct SpecimenCardFrame: ViewModifier {
     var padding: CGFloat
     var radius: CGFloat
     var foilIntensity: Double
     var foilFillOpacity: Double
-
     func body(content: Content) -> some View {
-        content
-            .padding(padding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                ZStack {
-                    RoundedRectangle(cornerRadius: radius, style: .continuous)
-                        .fill(Color(hex: 0x0B0805))
-                    RoundedRectangle(cornerRadius: radius, style: .continuous)
-                        .fill(PitchAtlasTheme.foil)
-                        .opacity(max(0.02, foilFillOpacity * 0.65))
-                        .blendMode(.screen)
-                    RoundedRectangle(cornerRadius: radius, style: .continuous)
-                        .fill(
-                            RadialGradient(
-                                colors: [
-                                    PitchAtlasTheme.powder.opacity(0.16),
-                                    .clear,
-                                ],
-                                center: .top,
-                                startRadius: 0,
-                                endRadius: 260
-                            )
-                        )
-                }
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .strokeBorder(PitchAtlasTheme.foil, lineWidth: 1.5)
-                    .opacity(0.48)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: max(2, radius - 6), style: .continuous)
-                    .inset(by: 6)
-                    .strokeBorder(PitchAtlasTheme.bone.opacity(0.20), lineWidth: 1)
-            )
-            .overlay(alignment: .bottom) {
-                Rectangle()
-                    .fill(PitchAtlasTheme.foil)
-                    .frame(height: 2)
-                    .opacity(0.38)
-                    .padding(.horizontal, radius)
-                    .padding(.bottom, 5)
-                    .allowsHitTesting(false)
-                    .accessibilityHidden(true)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
-            .foilRake(radius: radius, intensity: foilIntensity)
+        content.padding(padding).frame(maxWidth: .infinity, alignment: .leading)
+            .background { ArchiveCoverSurface(radius: radius) }
     }
 }
 

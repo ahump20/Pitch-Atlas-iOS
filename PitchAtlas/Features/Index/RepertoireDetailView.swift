@@ -173,7 +173,9 @@ struct RepertoireDetailView: View {
     @ViewBuilder
     private var filedSpecimenLink: some View {
         if let filed = filedEntry {
-            NavigationLink(value: filed) {
+            NavigationLink {
+                PitchDetailView(entry: filed)
+            } label: {
                 HStack(spacing: PitchAtlasSpacing.sm) {
                     VStack(alignment: .leading, spacing: 2) {
                         SectionLabel(text: "Filed specimen", color: PitchAtlasTheme.cyan, size: 9)
@@ -212,7 +214,9 @@ struct RepertoireDetailView: View {
                     ClaimText(claim: note)
                 }
 
-                NavigationLink(value: target) {
+                NavigationLink {
+                    PitchDetailView(entry: target)
+                } label: {
                     HStack(spacing: PitchAtlasSpacing.sm) {
                         VStack(alignment: .leading, spacing: 2) {
                             SectionLabel(text: "Filed specimen", color: PitchAtlasTheme.cyan, size: 9)
@@ -226,6 +230,7 @@ struct RepertoireDetailView: View {
                             .foregroundStyle(PitchAtlasTheme.cyan)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("Study this first: \(target.canonical.name)")

@@ -12,6 +12,7 @@ import SwiftUI
 
 struct CraftsmanDetailView: View {
     @Environment(PitchStore.self) private var store
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let craftsman: Craftsman
 
     private var isLegend: Bool { craftsman.kind == .legend }
@@ -20,39 +21,54 @@ struct CraftsmanDetailView: View {
         return store.pitch(slug: slug)
     }
 
+    private var chapters: [ArchiveChapter] {
+        var result = [ArchiveChapter(id: "craft-overview", title: "Overview and signature grip"),
+                      ArchiveChapter(id: "craft-method", title: "The craft")]
+        if craftsman.mentalEdge != nil { result.append(ArchiveChapter(id: "craft-edge", title: "Mental edge")) }
+        if !craftsman.recordProse.isEmpty || !craftsman.recordNumbers.isEmpty { result.append(ArchiveChapter(id: "craft-record", title: "The sourced record")) }
+        if craftsman.quote != nil { result.append(ArchiveChapter(id: "craft-voice", title: "In their words")) }
+        if craftsman.legendNote != nil { result.append(ArchiveChapter(id: "craft-legend", title: "Legend and evidence")) }
+        return result
+    }
+
     var body: some View {
         ZStack {
             FieldBackdrop()
 
+            ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
-                    header
+                    header.id("craft-overview")
+                    if let specimen = filedSpecimen { specimenLink(specimen) }
                     introCard
-                    howCard
+                    howCard.id("craft-method")
 
                     if let edge = craftsman.mentalEdge {
-                        edgeCard(edge)
+                        edgeCard(edge).id("craft-edge")
                     }
 
                     if !craftsman.recordProse.isEmpty || !craftsman.recordNumbers.isEmpty {
-                        recordSection
+                        recordSection.id("craft-record")
                     }
 
                     if let quote = craftsman.quote {
-                        quoteCard(quote)
+                        quoteCard(quote).id("craft-voice")
                     }
 
                     if let legendNote = craftsman.legendNote {
-                        legendCard(legendNote)
+                        legendCard(legendNote).id("craft-legend")
                     }
 
-                    if let specimen = filedSpecimen {
-                        specimenLink(specimen)
-                    }
                 }
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.md)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                ArchiveChapterNavigation(chapters: chapters, compact: true) { id in
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) { proxy.scrollTo(id, anchor: .top) }
+                }
+            }
             }
         }
         .navigationTitle(craftsman.name)

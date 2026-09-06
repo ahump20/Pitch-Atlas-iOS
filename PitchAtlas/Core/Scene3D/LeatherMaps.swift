@@ -7,7 +7,7 @@ import simd
 // =============================================================================
 // Pure-Swift port of the web ball's makeLeatherMaps (Ball.tsx). Three maps,
 // baked together so they agree:
-//  - albedo: warm off-white hide (238,230,214) with low-frequency mottling and
+//  - albedo: warm off-white hide (242,240,232) with low-frequency mottling and
 //    a faint seam-side soiling band where a real cover grays along the stitches
 //  - normal: multi-octave grain that reads as visible pebble, plus a recessed
 //    seam channel carved along the seam path (the thread sits down in leather)
@@ -88,13 +88,13 @@ struct LeatherMaps {
         for y in 0..<n {
             for x in 0..<n {
                 let idx = y * n + x
-                let tone = (fine220[idx] - 0.5) * 16 + (wide7[idx] - 0.5) * 14
+                let tone = (fine220[idx] - 0.5) * 7 + (wide7[idx] - 0.5) * 6
                 let d = sd[idx]
                 let soil = d < channel * 3 ? (1 - d / (channel * 3)) * 12 : 0
                 let groove = d < channel ? (1 - d / channel) * 26 : 0
-                albedoBytes[idx * 4] = clampByte(238 + tone - soil * 1.1 - groove)
-                albedoBytes[idx * 4 + 1] = clampByte(230 + tone - soil - groove)
-                albedoBytes[idx * 4 + 2] = clampByte(214 + tone * 0.9 - soil * 0.8 - groove * 0.9)
+                albedoBytes[idx * 4] = clampByte(242 + tone - soil * 1.1 - groove)
+                albedoBytes[idx * 4 + 1] = clampByte(240 + tone - soil - groove)
+                albedoBytes[idx * 4 + 2] = clampByte(232 + tone * 0.9 - soil * 0.8 - groove * 0.9)
             }
         }
 
@@ -107,7 +107,7 @@ struct LeatherMaps {
             let carved = d < channel ? cos((d / channel) * .pi * 0.5) : 0
             return fine200[idx] - carved * 1.4
         }
-        let strength = 2.1
+        let strength = 1.1
         var normalBytes = [UInt8](repeating: 255, count: n * n * 4)
         for y in 0..<n {
             for x in 0..<n {
@@ -132,7 +132,7 @@ struct LeatherMaps {
         for y in 0..<n {
             for x in 0..<n {
                 let idx = y * n + x
-                var rough = 0.52 + (0.5 - fine200[idx]) * 0.22
+                var rough = 0.82 + (0.5 - fine200[idx]) * 0.10
                 let d = sd[idx]
                 if d < channel { rough += (1 - d / channel) * 0.16 } // matte leather lip
                 let r8 = clampByte(rough * 255)
