@@ -50,4 +50,77 @@ The available paired iPhone already contains com.pitchatlas.app1.1.0(11). Its lo
 
 ## Remaining verification boundaries
 
-Full spoken VoiceOver traversal, exact pan-reset after a deliberate drag, every native utility/error/auth route, native softball coverage, first-launch airplane-mode acceptance, physical device60fps/thermal profiling, signed export and TestFlight/App Store delivery are not established by these receipts. Current simulator CPU observations are not physical-device performance proof. Earlier scope audit remains the inventory of broader product/release gaps.
+Full spoken VoiceOver traversal, every native utility/error/auth route, native softball coverage, first-launch airplane-mode acceptance, physical device60fps/thermal profiling, signed export and TestFlight/App Store delivery are not established by these receipts. Current simulator CPU observations are not physical-device performance proof. Earlier scope audit remains the inventory of broader product/release gaps.
+
+## Index reading-place and study-link follow-up
+
+Source `f285654724be2e2379916edc7f9f42f3074a45a4` captures the visible Index row
+before navigation and protects it from covered-view layout changes. Query,
+family, status and sort intentionally reset it. Reverse scrolling to the header
+clears a stale deep-row anchor. The two basic-file study links now use direct
+native destinations; Study this first includes its spacer in the tap area. The
+inherited PitchAtlasEntry mapping remains for related-family navigation.
+
+Independent source reviews passed. Eight focused restoration tests passed.
+CI34008866623 passed83tests/0failures, build and content drift for earlier6bb960c
+on GitHub merge ref856ee65. Final f285654 CI34009442833 also passed83tests,
+zero failures, build and content drift on merge ref03a3db0.
+The final f285654 simulator build passed in10.9seconds. Four changed Swift files
+match the clean source; temporary Index diagnostic prints were removed. The
+existing three-line QA-only PA_COMPARE overlay remains confined to the capture
+checkout and is absent from the release archive.
+
+Actual row restoration passed for Four-Seam and a genuinely deeper Split-Finger
+row. Partial-row offsets normalize to row top (47.3points and11.7points in the
+measured cases), so this is not exact pixel restoration. Actual Split-Finger Basic
+→ Study this first → Splitter → native Back to Basic → Back to filtered Index
+passed with titles and Back labels inspected. Reversing to the header and
+Grips→Index retained query `a` and Fastballs. A deliberate150%-zoom/right-pan/
+Reset/Close photograph check also passed; the full image returned centered at100%.
+
+Two initial automation judgments were corrected: the cropped starting row was
+Four-Seam, not Two-Seam; a study-link tap under the floating tab bar selected
+Grips, while the original Basic file remained intact in Index. Source changes
+were assessed against actual coordinate logs and an unobscured link. These
+corrections do not stand in for physical VoiceOver or cancelled-edge-swipe proof.
+
+Clean source f285654 produced `/tmp/PitchAtlas-learning-f285654-Pro.xcarchive`
+on Pro, exit0, finished2026-09-06T03:41:40Z. It is unsigned arm64,
+com.pitchatlas.app1.1.0(11), minimum iOS17. The receipt SHA256 is
+`86bd2a73336e776b7cab7f809d269a33fa8773c308e2c365ad5e2e07f965d333`;
+log SHA256 is `130466290adf127ff4ae50154017019a7939198ee90d3ae14dca469c381b3c73`.
+The prior53985e7 Air export failure is not a signed-export attempt of this source.
+No new signing retry, physical install, production or TestFlight delivery occurred.
+
+Local artifacts are under
+`/Users/AustinHumphrey/Pitch-Atlas/artifacts/native/archive-world/context-acceptance/`.
+The current cross-platform evidence is maintained in Pitch Atlas web
+`docs/NATIVE-CONTEXT-EVIDENCE.md`; raw screenshots, recordings and build receipts
+remain local. Source and confidence labels, bundled offline claims, rights,
+moderation, and shared seam geometry are unchanged.
+
+### Related-family navigation repair
+
+The fully visible Two-Seam sibling pill failed to open on f285654. Final source
+`e48650169741f41bef978de95f2de8512c370a39` uses a direct native destination for
+related-family links and a44-point minimum full hit area. Independent review
+passed; the final simulator build passed in14.9seconds. Actual Index → Four-Seam
+Basic → Four-Seam specimen → Two-Seam → Four-Seam specimen → Four-Seam Basic →
+Index passed with rendered titles, Back labels and selected tab verified. Root
+inspected the Two-Seam still. The uninterrupted recording is227.02seconds; the
+separate4x derivative is accelerated review footage, not frame-rate evidence.
+Five changed Swift files match clean source; no Index diagnostic prints remain.
+
+Clean exact-source archive `/tmp/PitchAtlas-learning-e486501-Pro.xcarchive`
+succeeded at2026-09-06T03:52:48Z, exit0, unsigned arm64, version1.1.0(11), minimum
+iOS17. Receipt SHA256 `accaf8ad3bdf08cad2a5648d63d3e528a54f11e37d1254fbc82ceb37927c5539`;
+log SHA256 `03358325f09fbe00093eca8ca71b80a233516053c857a98358bac874c1841078`.
+This source includes the sibling repair missing from the f285654 archive.
+Signing and all physical-device acceptance remain separate.
+
+Final e486501 CI34009999020 passed83tests/0failures, build and content drift on
+GitHub merge refa050710. The74-file archive ledger matched after transfer to Air:
+`/tmp/PitchAtlas-e486501-transfer/PitchAtlas-learning-e486501-Pro.xcarchive`.
+Ledger SHA256 `d9c6d9df32ff8b44201f37c51ac8ec5b60543043b57a47943e490f5e18af19d3`;
+transfer ZIP SHA256 `52bf9bd04c658f90fcd80687f397cf0967fc312887f45c704f2245ab19056214`.
+No new signing attempt followed. The accelerated sibling clip measures57.19seconds.
