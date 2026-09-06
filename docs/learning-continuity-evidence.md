@@ -32,6 +32,16 @@ Measured full-color text pixels, sRGB relative luminance:
 
 These measurements cover the stated pairs only, not app-wide contrast certification.
 
+## Release archive and current native availability
+
+The authoritative learning source is commit `53985e721e7f2fc9bae823399b0861d41d91f02b` on Air branch `codex/archive-within-reach`. At the release check, Air had only the protected untracked inputs `PitchAtlas/Resources/grips.zip` and `PitchAtlasTests/SurfaceSnapshots.swift`; neither was altered. The detached Pro release checkout `/tmp/PitchAtlas-native-release-53985e7` was clean at that same commit.
+
+Pro produced `/tmp/PitchAtlas-learning-53985e7-Pro.xcarchive` from that clean checkout with `CODE_SIGNING_ALLOWED=NO`; the receipt records exit code `0`, finished `2026-09-06T00:56:20.458167+00:00`, and the log ends `** ARCHIVE SUCCEEDED **`. Archive metadata identifies arm64 `com.pitchatlas.app`, marketing version `1.1.0`, build `11`, minimum iOS `17.0`, SDK `26.5`, and Xcode build `17F113`. Its `SigningIdentity` and `Team` fields are empty, and `codesign` confirms the app is not signed. This is compile/archive proof only; it is not a signed export, install, TestFlight upload, or App Store delivery receipt.
+
+Committed custody receipts in the web repository are `artifacts/native/archive-world/learning-continuity/pro-archive-53985e7-receipt.json` (SHA256 `1ca398b82ca090ab694ac82129442a375ea7c3822595ffc2d5a9e24496501f9d`) and `artifacts/native/archive-world/learning-continuity/pro-archive-53985e7.log` (SHA256 `45bbcab3d78038160534509bef9c5f550d38159bc568879f21742339effb507f`).
+
+A fresh read-only check at `2026-09-06T01:19:11Z` found zero valid code-signing identities on Pro. Air reported five valid identities: two Apple Development, two Apple Distribution, and one Developer ID Application identity. `xcrun devicectl list devices` on both Pro and Air reported Austin's paired iPhone 16 (`iPhone17,3`, identifier `08A570D5-B423-5EF4-8D92-8602C23DDE92`) as `available (paired)`. These checks establish present identity and device visibility only. A successful signed archive/export and physical-device installation still require a new authorized attempt; the earlier Air `errSecInternalComponent` failure is not resolved by identity enumeration alone.
+
 ## Remaining verification boundaries
 
 Full spoken VoiceOver traversal, exact pan-reset after a deliberate drag, every native utility/error/auth route, native softball coverage, first-launch airplane-mode acceptance, physical device60fps/thermal profiling, signed export and TestFlight/App Store delivery are not established by these receipts. Current simulator CPU observations are not physical-device performance proof. Earlier scope audit remains the inventory of broader product/release gaps.
