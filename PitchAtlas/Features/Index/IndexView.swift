@@ -75,12 +75,15 @@ struct IndexView: View {
     @Environment(PitchStore.self) private var store
 
     private static let topScrollTarget = "index:top"
+    private static let scrollCoordinateSpace = "pitch-index-scroll"
 
     @State private var query = ""
     @State private var family: RepertoireFamily? = nil
     @State private var status: RepertoireStatus? = nil
     @State private var sort: IndexSort = .family
-    @State private var visibleScrollTarget: String?
+    @State private var lastVisibleScrollTarget: String?
+    @State private var pendingRestorationTarget: String?
+    @State private var hasAppeared = false
 
     var body: some View {
         ZStack {
@@ -103,7 +106,12 @@ struct IndexView: View {
                     .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
                     .emitsBlazeScrollProgress()
                 }
-                .scrollPosition(id: $visibleScrollTarget, anchor: .top)
+                .coordinateSpace(.named(Self.scrollCoordinateSpace))
+                .onPreferenceChange(IndexScrollFramesPreferenceKey.self) { frames in
+                    rememberVisibleScrollTarget(from: frames)
+                }
+                .onAppear { restoreScrollPositionIfNeeded(using: proxy) }
+                .onDisappear { pendingRestorationTarget = lastVisibleScrollTarget }
                 .onChange(of: query) { resetScrollPosition(using: proxy) }
                 .onChange(of: family) { resetScrollPosition(using: proxy) }
                 .onChange(of: status) { resetScrollPosition(using: proxy) }
@@ -309,9 +317,20 @@ struct IndexView: View {
                         .buttonStyle(.plain)
                     }
                     .id(scrollTarget(for: entry))
+                    .background {
+                        GeometryReader { geometry in
+                            Color.clear.preference(
+                                key: IndexScrollFramesPreferenceKey.self,
+                                value: [
+                                    scrollTarget(for: entry): geometry.frame(
+                                        in: .named(Self.scrollCoordinateSpace)
+                                    ),
+                                ]
+                            )
+                        }
+                    }
                 }
             }
-            .scrollTargetLayout()
             .specimenCardFrame(
                 padding: PitchAtlasSpacing.xs,
                 radius: PitchAtlasRadius.card,
@@ -327,8 +346,31 @@ struct IndexView: View {
         "index:entry:\(entry.id)"
     }
 
+    private func rememberVisibleScrollTarget(from frames: [String: CGRect]) {
+        let crossingTopEdge = frames
+            .filter { $0.value.minY <= 0 && $0.value.maxY > 0 }
+            .max { $0.value.minY < $1.value.minY }
+        let firstBelowTopEdge = frames
+            .filter { $0.value.minY > 0 }
+            .min { $0.value.minY < $1.value.minY }
+        guard let target = crossingTopEdge?.key ?? firstBelowTopEdge?.key,
+              target != lastVisibleScrollTarget else { return }
+        lastVisibleScrollTarget = target
+    }
+
+    private func restoreScrollPositionIfNeeded(using proxy: ScrollViewProxy) {
+        guard hasAppeared else {
+            hasAppeared = true
+            return
+        }
+        guard let target = pendingRestorationTarget else { return }
+        proxy.scrollTo(target, anchor: .top)
+        pendingRestorationTarget = nil
+    }
+
     private func resetScrollPosition(using proxy: ScrollViewProxy) {
-        visibleScrollTarget = nil
+        lastVisibleScrollTarget = nil
+        pendingRestorationTarget = nil
         proxy.scrollTo(Self.topScrollTarget, anchor: .top)
     }
 
@@ -376,6 +418,14 @@ struct IndexView: View {
     private struct FamilyGroup {
         let info: RepertoireFamilyInfo
         let entries: [RepertoireEntry]
+    }
+}
+
+private struct IndexScrollFramesPreferenceKey: PreferenceKey {
+    static var defaultValue: [String: CGRect] = [:]
+
+    static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
+        value.merge(nextValue(), uniquingKeysWith: { _, next in next })
     }
 }
 
