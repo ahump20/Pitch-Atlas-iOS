@@ -38,7 +38,7 @@ struct LearnView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "ONE PITCH AT A TIME", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "ONE PITCH AT A TIME", color: PitchAtlasTheme.kicker)
             Text("LEARN")
                 .font(PitchAtlasTheme.anton(48))
                 .foregroundStyle(PitchAtlasTheme.bone)
@@ -85,7 +85,7 @@ private struct WingHubCard: View {
                 SectionLabel(text: wing.eyebrow)
                 Spacer(minLength: PitchAtlasSpacing.xs)
                 if wing.educational == true {
-                    StatusPill(text: "Educational use", tone: PitchAtlasTheme.amberBright)
+                    StatusPill(text: "Educational use", tone: PitchAtlasTheme.caution)
                 }
             }
 
@@ -96,7 +96,7 @@ private struct WingHubCard: View {
 
             Text(wing.summary)
                 .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .leatherPress()

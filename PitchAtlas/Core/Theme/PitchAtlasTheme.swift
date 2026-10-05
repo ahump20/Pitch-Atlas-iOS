@@ -3,184 +3,151 @@ import SwiftUI
 // =============================================================================
 // Pitch Atlas — SwiftUI Token Map
 // =============================================================================
-// Direct port of the web design system's rendered tokens. Source of truth:
-// the web repo's src/index.css refractor layer. Native archive surface: warm
-// charcoal field, cyan interaction, seam-bright red, bone, and controlled
-// refractor foil. Worn orange is reserved for the signature collectible;
-// reading panels stay on neutral dark stock.
-// Pattern: an enum of static tokens + Color(hex:) + Font.custom(relativeTo:)
-// with system fallbacks. Palette and typefaces are Pitch Atlas's own.
-//
-// Dark only. The charcoal is the frame, not decoration.
+// The web design system's tokens, read from the generated WebTokens (which
+// the content generator writes from the web repo's main branch). Near-black
+// void field, cyan interaction, seam red, bone inks, and the foil/ember
+// materials in PitchAtlasMaterials. Dark only.
 // =============================================================================
 
 enum PitchAtlasTheme {
 
-    // MARK: - Surfaces
-    /// App background, every screen, sitewide — the web's cool black field.
-    static let void = Color(hex: 0x15120F)
+    // MARK: - Surfaces (web --color-void / -press / -paper-2 / -paper-3)
+    /// App background, every screen, sitewide — the web's near-black field.
+    static let void = Color(web: WebTokens.Palette.void)
     /// Raised content cards — the "leather-press" surface.
-    static let press = Color(hex: 0x221E18)
+    static let press = Color(web: WebTokens.Palette.press)
+    /// --color-press-2: the interior of a foil-edged panel.
+    static let press2 = Color(web: WebTokens.Palette.press2)
     /// Alternating panels, secondary card fill.
-    static let paper2 = Color(hex: 0x2C241D)
+    static let paper2 = Color(web: WebTokens.Palette.paper2)
     /// Deepest insets, edge frames.
-    static let paper3 = Color(hex: 0x3D3023)
+    static let paper3 = Color(web: WebTokens.Palette.paper3)
+
+    static var voidRGB: UInt32 { WebTokens.Palette.void.rgb }
+    static var pressRGB: UInt32 { WebTokens.Palette.press.rgb }
 
     // MARK: - Text
     /// Primary text on the field.
-    static let bone = Color(hex: 0xF6F1E6)
-    /// Secondary text, captions.
-    static let bone2 = Color(hex: 0xE8D8C7)
-    /// Muted / tertiary, hairlines, the "unverified" tier.
-    static let ink3 = Color(hex: 0xE8D8C7)
+    static let bone = Color(web: WebTokens.Palette.bone)
+    /// Secondary text, captions, labels — web --color-bone-2.
+    static let bone2 = Color(web: WebTokens.Palette.bone2)
+    /// Tertiary text inside objects — web --color-bone-3.
+    static let bone3 = Color(web: WebTokens.Palette.bone3)
+    /// Secondary ink on the void — web --color-ink-2.
+    static let ink2 = Color(web: WebTokens.Palette.ink2)
+    /// Tertiary ink on the void — web --color-ink-3. Inside a raised surface it
+    /// measures 4.32:1, so tertiary text there uses `text3`, which resolves to
+    /// bone-3. Use this concrete value only where a plain Color is required.
+    static let ink3 = Color(web: WebTokens.Palette.ink3)
+    /// Secondary text ink that follows the surface (ink-2 on the void, bone-2 in objects).
+    static let text2 = ContextInk(level: .secondary)
+    /// Tertiary text ink that follows the surface (ink-3 on the void, bone-3 in objects).
+    static let text3 = ContextInk(level: .tertiary)
+
+    static var bone2RGB: UInt32 { WebTokens.Palette.bone2.rgb }
 
     // MARK: - Accent
-    // Legacy names stay so call sites retone in place. These map to the web
-    // dark-scene interaction accent; powder remains a provenance tone below.
-    static let cyan = Color(hex: 0x37D6FF)
-    static let cyanDeep = Color(hex: 0x1C8FD6)
+    /// The interaction accent — web --color-cyan.
+    static let cyan = Color(web: WebTokens.Palette.cyan)
+    static let cyanDeep = Color(web: WebTokens.Palette.cyanDeep)
+
+    static var cyanRGB: UInt32 { WebTokens.Palette.cyan.rgb }
+    /// Input placeholder text — web --color-ctl-placeholder.
+    static let placeholder = Color(web: WebTokens.Palette.ctlPlaceholder)
 
     // MARK: - Seam red (graphic / seam / banned-tier only — never body text on void)
-    static let seamBright = Color(hex: 0xFF2D44)
+    static let seamBright = Color(web: WebTokens.Palette.seam)
 
-    // MARK: - Provenance ladder (the confidence tiers)
-    static let okBright = Color(hex: 0x34E27E)   // official-data
-    static let tealGlow = Color(hex: 0x00A2A0)   // coach-observed
-    static let amberBright = Color(hex: 0xFFC23C) // reputable-analysis
-    static let sandBright = Color(hex: 0x8A7A5E)  // secondhand / community-firsthand
-    /// pitcher-own-words — its own powder tier color (matches the web), no longer
-    /// riding the interactive accent.
-    static let powder = Color(hex: 0x6CACE4)
-    // unverified -> ink3
+    // MARK: - Roles (generated web tokens)
+    /// Section kickers and the app-wide tint — the web's `--color-kicker` (cyan).
+    static let kicker = Color(web: WebTokens.Palette.kicker)
+    /// A confirmed, done, verified state — web `--color-ok`.
+    static let success = Color(web: WebTokens.Palette.ok)
+    /// A warning, a pending state, "educational use" — web `--color-amber`.
+    static let caution = Color(web: WebTokens.Palette.amber)
+    /// The lost-pitch and legend edge, the "Reference" register — web `--color-sand-bright`.
+    static let lostEdge = Color(web: WebTokens.Palette.sandBright)
 
-    // MARK: - Pitch-family accents (index card dots) — collegiate jewel lifts
-    static let lime = Color(hex: 0x2E7D55)   // offspeed - field green
-    static let violet = Color(hex: 0xA92A22) // breaking - seam-burgundy
-    static let navyLift = Color(hex: 0x15406E) // fastball - lifted navy
+    // MARK: - Lost-pitch sand (web --color-sand-bright)
+    static let sandBright = Color(web: WebTokens.Palette.sandBright)
 
     // MARK: - Dark archive reading stock (the signature collectible owns orange)
     static let cardbackPaper = Color(hex: 0x24221F)
-    static let cardbackPaper2 = Color(hex: 0x191817)
     static let cardbackInk = Color(hex: 0xFFF1DE)
     static let cardbackInk2 = Color(hex: 0xF3D4B8)
     static let cardbackInk3 = Color(hex: 0xE8D8C7)
     static let cardbackLine = Color(hex: 0xFFF1DE, opacity: 0.22)
     static let cardbackNavy = Color(hex: 0xBADAF1)
-    static let cardbackForest = Color(hex: 0xBDE7BD)
     static let cardbackBurgundy = Color(hex: 0xFFD1C5)
-    static let cardbackGoldInk = Color(hex: 0xF1D1A0)
-    /// Warm tier inks remain legible on dark reading stock and the signature cover.
-    static func cardbackColor(forConfidence raw: String) -> Color {
-        switch raw {
-        case "official-data": return Color(hex: 0xBDE7BD)
-        case "pitcher-own-words", "coach-observed": return Color(hex: 0xBADAF1)
-        case "reputable-analysis": return Color(hex: 0xF1D1A0)
-        case "secondhand-attributed", "community-firsthand": return Color(hex: 0xEDC7AA)
-        default: return cardbackInk3
-        }
-    }
+
+    // MARK: - Archive stock (ArchiveCoverSurface)
+    /// Neutral archive stock: lifted press → press → deep press.
+    static let archiveStock: [Color] = [Color(hex: 0x24201C), press, Color(hex: 0x141312)]
+    /// The signature collectible's worn-orange stock, edge, wear and bevel —
+    /// replaced by the ember 1 of 1 card in Plan 2.
+    static let signatureStock: [Color] = [Color(hex: 0x93411F), Color(hex: 0x6D2E18), Color(hex: 0x3D1D13)]
+    static let signatureEdge: [Color] = [Color(hex: 0xE09A65).opacity(0.75), Color(hex: 0x37170F), Color(hex: 0xB76B3E).opacity(0.65)]
+    static let signatureWear = Color(hex: 0xD49868).opacity(0.32)
+    static let signatureBevel = Color(hex: 0xEDAB78).opacity(0.22)
+    /// The "reference" grade's brushed-steel edge.
+    static let referenceEdge: [Color] = [Color(hex: 0x9EA6AB), Color(hex: 0x454B50), Color(hex: 0xC3CACD)]
 
     // MARK: - Hairlines / texture
-    /// The 1px card border — bone at 12%.
-    static let machined = Color(hex: 0xF6F1E6, opacity: 0.12)
-    /// Subtle dividers — bone at 16%.
-    static let navyLine = Color(hex: 0xF6F1E6, opacity: 0.16)
+    /// The 1px machined hairline — web --color-machined.
+    static let machined = Color(web: WebTokens.Palette.machined)
+    /// Subtle dividers — web --color-navy-line.
+    static let navyLine = Color(web: WebTokens.Palette.navyLine)
 
     // MARK: - Gradients
-    /// The holographic foil — refractor card borders, the diamond mark, holo wordmark.
-    /// Web origin: 115deg linear sweep.
-    static let foil = LinearGradient(
-        stops: [
-            .init(color: Color(hex: 0xFF2D6E), location: 0.00),
-            .init(color: Color(hex: 0xFF8A3C), location: 0.14),
-            .init(color: Color(hex: 0xFFE14D), location: 0.28),
-            .init(color: Color(hex: 0x46FF9C), location: 0.43),
-            .init(color: Color(hex: 0x33E0FF), location: 0.57),
-            .init(color: Color(hex: 0x6B7BFF), location: 0.71),
-            .init(color: Color(hex: 0xC44BFF), location: 0.85),
-            .init(color: Color(hex: 0xFF2D6E), location: 1.00),
-        ],
-        startPoint: .topLeading, endPoint: .bottomTrailing
-    )
-
-    /// Gold 1/1 — reserved STRICTLY for the single defining specimen per pitch.
-    static let gold = LinearGradient(
-        stops: [
-            .init(color: Color(hex: 0x5A3D12), location: 0.00),
-            .init(color: Color(hex: 0xCAA14A), location: 0.22),
-            .init(color: Color(hex: 0xFFF0C2), location: 0.38),
-            .init(color: Color(hex: 0xB8893A), location: 0.54),
-            .init(color: Color(hex: 0xF4D98A), location: 0.70),
-            .init(color: Color(hex: 0x7A571F), location: 0.90),
-        ],
-        startPoint: .top, endPoint: .bottom
-    )
-
-    /// Brushed chrome — the wordmark's metal. Type is set in metal, never in
-    /// foil: rainbow foil only exists on cards, where holographic refractors
-    /// exist in the physical world. The gyro still rakes light across this —
-    /// brushed metal answering a tilt is the gold tin's behavior, not a screen
-    /// effect. Web origin: the --chrome gradient.
-    static let chrome = LinearGradient(
-        stops: [
-            .init(color: Color(hex: 0x26282D), location: 0.00),
-            .init(color: Color(hex: 0x5B616B), location: 0.14),
-            .init(color: Color(hex: 0xCFD4DB), location: 0.30),
-            .init(color: Color(hex: 0x878D97), location: 0.44),
-            .init(color: Color(hex: 0xEEF1F5), location: 0.56),
-            .init(color: Color(hex: 0x7D828C), location: 0.70),
-            .init(color: Color(hex: 0x43474E), location: 0.86),
-            .init(color: Color(hex: 0x1D1F23), location: 1.00),
-        ],
-        startPoint: .topLeading, endPoint: .bottomTrailing
-    )
+    // The web's foil, foil-type and ember are PitchAtlasMaterials (generated stops).
 
     // MARK: - Typography
-    // All four are bundled OFL fonts (registered in Info.plist UIAppFonts once the
-    // .ttf files land in Resources/Fonts). Until then, Font.custom silently falls
-    // back to the system font, so the app builds and runs either way.
+    // The faces are the web's own (PitchAtlasType). These helpers keep their
+    // call sites and resolve to the matching face.
 
-    /// Athletic logotype, pitch names, banners. Render with `.antonSkew()`.
+    /// Athletic logotype, pitch names, banners. Render with `.antonSkew()` only where the web skews.
     static func anton(_ size: CGFloat, relativeTo: Font.TextStyle = .largeTitle) -> Font {
-        .custom("Anton-Regular", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.anton400, size: size, relativeTo: relativeTo)
     }
-    /// Editorial display, hero titles, section heads. The italic carries the warmth.
+    /// Editorial display, hero titles, section heads.
     static func newsreader(_ size: CGFloat, relativeTo: Font.TextStyle = .title) -> Font {
-        .custom("Newsreader-Regular", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.newsreader400, size: size, relativeTo: relativeTo)
     }
     static func newsreaderItalic(_ size: CGFloat, relativeTo: Font.TextStyle = .title) -> Font {
-        .custom("Newsreader-Italic", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.newsreader400i, size: size, relativeTo: relativeTo)
     }
     /// Body prose, the coaching voice.
     static func hanken(_ size: CGFloat, relativeTo: Font.TextStyle = .body) -> Font {
-        .custom("HankenGrotesk-Regular", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.hanken400, size: size, relativeTo: relativeTo)
     }
     static func hankenMedium(_ size: CGFloat, relativeTo: Font.TextStyle = .body) -> Font {
-        .custom("HankenGrotesk-Medium", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.hanken500, size: size, relativeTo: relativeTo)
     }
     /// Micro-labels, source badges, nav, all-caps tracking.
     static func martian(_ size: CGFloat, relativeTo: Font.TextStyle = .caption2) -> Font {
-        .custom("MartianMono-Regular", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.martian400, size: size, relativeTo: relativeTo)
     }
 
     // MARK: - Provenance tier -> color
-    /// Maps a ClaimConfidence raw value (from the web model) to its tier color.
+    /// The web's three trust colors across the seven tiers (provenance/
+    /// refractorClaimMeta.ts CONFIDENCE_COLOR): firsthand burnt, relayed blue,
+    /// unverified seam. An unknown tier reads as unverified — never upgraded.
+    /// The color belongs to the dot; a tier's words print in bone-2 beside it.
     static func color(forConfidence raw: String) -> Color {
-        switch raw {
-        case "official-data": return okBright
-        case "pitcher-own-words": return powder
-        case "coach-observed": return tealGlow
-        case "reputable-analysis": return amberBright
-        case "secondhand-attributed", "community-firsthand": return cardbackColor(forConfidence: raw)
-        default: return ink3 // unverified + unknown -> honest gray
-        }
+        Color(web: WebTokens.Tier.dot[raw] ?? WebTokens.Tier.dot["unverified"] ?? WebTokens.Palette.seam)
+    }
+
+    /// The tier ink on cream card stock (refractor/specimenFace.tsx CARD_INK).
+    static func cardInk(forConfidence raw: String) -> Color {
+        Color(web: WebTokens.Tier.ink[raw] ?? WebTokens.Tier.ink["unverified"] ?? WebTokens.CreamInk.ink)
     }
 }
 
 // MARK: - Hex Color Initializer
 
 extension Color {
-    /// Initialize a Color from a hex integer (e.g. 0x37D6FF).
+    /// Initialize a Color from a hex integer (e.g. 0x5FE0EA). Theme-only: the
+    /// CI color-literal check rejects it anywhere else.
     init(hex: UInt, opacity: Double = 1.0) {
         self.init(
             red: Double((hex >> 16) & 0xFF) / 255,
@@ -189,17 +156,6 @@ extension Color {
             opacity: opacity
         )
     }
-}
-
-// MARK: - Shape Style aliases (so call sites read `.fill(.void)`)
-
-extension ShapeStyle where Self == Color {
-    static var paVoid: Color { PitchAtlasTheme.void }
-    static var paPress: Color { PitchAtlasTheme.press }
-    static var paBone: Color { PitchAtlasTheme.bone }
-    static var paBone2: Color { PitchAtlasTheme.bone2 }
-    static var paCyan: Color { PitchAtlasTheme.cyan }
-    static var paSeam: Color { PitchAtlasTheme.seamBright }
 }
 
 // MARK: - Anton signature skew

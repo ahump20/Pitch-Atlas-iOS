@@ -18,7 +18,6 @@ import SwiftUI
 
 struct AboutView: View {
     @Environment(PitchStore.self) private var store
-    @AppStorage(BlazeMotionSettings.appStorageKey) private var blazeCompanionEnabled = BlazeMotionSettings.defaultEnabled
 
     var body: some View {
         ZStack {
@@ -30,7 +29,6 @@ struct AboutView: View {
                     whatThisIsCard
                     provenanceModelCard
                     honestyCard
-                    companionSettingCard
                     footer
                     statusNote
                 }
@@ -47,7 +45,7 @@ struct AboutView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "About", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "About", color: PitchAtlasTheme.kicker)
             Text("PITCH ATLAS")
                 .font(PitchAtlasTheme.anton(52))
                 .foregroundStyle(PitchAtlasTheme.bone)
@@ -60,28 +58,6 @@ struct AboutView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
         .accessibilityLabel("About. Pitch Atlas. Hand, seam, hitter, source.")
-    }
-
-    // MARK: - Settings
-
-    private var companionSettingCard: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "Preferences")
-            Toggle(isOn: $blazeCompanionEnabled) {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    Text("Show Blaze companion")
-                        .font(PitchAtlasTheme.hankenMedium(15))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                    Text("A small field-manual dog in the margin. Reduced Motion keeps her still.")
-                        .font(PitchAtlasTheme.hanken(13))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-            .tint(PitchAtlasTheme.cyan)
-        }
-        .leatherPress()
-        .accessibilityElement(children: .contain)
     }
 
     // MARK: - What this is
@@ -145,7 +121,7 @@ struct AboutView: View {
                 if checked.isEmpty {
                     Text("Not recorded in this build.")
                         .font(PitchAtlasTheme.hanken(14))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 } else {
                     Text(checked)
                         .font(PitchAtlasTheme.newsreader(22))
@@ -153,7 +129,7 @@ struct AboutView: View {
                 }
                 Text("Checked, not auto-refreshed.")
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
             }
         }
         .leatherPress()
@@ -176,7 +152,7 @@ struct AboutView: View {
                     SectionLabel(text: "Pitch Atlas")
                     Text("The tell first. The claim boundary right behind it.")
                         .font(PitchAtlasTheme.newsreaderItalic(14))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }

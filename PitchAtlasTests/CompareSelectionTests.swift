@@ -92,6 +92,16 @@ final class CompareSelectionTests: XCTestCase {
         state.remove("four-seam")
         XCTAssertEqual(state.slugs, ["changeup"])
     }
+    func testReplacementNeverDuplicatesAPitchAlreadyInThePair() {
+        let state = CompareSelection()
+        state.add("four-seam"); state.add("slider"); state.add("cutter")
+        state.remove("four-seam"); state.add("cutter")
+        XCTAssertEqual(state.slugs, ["slider", "cutter"])
+        XCTAssertNil(state.pending, "a pitch that joined the pair is no longer waiting")
+        state.replace(0)
+        XCTAssertEqual(state.slugs, ["slider", "cutter"])
+        XCTAssertEqual(Set(state.slugs).count, state.slugs.count)
+    }
     func testDeepLinksResolveBundleAndRejectInvalidValuesWithoutDestroyingPair() {
         let store = PitchStore()
         let state = CompareSelection()

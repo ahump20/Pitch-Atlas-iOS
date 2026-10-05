@@ -83,7 +83,7 @@ struct RepertoireDetailView: View {
                 .antonSkew()
                 .padding(.vertical, 2)
 
-            StatusPill(text: entry.status.displayLabel, tone: entry.status.tone)
+            StatusPill(text: entry.status.displayLabel, tone: entry.status.badgeTone)
 
             if let aka = entry.aka, !aka.isEmpty {
                 Text("also: \(aka.joined(separator: ", "))")
@@ -145,7 +145,7 @@ struct RepertoireDetailView: View {
 
     private func relationshipCard(_ relationship: Claim) -> some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "What it really is", color: PitchAtlasTheme.amberBright)
+            SectionLabel(text: "What it really is", color: PitchAtlasTheme.kicker)
             ClaimText(claim: relationship)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -195,7 +195,7 @@ struct RepertoireDetailView: View {
             .accessibilityLabel("View the filed specimen for \(entry.name)")
             .accessibilityAddTraits(.isButton)
         } else {
-            SectionLabel(text: "Fuller breakdown coming", color: PitchAtlasTheme.ink3, size: 9)
+            SectionLabel(text: "Fuller breakdown coming", color: PitchAtlasTheme.text3, size: 9)
                 .padding(.top, PitchAtlasSpacing.xs)
         }
     }
@@ -206,7 +206,7 @@ struct RepertoireDetailView: View {
     private var studyFirstLink: some View {
         if let target = studyTarget {
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                SectionLabel(text: "Study this first", color: PitchAtlasTheme.amberBright, size: 9)
+                SectionLabel(text: "Study this first", color: PitchAtlasTheme.kicker, size: 9)
 
                 // The sourced one-line bridge, when one is authored. ClaimText
                 // carries its tier dot + source, so it can never read as unsourced.

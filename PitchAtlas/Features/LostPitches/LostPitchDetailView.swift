@@ -80,7 +80,7 @@ struct LostPitchDetailView: View {
 
             Text(pitch.era)
                 .font(PitchAtlasTheme.martian(10))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
 
             Text(pitch.tagline)
                 .font(PitchAtlasTheme.newsreaderItalic(18))
@@ -129,7 +129,7 @@ struct LostPitchDetailView: View {
 
                 Text(image.qualityNote)
                     .font(PitchAtlasTheme.martian(9))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .fixedSize(horizontal: false, vertical: true)
 
                 HStack(spacing: PitchAtlasSpacing.xs) {
@@ -140,10 +140,10 @@ struct LostPitchDetailView: View {
                     if let source = image.source {
                         Text("\u{00B7}")
                             .font(PitchAtlasTheme.martian(9))
-                            .foregroundStyle(PitchAtlasTheme.ink3)
+                            .foregroundStyle(PitchAtlasTheme.text3)
                         Text(source.label)
                             .font(PitchAtlasTheme.martian(9))
-                            .foregroundStyle(PitchAtlasTheme.ink3)
+                            .foregroundStyle(PitchAtlasTheme.text3)
                             .lineLimit(2)
                     }
                 }
@@ -181,10 +181,10 @@ struct LostPitchDetailView: View {
                 if let source = video.caption.source {
                     Text("\u{00B7}")
                         .font(PitchAtlasTheme.martian(9))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                     Text(source.label)
                         .font(PitchAtlasTheme.martian(9))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .lineLimit(2)
                 }
             }
@@ -212,7 +212,7 @@ struct LostPitchDetailView: View {
 
             Text("Embedded from the Internet Archive, not rehosted.")
                 .font(PitchAtlasTheme.martian(8))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
         }
         .padding(PitchAtlasSpacing.sm)
         .background(

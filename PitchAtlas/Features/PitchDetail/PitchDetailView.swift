@@ -163,7 +163,7 @@ struct PitchDetailView: View {
             // the same stamp the web card wears. Gold is the real 1/1 chase.
             SectionLabel(
                 text: entry.specimenGrade.label,
-                color: entry.specimenGrade.key == .gold ? PitchAtlasTheme.amberBright : PitchAtlasTheme.bone2,
+                color: PitchAtlasTheme.bone2,
                 size: 9
             )
             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -261,7 +261,7 @@ struct PitchDetailView: View {
         return Text(pips.joined(separator: "   ·   "))
             .font(PitchAtlasTheme.martian(8))
             .tracking(0.5)
-            .foregroundStyle(PitchAtlasTheme.ink3)
+            .foregroundStyle(PitchAtlasTheme.text3)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
             .padding(.horizontal, PitchAtlasSpacing.sm)
@@ -275,7 +275,7 @@ struct PitchDetailView: View {
             SectionLabel(text: "FOUNDATION")
             Text(display.foundationCaption)
                 .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
 
             if let shape = physics.shape {
@@ -365,7 +365,7 @@ struct PitchDetailView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                             Text("\(contact.seamRelation) · \(contact.pressureRole)")
                                 .font(PitchAtlasTheme.martian(8))
-                                .foregroundStyle(PitchAtlasTheme.ink3)
+                                .foregroundStyle(PitchAtlasTheme.text3)
                         }
                     }
 
@@ -378,7 +378,7 @@ struct PitchDetailView: View {
 
             Text(model.visualCaveat)
                 .font(PitchAtlasTheme.newsreaderItalic(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
 
             // First-party grip photography — minus the frame already carrying
@@ -400,7 +400,7 @@ struct PitchDetailView: View {
         let labelText = Text(label.uppercased())
             .font(PitchAtlasTheme.martian(8))
             .tracking(1)
-            .foregroundStyle(PitchAtlasTheme.ink3)
+            .foregroundStyle(PitchAtlasTheme.text3)
         let valueText = Text(value)
             .font(PitchAtlasTheme.hanken(14))
             .foregroundStyle(PitchAtlasTheme.bone)
@@ -492,7 +492,7 @@ struct PitchDetailView: View {
             SectionLabel(text: "MASTER VARIANTS")
             Text(display.mastersIntro)
                 .font(PitchAtlasTheme.hanken(14))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
 
             ForEach(Array(entry.masterVariants.enumerated()), id: \.offset) { _, variant in
@@ -510,7 +510,7 @@ struct PitchDetailView: View {
                     .antonSkew()
                 Spacer()
                 if variant.verifiedPro {
-                    StatusPill(text: "Verified", tone: PitchAtlasTheme.okBright)
+                    StatusPill(text: "Verified", tone: PitchAtlasTheme.success)
                 }
             }
             Text(variant.context)
@@ -567,9 +567,10 @@ struct PitchDetailView: View {
     }
 
     private func siblingPill(_ sib: PitchAtlasEntry) -> some View {
-        // Gold dot for the lone 1/1 chase, the family accent otherwise — the same read
-        // the web sibling pill uses, so the two surfaces mark the chase identically.
-        let dot = sib.display.specimenNo == "00" ? PitchAtlasTheme.amberBright : sib.canonical.family.accent
+        // Burnt dot for the lone 1/1 chase, the pitch's own accent otherwise — the
+        // same read as the web sibling pill (pitch/PitchConnections.tsx).
+        let dot = Color(rgb: sib.display.specimenNo == "00" ? WebTokens.Accent.burnt
+                                                            : PitchAccents.triad(for: sib.display.slug).c3)
         return HStack(spacing: PitchAtlasSpacing.xs) {
             Circle()
                 .fill(dot)
@@ -579,7 +580,7 @@ struct PitchDetailView: View {
                 .foregroundStyle(PitchAtlasTheme.bone)
             Image(systemName: "arrow.right")
                 .font(.system(size: 10, weight: .semibold))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
         }
         .padding(.vertical, PitchAtlasSpacing.xs)
         .padding(.horizontal, PitchAtlasSpacing.sm)

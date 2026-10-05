@@ -22,13 +22,27 @@ enum PitchAtlasSpacing {
     static let tabBarClearance: CGFloat = 76
 }
 
+/// Radii from the web. The web keeps per-component radii in CSS rules (named
+/// beside each value); the generated tokens carry the shared sm/pill steps.
 enum PitchAtlasRadius {
-    /// Chips / buttons.
-    static let chip: CGFloat = 9
-    /// Inset panels.
+    /// Chips and small controls — web --radius-sm.
+    static let chip = CGFloat(WebTokens.Radius.sm)
+    /// Panels and the leather press — .rfx-panel.
     static let panel: CGFloat = 12
-    /// Grip-photo tiles.
+    /// Grip-photo tiles — .rfx-tile.
     static let tile: CGFloat = 14
-    /// Specimen / foil cards.
-    static let card: CGFloat = 18
+    /// 5:7 specimen card stock — .rfx-card.
+    static let card: CGFloat = 9
+    /// The specimen card's inner field — .rfx-card__field.
+    static let cardField: CGFloat = 4
+    /// Tier B plates — .pi-plate.
+    static let plate: CGFloat = 13
+    /// Tier C index rows — .pi-row.
+    static let indexRow: CGFloat = 14
+    /// Search and text inputs — .rfx-input.
+    static let input: CGFloat = 12
+    /// Menus and selects — .rfx-select.
+    static let select: CGFloat = 10
+    /// Fully rounded pills — web --radius-pill.
+    static let pill = CGFloat(WebTokens.Radius.pill)
 }

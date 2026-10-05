@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 import UIKit
 import AVFoundation
 @testable import PitchAtlas
@@ -12,13 +13,13 @@ final class PitchAtlasTests: XCTestCase {
                        ["atlas", "index", "grips", "craftsmen", "sources"])
     }
 
-    /// Provenance mapping must always resolve. An unknown tier falls back to the
-    /// honest gray (unverified), never crashes and never silently upgrades.
+    /// Provenance mapping must always resolve: seven tiers share the web's three
+    /// trust colors, and an unknown tier falls back to unverified — never crashes
+    /// and never silently upgrades.
     func testConfidenceColorFallback() {
-        let known = PitchAtlasTheme.color(forConfidence: "official-data")
-        let unknown = PitchAtlasTheme.color(forConfidence: "nonsense-tier")
-        XCTAssertEqual(unknown, PitchAtlasTheme.ink3)
-        XCTAssertNotEqual(known, PitchAtlasTheme.ink3)
+        XCTAssertEqual(PitchAtlasTheme.color(forConfidence: "official-data"), Color(web: WebTokens.Tier.dot["official-data"]!))
+        XCTAssertEqual(PitchAtlasTheme.color(forConfidence: "secondhand-attributed"), Color(web: WebTokens.Tier.dot["reputable-analysis"]!))
+        XCTAssertEqual(PitchAtlasTheme.color(forConfidence: "not-a-tier"), Color(web: WebTokens.Tier.dot["unverified"]!))
     }
 
     /// Every bundled JSON decodes with zero failures across every record.
@@ -170,6 +171,34 @@ final class PitchAtlasTests: XCTestCase {
                 XCTAssertNotEqual(pitch.specimenGrade.key, .gold, "\(pitch.slug) is gold but is not specimen 00")
             }
         }
+    }
+
+    /// The four-seam is the one 1-of-1, and since 2026-09-23 the web calls it
+    /// Ember (the key keeps its historical `gold` name). Read straight off the
+    /// generated bundle, so a stale bundle fails here.
+    func testFourSeamWearsTheEmberOneOfOne() {
+        let store = PitchStore()
+        let chase = store.pitches.first { $0.display.specimenNo == "00" }
+        XCTAssertEqual(chase?.display.slug, "four-seam")
+        XCTAssertEqual(chase?.specimenGrade.key, .gold)
+        XCTAssertEqual(chase?.specimenGrade.label, "Ember · 1 of 1")
+    }
+
+    /// Arm-health and youth wings are boundary-only on the web: no discussion
+    /// thread. The flag (and each related link's reason line) must survive
+    /// decoding, matched against the raw bundle so nothing is hardcoded.
+    func testBoundaryOnlyWingsDecodeFromTheBundle() throws {
+        let url = try XCTUnwrap(Bundle.main.url(forResource: "knowledge", withExtension: "json"))
+        let raw = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [[String: Any]])
+        let expected = Set(raw.filter { ($0["boundaryOnly"] as? Bool) == true }.compactMap { $0["slug"] as? String })
+        XCTAssertFalse(expected.isEmpty, "the bundle should carry at least one boundary-only wing")
+        let store = PitchStore()
+        let decoded = Set(store.knowledge.filter { $0.boundaryOnly == true }.map(\.slug))
+        XCTAssertEqual(decoded, expected)
+        for wing in store.knowledge { XCTAssertEqual(wing.allowsDiscussion, !expected.contains(wing.slug)) }
+        let rawReasons = raw.flatMap { ($0["related"] as? [[String: Any]]) ?? [] }.compactMap { $0["reason"] as? String }
+        let decodedReasons = store.knowledge.flatMap { $0.related ?? [] }.compactMap(\.reason)
+        XCTAssertEqual(decodedReasons.count, rawReasons.count, "a related link's reason was dropped in decoding")
     }
 
     /// The same-family rail reads off the filed family: every sibling shares the

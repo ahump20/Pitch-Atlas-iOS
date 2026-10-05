@@ -58,11 +58,19 @@ targets:
         # Font.custom resolves the exact PostScript names the theme references.
         UIAppFonts:
           - Anton-Regular.ttf
-          - Newsreader-Regular.ttf
-          - Newsreader-Italic.ttf
+          - Newsreader16pt16pt-Regular.ttf
+          - Newsreader16pt16pt-Italic.ttf
+          - Newsreader16pt16pt-Medium.ttf
+          - Newsreader16pt16pt-SemiBold.ttf
+          - Newsreader16pt16pt-SemiBoldItalic.ttf
           - HankenGrotesk-Regular.ttf
+          - HankenGrotesk-Italic.ttf
           - HankenGrotesk-Medium.ttf
-          - MartianMono-Regular.ttf
+          - HankenGrotesk-SemiBold.ttf
+          - HankenGrotesk-Bold.ttf
+          - MartianMonoSemiExpanded-Regular.ttf
+          - MartianMonoSemiExpanded-Medium.ttf
+          - MartianMonoSemiExpanded-SemiBold.ttf
         # Custom URL scheme for in-app deep links (pitchatlas://pitch/<slug>, etc.)
         CFBundleURLTypes:
           - CFBundleURLName: com.pitchatlas.app

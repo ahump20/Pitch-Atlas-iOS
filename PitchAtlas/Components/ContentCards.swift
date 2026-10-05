@@ -12,13 +12,9 @@ import UIKit
 // MARK: - Family / status color + label helpers (view layer)
 
 extension PitchFamily {
-    var accent: Color {
-        switch self {
-        case .fastball: return PitchAtlasTheme.cyan
-        case .breaking: return PitchAtlasTheme.violet
-        case .offspeed: return PitchAtlasTheme.lime
-        }
-    }
+    /// The web family inkwell (sections/family-accent.ts).
+    var accent: Color { PitchAccents.familyColor(self) }
+    var accentRGB: UInt32 { PitchAccents.familyRGB(self) }
     var label: String {
         switch self {
         case .fastball: return "Fastball"
@@ -29,15 +25,9 @@ extension PitchFamily {
 }
 
 extension RepertoireFamily {
-    var accent: Color {
-        switch self {
-        case .fastball: return PitchAtlasTheme.cyan
-        case .breaking: return PitchAtlasTheme.violet
-        case .offspeed: return PitchAtlasTheme.lime
-        case .specialty: return PitchAtlasTheme.amberBright
-        case .banned: return PitchAtlasTheme.seamBright
-        }
-    }
+    /// The web family inkwell (sections/family-accent.ts).
+    var accent: Color { PitchAccents.familyColor(self) }
+    var accentRGB: UInt32 { PitchAccents.familyRGB(self) }
     var label: String {
         switch self {
         case .fastball: return "Fastball"
@@ -62,28 +52,21 @@ extension RepertoireStatus {
         case .notAPitch: return "Not a pitch"
         }
     }
-    var tone: Color {
-        switch self {
-        case .standard: return PitchAtlasTheme.cyan
-        case .niche: return PitchAtlasTheme.bone2
-        case .rare: return PitchAtlasTheme.amberBright
-        case .nearExtinct: return PitchAtlasTheme.sandBright
-        case .banned: return PitchAtlasTheme.seamBright
-        case .alias: return PitchAtlasTheme.ink3
-        case .illusion: return PitchAtlasTheme.violet
-        case .notAPitch: return PitchAtlasTheme.ink3
-        }
+    /// The Pitch Index row's status color (web sections/PitchIndex.tsx STATUS).
+    var tone: Color { Color(rgb: toneRGB) }
+    var toneRGB: UInt32 { (WebTokens.Status.indexColor[rawValue] ?? WebTokens.Palette.bone2).rgb }
+    /// The status badge on a basic file (web index/StatusBadge.tsx): the honest
+    /// edge cases take the seam, the live pitches read bone-2.
+    var badgeTone: Color { Color(rgb: badgeToneRGB) }
+    var badgeToneRGB: UInt32 {
+        (WebTokens.Status.edge.contains(rawValue) ? WebTokens.Palette.seam : WebTokens.Palette.bone2).rgb
     }
 }
 
 extension DocumentationTier {
-    var tone: Color {
-        switch self {
-        case .documented: return PitchAtlasTheme.okBright
-        case .partial: return PitchAtlasTheme.amberBright
-        case .legend: return PitchAtlasTheme.sandBright
-        }
-    }
+    /// The lost-pitch documentation tier color (web lost-pitches/EraTimeline.tsx TIER_COLOR).
+    var tone: Color { Color(rgb: toneRGB) }
+    var toneRGB: UInt32 { (WebTokens.LostTier.color[rawValue] ?? WebTokens.Tier.dot["unverified"] ?? WebTokens.Palette.seam).rgb }
 }
 
 // MARK: - Small chrome
@@ -139,7 +122,7 @@ struct BundledImage: View {
                     BrandSealMark(size: 40, shadow: false)
                     Text(alt)
                         .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, PitchAtlasSpacing.sm)
                         .lineLimit(3)
@@ -215,7 +198,7 @@ struct GripPhotoTile: View {
                 if let view = photo.view {
                     SectionLabel(text: view.rawValue, color: PitchAtlasTheme.cyanDeep, size: 8)
                 }
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
+                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.text3, size: 8)
             }
         }
     }
@@ -237,11 +220,11 @@ struct PitchSpecimenCard: View {
     private var isSignature: Bool { entry.specimenGrade.key == .gold }
     private var collectibleEdge: LinearGradient {
         switch entry.specimenGrade.key {
-        case .gold: return PitchAtlasTheme.gold
-        case .inMotion: return PitchAtlasTheme.foil
-        case .firstParty: return PitchAtlasTheme.chrome
+        case .gold: return PitchAtlasMaterials.ember()
+        case .inMotion: return PitchAtlasMaterials.foil()
+        case .firstParty: return PitchAtlasMaterials.foilType()
         case .reference:
-            return LinearGradient(colors: [Color(hex: 0x9EA6AB), Color(hex: 0x454B50), Color(hex: 0xC3CACD)],
+            return LinearGradient(colors: PitchAtlasTheme.referenceEdge,
                                   startPoint: .topLeading, endPoint: .bottomTrailing)
         }
     }
@@ -273,7 +256,7 @@ struct PitchSpecimenCard: View {
                     Spacer(minLength: PitchAtlasSpacing.xs)
                     Text(entry.canonical.grip.source?.label ?? "Source gap visible")
                         .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                 }
@@ -285,7 +268,7 @@ struct PitchSpecimenCard: View {
         .overlay {
             if !isSignature {
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .strokeBorder(PitchAtlasTheme.chrome, lineWidth: isHero ? 4 : 3)
+                    .strokeBorder(PitchAtlasMaterials.foilType(), lineWidth: isHero ? 4 : 3)
                     .overlay {
                         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                             .strokeBorder(collectibleEdge, lineWidth: isHero ? 4 : 3)
@@ -389,14 +372,14 @@ struct RepertoireRow: View {
                 if let aka = entry.aka, !aka.isEmpty {
                     Text(aka.joined(separator: " · "))
                         .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 HStack(spacing: PitchAtlasSpacing.xs) {
                     cardStrip(entry.family.label, color: entry.family.accent)
                     cardStrip(entry.filedSlug == nil ? "Basic file" : "Filed specimen",
-                              color: entry.filedSlug == nil ? PitchAtlasTheme.ink3 : PitchAtlasTheme.cyanDeep)
+                              color: entry.filedSlug == nil ? PitchAtlasTheme.bone3 : PitchAtlasTheme.cyanDeep)
                 }
             }
             Spacer(minLength: PitchAtlasSpacing.xs)
@@ -405,7 +388,7 @@ struct RepertoireRow: View {
                 if entry.filedSlug != nil {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
         }
@@ -462,7 +445,7 @@ struct CraftsmanCard: View {
     let craftsman: Craftsman
 
     private var isLegend: Bool { craftsman.kind == .legend }
-    private var railColor: Color { isLegend ? PitchAtlasTheme.sandBright : Color(hex: 0xCAA14A) }
+    private var railColor: Color { isLegend ? PitchAtlasTheme.lostEdge : PitchAtlasTheme.machined }
 
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
@@ -470,7 +453,7 @@ struct CraftsmanCard: View {
                 SectionLabel(text: craftsman.specimenNo, color: PitchAtlasTheme.cyanDeep, size: 9)
                 Spacer()
                 if isLegend {
-                    StatusPill(text: "Legend — flagged", tone: PitchAtlasTheme.sandBright)
+                    StatusPill(text: "Legend — flagged", tone: PitchAtlasTheme.lostEdge)
                 }
             }
 
@@ -490,7 +473,7 @@ struct CraftsmanCard: View {
                 Text(craftsman.era)
                     .font(PitchAtlasTheme.martian(8))
                     .tracking(1.2)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 3)
                     .overlay(
@@ -542,7 +525,7 @@ struct LostPitchCard: View {
 
             Text(pitch.era)
                 .font(PitchAtlasTheme.martian(9))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .padding(.top, 2)
         }
         .leatherPress()

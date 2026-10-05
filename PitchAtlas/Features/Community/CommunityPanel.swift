@@ -106,7 +106,7 @@ struct CommunityPanel: View {
                         systemImage: actionMessage.tone == .success ? "checkmark.circle" : "exclamationmark.triangle"
                     )
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(actionMessage.tone == .success ? PitchAtlasTheme.okBright : PitchAtlasTheme.amberBright)
+                    .foregroundStyle(actionMessage.tone == .success ? PitchAtlasTheme.success : PitchAtlasTheme.caution)
                     .fixedSize(horizontal: false, vertical: true)
 
                     if let undoBlock {
@@ -136,11 +136,11 @@ struct CommunityPanel: View {
             SectionLabel(text: "Community")
             Text(provenanceNote)
                 .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
             Text(safetyNote)
                 .font(PitchAtlasTheme.newsreaderItalic(12))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
@@ -219,7 +219,7 @@ struct CommunityPanel: View {
                 }
             }
             .font(PitchAtlasTheme.hanken(12))
-            .foregroundStyle(PitchAtlasTheme.ink3)
+            .foregroundStyle(PitchAtlasTheme.text3)
             .fixedSize(horizontal: false, vertical: true)
 
             // The web's viewerIsAuthor guard: an author never marks their own
@@ -303,10 +303,14 @@ struct CommunityPanel: View {
                 .frame(width: 7, height: 7)
                 .shadow(color: color.opacity(0.65), radius: 4)
                 .accessibilityHidden(true)
+            Text(ClaimConfidence(lenient: tier.rawValue).glyph)
+                .font(PitchAtlasTheme.martian(8))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .accessibilityHidden(true)
             Text(tier.label.uppercased())
                 .font(PitchAtlasTheme.martian(8))
                 .tracking(1)
-                .foregroundStyle(color)
+                .foregroundStyle(PitchAtlasTheme.bone2)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(tier.label)
@@ -418,7 +422,7 @@ struct CommunityPanel: View {
         if !auth.isClaimed {
             Text("You're contributing anonymously on this device. Claim the record in Account & Safety to keep it across devices.")
                 .font(PitchAtlasTheme.hanken(12))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
@@ -473,7 +477,7 @@ struct CommunityPanel: View {
                 } else {
                     Text("Image uploads need a claimed account — attach Apple or email in Account & Safety.")
                         .font(PitchAtlasTheme.hanken(12))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
@@ -509,7 +513,7 @@ struct CommunityPanel: View {
                     .font(PitchAtlasTheme.hanken(13))
             }
             .buttonStyle(.plain)
-            .foregroundStyle(PitchAtlasTheme.amberBright)
+            .foregroundStyle(PitchAtlasTheme.caution)
             .accessibilityHint("Opens the community guidelines you are accepting")
 
             PitchToggleField(
@@ -548,7 +552,7 @@ struct CommunityPanel: View {
                     case .failure:
                         Label("Media unavailable", systemImage: "photo")
                             .font(PitchAtlasTheme.hanken(12))
-                            .foregroundStyle(PitchAtlasTheme.ink3)
+                            .foregroundStyle(PitchAtlasTheme.text3)
                     @unknown default:
                         EmptyView()
                     }
@@ -556,7 +560,7 @@ struct CommunityPanel: View {
             } else {
                 Label(item.signingError ?? "Media unavailable", systemImage: "photo")
                     .font(PitchAtlasTheme.hanken(12))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .multilineTextAlignment(.center)
             }
         }
@@ -586,7 +590,7 @@ struct CommunityPanel: View {
                     .foregroundStyle(PitchAtlasTheme.bone)
                 Text("\(image.width)x\(image.height) · \(ByteCountFormatter.string(fromByteCount: Int64(image.data.count), countStyle: .file))")
                     .font(PitchAtlasTheme.hanken(12))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
             }
             Spacer()
             Button {
@@ -619,7 +623,7 @@ struct CommunityPanel: View {
             }
         } label: {
             Image(systemName: "ellipsis.circle")
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .frame(minWidth: 44, minHeight: 44)
         }
         .accessibilityLabel("More actions")

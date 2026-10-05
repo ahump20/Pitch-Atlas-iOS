@@ -54,7 +54,7 @@ struct SourcesView: View {
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-                .emitsBlazeScrollProgress()
+                .emitsScrollProgress()
             }
         }
         .navigationTitle("Sources")
@@ -65,7 +65,7 @@ struct SourcesView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "Provenance", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "Provenance", color: PitchAtlasTheme.kicker)
             Text("SOURCES")
                 .font(PitchAtlasTheme.anton(52))
                 .foregroundStyle(PitchAtlasTheme.bone)
@@ -90,7 +90,7 @@ struct SourcesView: View {
             if checked.isEmpty {
                 Text("Not recorded in this build.")
                     .font(PitchAtlasTheme.hanken(14))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
             } else {
                 Text(checked)
                     .font(PitchAtlasTheme.newsreader(24))
@@ -98,7 +98,7 @@ struct SourcesView: View {
             }
             Text("Checked, not auto-refreshed.")
                 .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
         }
         .leatherPress()
         .accessibilityElement(children: .combine)
@@ -129,13 +129,10 @@ struct SourcesView: View {
             ProvenanceDot(confidence: tier)
                 .padding(.top, 4)
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                Text(tier.label.uppercased())
-                    .font(PitchAtlasTheme.martian(10))
-                    .tracking(1.4)
-                    .foregroundStyle(tier.tierColor)
+                TierWords(confidence: tier, size: 10, tracking: 1.4)
                 Text(tier.meaning)
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -184,45 +181,6 @@ struct SourcesView: View {
     }
 
     private var searchField: some View {
-        HStack(spacing: PitchAtlasSpacing.xs) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .accessibilityHidden(true)
-
-            TextField(
-                "",
-                text: $query,
-                prompt: Text("Search by source or link")
-                    .foregroundColor(PitchAtlasTheme.ink3)
-            )
-            .font(PitchAtlasTheme.hanken(15))
-            .foregroundStyle(PitchAtlasTheme.bone)
-            .textInputAutocapitalization(.never)
-            .autocorrectionDisabled(true)
-            .submitLabel(.search)
-
-            if !query.isEmpty {
-                Button {
-                    query = ""
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 15))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
-                }
-                .accessibilityLabel("Clear search")
-            }
-        }
-        .padding(.horizontal, PitchAtlasSpacing.sm)
-        .padding(.vertical, PitchAtlasSpacing.sm)
-        .frame(minHeight: 44)
-        .background(
-            RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                .fill(PitchAtlasTheme.paper2)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
-        )
+        PitchSearchField(text: $query, prompt: "Search by source or link")
     }
 }

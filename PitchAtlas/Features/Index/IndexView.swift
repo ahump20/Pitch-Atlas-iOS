@@ -103,7 +103,7 @@ struct IndexView: View {
                     .padding(.horizontal, PitchAtlasSpacing.lg)
                     .padding(.top, PitchAtlasSpacing.md)
                     .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-                    .emitsBlazeScrollProgress()
+                    .emitsScrollProgress()
                 }
                 .coordinateSpace(.named(Self.scrollCoordinateSpace))
                 .onPreferenceChange(IndexScrollFramesPreferenceKey.self) { frames in
@@ -111,10 +111,10 @@ struct IndexView: View {
                 }
                 .onAppear { restoreScrollPositionIfNeeded(using: proxy) }
                 .onDisappear { scrollRestoration.indexDidDisappear() }
-                .onChange(of: query) { resetScrollPosition(using: proxy) }
-                .onChange(of: family) { resetScrollPosition(using: proxy) }
-                .onChange(of: status) { resetScrollPosition(using: proxy) }
-                .onChange(of: sort) { resetScrollPosition(using: proxy) }
+                .onChange(of: query) { applyFilterChange(.query, using: proxy) }
+                .onChange(of: family) { applyFilterChange(.family, using: proxy) }
+                .onChange(of: status) { applyFilterChange(.status, using: proxy) }
+                .onChange(of: sort) { applyFilterChange(.sort, using: proxy) }
             }
         }
         .navigationTitle("Index")
@@ -132,7 +132,7 @@ struct IndexView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "The Pitch Index", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "The Pitch Index", color: PitchAtlasTheme.kicker)
             Text("INDEX")
                 .font(PitchAtlasTheme.anton(54))
                 .foregroundStyle(PitchAtlasTheme.bone)
@@ -142,7 +142,6 @@ struct IndexView: View {
                 .font(PitchAtlasTheme.newsreaderItalic(17))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
-            BlazeInlineCompanionView(style: .search, mood: query.isEmpty ? .sniffing : .chasing)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
@@ -152,52 +151,22 @@ struct IndexView: View {
     // MARK: - Search field
 
     private var searchField: some View {
-        HStack(spacing: PitchAtlasSpacing.sm) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .accessibilityHidden(true)
-
-            TextField("", text: $query, prompt: searchPrompt)
-                .font(PitchAtlasTheme.hanken(16))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .tint(PitchAtlasTheme.cyan)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled(true)
-                .submitLabel(.search)
-                .accessibilityLabel("Search pitches")
-
-            if !query.isEmpty {
-                Button {
-                    query = ""
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 15))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
-                }
-                .accessibilityLabel("Clear search")
-            }
-        }
-        .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.chip)
+        PitchSearchField(text: $query, prompt: "Search pitches")
     }
 
-    private var searchPrompt: Text {
-        Text("Search pitches")
-            .font(PitchAtlasTheme.hanken(16))
-            .foregroundStyle(PitchAtlasTheme.ink3)
-    }
+    
 
     // MARK: - Family filter chips
 
     private var familyChips: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: PitchAtlasSpacing.xs) {
-                FilterChip(label: "All", dot: nil, selected: family == nil) {
+                PitchChip(kind: .filter, label: "All", dot: nil, selected: family == nil) {
                     Haptics.toggle()
                     family = nil
                 }
                 ForEach(store.repertoire.families) { info in
-                    FilterChip(label: info.label,
+                    PitchChip(kind: .filter, label: info.label,
                                dot: info.family.accent,
                                selected: family == info.family) {
                         Haptics.toggle()
@@ -229,18 +198,18 @@ struct IndexView: View {
                 Text("Status")
                     .font(PitchAtlasTheme.martian(9))
                     .tracking(1.3)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .textCase(.uppercase)
                     .accessibilityHidden(true)
 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: PitchAtlasSpacing.xs) {
-                        FilterChip(label: "All", dot: nil, selected: status == nil) {
+                        PitchChip(kind: .filter, label: "All", dot: nil, selected: status == nil) {
                             Haptics.toggle()
                             status = nil
                         }
                         ForEach(presentStatuses, id: \.self) { tier in
-                            FilterChip(label: tier.displayLabel, dot: tier.tone, selected: status == tier) {
+                            PitchChip(kind: .filter, label: tier.displayLabel, dot: tier.tone, selected: status == tier) {
                                 Haptics.toggle()
                                 status = (status == tier) ? nil : tier
                             }
@@ -259,14 +228,14 @@ struct IndexView: View {
             Text("Sort")
                 .font(PitchAtlasTheme.martian(9))
                 .tracking(1.3)
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .textCase(.uppercase)
                 .accessibilityHidden(true)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: PitchAtlasSpacing.xs) {
                     ForEach(IndexSort.allCases) { option in
-                        FilterChip(label: option.label, dot: nil, selected: sort == option) {
+                        PitchChip(kind: .filter, label: option.label, dot: nil, selected: sort == option) {
                             Haptics.toggle()
                             sort = option
                         }
@@ -366,9 +335,9 @@ struct IndexView: View {
         }
     }
 
-    private func resetScrollPosition(using proxy: ScrollViewProxy) {
+    private func applyFilterChange(_ change: IndexFilterChange, using proxy: ScrollViewProxy) {
         scrollRestoration.invalidate()
-        proxy.scrollTo(Self.topScrollTarget, anchor: .top)
+        if change.resetsToTop { proxy.scrollTo(Self.topScrollTarget, anchor: .top) }
     }
 
     /// Entries matching the live search query (name + aka), case-insensitive.
@@ -418,49 +387,17 @@ struct IndexView: View {
     }
 }
 
+/// What changed in the Index controls. Typing narrows the list where the reader
+/// already is; a new family, status or sort is a new list and starts at the top.
+enum IndexFilterChange {
+    case query, family, status, sort
+    var resetsToTop: Bool { self != .query }
+}
+
 private struct IndexScrollFramesPreferenceKey: PreferenceKey {
     static var defaultValue: [String: CGRect] = [:]
 
     static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
         value.merge(nextValue(), uniquingKeysWith: { _, next in next })
-    }
-}
-
-// MARK: - Filter chip
-
-/// A selectable family filter chip. The accent dot reads the family color; the
-/// selected state fills cyan-tinted, the resting state is a hairline outline.
-private struct FilterChip: View {
-    let label: String
-    let dot: Color?
-    let selected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                if let dot { FamilyDot(color: dot, size: 6) }
-                Text(label.uppercased())
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.2)
-                    .foregroundStyle(selected ? PitchAtlasTheme.void : PitchAtlasTheme.bone2)
-            }
-            .padding(.horizontal, PitchAtlasSpacing.sm)
-            .padding(.vertical, PitchAtlasSpacing.xs)
-            .background(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .fill(selected ? PitchAtlasTheme.cyan : PitchAtlasTheme.press)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .strokeBorder(selected ? Color.clear : PitchAtlasTheme.machined, lineWidth: 1)
-            )
-            // Guarantee a 44pt hit area (Fitts) without ballooning the painted pill.
-            .frame(minHeight: 44)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(label)
-        .accessibilityAddTraits(selected ? [.isSelected, .isButton] : .isButton)
     }
 }

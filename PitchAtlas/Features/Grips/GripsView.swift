@@ -88,7 +88,7 @@ struct GripsView: View {
             }
             .padding(PitchAtlasSpacing.lg)
             .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-            .emitsBlazeScrollProgress()
+            .emitsScrollProgress()
         }
     }
 
@@ -96,7 +96,7 @@ struct GripsView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "The Grip Library", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "The Grip Library", color: PitchAtlasTheme.kicker)
 
             Text("GRIPS")
                 .font(PitchAtlasTheme.anton(56))
@@ -109,7 +109,6 @@ struct GripsView: View {
                     .foregroundStyle(PitchAtlasTheme.bone2)
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
-            BlazeInlineCompanionView(style: .grips, mood: .sniffing)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
@@ -117,17 +116,7 @@ struct GripsView: View {
     }
 
     private var searchField: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "magnifyingglass").accessibilityHidden(true)
-            TextField("Search grips, families or cues", text: $query)
-                .textInputAutocapitalization(.never).autocorrectionDisabled()
-                .accessibilityLabel("Search grip library")
-            if !query.isEmpty {
-                Button { query = "" } label: {
-                    Image(systemName: "xmark.circle.fill").frame(width: 44, height: 44)
-                }.accessibilityLabel("Clear grip search")
-            }
-        }.pitchTextFieldSurface()
+        PitchSearchField(text: $query, prompt: "Search grips, families or cues")
     }
 
     // MARK: - Honesty banner (proof limit, shown once near the top)
@@ -136,7 +125,7 @@ struct GripsView: View {
     private var honestyBanner: some View {
         if !store.grips.proofLimit.isEmpty {
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3)
+                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.text3)
                 Text(store.grips.proofLimit)
                     .font(PitchAtlasTheme.hanken(14))
                     .foregroundStyle(PitchAtlasTheme.bone2)
@@ -321,7 +310,7 @@ struct GripsView: View {
             if entry.photos.isEmpty {
                 Text("Photos: \(entry.photoStatus ?? "none on file")")
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .padding(.top, PitchAtlasSpacing.xs2)
             } else {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
@@ -341,14 +330,14 @@ struct GripsView: View {
                     SectionLabel(text: "Proof limit")
                     Text(entry.proofLimit)
                         .font(PitchAtlasTheme.hanken(13))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
 
             HStack(spacing: PitchAtlasSpacing.xs) {
                 ProvenanceDot(confidence: entry.claimTier)
-                SectionLabel(text: entry.claimTier.label, color: entry.claimTier.tierColor, size: 9)
+                TierWords(confidence: entry.claimTier, size: 9, tracking: 2)
             }
             .padding(.top, PitchAtlasSpacing.xs2)
         }

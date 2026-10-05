@@ -51,7 +51,7 @@ struct AtlasView: View {
                 }
                 .padding(PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-                .emitsBlazeScrollProgress()
+                .emitsScrollProgress()
             }
         }
         .navigationTitle("Atlas")
@@ -75,7 +75,7 @@ struct AtlasView: View {
             HStack(alignment: .center, spacing: PitchAtlasSpacing.sm) {
                 BrandSealMark(size: 62)
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    SectionLabel(text: "THE CONVERSATION FIELD MANUAL", color: PitchAtlasTheme.powder)
+                    SectionLabel(text: "THE CONVERSATION FIELD MANUAL", color: PitchAtlasTheme.kicker)
                     Text("Hand on the ball. Source on the claim.")
                         .font(PitchAtlasTheme.newsreaderItalic(18))
                         .foregroundStyle(PitchAtlasTheme.bone2)
@@ -109,7 +109,6 @@ struct AtlasView: View {
                 .accessibilityAddTraits(.isButton)
             }
 
-            BlazeInlineCompanionView(style: .atlas, mood: .sniffing)
 
             Text("Start with the tell: fingers, seams, eye level, clock. Then show what the source can prove and what only a pitcher could feel.")
                 .font(PitchAtlasTheme.hanken(16))
@@ -122,13 +121,13 @@ struct AtlasView: View {
         ViewThatFits(in: .horizontal) {
             HStack(spacing: PitchAtlasSpacing.xs) {
                 archivePill("Grip first", tone: PitchAtlasTheme.cyan)
-                archivePill("Source attached", tone: PitchAtlasTheme.powder)
+                archivePill("Source attached", tone: PitchAtlasTheme.kicker)
                 archivePill("No fake certainty", tone: PitchAtlasTheme.seamBright)
             }
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
                 HStack(spacing: PitchAtlasSpacing.xs) {
                     archivePill("Grip first", tone: PitchAtlasTheme.cyan)
-                    archivePill("Source attached", tone: PitchAtlasTheme.powder)
+                    archivePill("Source attached", tone: PitchAtlasTheme.kicker)
                 }
                 archivePill("No fake certainty", tone: PitchAtlasTheme.seamBright)
             }
@@ -188,13 +187,13 @@ struct AtlasView: View {
                 wingRow(title: "One Pitch at a Time", sub: "Lower half, line to the plate, finish low. Then get back to the target.", tone: PitchAtlasTheme.cyan)
             }.buttonStyle(.plain)
             NavigationLink(value: AtlasWing.lostPitches) {
-                wingRow(title: "Lost Pitches", sub: "Craft that survived as story, source, and gap", tone: PitchAtlasTheme.sandBright)
+                wingRow(title: "Lost Pitches", sub: "Craft that survived as story, source, and gap", tone: PitchAtlasTheme.lostEdge)
             }.buttonStyle(.plain)
             NavigationLink(value: AtlasWing.about) {
                 wingRow(title: "About the Atlas", sub: "Why this is not another analytics wrapper", tone: PitchAtlasTheme.ink3)
             }.buttonStyle(.plain)
             NavigationLink(value: AtlasWing.account) {
-                wingRow(title: "Account and Safety", sub: "Sign in, report, block, support, and delete account", tone: PitchAtlasTheme.amberBright)
+                wingRow(title: "Account and Safety", sub: "Sign in, report, block, support, and delete account", tone: PitchAtlasTheme.kicker)
             }.buttonStyle(.plain)
         }
     }
@@ -207,7 +206,7 @@ struct AtlasView: View {
                     .foregroundStyle(PitchAtlasTheme.bone)
                 Text(sub)
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
             }
             Spacer()
             Image(systemName: "arrow.up.right")
@@ -229,17 +228,14 @@ struct AtlasView: View {
                 CardBackRules(title: "The grading scale ★ sourced, not corrected")
 
                 ForEach(ladder, id: \.self) { tier in
-                    let ink = PitchAtlasTheme.cardbackColor(forConfidence: tier.rawValue)
+                    let ink = PitchAtlasTheme.color(forConfidence: tier.rawValue)
                     HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
                         Circle()
                             .fill(ink)
                             .frame(width: 9, height: 9)
                             .padding(.top, 3)
                         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                            Text(tier.label)
-                                .font(PitchAtlasTheme.martian(9))
-                                .tracking(1)
-                                .foregroundStyle(ink)
+                            TierWords(confidence: tier, size: 9, tracking: 1)
                             Text(tier.meaning)
                                 .font(PitchAtlasTheme.hanken(12))
                                 .foregroundStyle(PitchAtlasTheme.cardbackInk2)

@@ -30,6 +30,28 @@ struct ProvenanceDot: View {
     }
 }
 
+// MARK: - Tier words
+
+/// A tier's glyph and label. The tier color stays on the dot; the words print in
+/// bone-2 so they read at every size, and the glyph keeps the seven tiers distinct
+/// across three colors (web provenance/ConfidenceLabel.tsx).
+struct TierWords: View {
+    let confidence: ClaimConfidence
+    var size: CGFloat = 9
+    var tracking: CGFloat = 1.2
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Text(confidence.glyph)
+                .accessibilityHidden(true)
+            Text(confidence.label.uppercased())
+        }
+        .font(PitchAtlasTheme.martian(size))
+        .tracking(tracking)
+        .foregroundStyle(PitchAtlasTheme.bone2)
+    }
+}
+
 // MARK: - Source / claim label
 
 /// A claim's provenance line: tier dot + tier label + the source (or, for a weak
@@ -44,16 +66,13 @@ struct SourceClaimLabel: View {
                 .padding(.top, 3)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(claim.confidence.label.uppercased())
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.2)
-                    .foregroundStyle(claim.confidence.tierColor)
+                TierWords(confidence: claim.confidence, size: 9, tracking: 1.2)
 
                 if let source = claim.source {
                     Text(source.label)
                         .font(PitchAtlasTheme.martian(9))
                         .tracking(0.4)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .lineLimit(2)
                 }
 
@@ -64,14 +83,14 @@ struct SourceClaimLabel: View {
                 if let note = claim.note, !note.isEmpty {
                     Text(note)
                         .font(PitchAtlasTheme.newsreaderItalic(12))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
                 if showMeaning {
                     Text(claim.confidence.meaning)
                         .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -107,7 +126,7 @@ struct ClaimText: View {
                     Text("approx.")
                         .font(PitchAtlasTheme.martian(8))
                         .tracking(0.5)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
             SourceClaimLabel(claim: claim)
@@ -138,7 +157,7 @@ struct GaugeView: View {
                     Text("approx.")
                         .font(PitchAtlasTheme.martian(8))
                         .tracking(0.5)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
             SourceClaimLabel(claim: claim)
@@ -183,7 +202,7 @@ struct SourceRow: View {
             } else {
                 Text(source.url)
                     .font(PitchAtlasTheme.martian(9))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .lineLimit(1)
                     .truncationMode(.middle)
             }
@@ -192,11 +211,11 @@ struct SourceRow: View {
                 Text("CHECKED \(source.retrievedAt)")
                     .font(PitchAtlasTheme.martian(8))
                     .tracking(1)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                 if let season = source.season {
                     Text("· \(season)")
                         .font(PitchAtlasTheme.martian(8))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
         }

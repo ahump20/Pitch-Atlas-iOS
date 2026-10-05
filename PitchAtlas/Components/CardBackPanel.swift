@@ -17,6 +17,7 @@ struct CardBackPanel<Content: View>: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundStyle(PitchAtlasTheme.cardbackInk)
             .background { ArchiveCoverSurface(radius: 14) }
+            .inkContext(.object)
     }
 
 }
@@ -38,27 +39,5 @@ struct CardBackRules: View {
             .overlay(alignment: .bottom) {
                 Rectangle().fill(PitchAtlasTheme.cardbackInk).frame(height: 2)
             }
-    }
-}
-
-/// A blocky uppercase ink stamp, set a degree off-square like a hand stamp.
-/// Color rides in (burgundy NEVER, forest ALWAYS, navy eras).
-struct InkStamp: View {
-    let text: String
-    var color: Color = PitchAtlasTheme.cardbackBurgundy
-    var rotation: Double = -1
-
-    var body: some View {
-        Text(text.uppercased())
-            .font(PitchAtlasTheme.martian(8))
-            .tracking(1.4)
-            .foregroundStyle(color)
-            .padding(.horizontal, 7)
-            .padding(.vertical, 4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 3)
-                    .strokeBorder(color, lineWidth: 1)
-            )
-            .rotationEffect(.degrees(rotation))
     }
 }

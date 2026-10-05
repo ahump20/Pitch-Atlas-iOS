@@ -34,12 +34,15 @@ import Observation
         error = nil
         inspection = nil
         if slugs.contains(slug) { presented = true; return }
-        if slugs.count < 2 { slugs.append(slug) } else { pending = slug }
+        if slugs.count < 2 {
+            slugs.append(slug)
+            if pending == slug { pending = nil }
+        } else { pending = slug }
         presented = true
     }
     func replace(_ index: Int) {
         guard slugs.indices.contains(index), let pending else { return }
-        slugs[index] = pending
+        if !slugs.contains(pending) { slugs[index] = pending }
         self.pending = nil
     }
     func remove(_ slug: String) {
@@ -71,9 +74,19 @@ struct CompareButton: View {
     let slug: String
     @Environment(\.compareSelection) private var selection
     var body: some View {
+        let on = selection.slugs.contains(slug)
         Button { selection.add(slug); Haptics.selection() } label: {
-            Label(selection.slugs.contains(slug) ? "In comparison" : "Compare", systemImage: "square.split.2x1")
-        }.buttonStyle(.bordered).controlSize(.large)
+            Label(on ? "In comparison" : "Compare", systemImage: "square.split.2x1")
+                .font(PitchAtlasType.font(.hanken600, size: 12, relativeTo: .caption))
+                .foregroundStyle(on ? ComponentInk.compareOnInk : ComponentInk.compareInk)
+                .padding(.horizontal, 12.8)
+                .frame(minHeight: 36)
+                .background(RoundedRectangle(cornerRadius: 6).fill(on ? ComponentInk.compareOnFill : ComponentInk.compareFill))
+                .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(on ? ComponentInk.selectedOutline : ComponentInk.compareBorder, lineWidth: 1))
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -240,7 +253,7 @@ struct CompareView: View {
                 modePicker.pickerStyle(.segmented)
                 inspectionControls(hand: $selection.hand, orientation: $selection.orientation)
             }
-            Rectangle().fill(PitchAtlasTheme.sandBright.opacity(0.5)).frame(height: 1)
+            Rectangle().fill(PitchAtlasTheme.lostEdge.opacity(0.5)).frame(height: 1)
             if selection.slugs.count < 2 {
                 Text(selection.slugs.isEmpty ? "Choose the first filed pitch below." : "Choose one more filed pitch below.")
                     .font(.subheadline)
@@ -251,7 +264,7 @@ struct CompareView: View {
                         ForEach(Array(selection.slugs.enumerated()), id: \.element) { index, slug in
                             if let entry = store.pitch(slug: slug) {
                                 if index == 1 {
-                                    Rectangle().fill(PitchAtlasTheme.sandBright.opacity(0.35))
+                                    Rectangle().fill(PitchAtlasTheme.lostEdge.opacity(0.35))
                                         .frame(width: 1)
                                 }
                                 VStack(alignment: .leading, spacing: 8) {

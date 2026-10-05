@@ -84,7 +84,7 @@ struct CraftsmanDetailView: View {
                 SectionLabel(text: craftsman.specimenNo, color: PitchAtlasTheme.cyanDeep)
                 Spacer()
                 if isLegend {
-                    StatusPill(text: "Legend — flagged", tone: PitchAtlasTheme.sandBright)
+                    StatusPill(text: "Legend — flagged", tone: PitchAtlasTheme.lostEdge)
                 }
             }
 
@@ -98,7 +98,7 @@ struct CraftsmanDetailView: View {
                 SectionLabel(text: craftsman.signaturePitch, color: PitchAtlasTheme.cyan, size: 9)
                 Text(craftsman.era)
                     .font(PitchAtlasTheme.martian(9))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
             }
             .padding(.top, 2)
 
@@ -223,9 +223,9 @@ struct CraftsmanDetailView: View {
     private func legendCard(_ legendNote: Claim) -> some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             HStack {
-                SectionLabel(text: "Myth vs Physics", color: PitchAtlasTheme.sandBright)
+                SectionLabel(text: "Myth vs Physics", color: PitchAtlasTheme.lostEdge)
                 Spacer()
-                StatusPill(text: "Flagged", tone: PitchAtlasTheme.sandBright)
+                StatusPill(text: "Flagged", tone: PitchAtlasTheme.lostEdge)
             }
             ClaimText(claim: legendNote)
         }

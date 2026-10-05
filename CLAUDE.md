@@ -29,7 +29,7 @@ The content lives in the **web repo** and is generated into `PitchAtlas/Resource
 
 ## Architecture
 
-Native SwiftUI: tab shell, searchable index, grip library, craftsmen hall, sources browser, and `SeamBall` specimens. State via `@Observable` + `@Environment` DI (no `ObservableObject`/Combine). Navigation: 5-tab `TabView` + per-tab `NavigationStack` + a `DeepLinkRouter` for `pitchatlas://` routes. The offline Three.js/WebView island is a later plan; it is not part of the binary. The Blaze companion rides each tab's scroll via a shared `BlazeCompanionController` injected by `TabScaffold` (the common ancestor of the scroll and the bottom-inset companion).
+Native SwiftUI: tab shell, searchable index, grip library, craftsmen hall, sources browser, and `SeamBall` specimens. State via `@Observable` + `@Environment` DI (no `ObservableObject`/Combine). Navigation: 5-tab `TabView` + per-tab `NavigationStack` + a `DeepLinkRouter` for `pitchatlas://` routes. The offline Three.js/WebView island is a later plan; it is not part of the binary. Each tab root is a `TabScaffold` that turns its scroll into a 0…1 read position (`ScrollProgressController`, in the environment) for anything that moves with the page. The Blaze companion was removed in 1.2 — Pitch Atlas carries no outside brand.
 
 ## Shipped scope (community is in the binary)
 

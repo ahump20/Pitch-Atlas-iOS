@@ -62,7 +62,7 @@ struct AccountView: View {
             HStack(alignment: .center, spacing: PitchAtlasSpacing.sm) {
                 BrandSealMark(size: 48)
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    SectionLabel(text: "Account and Safety", color: PitchAtlasTheme.powder)
+                    SectionLabel(text: "Account and Safety", color: PitchAtlasTheme.kicker)
                     Text("PITCH ATLAS")
                         .font(PitchAtlasTheme.anton(38))
                         .foregroundStyle(PitchAtlasTheme.bone)
@@ -87,7 +87,7 @@ struct AccountView: View {
                 SignInPanel(email: $email)
                 Text("Reading the atlas and posting anonymously need no account. Sign in only if you want your record to travel with you.")
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .leatherPress()
@@ -105,7 +105,7 @@ struct AccountView: View {
             if let error = auth.errorMessage {
                 Text(error)
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.amberBright)
+                    .foregroundStyle(PitchAtlasTheme.caution)
             }
 
             HStack {
@@ -176,14 +176,14 @@ struct AccountView: View {
             if let sentTo = auth.claimEmailSentTo {
                 Label("Check your email to confirm — your filed notes ride along. The link went to \(sentTo).", systemImage: "checkmark.circle")
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.okBright)
+                    .foregroundStyle(PitchAtlasTheme.success)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             if let error = auth.errorMessage {
                 Text(error)
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.amberBright)
+                    .foregroundStyle(PitchAtlasTheme.caution)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
@@ -217,7 +217,7 @@ struct AccountView: View {
                 .fixedSize(horizontal: false, vertical: true)
             Text("Blocking hides community content both ways. The list below is private to your signed-in account.")
                 .font(PitchAtlasTheme.newsreaderItalic(14))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
             blockedContributorsSection
         }
@@ -246,7 +246,7 @@ struct AccountView: View {
                                     .foregroundStyle(PitchAtlasTheme.bone)
                                 Text("Blocked contributor")
                                     .font(PitchAtlasTheme.hanken(12))
-                                    .foregroundStyle(PitchAtlasTheme.ink3)
+                                    .foregroundStyle(PitchAtlasTheme.text3)
                             }
                             Spacer()
                             Button {
@@ -266,7 +266,7 @@ struct AccountView: View {
         } else {
             Text("No contributor record on this device yet. Block someone from a community post and the private list appears here.")
                 .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }
@@ -359,14 +359,14 @@ struct SignInPanel: View {
             if let sentTo = auth.magicLinkSentTo {
                 Label("Check your email. We sent a sign-in link to \(sentTo). Open it on this device to finish.", systemImage: "checkmark.circle")
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.okBright)
+                    .foregroundStyle(PitchAtlasTheme.success)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             if let error = auth.errorMessage {
                 Text(error)
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.amberBright)
+                    .foregroundStyle(PitchAtlasTheme.caution)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
