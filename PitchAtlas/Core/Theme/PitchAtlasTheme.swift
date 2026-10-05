@@ -79,16 +79,6 @@ enum PitchAtlasTheme {
     static let cardbackForest = Color(hex: 0xBDE7BD)
     static let cardbackBurgundy = Color(hex: 0xFFD1C5)
     static let cardbackGoldInk = Color(hex: 0xF1D1A0)
-    /// Warm tier inks remain legible on dark reading stock and the signature cover.
-    static func cardbackColor(forConfidence raw: String) -> Color {
-        switch raw {
-        case "official-data": return Color(hex: 0xBDE7BD)
-        case "pitcher-own-words", "coach-observed": return Color(hex: 0xBADAF1)
-        case "reputable-analysis": return Color(hex: 0xF1D1A0)
-        case "secondhand-attributed", "community-firsthand": return Color(hex: 0xEDC7AA)
-        default: return cardbackInk3
-        }
-    }
 
     // MARK: - Hairlines / texture
     /// The 1px card border — bone at 12%.
@@ -174,16 +164,17 @@ enum PitchAtlasTheme {
     }
 
     // MARK: - Provenance tier -> color
-    /// Maps a ClaimConfidence raw value (from the web model) to its tier color.
+    /// The web's three trust colors across the seven tiers (provenance/
+    /// refractorClaimMeta.ts CONFIDENCE_COLOR): firsthand burnt, relayed blue,
+    /// unverified seam. An unknown tier reads as unverified — never upgraded.
+    /// The color belongs to the dot; a tier's words print in bone-2 beside it.
     static func color(forConfidence raw: String) -> Color {
-        switch raw {
-        case "official-data": return okBright
-        case "pitcher-own-words": return powder
-        case "coach-observed": return tealGlow
-        case "reputable-analysis": return amberBright
-        case "secondhand-attributed", "community-firsthand": return cardbackColor(forConfidence: raw)
-        default: return ink3 // unverified + unknown -> honest gray
-        }
+        Color(web: WebTokens.Tier.dot[raw] ?? WebTokens.Tier.dot["unverified"] ?? WebTokens.Palette.seam)
+    }
+
+    /// The tier ink on cream card stock (refractor/specimenFace.tsx CARD_INK).
+    static func cardInk(forConfidence raw: String) -> Color {
+        Color(web: WebTokens.Tier.ink[raw] ?? WebTokens.Tier.ink["unverified"] ?? WebTokens.CreamInk.ink)
     }
 }
 

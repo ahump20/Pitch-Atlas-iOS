@@ -229,17 +229,14 @@ struct AtlasView: View {
                 CardBackRules(title: "The grading scale ★ sourced, not corrected")
 
                 ForEach(ladder, id: \.self) { tier in
-                    let ink = PitchAtlasTheme.cardbackColor(forConfidence: tier.rawValue)
+                    let ink = PitchAtlasTheme.color(forConfidence: tier.rawValue)
                     HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
                         Circle()
                             .fill(ink)
                             .frame(width: 9, height: 9)
                             .padding(.top, 3)
                         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                            Text(tier.label)
-                                .font(PitchAtlasTheme.martian(9))
-                                .tracking(1)
-                                .foregroundStyle(ink)
+                            TierWords(confidence: tier, size: 9, tracking: 1)
                             Text(tier.meaning)
                                 .font(PitchAtlasTheme.hanken(12))
                                 .foregroundStyle(PitchAtlasTheme.cardbackInk2)

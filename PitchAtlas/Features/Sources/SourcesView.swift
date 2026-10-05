@@ -129,10 +129,7 @@ struct SourcesView: View {
             ProvenanceDot(confidence: tier)
                 .padding(.top, 4)
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                Text(tier.label.uppercased())
-                    .font(PitchAtlasTheme.martian(10))
-                    .tracking(1.4)
-                    .foregroundStyle(tier.tierColor)
+                TierWords(confidence: tier, size: 10, tracking: 1.4)
                 Text(tier.meaning)
                     .font(PitchAtlasTheme.hanken(13))
                     .foregroundStyle(PitchAtlasTheme.ink3)

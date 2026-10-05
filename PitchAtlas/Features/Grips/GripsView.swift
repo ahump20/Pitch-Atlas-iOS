@@ -348,7 +348,7 @@ struct GripsView: View {
 
             HStack(spacing: PitchAtlasSpacing.xs) {
                 ProvenanceDot(confidence: entry.claimTier)
-                SectionLabel(text: entry.claimTier.label, color: entry.claimTier.tierColor, size: 9)
+                TierWords(confidence: entry.claimTier, size: 9, tracking: 2)
             }
             .padding(.top, PitchAtlasSpacing.xs2)
         }

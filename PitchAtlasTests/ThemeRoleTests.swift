@@ -64,6 +64,21 @@ final class ThemeRoleTests: XCTestCase {
         XCTAssertEqual(DocumentationTier.legend.toneRGB, WebTokens.Tier.dot["unverified"]?.rgb)
     }
 
+    func testUnknownConfidenceFallsBackToUnverifiedEverywhere() {
+        let c = ClaimConfidence(lenient: "something-new")
+        XCTAssertEqual(c, .unverified)
+        XCTAssertEqual(c.glyph, "⊘")
+        XCTAssertEqual(c.label, "Unverified")
+        XCTAssertEqual(PitchAtlasTheme.cardInk(forConfidence: "something-new"), Color(web: WebTokens.Tier.ink["unverified"]!))
+    }
+
+    func testEveryConfidenceHasGlyphAndWebLabel() {
+        for c in ClaimConfidence.allCases {
+            XCTAssertEqual(c.label, WebTokens.Tier.label[c.rawValue])
+            XCTAssertEqual(c.glyph, WebTokens.Tier.glyph[c.rawValue])
+        }
+    }
+
     func testFamilyAccentsReadTheWebInkwells() {
         XCTAssertEqual(RepertoireFamily.fastball.accentRGB, 0xBF5700)
         XCTAssertEqual(PitchFamily.breaking.accentRGB, 0x5FE0EA)

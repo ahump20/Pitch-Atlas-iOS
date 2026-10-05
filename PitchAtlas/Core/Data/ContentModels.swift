@@ -31,35 +31,23 @@ enum ClaimConfidence: String, Codable, Hashable, CaseIterable {
     case unverified
 
     init(from decoder: Decoder) throws {
-        let raw = try decoder.singleValueContainer().decode(String.self)
+        self.init(lenient: try decoder.singleValueContainer().decode(String.self))
+    }
+
+    /// A tier the web adds later reads as unverified — shown, never upgraded.
+    init(lenient raw: String) {
         self = ClaimConfidence(rawValue: raw) ?? .unverified
     }
 
-    /// Short badge label.
-    var label: String {
-        switch self {
-        case .officialData: return "Official data"
-        case .pitcherOwnWords: return "Pitcher's own words"
-        case .coachObserved: return "Coach-observed"
-        case .reputableAnalysis: return "Reputable analysis"
-        case .secondhandAttributed: return "Secondhand, attributed"
-        case .communityFirsthand: return "Community, firsthand"
-        case .unverified: return "Unverified"
-        }
-    }
+    /// Short badge label, as the web prints it (data/types.ts CONFIDENCE_META).
+    var label: String { WebTokens.Tier.label[rawValue] ?? "Unverified" }
 
     /// One-line meaning, shown when the tier is explained.
-    var meaning: String {
-        switch self {
-        case .officialData: return "Measured and published by the source of record (Statcast / MLB)."
-        case .pitcherOwnWords: return "Stated by the athlete directly."
-        case .coachObserved: return "Reported firsthand by a coach."
-        case .reputableAnalysis: return "A credible analyst, or our paraphrase of a cited reference."
-        case .secondhandAttributed: return "A quote or figure relayed through a secondary source."
-        case .communityFirsthand: return "A community member's own report. Launches with safeguards."
-        case .unverified: return "No source corroborated this value. Shown so the gap is visible."
-        }
-    }
+    var meaning: String { WebTokens.Tier.meaning[rawValue] ?? "" }
+
+    /// The web's mono glyph (provenance/ConfidenceLabel.tsx), so the seven tiers
+    /// stay distinct where three colors cannot carry them.
+    var glyph: String { WebTokens.Tier.glyph[rawValue] ?? "⊘" }
 }
 
 /// What we are allowed to do with an asset or claim.

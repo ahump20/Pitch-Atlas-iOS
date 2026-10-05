@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 import UIKit
 import AVFoundation
 @testable import PitchAtlas
@@ -12,13 +13,13 @@ final class PitchAtlasTests: XCTestCase {
                        ["atlas", "index", "grips", "craftsmen", "sources"])
     }
 
-    /// Provenance mapping must always resolve. An unknown tier falls back to the
-    /// honest gray (unverified), never crashes and never silently upgrades.
+    /// Provenance mapping must always resolve: seven tiers share the web's three
+    /// trust colors, and an unknown tier falls back to unverified — never crashes
+    /// and never silently upgrades.
     func testConfidenceColorFallback() {
-        let known = PitchAtlasTheme.color(forConfidence: "official-data")
-        let unknown = PitchAtlasTheme.color(forConfidence: "nonsense-tier")
-        XCTAssertEqual(unknown, PitchAtlasTheme.ink3)
-        XCTAssertNotEqual(known, PitchAtlasTheme.ink3)
+        XCTAssertEqual(PitchAtlasTheme.color(forConfidence: "official-data"), Color(web: WebTokens.Tier.dot["official-data"]!))
+        XCTAssertEqual(PitchAtlasTheme.color(forConfidence: "secondhand-attributed"), Color(web: WebTokens.Tier.dot["reputable-analysis"]!))
+        XCTAssertEqual(PitchAtlasTheme.color(forConfidence: "not-a-tier"), Color(web: WebTokens.Tier.dot["unverified"]!))
     }
 
     /// Every bundled JSON decodes with zero failures across every record.

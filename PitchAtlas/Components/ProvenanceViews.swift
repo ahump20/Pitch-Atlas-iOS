@@ -30,6 +30,28 @@ struct ProvenanceDot: View {
     }
 }
 
+// MARK: - Tier words
+
+/// A tier's glyph and label. The tier color stays on the dot; the words print in
+/// bone-2 so they read at every size, and the glyph keeps the seven tiers distinct
+/// across three colors (web provenance/ConfidenceLabel.tsx).
+struct TierWords: View {
+    let confidence: ClaimConfidence
+    var size: CGFloat = 9
+    var tracking: CGFloat = 1.2
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Text(confidence.glyph)
+                .accessibilityHidden(true)
+            Text(confidence.label.uppercased())
+        }
+        .font(PitchAtlasTheme.martian(size))
+        .tracking(tracking)
+        .foregroundStyle(PitchAtlasTheme.bone2)
+    }
+}
+
 // MARK: - Source / claim label
 
 /// A claim's provenance line: tier dot + tier label + the source (or, for a weak
@@ -44,10 +66,7 @@ struct SourceClaimLabel: View {
                 .padding(.top, 3)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(claim.confidence.label.uppercased())
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.2)
-                    .foregroundStyle(claim.confidence.tierColor)
+                TierWords(confidence: claim.confidence, size: 9, tracking: 1.2)
 
                 if let source = claim.source {
                     Text(source.label)
