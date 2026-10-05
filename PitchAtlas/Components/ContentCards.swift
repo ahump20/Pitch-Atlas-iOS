@@ -12,13 +12,9 @@ import UIKit
 // MARK: - Family / status color + label helpers (view layer)
 
 extension PitchFamily {
-    var accent: Color {
-        switch self {
-        case .fastball: return PitchAtlasTheme.cyan
-        case .breaking: return PitchAtlasTheme.violet
-        case .offspeed: return PitchAtlasTheme.lime
-        }
-    }
+    /// The web family inkwell (sections/family-accent.ts).
+    var accent: Color { PitchAccents.familyColor(self) }
+    var accentRGB: UInt32 { PitchAccents.familyRGB(self) }
     var label: String {
         switch self {
         case .fastball: return "Fastball"
@@ -29,15 +25,9 @@ extension PitchFamily {
 }
 
 extension RepertoireFamily {
-    var accent: Color {
-        switch self {
-        case .fastball: return PitchAtlasTheme.cyan
-        case .breaking: return PitchAtlasTheme.violet
-        case .offspeed: return PitchAtlasTheme.lime
-        case .specialty: return PitchAtlasTheme.amberBright
-        case .banned: return PitchAtlasTheme.seamBright
-        }
-    }
+    /// The web family inkwell (sections/family-accent.ts).
+    var accent: Color { PitchAccents.familyColor(self) }
+    var accentRGB: UInt32 { PitchAccents.familyRGB(self) }
     var label: String {
         switch self {
         case .fastball: return "Fastball"
@@ -62,28 +52,21 @@ extension RepertoireStatus {
         case .notAPitch: return "Not a pitch"
         }
     }
-    var tone: Color {
-        switch self {
-        case .standard: return PitchAtlasTheme.cyan
-        case .niche: return PitchAtlasTheme.bone2
-        case .rare: return PitchAtlasTheme.amberBright
-        case .nearExtinct: return PitchAtlasTheme.sandBright
-        case .banned: return PitchAtlasTheme.seamBright
-        case .alias: return PitchAtlasTheme.ink3
-        case .illusion: return PitchAtlasTheme.violet
-        case .notAPitch: return PitchAtlasTheme.ink3
-        }
+    /// The Pitch Index row's status color (web sections/PitchIndex.tsx STATUS).
+    var tone: Color { Color(rgb: toneRGB) }
+    var toneRGB: UInt32 { (WebTokens.Status.indexColor[rawValue] ?? WebTokens.Palette.bone2).rgb }
+    /// The status badge on a basic file (web index/StatusBadge.tsx): the honest
+    /// edge cases take the seam, the live pitches read bone-2.
+    var badgeTone: Color { Color(rgb: badgeToneRGB) }
+    var badgeToneRGB: UInt32 {
+        (WebTokens.Status.edge.contains(rawValue) ? WebTokens.Palette.seam : WebTokens.Palette.bone2).rgb
     }
 }
 
 extension DocumentationTier {
-    var tone: Color {
-        switch self {
-        case .documented: return PitchAtlasTheme.okBright
-        case .partial: return PitchAtlasTheme.amberBright
-        case .legend: return PitchAtlasTheme.sandBright
-        }
-    }
+    /// The lost-pitch documentation tier color (web lost-pitches/EraTimeline.tsx TIER_COLOR).
+    var tone: Color { Color(rgb: toneRGB) }
+    var toneRGB: UInt32 { (WebTokens.LostTier.color[rawValue] ?? WebTokens.Tier.dot["unverified"] ?? WebTokens.Palette.seam).rgb }
 }
 
 // MARK: - Small chrome
@@ -462,7 +445,7 @@ struct CraftsmanCard: View {
     let craftsman: Craftsman
 
     private var isLegend: Bool { craftsman.kind == .legend }
-    private var railColor: Color { isLegend ? PitchAtlasTheme.sandBright : Color(hex: 0xCAA14A) }
+    private var railColor: Color { isLegend ? PitchAtlasTheme.lostEdge : PitchAtlasTheme.machined }
 
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
@@ -470,7 +453,7 @@ struct CraftsmanCard: View {
                 SectionLabel(text: craftsman.specimenNo, color: PitchAtlasTheme.cyanDeep, size: 9)
                 Spacer()
                 if isLegend {
-                    StatusPill(text: "Legend — flagged", tone: PitchAtlasTheme.sandBright)
+                    StatusPill(text: "Legend — flagged", tone: PitchAtlasTheme.lostEdge)
                 }
             }
 

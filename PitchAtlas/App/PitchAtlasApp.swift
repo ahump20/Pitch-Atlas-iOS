@@ -146,7 +146,7 @@ struct RootView: View {
         }
         .environment(\.compareSelection, comparison)
         .sheet(isPresented: $comparison.presented) { CompareView().environment(\.compareSelection, comparison) }
-        .tint(PitchAtlasTheme.powder)
+        .tint(PitchAtlasTheme.kicker)
         .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarBackground(.hidden, for: .tabBar)

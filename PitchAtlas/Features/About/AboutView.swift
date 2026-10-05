@@ -47,7 +47,7 @@ struct AboutView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "About", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "About", color: PitchAtlasTheme.kicker)
             Text("PITCH ATLAS")
                 .font(PitchAtlasTheme.anton(52))
                 .foregroundStyle(PitchAtlasTheme.bone)

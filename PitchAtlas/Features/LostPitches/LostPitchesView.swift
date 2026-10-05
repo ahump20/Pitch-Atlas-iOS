@@ -37,7 +37,7 @@ struct LostPitchesView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "Lost Pitches", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "Lost Pitches", color: PitchAtlasTheme.kicker)
 
             Text("LOST")
                 .font(PitchAtlasTheme.anton(56))

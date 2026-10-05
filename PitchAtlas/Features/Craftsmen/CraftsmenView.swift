@@ -37,7 +37,7 @@ struct CraftsmenView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "The Craftsmen", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "The Craftsmen", color: PitchAtlasTheme.kicker)
 
             Text("CRAFTSMEN")
                 .font(PitchAtlasTheme.anton(48))

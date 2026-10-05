@@ -52,4 +52,20 @@ final class ThemeRoleTests: XCTestCase {
         XCTAssertNil(PitchAtlasMotion.animation(PitchAtlasMotion.medium, reduceMotion: true))
         XCTAssertNotNil(PitchAtlasMotion.animation(PitchAtlasMotion.medium, reduceMotion: false))
     }
+
+    func testStatusAndTierTonesFollowTheWebMaps() {
+        for status in RepertoireStatus.allCases {
+            XCTAssertEqual(status.toneRGB, WebTokens.Status.indexColor[status.rawValue]?.rgb, status.rawValue)
+        }
+        XCTAssertEqual(RepertoireStatus.alias.badgeToneRGB, WebTokens.Palette.seam.rgb)
+        XCTAssertEqual(RepertoireStatus.rare.badgeToneRGB, WebTokens.Palette.bone2.rgb)
+        XCTAssertEqual(DocumentationTier.documented.toneRGB, WebTokens.Tier.dot["official-data"]?.rgb)
+        XCTAssertEqual(DocumentationTier.partial.toneRGB, WebTokens.Tier.dot["reputable-analysis"]?.rgb)
+        XCTAssertEqual(DocumentationTier.legend.toneRGB, WebTokens.Tier.dot["unverified"]?.rgb)
+    }
+
+    func testFamilyAccentsReadTheWebInkwells() {
+        XCTAssertEqual(RepertoireFamily.fastball.accentRGB, 0xBF5700)
+        XCTAssertEqual(PitchFamily.breaking.accentRGB, 0x5FE0EA)
+    }
 }

@@ -65,7 +65,7 @@ struct SourcesView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "Provenance", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "Provenance", color: PitchAtlasTheme.kicker)
             Text("SOURCES")
                 .font(PitchAtlasTheme.anton(52))
                 .foregroundStyle(PitchAtlasTheme.bone)

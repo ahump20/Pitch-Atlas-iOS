@@ -132,7 +132,7 @@ struct IndexView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "The Pitch Index", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "The Pitch Index", color: PitchAtlasTheme.kicker)
             Text("INDEX")
                 .font(PitchAtlasTheme.anton(54))
                 .foregroundStyle(PitchAtlasTheme.bone)

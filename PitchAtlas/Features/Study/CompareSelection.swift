@@ -240,7 +240,7 @@ struct CompareView: View {
                 modePicker.pickerStyle(.segmented)
                 inspectionControls(hand: $selection.hand, orientation: $selection.orientation)
             }
-            Rectangle().fill(PitchAtlasTheme.sandBright.opacity(0.5)).frame(height: 1)
+            Rectangle().fill(PitchAtlasTheme.lostEdge.opacity(0.5)).frame(height: 1)
             if selection.slugs.count < 2 {
                 Text(selection.slugs.isEmpty ? "Choose the first filed pitch below." : "Choose one more filed pitch below.")
                     .font(.subheadline)
@@ -251,7 +251,7 @@ struct CompareView: View {
                         ForEach(Array(selection.slugs.enumerated()), id: \.element) { index, slug in
                             if let entry = store.pitch(slug: slug) {
                                 if index == 1 {
-                                    Rectangle().fill(PitchAtlasTheme.sandBright.opacity(0.35))
+                                    Rectangle().fill(PitchAtlasTheme.lostEdge.opacity(0.35))
                                         .frame(width: 1)
                                 }
                                 VStack(alignment: .leading, spacing: 8) {

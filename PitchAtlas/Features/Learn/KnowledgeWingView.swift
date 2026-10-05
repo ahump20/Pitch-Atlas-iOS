@@ -78,7 +78,7 @@ struct KnowledgeWingView: View {
 
     private var educationalBanner: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "EDUCATIONAL USE", color: PitchAtlasTheme.amberBright)
+            SectionLabel(text: "EDUCATIONAL USE", color: PitchAtlasTheme.caution)
             Text("This wing is teaching, not medical care.")
                 .font(PitchAtlasTheme.hanken(13))
                 .foregroundStyle(PitchAtlasTheme.bone2)

@@ -96,7 +96,7 @@ struct GripsView: View {
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "The Grip Library", color: PitchAtlasTheme.powder)
+            SectionLabel(text: "The Grip Library", color: PitchAtlasTheme.kicker)
 
             Text("GRIPS")
                 .font(PitchAtlasTheme.anton(56))

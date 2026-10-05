@@ -43,6 +43,16 @@ enum PitchAtlasTheme {
     // MARK: - Seam red (graphic / seam / banned-tier only — never body text on void)
     static let seamBright = Color(hex: 0xFF2D44)
 
+    // MARK: - Roles (generated web tokens)
+    /// Section kickers and the app-wide tint — the web's `--color-kicker` (cyan).
+    static let kicker = Color(web: WebTokens.Palette.kicker)
+    /// A confirmed, done, verified state — web `--color-ok`.
+    static let success = Color(web: WebTokens.Palette.ok)
+    /// A warning, a pending state, "educational use" — web `--color-amber`.
+    static let caution = Color(web: WebTokens.Palette.amber)
+    /// The lost-pitch and legend edge, the "Reference" register — web `--color-sand-bright`.
+    static let lostEdge = Color(web: WebTokens.Palette.sandBright)
+
     // MARK: - Provenance ladder (the confidence tiers)
     static let okBright = Color(hex: 0x34E27E)   // official-data
     static let tealGlow = Color(hex: 0x00A2A0)   // coach-observed

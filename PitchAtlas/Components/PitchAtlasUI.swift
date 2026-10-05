@@ -46,7 +46,7 @@ struct FieldBackdrop: View {
             )
             RadialGradient(
                 colors: [
-                    PitchAtlasTheme.violet.opacity(0.045),
+                    PitchAtlasTheme.kicker.opacity(0.045),
                     .clear,
                 ],
                 center: .topTrailing,
@@ -266,7 +266,7 @@ struct LoadingTile: View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             ForEach(0..<3, id: \.self) { i in
                 RoundedRectangle(cornerRadius: 4, style: .continuous)
-                    .fill(i == 0 ? PitchAtlasTheme.powder.opacity(0.22) : PitchAtlasTheme.machined)
+                    .fill(i == 0 ? PitchAtlasTheme.kicker.opacity(0.22) : PitchAtlasTheme.machined)
                     .frame(height: 14)
                     .frame(maxWidth: i == 2 ? 180 : .infinity)
             }
@@ -359,7 +359,7 @@ struct PitchFormLabel: View {
                 Text("Required")
                     .font(PitchAtlasTheme.martian(8))
                     .tracking(0.7)
-                    .foregroundStyle(PitchAtlasTheme.amberBright)
+                    .foregroundStyle(PitchAtlasTheme.caution)
             }
         }
         .accessibilityElement(children: .combine)

@@ -163,7 +163,7 @@ struct PitchDetailView: View {
             // the same stamp the web card wears. Gold is the real 1/1 chase.
             SectionLabel(
                 text: entry.specimenGrade.label,
-                color: entry.specimenGrade.key == .gold ? PitchAtlasTheme.amberBright : PitchAtlasTheme.bone2,
+                color: PitchAtlasTheme.bone2,
                 size: 9
             )
             .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
@@ -510,7 +510,7 @@ struct PitchDetailView: View {
                     .antonSkew()
                 Spacer()
                 if variant.verifiedPro {
-                    StatusPill(text: "Verified", tone: PitchAtlasTheme.okBright)
+                    StatusPill(text: "Verified", tone: PitchAtlasTheme.success)
                 }
             }
             Text(variant.context)
@@ -567,9 +567,10 @@ struct PitchDetailView: View {
     }
 
     private func siblingPill(_ sib: PitchAtlasEntry) -> some View {
-        // Gold dot for the lone 1/1 chase, the family accent otherwise — the same read
-        // the web sibling pill uses, so the two surfaces mark the chase identically.
-        let dot = sib.display.specimenNo == "00" ? PitchAtlasTheme.amberBright : sib.canonical.family.accent
+        // Burnt dot for the lone 1/1 chase, the pitch's own accent otherwise — the
+        // same read as the web sibling pill (pitch/PitchConnections.tsx).
+        let dot = Color(rgb: sib.display.specimenNo == "00" ? WebTokens.Accent.burnt
+                                                            : PitchAccents.triad(for: sib.display.slug).c3)
         return HStack(spacing: PitchAtlasSpacing.xs) {
             Circle()
                 .fill(dot)

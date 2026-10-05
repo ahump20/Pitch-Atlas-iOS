@@ -106,7 +106,7 @@ struct CommunityPanel: View {
                         systemImage: actionMessage.tone == .success ? "checkmark.circle" : "exclamationmark.triangle"
                     )
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(actionMessage.tone == .success ? PitchAtlasTheme.okBright : PitchAtlasTheme.amberBright)
+                    .foregroundStyle(actionMessage.tone == .success ? PitchAtlasTheme.success : PitchAtlasTheme.caution)
                     .fixedSize(horizontal: false, vertical: true)
 
                     if let undoBlock {
@@ -509,7 +509,7 @@ struct CommunityPanel: View {
                     .font(PitchAtlasTheme.hanken(13))
             }
             .buttonStyle(.plain)
-            .foregroundStyle(PitchAtlasTheme.amberBright)
+            .foregroundStyle(PitchAtlasTheme.caution)
             .accessibilityHint("Opens the community guidelines you are accepting")
 
             PitchToggleField(
