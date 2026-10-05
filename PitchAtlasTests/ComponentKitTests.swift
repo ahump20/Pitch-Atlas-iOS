@@ -33,4 +33,29 @@ final class ComponentKitTests: XCTestCase {
         ]
         for view in views { XCTAssertNotNil(ImageRenderer(content: view).uiImage) }
     }
+
+    func testEveryButtonKeepsA44ptHitArea() {
+        for kind: PitchButtonKind in [.chrome, .ghost, .waxSeal, .chapter(fill: 0xB9D4E5), .link] {
+            XCTAssertGreaterThanOrEqual(kind.minHitHeight, 44)
+        }
+    }
+
+    func testChapterButtonInkComesFromAccentButton() {
+        XCTAssertEqual(PitchButtonKind.chapter(fill: 0x5B7F96).colors.fill, 0x63859B, "forkball lifts one 5% step")
+        XCTAssertEqual(PitchButtonKind.chapter(fill: 0xBF5700).colors.ink, 0xFFFFFF)
+        XCTAssertEqual(PitchButtonKind.chapter(fill: 0xB9D4E5).colors.ink, 0x06121B)
+    }
+
+    func testRosinGrainsFallAndFade() throws {
+        let early = try XCTUnwrap(RosinPuff.grain(3, at: 0.05))
+        let late = RosinPuff.grain(3, at: 0.4)
+        XCTAssertGreaterThan(early.alpha, late?.alpha ?? 0)
+        XCTAssertNil(RosinPuff.grain(3, at: 0.9), "every grain is gone by 0.85s")
+        XCTAssertEqual(RosinPuff.grainCount, 30)
+        XCTAssertEqual(RosinPuff.duration, 0.8)
+    }
+
+    func testRosinPuffIsDeterministic() {
+        XCTAssertEqual(RosinPuff.grain(7, at: 0.2), RosinPuff.grain(7, at: 0.2))
+    }
 }

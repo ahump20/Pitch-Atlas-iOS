@@ -74,9 +74,19 @@ struct CompareButton: View {
     let slug: String
     @Environment(\.compareSelection) private var selection
     var body: some View {
+        let on = selection.slugs.contains(slug)
         Button { selection.add(slug); Haptics.selection() } label: {
-            Label(selection.slugs.contains(slug) ? "In comparison" : "Compare", systemImage: "square.split.2x1")
-        }.buttonStyle(.bordered).controlSize(.large)
+            Label(on ? "In comparison" : "Compare", systemImage: "square.split.2x1")
+                .font(PitchAtlasType.font(.hanken600, size: 12, relativeTo: .caption))
+                .foregroundStyle(on ? ComponentInk.compareOnInk : ComponentInk.compareInk)
+                .padding(.horizontal, 12.8)
+                .frame(minHeight: 36)
+                .background(RoundedRectangle(cornerRadius: 6).fill(on ? ComponentInk.compareOnFill : ComponentInk.compareFill))
+                .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(on ? ComponentInk.selectedOutline : ComponentInk.compareBorder, lineWidth: 1))
+                .frame(minHeight: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 }
 
