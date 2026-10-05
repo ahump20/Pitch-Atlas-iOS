@@ -604,7 +604,8 @@
     "related": [
       {
         "label": "Compare two pitches",
-        "to": "/compare"
+        "to": "/compare",
+        "reason": "Bring your selected pair back into view and inspect their grips, cues, and schematic directions."
       },
       {
         "label": "Pitch Design",
@@ -620,7 +621,8 @@
       },
       {
         "label": "Fastball",
-        "to": "/pitch/four-seam"
+        "to": "/pitch/four-seam",
+        "reason": "Return to the four-seam hold discussed in this lesson."
       }
     ]
   },
@@ -1120,7 +1122,7 @@
         "paragraphs": [
           "Seam-shifted wake gave coaches a better language for something pitchers had felt for a long time: seam presentation can make a ball move differently than spin alone would suggest.",
           "That idea connects the sinker, kick-change, and some modern changeups. It puts the grip back at the center. Where the seams sit, which finger leaves last, and how the ball exits the hand can change the shape a hitter sees.",
-          "This is the strongest modern argument for Pitch Atlas as a living archive. The future of pitch design is not just better dashboards. It is better grip language tied to honest source labels."
+          "This is the strongest modern argument for Pitch Atlas as a living museum. The future of pitch design is not just better dashboards. It is better grip language tied to honest source labels."
         ],
         "claims": [
           {
