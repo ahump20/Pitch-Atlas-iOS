@@ -20,6 +20,9 @@ jobs:
       - name: Generate project
         run: xcodegen generate
 
+      - name: No color literals outside the theme
+        run: ./scripts/check-no-color-literals.sh
+
       - name: Build
         run: |
           xcodebuild build \

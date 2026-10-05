@@ -118,12 +118,12 @@ struct ArchiveCoverSurface: View {
 
     private var stock: [Color] {
         signature
-            ? [Color(hex: 0x93411F), Color(hex: 0x6D2E18), Color(hex: 0x3D1D13)]
-            : [Color(hex: 0x24201C), PitchAtlasTheme.press, Color(hex: 0x141312)]
+            ? PitchAtlasTheme.signatureStock
+            : PitchAtlasTheme.archiveStock
     }
     private var edge: [Color] {
         signature
-            ? [Color(hex: 0xE09A65).opacity(0.75), Color(hex: 0x37170F), Color(hex: 0xB76B3E).opacity(0.65)]
+            ? PitchAtlasTheme.signatureEdge
             : [PitchAtlasTheme.bone.opacity(0.28), .black.opacity(0.65), PitchAtlasTheme.bone.opacity(0.13)]
     }
     var body: some View {
@@ -145,7 +145,7 @@ struct ArchiveCoverSurface: View {
                         let y: CGFloat = i.isMultiple(of: 2) ? 2.5 : size.height - 3
                         var wear = Path()
                         wear.move(to: CGPoint(x: x, y: y)); wear.addLine(to: CGPoint(x: x + CGFloat(2 + i % 5), y: y))
-                        context.stroke(wear, with: .color(signature ? Color(hex: 0xD49868).opacity(0.32) : PitchAtlasTheme.bone.opacity(0.055)), lineWidth: 1)
+                        context.stroke(wear, with: .color(signature ? PitchAtlasTheme.signatureWear : PitchAtlasTheme.bone.opacity(0.055)), lineWidth: 1)
                     }
                 }.clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
             }
@@ -157,7 +157,7 @@ struct ArchiveCoverSurface: View {
             .overlay {
                 RoundedRectangle(cornerRadius: max(2, radius - 5), style: .continuous)
                     .inset(by: 5).strokeBorder(.black.opacity(0.25), lineWidth: 1)
-                    .shadow(color: signature ? Color(hex: 0xEDAB78).opacity(0.22) : PitchAtlasTheme.bone.opacity(0.08), radius: 0, y: 1)
+                    .shadow(color: signature ? PitchAtlasTheme.signatureBevel : PitchAtlasTheme.bone.opacity(0.08), radius: 0, y: 1)
             }
             .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 3)
             .shadow(color: .black.opacity(0.35), radius: 12, x: 0, y: 12)

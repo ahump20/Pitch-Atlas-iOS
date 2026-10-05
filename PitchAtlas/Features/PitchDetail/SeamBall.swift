@@ -134,7 +134,7 @@ private struct LeatherPores: View {
             let dot = max(0.45, size.width * 0.003)
             for p in Self.pores {
                 let rect = CGRect(x: p.x * size.width, y: p.y * size.height, width: dot, height: dot * 0.7)
-                context.fill(Path(ellipseIn: rect), with: .color(Color(hex: 0x746F63).opacity(0.12)))
+                context.fill(Path(ellipseIn: rect), with: .color(BallMaterial.color(BallMaterial.pore).opacity(0.12)))
                 context.fill(Path(ellipseIn: rect.offsetBy(dx: 0, dy: -0.4)), with: .color(.white.opacity(0.16)))
             }
         }.accessibilityHidden(true).allowsHitTesting(false)
@@ -265,8 +265,7 @@ struct SeamBall: View {
         ZStack {
             // Off-white, matte hide. Pores are authored surface texture, never pitch data.
             Circle()
-                .fill(RadialGradient(colors: [Color(hex: 0xFCFBF5), Color(hex: 0xF0EFE8), Color(hex: 0xD9D8D1),
-                                              Color(hex: 0x9B9C96), Color(hex: 0x575B59)],
+                .fill(RadialGradient(colors: BallMaterial.hide.map(BallMaterial.color),
                                      center: .init(x: 0.33, y: 0.25), startRadius: 0, endRadius: size * 0.70))
                 .overlay { LeatherPores().clipShape(Circle()) }
                 .overlay { Circle().strokeBorder(Color.white.opacity(0.28), lineWidth: 0.6) }
@@ -274,20 +273,20 @@ struct SeamBall: View {
 
             // Only the front hemisphere is drawn; the shared seam runs behind the hide.
             SeamShape(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0x655B51).opacity(0.7),
+                .stroke(BallMaterial.color(BallMaterial.seamGroove).opacity(0.7),
                         style: StrokeStyle(lineWidth: max(1, size * 0.010), lineCap: .round, lineJoin: .round))
             SeamShape(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0xF8F3E8).opacity(0.55),
+                .stroke(BallMaterial.color(BallMaterial.seamLip).opacity(0.55),
                         style: StrokeStyle(lineWidth: max(0.5, size * 0.0035), lineCap: .round))
                 .offset(y: max(0.45, size * 0.003))
             SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0x573831).opacity(0.6),
+                .stroke(BallMaterial.color(BallMaterial.lacingShadow).opacity(0.6),
                         style: StrokeStyle(lineWidth: max(1, size * 0.0085), lineCap: .round, lineJoin: .round))
             SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0x9E2B35),
+                .stroke(BallMaterial.color(BallMaterial.stitch),
                         style: StrokeStyle(lineWidth: max(0.65, size * 0.0058), lineCap: .round, lineJoin: .round))
             SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0xD88269).opacity(0.6),
+                .stroke(BallMaterial.color(BallMaterial.stitchCrown).opacity(0.6),
                         style: StrokeStyle(lineWidth: max(0.25, size * 0.0018), lineCap: .round))
                 .offset(y: -0.3)
 

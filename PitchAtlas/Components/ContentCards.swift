@@ -224,7 +224,7 @@ struct PitchSpecimenCard: View {
         case .inMotion: return PitchAtlasTheme.foil
         case .firstParty: return PitchAtlasTheme.chrome
         case .reference:
-            return LinearGradient(colors: [Color(hex: 0x9EA6AB), Color(hex: 0x454B50), Color(hex: 0xC3CACD)],
+            return LinearGradient(colors: PitchAtlasTheme.referenceEdge,
                                   startPoint: .topLeading, endPoint: .bottomTrailing)
         }
     }

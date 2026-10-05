@@ -69,7 +69,7 @@ private struct HelmetMark: View {
                 path.addCurve(to: CGPoint(x: 3, y: 26), control1: CGPoint(x: 24, y: 29), control2: CGPoint(x: 13, y: 30))
                 path.closeSubpath()
             }
-            .fill(Color(red: 0.17, green: 0.08, blue: 0.04))
+            .fill(PitchAtlasTheme.companionCoat)
             .overlay(
                 Path { path in
                     path.move(to: CGPoint(x: 3, y: 22))

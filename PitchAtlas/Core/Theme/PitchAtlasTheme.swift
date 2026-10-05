@@ -98,6 +98,20 @@ enum PitchAtlasTheme {
     static let cardbackBurgundy = Color(hex: 0xFFD1C5)
     static let cardbackGoldInk = Color(hex: 0xF1D1A0)
 
+    // MARK: - Archive stock (ArchiveCoverSurface)
+    /// Neutral archive stock: lifted press → press → deep press.
+    static let archiveStock: [Color] = [Color(hex: 0x24201C), press, Color(hex: 0x141312)]
+    /// The signature collectible's worn-orange stock, edge, wear and bevel —
+    /// retired with the gold tier in Task 12.
+    static let signatureStock: [Color] = [Color(hex: 0x93411F), Color(hex: 0x6D2E18), Color(hex: 0x3D1D13)]
+    static let signatureEdge: [Color] = [Color(hex: 0xE09A65).opacity(0.75), Color(hex: 0x37170F), Color(hex: 0xB76B3E).opacity(0.65)]
+    static let signatureWear = Color(hex: 0xD49868).opacity(0.32)
+    static let signatureBevel = Color(hex: 0xEDAB78).opacity(0.22)
+    /// The "reference" grade's brushed-steel edge.
+    static let referenceEdge: [Color] = [Color(hex: 0x9EA6AB), Color(hex: 0x454B50), Color(hex: 0xC3CACD)]
+    /// The companion's coat — leaves with the companion in Plan 2.
+    static let companionCoat = Color(red: 0.17, green: 0.08, blue: 0.04)
+
     // MARK: - Hairlines / texture
     /// The 1px machined hairline — web --color-machined.
     static let machined = Color(web: WebTokens.Palette.machined)
