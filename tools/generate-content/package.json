@@ -4,7 +4,8 @@
   "type": "module",
   "description": "Generates bundled JSON for the iOS app from the Pitch Atlas web repo's src/data. Single source of truth lives on the web side.",
   "scripts": {
-    "generate": "tsx generate.ts"
+    "generate": "tsx generate.ts",
+    "test": "tsx --test tokens.test.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",

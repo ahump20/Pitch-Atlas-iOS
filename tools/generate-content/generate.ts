@@ -20,6 +20,7 @@ import { createHash } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { dirname, resolve, join } from 'node:path'
+import { writeTokens } from './tokens.ts'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const WEB = process.env.PITCH_ATLAS_WEB
@@ -227,15 +228,29 @@ for (const [file, data] of Object.entries(bundles)) {
   console.log(`  ${file.padEnd(20)} ${String(shown).padStart(4)} records`)
 }
 
+// Design tokens: the web's palette, foils, trust tiers, accents, motion and
+// radii, written as bundled JSON plus the Swift the theme compiles against and
+// the two color sets. Same web tree, same run, so they cannot disagree.
+const tokens = await writeTokens({
+  web: WEB,
+  contentOut: OUT,
+  swiftOut: resolve(here, '../../PitchAtlas/Core/Theme/Generated'),
+  assetsOut: resolve(here, '../../PitchAtlas/Resources/Assets.xcassets'),
+})
+console.log(`  design-tokens.json   ${String(Object.keys(tokens.palette).length).padStart(4)} colors`)
+console.log('  WebTokens.swift, AccentColor, LaunchBackground')
+
 // Manifest: counts read from source (never hardcoded). A change here is a real
 // content delta, surfaced in the diff — not silent drift.
 const allSources = sources.allSources()
 const sourcesLastChecked = sources.latestRetrievedAt(allSources)
-// Content hash over every bundle written above (sorted name + bytes): it
-// changes exactly when shipped content changes, and needs no clock — so the
-// drift job, which regenerates and diffs, stays deterministic.
+// Content hash over every bundle written above plus the tokens (sorted name +
+// bytes): it changes exactly when shipped content changes, and needs no clock —
+// so the drift job, which regenerates and diffs, stays deterministic.
 const hash = createHash('sha256')
-for (const file of Object.keys(bundles).sort()) hash.update(file).update(await readFile(join(OUT, file)))
+for (const file of [...Object.keys(bundles), 'design-tokens.json'].sort()) {
+  hash.update(file).update(await readFile(join(OUT, file)))
+}
 const contentHash = hash.digest('hex')
 await writeFile(
   join(OUT, 'manifest.json'),
@@ -243,5 +258,5 @@ await writeFile(
   'utf8',
 )
 
-console.log(`✓ wrote ${Object.keys(bundles).length + 1} files to PitchAtlas/Resources/Content`)
+console.log(`✓ wrote ${Object.keys(bundles).length + 2} files to PitchAtlas/Resources/Content`)
 console.log(`  sources last checked: ${sourcesLastChecked}`)

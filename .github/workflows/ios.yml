@@ -47,9 +47,13 @@ jobs:
   # fails if the committed bundle differs - so a web data change that was not
   # re-synced into the app can never silently ship.
   #
-  # The generator is a pure function of src/data (deterministic JSON, no clock,
-  # no randomness) and src/data imports nothing outside the repo, so this runs on
-  # cheap Linux with only the generator's own deps - no web npm install, no macOS.
+  # The generator is a pure function of the web tree (deterministic JSON, no
+  # clock, no randomness): content from src/data, design tokens from the
+  # browser-resolved .design-sync/artifact/tokens.json, src/index.css and the
+  # pure accent/tier modules under src/components (TSX files are read as text).
+  # None of it needs the web's node_modules, so this runs on cheap Linux with
+  # only the generator's own deps - no web npm install, no macOS. The generated
+  # Swift tokens and the two color sets are guarded alongside the JSON.
   #
   # Scope honesty: this catches CONTENT drift (records added/changed/removed on
   # the web side but not regenerated here). It does NOT catch a brand-new web
@@ -80,6 +84,12 @@ jobs:
       - name: Install the generator
         working-directory: tools/generate-content
         run: npm ci
+
+      - name: Test the token parsers against web source
+        working-directory: tools/generate-content
+        env:
+          PITCH_ATLAS_WEB: ${{ github.workspace }}/web-src
+        run: npm test
 
       - name: Regenerate the bundle from web source
         working-directory: tools/generate-content
