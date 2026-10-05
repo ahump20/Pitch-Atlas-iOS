@@ -168,31 +168,30 @@ enum PitchAtlasTheme {
     )
 
     // MARK: - Typography
-    // All four are bundled OFL fonts (registered in Info.plist UIAppFonts once the
-    // .ttf files land in Resources/Fonts). Until then, Font.custom silently falls
-    // back to the system font, so the app builds and runs either way.
+    // The faces are the web's own (PitchAtlasType). These helpers keep their
+    // call sites and resolve to the matching face.
 
-    /// Athletic logotype, pitch names, banners. Render with `.antonSkew()`.
+    /// Athletic logotype, pitch names, banners. Render with `.antonSkew()` only where the web skews.
     static func anton(_ size: CGFloat, relativeTo: Font.TextStyle = .largeTitle) -> Font {
-        .custom("Anton-Regular", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.anton400, size: size, relativeTo: relativeTo)
     }
-    /// Editorial display, hero titles, section heads. The italic carries the warmth.
+    /// Editorial display, hero titles, section heads.
     static func newsreader(_ size: CGFloat, relativeTo: Font.TextStyle = .title) -> Font {
-        .custom("Newsreader-Regular", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.newsreader400, size: size, relativeTo: relativeTo)
     }
     static func newsreaderItalic(_ size: CGFloat, relativeTo: Font.TextStyle = .title) -> Font {
-        .custom("Newsreader-Italic", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.newsreader400i, size: size, relativeTo: relativeTo)
     }
     /// Body prose, the coaching voice.
     static func hanken(_ size: CGFloat, relativeTo: Font.TextStyle = .body) -> Font {
-        .custom("HankenGrotesk-Regular", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.hanken400, size: size, relativeTo: relativeTo)
     }
     static func hankenMedium(_ size: CGFloat, relativeTo: Font.TextStyle = .body) -> Font {
-        .custom("HankenGrotesk-Medium", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.hanken500, size: size, relativeTo: relativeTo)
     }
     /// Micro-labels, source badges, nav, all-caps tracking.
     static func martian(_ size: CGFloat, relativeTo: Font.TextStyle = .caption2) -> Font {
-        .custom("MartianMono-Regular", size: size, relativeTo: relativeTo)
+        PitchAtlasType.font(.martian400, size: size, relativeTo: relativeTo)
     }
 
     // MARK: - Provenance tier -> color

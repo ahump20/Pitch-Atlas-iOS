@@ -434,7 +434,7 @@ enum SpecimenSceneBuilder {
             ctx.cgContext.setLineWidth(4)
             ctx.cgContext.strokeEllipse(in: disc)
 
-            let font = UIFont(name: "MartianMono-Regular", size: 26)
+            let font = UIFont(name: PitchAtlasType.Face.martian400.postScriptName, size: 26)
                 ?? UIFont.monospacedSystemFont(ofSize: 26, weight: .regular)
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: font,
