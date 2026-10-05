@@ -151,13 +151,13 @@
           "retrievedAt": "2026-06-05"
         },
         "confidence": "reputable-analysis",
-        "note": "Sourced, not corrected: Austin throws this as a fastball (pitcher's own words). The offspeed 'splitter' label is MLB's tracking taxonomy, filed separately under the Splitter specimen. Both framings are kept; neither overrides the other."
+        "note": "Austin throws this as a fastball (pitcher's own words). The offspeed 'splitter' label is MLB's tracking taxonomy, filed separately under the Splitter specimen. Both framings stay attributed; neither overrides the other."
       },
       "notableThrowers": "Austin H. — a situational pitch in his mix, the harder, fastball-tilt version of his changeup.",
       "plain": "My split-finger fastball. I grip it almost like my two-seam, just spread the fingers a touch wider, outside the laces. It comes out at full fastball arm speed and drops late — a fastball that acts like a change, not a soft one.",
       "studyFirstSlug": "splitter",
       "contextNote": {
-        "value": "Set the filed Splitter next to this and the difference is the intent: same finger spread, but Austin throws his at full fastball arm speed and files it as a fastball, where the league files the splitter as offspeed. Sourced, not corrected.",
+        "value": "Set the filed Splitter next to this and the difference is the intent: same finger spread, but Austin throws his at full fastball arm speed and files it as a fastball, where the league files the splitter as offspeed. Both classifications keep their source context.",
         "source": {
           "id": "austin-grips",
           "label": "Austin H. — first-party grip library (his own pitches, photographed 2026-06-06, in his own first-person account)",
@@ -807,7 +807,7 @@
           "retrievedAt": "2026-06-05"
         },
         "confidence": "reputable-analysis",
-        "note": "Classification note: the splitter is gripped and delivered like a fastball but is categorized as offspeed by MLB pitch tracking. MLB often uses 'split-finger fastball' as a synonym for this offspeed splitter; this atlas files Austin's split-finger fastball separately, in the fastball family, the way he threw it — sourced, not corrected."
+        "note": "Classification note: the splitter is gripped and delivered like a fastball but is categorized as offspeed by MLB pitch tracking. MLB often uses 'split-finger fastball' as a synonym for this offspeed splitter; this atlas files Austin's split-finger fastball separately, in the fastball family, the way he threw it, with each label attributed."
       },
       "notableThrowers": "Bruce Sutter (whose splitter defined his career); a standard secondary pitch across the modern game.",
       "filedSlug": "splitter"

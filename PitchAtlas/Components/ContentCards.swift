@@ -224,6 +224,7 @@ struct GripPhotoTile: View {
 // MARK: - Pitch specimen card (foil front)
 
 struct PitchSpecimenCard: View {
+    @Environment(\.compareSelection) private var comparison
     enum Style {
         case hero
         case rail
@@ -233,6 +234,17 @@ struct PitchSpecimenCard: View {
     var style: Style = .hero
 
     private var isHero: Bool { style == .hero }
+    private var isSignature: Bool { entry.specimenGrade.key == .gold }
+    private var collectibleEdge: LinearGradient {
+        switch entry.specimenGrade.key {
+        case .gold: return PitchAtlasTheme.gold
+        case .inMotion: return PitchAtlasTheme.foil
+        case .firstParty: return PitchAtlasTheme.chrome
+        case .reference:
+            return LinearGradient(colors: [Color(hex: 0x9EA6AB), Color(hex: 0x454B50), Color(hex: 0xC3CACD)],
+                                  startPoint: .topLeading, endPoint: .bottomTrailing)
+        }
+    }
     private var mediaHeight: CGFloat { isHero ? 176 : 118 }
     private var titleSize: CGFloat { isHero ? 29 : 17 }
     private var padding: CGFloat { isHero ? PitchAtlasSpacing.md : PitchAtlasSpacing.sm }
@@ -241,12 +253,12 @@ struct PitchSpecimenCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: isHero ? PitchAtlasSpacing.sm : PitchAtlasSpacing.xs) {
             HStack(alignment: .center, spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: entry.display.specimenNo, color: PitchAtlasTheme.cyanDeep, size: isHero ? 9 : 7)
+                SectionLabel(text: entry.display.specimenNo, color: PitchAtlasTheme.cardbackInk3, size: isHero ? 9 : 7)
                 Spacer(minLength: PitchAtlasSpacing.xs)
                 Text(entry.canonical.family.label.uppercased())
                     .font(PitchAtlasTheme.martian(isHero ? 8 : 7))
                     .tracking(1.2)
-                    .foregroundStyle(entry.canonical.family.accent)
+                    .foregroundStyle(PitchAtlasTheme.cardbackInk3)
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
             }
@@ -257,7 +269,7 @@ struct PitchSpecimenCard: View {
 
             if isHero {
                 HStack(alignment: .firstTextBaseline, spacing: PitchAtlasSpacing.xs) {
-                    SectionLabel(text: entry.canonical.grip.confidence.label, color: PitchAtlasTheme.cyanDeep, size: 8)
+                    SectionLabel(text: entry.canonical.grip.confidence.label, color: PitchAtlasTheme.cardbackInk3, size: 8)
                     Spacer(minLength: PitchAtlasSpacing.xs)
                     Text(entry.canonical.grip.source?.label ?? "Source gap visible")
                         .font(PitchAtlasTheme.hanken(11))
@@ -269,27 +281,34 @@ struct PitchSpecimenCard: View {
         }
         .padding(padding)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: max(cornerRadius - 5, 8), style: .continuous)
-                .fill(PitchAtlasTheme.void)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: max(cornerRadius - 5, 8), style: .continuous)
-                .strokeBorder(PitchAtlasTheme.bone.opacity(0.72), lineWidth: isHero ? 2 : 1.4)
-        )
-        .padding(isHero ? 6 : 4)
-        .background(
-            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .fill(PitchAtlasTheme.foil)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .strokeBorder(.black.opacity(0.55), lineWidth: 1)
-        )
-        .foilRake(radius: cornerRadius, intensity: isHero ? 0.9 : 0.55)
-        .shadow(color: .black.opacity(isHero ? 0.42 : 0.28), radius: isHero ? 18 : 10, x: 0, y: isHero ? 14 : 7)
+        .background { ArchiveCoverSurface(radius: cornerRadius, signature: isSignature) }
+        .overlay {
+            if !isSignature {
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .strokeBorder(PitchAtlasTheme.chrome, lineWidth: isHero ? 4 : 3)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                            .strokeBorder(collectibleEdge, lineWidth: isHero ? 4 : 3)
+                            .opacity(entry.specimenGrade.key == .inMotion ? 0.30 : 0.75)
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: max(2, cornerRadius - 3), style: .continuous)
+                            .inset(by: 3)
+                            .strokeBorder(.black.opacity(0.75), lineWidth: 0.9)
+                    }
+                    .overlay {
+                        RoundedRectangle(cornerRadius: max(2, cornerRadius - 5), style: .continuous)
+                            .inset(by: 5)
+                            .strokeBorder(PitchAtlasTheme.bone.opacity(0.28), lineWidth: 0.8)
+                    }
+                    .accessibilityHidden(true)
+                    .allowsHitTesting(false)
+            }
+        }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
+        .contextMenu { Button("Compare this pitch") { comparison.add(entry.slug); Haptics.selection() } }
+        .accessibilityAction(named: "Compare this pitch") { comparison.add(entry.slug) }
     }
 
     @ViewBuilder
@@ -298,11 +317,11 @@ struct PitchSpecimenCard: View {
             if isHero, let film = entry.canonical.gripFilm {
                 GripFilmCard(film: film, height: mediaHeight, offersMotionControl: false, showsCaption: false)
             } else if let still = entry.canonical.realStill {
-                BundledImage(src: still.src, alt: still.alt)
+                BundledImage(src: still.src, alt: still.alt, contentMode: .fill)
                     .frame(height: mediaHeight)
                     .frame(maxWidth: .infinity)
             } else {
-                SeamBall(motion: entry.motion, size: isHero ? 210 : 96)
+                SeamBall(motion: entry.motion, size: isHero ? mediaHeight - 12 : 96)
                     .frame(height: mediaHeight)
                     .frame(maxWidth: .infinity)
             }

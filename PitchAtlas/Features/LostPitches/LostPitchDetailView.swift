@@ -12,6 +12,7 @@ import SwiftUI
 struct LostPitchDetailView: View {
     @Environment(PitchStore.self) private var store
     @Environment(\.openURL) private var openURL
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let pitch: LostPitch
 
     /// The tier legend entry that matches this pitch's tier, if it shipped.
@@ -19,24 +20,42 @@ struct LostPitchDetailView: View {
         store.lostPitches.tiers.first { $0.tier == pitch.tier }
     }
 
+    private var chapters: [ArchiveChapter] {
+        var result = [ArchiveChapter(id: "lost-overview", title: "Overview"),
+                      ArchiveChapter(id: "lost-plate", title: "Archive plate"),
+                      ArchiveChapter(id: "lost-craft", title: "What it was"),
+                      ArchiveChapter(id: "lost-history", title: "Why it is lost")]
+        if !pitch.recordEntries.isEmpty { result.append(ArchiveChapter(id: "lost-record", title: "The sourced record")) }
+        if pitch.quote != nil { result.append(ArchiveChapter(id: "lost-voice", title: "In their words")) }
+        if tierInfo != nil { result.append(ArchiveChapter(id: "lost-evidence", title: "Documentation boundary")) }
+        return result
+    }
+
     var body: some View {
         ZStack {
             FieldBackdrop()
 
+            ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
-                    header
+                    header.id("lost-overview")
                     introCard
-                    archivePlate
-                    whatItWas
-                    whyItsLost
-                    numbers
-                    quote
-                    tierFooter
+                    archivePlate.id("lost-plate")
+                    whatItWas.id("lost-craft")
+                    whyItsLost.id("lost-history")
+                    numbers.id("lost-record")
+                    quote.id("lost-voice")
+                    tierFooter.id("lost-evidence")
                 }
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.md)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                ArchiveChapterNavigation(chapters: chapters, compact: true) { id in
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) { proxy.scrollTo(id, anchor: .top) }
+                }
+            }
             }
         }
         .navigationTitle(pitch.name)

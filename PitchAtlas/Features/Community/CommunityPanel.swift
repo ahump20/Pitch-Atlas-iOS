@@ -29,6 +29,8 @@ struct CommunityPanel: View {
     let pitchName: String
     let provenanceNote: String
     let safetyNote: String
+    /// A chapter-navigation request only; it never performs a community write.
+    var openDiscussionRequest = 0
 
     @State private var mode: Mode = .notes
     @State private var notesState: CommunityLoadState<[CommunityFieldNote]> = .idle
@@ -120,6 +122,7 @@ struct CommunityPanel: View {
         }
         .leatherPress()
         .task(id: reloadKey) { await reload() }
+        .onChange(of: openDiscussionRequest) { _, _ in mode = .discussion }
         // Switching between Field Notes and Discussion clears a stale status line
         // so a "submitted" note from one tab doesn't linger over the other.
         .onChange(of: mode) { _, _ in

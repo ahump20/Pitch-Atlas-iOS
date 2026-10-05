@@ -14,7 +14,9 @@ struct PitchDetailView: View {
 
     /// Drives the grip-fact layout: at accessibility text sizes the fixed label
     /// column can't hold "PRESSURE FINGER" without clipping, so the row stacks.
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var discussionRequest = 0
 
     /// The shared content store, read for the same-family rail.
     @Environment(PitchStore.self) private var store
@@ -32,47 +34,130 @@ struct PitchDetailView: View {
     var body: some View {
         ZStack {
             FieldBackdrop()
-            ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    hero
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
+                    hero {
+                        withAnimation((reduceMotion || dynamicTypeSize.isAccessibilitySize) ? nil : .easeOut(duration: 0.25)) {
+                            proxy.scrollTo(SpecimenChapter.grip.chapter.id, anchor: .top)
+                        }
+                    }
+                    PitchStudy(entry: entry)
+                        .id(SpecimenChapter.grip.chapter.id)
+                    archiveConnections
                     foundation
-                    teaching
                     gripLab
                     if let guide = entry.guide { coaching(guide) }
                     mechanics
                     if let voice = canonical.voice { voiceQuote(voice) }
-                    // See it taught: the credited TikTok teaching clip filed against
-                    // this slug, when one exists. Embedded from the platform's own
-                    // player behind a poster tap — never rehosted.
-                    if let clip = store.teachingClip(slug: entry.slug) {
-                        TeachingClipCard(clip: clip, accent: canonical.family.accent)
-                    }
-                    if !entry.masterVariants.isEmpty { mastersLedger }
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+                        if !entry.masterVariants.isEmpty { mastersLedger }
+                        else {
+                            SectionLabel(text: "VARIANTS")
+                            Text("No sourced variants are documented for this specimen.")
+                        }
+                    }.id(SpecimenChapter.variants.chapter.id)
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+                        SectionLabel(text: "LESSONS")
+                        teaching
+                        if let clip = store.teachingClip(slug: entry.slug) {
+                            TeachingClipCard(clip: clip, accent: canonical.family.accent)
+                        }
+                        lessonLinks
+                    }.id(SpecimenChapter.lessons.chapter.id)
                     relatedFamily
                     communityPreview
+                        .id(SpecimenChapter.discussion.chapter.id)
                     // When real footage or photography carries the hero, the
                     // drawn specimen files down here beside the seam-geometry
                     // record.
                     if canonical.gripFilm != nil || heroPhoto != nil { specimenCard }
                     seamGeometry
+                    sourceLedger
+                        .id(SpecimenChapter.sources.chapter.id)
                 }
                 .padding(PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+                }
+                .safeAreaInset(edge: .top, spacing: 0) {
+                    ArchiveChapterNavigation(chapters: SpecimenChapter.allCases.map(\.chapter)) { id in
+                        if id == SpecimenChapter.discussion.chapter.id { discussionRequest += 1 }
+                        withAnimation((reduceMotion || dynamicTypeSize.isAccessibilitySize) ? nil : .easeOut(duration: 0.25)) {
+                            proxy.scrollTo(id, anchor: .top)
+                        }
+                    }
+                }
             }
         }
         .navigationTitle(display.shortName)
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    private var archiveConnections: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            if !store.practitioners(for: entry).isEmpty {
+                SectionLabel(text: "FOLLOW THE ARCHIVE")
+            }
+            ForEach(store.practitioners(for: entry)) { person in
+                NavigationLink { CraftsmanDetailView(craftsman: person) } label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label(person.name, systemImage: "person.crop.rectangle")
+                        Text("Filed signature: \(person.signaturePitch) · \(person.era)").font(.caption)
+                    }.frame(minHeight: 44, alignment: .leading)
+                }
+            }
+        }
+    }
+
+    private var lessonLinks: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            ForEach(store.lessons(for: entry)) { wing in
+                NavigationLink { KnowledgeWingView(wing: wing) } label: {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label(wing.title, systemImage: "book")
+                        Text(wing.related?.first(where: { $0.to == "/pitch/" + entry.slug })?.reason ?? wing.summary)
+                            .font(.subheadline).fixedSize(horizontal: false, vertical: true)
+                    }.frame(minHeight: 44, alignment: .leading)
+                }
+            }
+        }
+    }
+
+    private var sourceLedger: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
+            SectionLabel(text: "SOURCES")
+            Text("The claims above keep their confidence and caveats. These are the sources filed with the specimen.")
+                .font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
+            ForEach(entry.studySources) { source in
+                VStack(alignment: .leading, spacing: 4) {
+                    if let url = URL(string: source.url) {
+                        Link(destination: url) { Label(source.label, systemImage: "arrow.up.right.square") }
+                            .frame(minHeight: 44, alignment: .leading)
+                    } else {
+                        Text(source.label)
+                    }
+                    Text("Retrieved \(source.retrievedAt)").font(.caption)
+                        .foregroundStyle(PitchAtlasTheme.bone2)
+                }
+            }
+            if entry.studySources.isEmpty { Text("Not documented.") }
+        }.leatherPress()
+    }
+
     // MARK: Hero + specimen
 
-    private var hero: some View {
+    private func hero(studyAction: @escaping () -> Void) -> some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             HStack {
                 SectionLabel(text: "SPECIMEN \(display.specimenNo)", color: PitchAtlasTheme.cyanDeep, size: 9)
                 Spacer()
                 SectionLabel(text: canonical.family.label, color: canonical.family.accent, size: 9)
             }
+            // Filing metadata remains readable without consuming the entire
+            // accessibility viewport; the title and actions continue to scale.
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+            .lineLimit(1)
+            .minimumScaleFactor(0.55)
 
             // The preservation grade — how richly this specimen is documented,
             // the same stamp the web card wears. Gold is the real 1/1 chase.
@@ -81,9 +166,12 @@ struct PitchDetailView: View {
                 color: entry.specimenGrade.key == .gold ? PitchAtlasTheme.amberBright : PitchAtlasTheme.bone2,
                 size: 9
             )
+            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+            .lineLimit(1)
+            .minimumScaleFactor(0.55)
 
             Text(canonical.name.uppercased())
-                .font(PitchAtlasTheme.anton(40))
+                .font(PitchAtlasTheme.anton(dynamicTypeSize.isAccessibilitySize ? 34 : 36))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
 
@@ -94,7 +182,7 @@ struct PitchDetailView: View {
             // The specimen face: real footage first, then real photography,
             // the drawn SeamBall only where nothing real is on file.
             if let film = canonical.gripFilm {
-                GripFilmCard(film: film)
+                GripFilmCard(film: film, height: dynamicTypeSize.isAccessibilitySize ? 190 : 230)
                     .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
             } else if let photo = heroPhoto {
                 GripStillCard(photo: photo)
@@ -102,13 +190,34 @@ struct PitchDetailView: View {
                 specimenCard
             }
 
-            BlazeInlineCompanionView(style: .pitch, mood: .chasing)
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: PitchAtlasSpacing.sm) {
+                    studyButton(action: studyAction)
+                    CompareButton(slug: entry.slug)
+                }
+                VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
+                    studyButton(action: studyAction)
+                    CompareButton(slug: entry.slug)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             Text(display.heroIntro)
-                .font(PitchAtlasTheme.hanken(16))
-                .foregroundStyle(PitchAtlasTheme.bone)
+                .font(PitchAtlasTheme.hanken(14))
+                .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
         }
+    }
+
+    private func studyButton(action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Label("Study this grip", systemImage: "hand.raised.fingers.spread")
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+        .tint(PitchAtlasTheme.cardbackPaper)
+        .foregroundStyle(PitchAtlasTheme.cardbackInk)
+        .controlSize(.large)
     }
 
     // MARK: Drawn specimen (SeamBall)
@@ -443,7 +552,11 @@ struct PitchDetailView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: PitchAtlasSpacing.sm) {
                         ForEach(kin) { sib in
-                            NavigationLink(value: sib) { siblingPill(sib) }
+                            NavigationLink {
+                                PitchDetailView(entry: sib)
+                            } label: {
+                                siblingPill(sib)
+                            }
                                 .buttonStyle(.plain)
                         }
                     }
@@ -470,6 +583,8 @@ struct PitchDetailView: View {
         }
         .padding(.vertical, PitchAtlasSpacing.xs)
         .padding(.horizontal, PitchAtlasSpacing.sm)
+        .frame(minHeight: 44)
+        .contentShape(Rectangle())
         .overlay(Capsule().stroke(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(sib.canonical.name), open specimen")
@@ -482,7 +597,8 @@ struct PitchDetailView: View {
             pitchSlug: entry.slug,
             pitchName: canonical.name,
             provenanceNote: entry.community.provenanceNote,
-            safetyNote: entry.community.safetyNote
+            safetyNote: entry.community.safetyNote,
+            openDiscussionRequest: discussionRequest
         )
     }
 
@@ -510,5 +626,23 @@ struct PitchDetailView: View {
     private func humanize(_ raw: String) -> String {
         raw.replacingOccurrences(of: "-", with: " ")
             .prefix(1).uppercased() + raw.replacingOccurrences(of: "-", with: " ").dropFirst()
+    }
+}
+
+extension PitchAtlasEntry {
+    /// Navigation ledger only: original Claim values, tiers and notes remain at their reading sites.
+    var studySources: [Source] {
+        var claims = [canonical.grip, canonical.mechanics, canonical.physics.teaching,
+                      canonical.physics.spinAxis, seam.stitchCount, seam.accuracyNote]
+        claims += canonical.gripDetails
+        claims += [canonical.voice, canonical.gripModel.provenance, canonical.physics.shape,
+                   canonical.physics.spinRateRpm, canonical.physics.activeSpinPct,
+                   canonical.physics.primaryBreak?.claim, canonical.physics.secondaryBreak?.claim].compactMap { $0 }
+        for variant in masterVariants {
+            claims += [variant.distinction, variant.quote].compactMap { $0 }
+            claims += variant.recordNumbers.map(\.claim)
+        }
+        var seen = Set<String>()
+        return claims.compactMap(\.source).filter { seen.insert($0.id).inserted }
     }
 }

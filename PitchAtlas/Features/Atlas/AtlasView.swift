@@ -9,6 +9,13 @@ import SwiftUI
 // line. The one place the foil gradient is allowed to sing.
 // =============================================================================
 
+// Atlas wings share the value-based stack used by their filed records. Mixing
+// direct destinations here with value links inside a wing can replay the wing
+// instead of advancing to the selected record.
+private enum AtlasWing: Hashable {
+    case craftsmen, lessons, lostPitches, about, account
+}
+
 struct AtlasView: View {
     @Environment(PitchStore.self) private var store
 
@@ -23,6 +30,14 @@ struct AtlasView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
                     masthead
+                    StudyTray()
+                    VStack(alignment: .leading, spacing: 12) {
+                        SectionLabel(text: "WAYS INTO THE ARCHIVE")
+                        NavigationLink(value: AtlasWing.craftsmen) { Label("Start with a practitioner", systemImage: "person.crop.rectangle") }.frame(minHeight: 44)
+                        NavigationLink(value: AtlasWing.lessons) { Label("Follow a lesson", systemImage: "book") }.frame(minHeight: 44)
+                        NavigationLink(value: AtlasWing.lostPitches) { Label("Explore the lost-pitches wing", systemImage: "clock.arrow.circlepath") }.frame(minHeight: 44)
+                    }
+
                     if case .failed(let msg) = store.status {
                         ErrorStateView(reason: msg)
                     } else if store.pitches.isEmpty {
@@ -41,6 +56,15 @@ struct AtlasView: View {
         }
         .navigationTitle("Atlas")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(for: AtlasWing.self) { wing in
+            switch wing {
+            case .craftsmen: CraftsmenView()
+            case .lessons: LearnView()
+            case .lostPitches: LostPitchesView()
+            case .about: AboutView()
+            case .account: AccountView()
+            }
+        }
         .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }
     }
 
@@ -62,7 +86,7 @@ struct AtlasView: View {
                 .padding(.leading, PitchAtlasSpacing.sm)
 
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                Text("The pitch, struck as a specimen.")
+                Text("The archive, within reach.")
                     .font(PitchAtlasTheme.newsreader(27))
                     .foregroundStyle(PitchAtlasTheme.bone)
                     .fixedSize(horizontal: false, vertical: true)
@@ -160,16 +184,16 @@ struct AtlasView: View {
     private var wings: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "WAYS IN")
-            NavigationLink { LearnView() } label: {
+            NavigationLink(value: AtlasWing.lessons) {
                 wingRow(title: "One Pitch at a Time", sub: "Lower half, line to the plate, finish low. Then get back to the target.", tone: PitchAtlasTheme.cyan)
             }.buttonStyle(.plain)
-            NavigationLink { LostPitchesView() } label: {
+            NavigationLink(value: AtlasWing.lostPitches) {
                 wingRow(title: "Lost Pitches", sub: "Craft that survived as story, source, and gap", tone: PitchAtlasTheme.sandBright)
             }.buttonStyle(.plain)
-            NavigationLink { AboutView() } label: {
+            NavigationLink(value: AtlasWing.about) {
                 wingRow(title: "About the Atlas", sub: "Why this is not another analytics wrapper", tone: PitchAtlasTheme.ink3)
             }.buttonStyle(.plain)
-            NavigationLink { AccountView() } label: {
+            NavigationLink(value: AtlasWing.account) {
                 wingRow(title: "Account and Safety", sub: "Sign in, report, block, support, and delete account", tone: PitchAtlasTheme.amberBright)
             }.buttonStyle(.plain)
         }

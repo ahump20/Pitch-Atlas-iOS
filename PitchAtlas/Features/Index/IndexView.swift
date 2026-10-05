@@ -74,33 +74,58 @@ enum IndexSort: String, CaseIterable, Identifiable {
 struct IndexView: View {
     @Environment(PitchStore.self) private var store
 
+    private static let topScrollTarget = "index:top"
+    private static let scrollCoordinateSpace = "pitch-index-scroll"
+
     @State private var query = ""
     @State private var family: RepertoireFamily? = nil
     @State private var status: RepertoireStatus? = nil
     @State private var sort: IndexSort = .family
+    @State private var scrollRestoration = IndexScrollRestoration()
+    @State private var selectedEntry: RepertoireEntry?
 
     var body: some View {
         ZStack {
             FieldBackdrop()
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    masthead
-                    searchField
-                    familyChips
-                    statusChips
-                    sortControls
-                    content
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
+                        masthead
+                            .id(Self.topScrollTarget)
+                        StudyTray()
+                        searchField
+                        familyChips
+                        statusChips
+                        sortControls
+                        content
+                    }
+                    .padding(.horizontal, PitchAtlasSpacing.lg)
+                    .padding(.top, PitchAtlasSpacing.md)
+                    .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+                    .emitsBlazeScrollProgress()
                 }
-                .padding(.horizontal, PitchAtlasSpacing.lg)
-                .padding(.top, PitchAtlasSpacing.md)
-                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-                .emitsBlazeScrollProgress()
+                .coordinateSpace(.named(Self.scrollCoordinateSpace))
+                .onPreferenceChange(IndexScrollFramesPreferenceKey.self) { frames in
+                    scrollRestoration.observe(frames: frames)
+                }
+                .onAppear { restoreScrollPositionIfNeeded(using: proxy) }
+                .onDisappear { scrollRestoration.indexDidDisappear() }
+                .onChange(of: query) { resetScrollPosition(using: proxy) }
+                .onChange(of: family) { resetScrollPosition(using: proxy) }
+                .onChange(of: status) { resetScrollPosition(using: proxy) }
+                .onChange(of: sort) { resetScrollPosition(using: proxy) }
             }
         }
         .navigationTitle("Index")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(for: RepertoireEntry.self) { RepertoireDetailView(entry: $0) }
+        .navigationDestination(item: Binding(
+            get: { selectedEntry },
+            set: { entry in
+                selectedEntry = entry
+                if entry == nil { scrollRestoration.navigationDidEnd() }
+            }
+        )) { RepertoireDetailView(entry: $0) }
     }
 
     // MARK: - Masthead
@@ -289,11 +314,31 @@ struct IndexView: View {
 
             VStack(spacing: 0) {
                 ForEach(Array(group.entries.enumerated()), id: \.element.id) { idx, entry in
-                    if idx > 0 { HairlineDivider() }
-                    NavigationLink(value: entry) {
-                        RepertoireRow(entry: entry)
+                    VStack(spacing: 0) {
+                        if idx > 0 { HairlineDivider() }
+                        Button {
+                            // Capture before the push can relayout this scroll view.
+                            // Button activation includes VoiceOver and Switch Control.
+                            scrollRestoration.beginNavigation()
+                            selectedEntry = entry
+                        } label: {
+                            RepertoireRow(entry: entry)
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
+                    .id(scrollTarget(for: entry))
+                    .background {
+                        GeometryReader { geometry in
+                            Color.clear.preference(
+                                key: IndexScrollFramesPreferenceKey.self,
+                                value: [
+                                    scrollTarget(for: entry): geometry.frame(
+                                        in: .named(Self.scrollCoordinateSpace)
+                                    ),
+                                ]
+                            )
+                        }
+                    }
                 }
             }
             .specimenCardFrame(
@@ -306,6 +351,25 @@ struct IndexView: View {
     }
 
     // MARK: - Filtering + grouping
+
+    private func scrollTarget(for entry: RepertoireEntry) -> String {
+        "index:entry:\(entry.id)"
+    }
+
+    private func restoreScrollPositionIfNeeded(using proxy: ScrollViewProxy) {
+        guard let position = scrollRestoration.indexDidAppear() else { return }
+        switch position {
+        case .top:
+            proxy.scrollTo(Self.topScrollTarget, anchor: .top)
+        case .row(let target):
+            proxy.scrollTo(target, anchor: .top)
+        }
+    }
+
+    private func resetScrollPosition(using proxy: ScrollViewProxy) {
+        scrollRestoration.invalidate()
+        proxy.scrollTo(Self.topScrollTarget, anchor: .top)
+    }
 
     /// Entries matching the live search query (name + aka), case-insensitive.
     private var searchedEntries: [RepertoireEntry] {
@@ -351,6 +415,14 @@ struct IndexView: View {
     private struct FamilyGroup {
         let info: RepertoireFamilyInfo
         let entries: [RepertoireEntry]
+    }
+}
+
+private struct IndexScrollFramesPreferenceKey: PreferenceKey {
+    static var defaultValue: [String: CGRect] = [:]
+
+    static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
+        value.merge(nextValue(), uniquingKeysWith: { _, next in next })
     }
 }
 

@@ -44,13 +44,7 @@ struct GripFilmCard: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "From the hand", color: PitchAtlasTheme.cyanDeep, size: 8)
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
-                if let attribution = film.clip.attribution {
-                    SectionLabel(text: attribution, color: PitchAtlasTheme.ink3, size: 8)
-                }
-            }
+            GripMediaCredit(attribution: film.clip.attribution)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Grip film. \(film.clip.alt) \(film.clip.caption)")
@@ -59,7 +53,7 @@ struct GripFilmCard: View {
     @ViewBuilder
     private var face: some View {
         if let clipURL, !reduceMotion || motionApproved {
-            LoopingClipView(url: clipURL)
+            LoopingClipView(url: clipURL, poster: BundledImage.load(film.poster))
                 .accessibilityLabel(film.clip.alt)
         } else if clipURL != nil, offersMotionControl {
             // Reduce Motion: the still leads; motion waits for an explicit ask.
@@ -134,13 +128,7 @@ struct GripStillCard: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "From the hand", color: PitchAtlasTheme.cyanDeep, size: 8)
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
-                if let attribution = photo.attribution {
-                    SectionLabel(text: attribution, color: PitchAtlasTheme.ink3, size: 8)
-                }
-            }
+            GripMediaCredit(attribution: photo.attribution)
         }
         .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
         .accessibilityElement(children: .combine)
@@ -148,14 +136,37 @@ struct GripStillCard: View {
     }
 }
 
+/// Keep provenance attached to the media at narrow widths and large text sizes.
+private struct GripMediaCredit: View {
+    let attribution: String?
+
+    var body: some View {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: PitchAtlasSpacing.xs) { labels }
+            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) { labels }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    @ViewBuilder
+    private var labels: some View {
+        SectionLabel(text: "From the hand", color: PitchAtlasTheme.cardbackInk3, size: 8)
+        SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
+        if let attribution {
+            SectionLabel(text: attribution, color: PitchAtlasTheme.ink3, size: 8)
+        }
+    }
+}
+
 // MARK: - Looping player plumbing
 
 private struct LoopingClipView: UIViewRepresentable {
     let url: URL
+    let poster: UIImage?
 
     func makeUIView(context: Context) -> LoopingPlayerUIView {
         let view = LoopingPlayerUIView()
-        view.load(url: url)
+        view.load(url: url, poster: poster)
         return view
     }
 
@@ -168,19 +179,34 @@ private struct LoopingClipView: UIViewRepresentable {
 
 final class LoopingPlayerUIView: UIView {
     private let playerLayer = AVPlayerLayer()
+    private let posterView = UIImageView()
     private var queue: AVQueuePlayer?
     private var looper: AVPlayerLooper?
+    private var displayObservation: NSKeyValueObservation?
+    private var playerObservation: NSKeyValueObservation?
+    private var looperObservation: NSKeyValueObservation?
+    private(set) var playbackFailed = false
+    private var currentItemObservation: NSKeyValueObservation?
+    private var itemStatusObservation: NSKeyValueObservation?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        playerLayer.videoGravity = .resizeAspectFill
+        // Grip footage is evidence. Preserve the full original frame rather than
+        // cropping fingers or seam position to fill a decorative viewport.
+        playerLayer.videoGravity = .resizeAspect
         layer.addSublayer(playerLayer)
+        posterView.contentMode = .scaleAspectFit
+        posterView.clipsToBounds = true
+        posterView.isAccessibilityElement = false
+        addSubview(posterView)
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) { nil }
 
-    func load(url: URL) {
+    func load(url: URL, poster: UIImage?) {
+        posterView.image = poster
+        posterView.isHidden = false
         // Muted ambient playback: never interrupts or ducks the user's audio.
         try? AVAudioSession.sharedInstance().setCategory(.ambient, options: [.mixWithOthers])
         let player = AVQueuePlayer()
@@ -189,6 +215,20 @@ final class LoopingPlayerUIView: UIView {
         looper = AVPlayerLooper(player: player, templateItem: AVPlayerItem(url: url))
         playerLayer.player = player
         queue = player
+        // An item may be ready before its first frame reaches the display layer.
+        // Keep the original grip visible through loading and failed playback.
+        displayObservation = playerLayer.observe(\.isReadyForDisplay, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.refreshPosterVisibility() }
+        }
+        playerObservation = player.observe(\.status, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.refreshPosterVisibility() }
+        }
+        looperObservation = looper?.observe(\.status, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.refreshPosterVisibility() }
+        }
+        currentItemObservation = player.observe(\.currentItem, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.observeCurrentItem() }
+        }
         player.play()
 
         // didMoveToWindow pauses a clip that scrolls off-screen, but a backgrounded
@@ -202,20 +242,40 @@ final class LoopingPlayerUIView: UIView {
                            name: UIApplication.didBecomeActiveNotification, object: nil)
     }
 
+    private func observeCurrentItem() {
+        itemStatusObservation = queue?.currentItem?.observe(\.status, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async { self?.refreshPosterVisibility() }
+        }
+        refreshPosterVisibility()
+    }
+
+    private func refreshPosterVisibility() {
+        playbackFailed = queue?.status == .failed || queue?.currentItem?.status == .failed || looper?.status == .failed
+        posterView.isHidden = queue?.currentItem != nil && playerLayer.isReadyForDisplay && !playbackFailed
+        playerLayer.isHidden = playbackFailed
+    }
+
     @objc private func appWillResignActive() { queue?.pause() }
     @objc private func appDidBecomeActive() { if window != nil { queue?.play() } }
 
     func teardown() {
         NotificationCenter.default.removeObserver(self)
+        displayObservation = nil
+        playerObservation = nil
+        looperObservation = nil
+        currentItemObservation = nil
+        itemStatusObservation = nil
         queue?.pause()
         looper = nil
         playerLayer.player = nil
         queue = nil
+        posterView.isHidden = false
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
         playerLayer.frame = bounds
+        posterView.frame = bounds
     }
 
     // Pause offscreen, resume onscreen — four loops in one scroll stay cheap.

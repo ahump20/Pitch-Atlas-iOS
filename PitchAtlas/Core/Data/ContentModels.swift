@@ -788,6 +788,8 @@ struct ArchiveImage: Codable, Hashable, Identifiable {
 struct KnowledgeRelatedLink: Codable, Hashable {
     let label: String
     let to: String
+    /// Navigation context from the web bundle, independent of factual claims.
+    var reason: String? = nil
 }
 
 struct KnowledgePullStat: Codable, Hashable {

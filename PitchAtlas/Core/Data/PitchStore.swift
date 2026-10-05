@@ -120,3 +120,13 @@ final class PitchStore {
         teachingClips.first { $0.slugs.contains(slug) }
     }
 }
+
+// Relationships come only from explicit routes and identities in the bundled archive.
+extension PitchStore {
+    func practitioners(for entry: PitchAtlasEntry) -> [Craftsman] {
+        craftsmen.filter { $0.signaturePitchSlug == entry.slug }
+    }
+    func lessons(for entry: PitchAtlasEntry) -> [KnowledgeWing] {
+        knowledge.filter { wing in wing.related?.contains { $0.to == "/pitch/" + entry.slug } == true }
+    }
+}
