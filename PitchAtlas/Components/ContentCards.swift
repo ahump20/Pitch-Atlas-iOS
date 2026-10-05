@@ -220,9 +220,9 @@ struct PitchSpecimenCard: View {
     private var isSignature: Bool { entry.specimenGrade.key == .gold }
     private var collectibleEdge: LinearGradient {
         switch entry.specimenGrade.key {
-        case .gold: return PitchAtlasTheme.gold
-        case .inMotion: return PitchAtlasTheme.foil
-        case .firstParty: return PitchAtlasTheme.chrome
+        case .gold: return PitchAtlasMaterials.ember()
+        case .inMotion: return PitchAtlasMaterials.foil()
+        case .firstParty: return PitchAtlasMaterials.foilType()
         case .reference:
             return LinearGradient(colors: PitchAtlasTheme.referenceEdge,
                                   startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -268,7 +268,7 @@ struct PitchSpecimenCard: View {
         .overlay {
             if !isSignature {
                 RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                    .strokeBorder(PitchAtlasTheme.chrome, lineWidth: isHero ? 4 : 3)
+                    .strokeBorder(PitchAtlasMaterials.foilType(), lineWidth: isHero ? 4 : 3)
                     .overlay {
                         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                             .strokeBorder(collectibleEdge, lineWidth: isHero ? 4 : 3)

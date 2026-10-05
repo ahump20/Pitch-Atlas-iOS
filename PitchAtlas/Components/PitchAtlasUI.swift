@@ -533,7 +533,7 @@ struct HoloWordmark: View {
             .foregroundStyle(.clear)
             .lineSpacing(lineSpacing)
             .overlay {
-                PitchAtlasTheme.chrome
+                PitchAtlasMaterials.foilType()
                     .scaleEffect(2.2)
                     .offset(x: CGFloat(rake) * 70, y: CGFloat(tip) * 22)
                     .animation(.easeOut(duration: 0.14), value: motion.roll)

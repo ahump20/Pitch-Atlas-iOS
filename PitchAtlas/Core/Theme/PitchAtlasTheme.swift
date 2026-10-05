@@ -3,15 +3,10 @@ import SwiftUI
 // =============================================================================
 // Pitch Atlas — SwiftUI Token Map
 // =============================================================================
-// Direct port of the web design system's rendered tokens. Source of truth:
-// the web repo's src/index.css refractor layer. Native archive surface: warm
-// charcoal field, cyan interaction, seam-bright red, bone, and controlled
-// refractor foil. Worn orange is reserved for the signature collectible;
-// reading panels stay on neutral dark stock.
-// Pattern: an enum of static tokens + Color(hex:) + Font.custom(relativeTo:)
-// with system fallbacks. Palette and typefaces are Pitch Atlas's own.
-//
-// Dark only. The charcoal is the frame, not decoration.
+// The web design system's tokens, read from the generated WebTokens (which
+// the content generator writes from the web repo's main branch). Near-black
+// void field, cyan interaction, seam red, bone inks, and the foil/ember
+// materials in PitchAtlasMaterials. Dark only.
 // =============================================================================
 
 enum PitchAtlasTheme {
@@ -71,38 +66,23 @@ enum PitchAtlasTheme {
     /// The lost-pitch and legend edge, the "Reference" register — web `--color-sand-bright`.
     static let lostEdge = Color(web: WebTokens.Palette.sandBright)
 
-    // MARK: - Provenance ladder (the confidence tiers)
-    static let okBright = Color(hex: 0x34E27E)   // official-data
-    static let tealGlow = Color(hex: 0x00A2A0)   // coach-observed
-    static let amberBright = Color(hex: 0xFFC23C) // reputable-analysis
+    // MARK: - Lost-pitch sand (web --color-sand-bright)
     static let sandBright = Color(web: WebTokens.Palette.sandBright)
-    /// pitcher-own-words — its own powder tier color (matches the web), no longer
-    /// riding the interactive accent.
-    static let powder = Color(hex: 0x6CACE4)
-    // unverified -> ink3
-
-    // MARK: - Pitch-family accents (index card dots) — collegiate jewel lifts
-    static let lime = Color(hex: 0x2E7D55)   // offspeed - field green
-    static let violet = Color(hex: 0xA92A22) // breaking - seam-burgundy
-    static let navyLift = Color(hex: 0x15406E) // fastball - lifted navy
 
     // MARK: - Dark archive reading stock (the signature collectible owns orange)
     static let cardbackPaper = Color(hex: 0x24221F)
-    static let cardbackPaper2 = Color(hex: 0x191817)
     static let cardbackInk = Color(hex: 0xFFF1DE)
     static let cardbackInk2 = Color(hex: 0xF3D4B8)
     static let cardbackInk3 = Color(hex: 0xE8D8C7)
     static let cardbackLine = Color(hex: 0xFFF1DE, opacity: 0.22)
     static let cardbackNavy = Color(hex: 0xBADAF1)
-    static let cardbackForest = Color(hex: 0xBDE7BD)
     static let cardbackBurgundy = Color(hex: 0xFFD1C5)
-    static let cardbackGoldInk = Color(hex: 0xF1D1A0)
 
     // MARK: - Archive stock (ArchiveCoverSurface)
     /// Neutral archive stock: lifted press → press → deep press.
     static let archiveStock: [Color] = [Color(hex: 0x24201C), press, Color(hex: 0x141312)]
     /// The signature collectible's worn-orange stock, edge, wear and bevel —
-    /// retired with the gold tier in Task 12.
+    /// replaced by the ember 1 of 1 card in Plan 2.
     static let signatureStock: [Color] = [Color(hex: 0x93411F), Color(hex: 0x6D2E18), Color(hex: 0x3D1D13)]
     static let signatureEdge: [Color] = [Color(hex: 0xE09A65).opacity(0.75), Color(hex: 0x37170F), Color(hex: 0xB76B3E).opacity(0.65)]
     static let signatureWear = Color(hex: 0xD49868).opacity(0.32)
@@ -119,53 +99,7 @@ enum PitchAtlasTheme {
     static let navyLine = Color(web: WebTokens.Palette.navyLine)
 
     // MARK: - Gradients
-    /// The holographic foil — refractor card borders, the diamond mark, holo wordmark.
-    /// Web origin: 115deg linear sweep.
-    static let foil = LinearGradient(
-        stops: [
-            .init(color: Color(hex: 0xFF2D6E), location: 0.00),
-            .init(color: Color(hex: 0xFF8A3C), location: 0.14),
-            .init(color: Color(hex: 0xFFE14D), location: 0.28),
-            .init(color: Color(hex: 0x46FF9C), location: 0.43),
-            .init(color: Color(hex: 0x33E0FF), location: 0.57),
-            .init(color: Color(hex: 0x6B7BFF), location: 0.71),
-            .init(color: Color(hex: 0xC44BFF), location: 0.85),
-            .init(color: Color(hex: 0xFF2D6E), location: 1.00),
-        ],
-        startPoint: .topLeading, endPoint: .bottomTrailing
-    )
-
-    /// Gold 1/1 — reserved STRICTLY for the single defining specimen per pitch.
-    static let gold = LinearGradient(
-        stops: [
-            .init(color: Color(hex: 0x5A3D12), location: 0.00),
-            .init(color: Color(hex: 0xCAA14A), location: 0.22),
-            .init(color: Color(hex: 0xFFF0C2), location: 0.38),
-            .init(color: Color(hex: 0xB8893A), location: 0.54),
-            .init(color: Color(hex: 0xF4D98A), location: 0.70),
-            .init(color: Color(hex: 0x7A571F), location: 0.90),
-        ],
-        startPoint: .top, endPoint: .bottom
-    )
-
-    /// Brushed chrome — the wordmark's metal. Type is set in metal, never in
-    /// foil: rainbow foil only exists on cards, where holographic refractors
-    /// exist in the physical world. The gyro still rakes light across this —
-    /// brushed metal answering a tilt is the gold tin's behavior, not a screen
-    /// effect. Web origin: the --chrome gradient.
-    static let chrome = LinearGradient(
-        stops: [
-            .init(color: Color(hex: 0x26282D), location: 0.00),
-            .init(color: Color(hex: 0x5B616B), location: 0.14),
-            .init(color: Color(hex: 0xCFD4DB), location: 0.30),
-            .init(color: Color(hex: 0x878D97), location: 0.44),
-            .init(color: Color(hex: 0xEEF1F5), location: 0.56),
-            .init(color: Color(hex: 0x7D828C), location: 0.70),
-            .init(color: Color(hex: 0x43474E), location: 0.86),
-            .init(color: Color(hex: 0x1D1F23), location: 1.00),
-        ],
-        startPoint: .topLeading, endPoint: .bottomTrailing
-    )
+    // The web's foil, foil-type and ember are PitchAtlasMaterials (generated stops).
 
     // MARK: - Typography
     // The faces are the web's own (PitchAtlasType). These helpers keep their
@@ -212,7 +146,8 @@ enum PitchAtlasTheme {
 // MARK: - Hex Color Initializer
 
 extension Color {
-    /// Initialize a Color from a hex integer (e.g. 0x37D6FF).
+    /// Initialize a Color from a hex integer (e.g. 0x5FE0EA). Theme-only: the
+    /// CI color-literal check rejects it anywhere else.
     init(hex: UInt, opacity: Double = 1.0) {
         self.init(
             red: Double((hex >> 16) & 0xFF) / 255,
@@ -221,17 +156,6 @@ extension Color {
             opacity: opacity
         )
     }
-}
-
-// MARK: - Shape Style aliases (so call sites read `.fill(.void)`)
-
-extension ShapeStyle where Self == Color {
-    static var paVoid: Color { PitchAtlasTheme.void }
-    static var paPress: Color { PitchAtlasTheme.press }
-    static var paBone: Color { PitchAtlasTheme.bone }
-    static var paBone2: Color { PitchAtlasTheme.bone2 }
-    static var paCyan: Color { PitchAtlasTheme.cyan }
-    static var paSeam: Color { PitchAtlasTheme.seamBright }
 }
 
 // MARK: - Anton signature skew
