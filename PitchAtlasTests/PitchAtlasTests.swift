@@ -172,6 +172,17 @@ final class PitchAtlasTests: XCTestCase {
         }
     }
 
+    /// The four-seam is the one 1-of-1, and since 2026-09-23 the web calls it
+    /// Ember (the key keeps its historical `gold` name). Read straight off the
+    /// generated bundle, so a stale bundle fails here.
+    func testFourSeamWearsTheEmberOneOfOne() {
+        let store = PitchStore()
+        let chase = store.pitches.first { $0.display.specimenNo == "00" }
+        XCTAssertEqual(chase?.display.slug, "four-seam")
+        XCTAssertEqual(chase?.specimenGrade.key, .gold)
+        XCTAssertEqual(chase?.specimenGrade.label, "Ember · 1 of 1")
+    }
+
     /// The same-family rail reads off the filed family: every sibling shares the
     /// subject's family, the subject never lists itself, and the relationship is
     /// symmetric (if A lists B, B lists A). No baked relatedSlugs, no fabricated link.
