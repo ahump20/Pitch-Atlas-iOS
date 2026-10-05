@@ -25,7 +25,7 @@ struct CraftsmenView: View {
                 .padding(.horizontal, PitchAtlasSpacing.lg)
                 .padding(.top, PitchAtlasSpacing.md)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-                .emitsBlazeScrollProgress()
+                .emitsScrollProgress()
             }
         }
         .navigationTitle("Craftsmen")

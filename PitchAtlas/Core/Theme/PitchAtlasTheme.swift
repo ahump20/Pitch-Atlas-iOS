@@ -89,8 +89,6 @@ enum PitchAtlasTheme {
     static let signatureBevel = Color(hex: 0xEDAB78).opacity(0.22)
     /// The "reference" grade's brushed-steel edge.
     static let referenceEdge: [Color] = [Color(hex: 0x9EA6AB), Color(hex: 0x454B50), Color(hex: 0xC3CACD)]
-    /// The companion's coat — leaves with the companion in Plan 2.
-    static let companionCoat = Color(red: 0.17, green: 0.08, blue: 0.04)
 
     // MARK: - Hairlines / texture
     /// The 1px machined hairline — web --color-machined.

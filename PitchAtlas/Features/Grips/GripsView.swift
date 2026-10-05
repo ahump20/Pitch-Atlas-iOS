@@ -88,7 +88,7 @@ struct GripsView: View {
             }
             .padding(PitchAtlasSpacing.lg)
             .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-            .emitsBlazeScrollProgress()
+            .emitsScrollProgress()
         }
     }
 
@@ -109,7 +109,6 @@ struct GripsView: View {
                     .foregroundStyle(PitchAtlasTheme.bone2)
                     .lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
-            BlazeInlineCompanionView(style: .grips, mood: .sniffing)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)

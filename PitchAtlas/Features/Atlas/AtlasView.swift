@@ -51,7 +51,7 @@ struct AtlasView: View {
                 }
                 .padding(PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-                .emitsBlazeScrollProgress()
+                .emitsScrollProgress()
             }
         }
         .navigationTitle("Atlas")
@@ -109,7 +109,6 @@ struct AtlasView: View {
                 .accessibilityAddTraits(.isButton)
             }
 
-            BlazeInlineCompanionView(style: .atlas, mood: .sniffing)
 
             Text("Start with the tell: fingers, seams, eye level, clock. Then show what the source can prove and what only a pitcher could feel.")
                 .font(PitchAtlasTheme.hanken(16))
