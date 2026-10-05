@@ -16,6 +16,8 @@ enum PitchAtlasTheme {
     static let void = Color(web: WebTokens.Palette.void)
     /// Raised content cards — the "leather-press" surface.
     static let press = Color(web: WebTokens.Palette.press)
+    /// --color-press-2: the interior of a foil-edged panel.
+    static let press2 = Color(web: WebTokens.Palette.press2)
     /// Alternating panels, secondary card fill.
     static let paper2 = Color(web: WebTokens.Palette.paper2)
     /// Deepest insets, edge frames.

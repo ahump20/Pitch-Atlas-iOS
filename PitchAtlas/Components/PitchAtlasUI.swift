@@ -101,7 +101,7 @@ struct SectionLabel: View {
     var body: some View {
         Text(text.uppercased())
             .font(PitchAtlasTheme.martian(size))
-            .tracking(2)
+            .tracking(em: 0.18, size: size)
             .foregroundStyle(color)
             .accessibilityAddTraits(.isHeader)
     }
@@ -170,7 +170,7 @@ struct LeatherPress: ViewModifier {
     var radius: CGFloat
     func body(content: Content) -> some View {
         content.padding(padding).frame(maxWidth: .infinity, alignment: .leading)
-            .background { ArchiveCoverSurface(radius: radius) }
+            .background { PanelSurface(radius: radius) }
             .inkContext(.object)
     }
 }
@@ -183,7 +183,7 @@ struct SpecimenCardFrame: ViewModifier {
     var foilFillOpacity: Double
     func body(content: Content) -> some View {
         content.padding(padding).frame(maxWidth: .infinity, alignment: .leading)
-            .background { ArchiveCoverSurface(radius: radius) }
+            .background { PanelSurface(radius: radius) }
             .inkContext(.object)
     }
 }
@@ -346,10 +346,7 @@ struct EmptyStateView: View {
 
 struct HairlineDivider: View {
     var body: some View {
-        Rectangle()
-            .fill(PitchAtlasTheme.navyLine)
-            .frame(height: 1)
-            .accessibilityHidden(true)
+        Hairline()
     }
 }
 
