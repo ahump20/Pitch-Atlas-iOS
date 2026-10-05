@@ -902,4 +902,7 @@ struct TeachingClip: Codable, Hashable, Identifiable {
 struct ContentManifest: Codable, Hashable {
     let counts: [String: Int]
     let sourcesLastChecked: String
+    /// sha256 over every generated bundle (name + bytes): changes exactly when
+    /// shipped content changes, with no clock involved.
+    let contentHash: String?
 }

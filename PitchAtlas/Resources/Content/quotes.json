@@ -1,0 +1,314 @@
+[
+  {
+    "id": "garrido-destroys-past",
+    "attribution": "Augie Garrido",
+    "context": "Winningest coach in NCAA Division I baseball history",
+    "claim": {
+      "value": "When a pitcher releases the ball and sends it on a four one-hundredths of a second journey toward the batter’s box, he simultaneously destroys the past and creates the future.",
+      "source": {
+        "id": "garrido-life-yours-to-win",
+        "label": "Augie Garrido, Life Is Yours to Win (Simon & Schuster, 2011), quotations confirmed via the SimmonsField book review",
+        "url": "http://simmonsfield.blogspot.com/2011/08/augie-garridos-life-is-yours-to-win.html",
+        "retrievedAt": "2026-06-27",
+        "season": "2011 book"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Verbatim from Garrido’s Life Is Yours to Win (2011), Chapter 4; read through the SimmonsField review of the book rather than first-hand from the primary text."
+    }
+  },
+  {
+    "id": "garrido-testing-ourselves",
+    "attribution": "Augie Garrido",
+    "context": "Life Is Yours to Win, 2011",
+    "claim": {
+      "value": "Testing ourselves and defining ourselves is the \"everything\" of competition.",
+      "source": {
+        "id": "garrido-life-yours-to-win",
+        "label": "Augie Garrido, Life Is Yours to Win (Simon & Schuster, 2011), quotations confirmed via the SimmonsField book review",
+        "url": "http://simmonsfield.blogspot.com/2011/08/augie-garridos-life-is-yours-to-win.html",
+        "retrievedAt": "2026-06-27",
+        "season": "2011 book"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Verbatim from Garrido’s Life Is Yours to Win (2011), Chapter 4; relayed through the SimmonsField book review."
+    }
+  },
+  {
+    "id": "garrido-never-an-opponent",
+    "attribution": "Augie Garrido",
+    "context": "Life Is Yours to Win, 2011",
+    "claim": {
+      "value": "No matter who is on the mound or no matter what team you are playing, you are always playing the game of baseball, you are never playing an opponent.",
+      "source": {
+        "id": "garrido-life-yours-to-win",
+        "label": "Augie Garrido, Life Is Yours to Win (Simon & Schuster, 2011), quotations confirmed via the SimmonsField book review",
+        "url": "http://simmonsfield.blogspot.com/2011/08/augie-garridos-life-is-yours-to-win.html",
+        "retrievedAt": "2026-06-27",
+        "season": "2011 book"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Verbatim from Garrido’s Life Is Yours to Win (2011); relayed through the SimmonsField book review."
+    }
+  },
+  {
+    "id": "garrido-make-a-fool",
+    "attribution": "Augie Garrido",
+    "context": "Life Is Yours to Win, 2011",
+    "claim": {
+      "value": "Just when you think you know something, the game will make a fool of you.",
+      "source": {
+        "id": "garrido-life-yours-to-win",
+        "label": "Augie Garrido, Life Is Yours to Win (Simon & Schuster, 2011), quotations confirmed via the SimmonsField book review",
+        "url": "http://simmonsfield.blogspot.com/2011/08/augie-garridos-life-is-yours-to-win.html",
+        "retrievedAt": "2026-06-27",
+        "season": "2011 book"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Verbatim from Garrido’s Life Is Yours to Win (2011); relayed through the SimmonsField book review."
+    }
+  },
+  {
+    "id": "garrido-winners-come-back",
+    "attribution": "Augie Garrido",
+    "context": "Life Is Yours to Win, 2011",
+    "claim": {
+      "value": "Some claim that winning is everything, but if that were true, why do winners keep coming back for more?",
+      "source": {
+        "id": "garrido-life-yours-to-win",
+        "label": "Augie Garrido, Life Is Yours to Win (Simon & Schuster, 2011), quotations confirmed via the SimmonsField book review",
+        "url": "http://simmonsfield.blogspot.com/2011/08/augie-garridos-life-is-yours-to-win.html",
+        "retrievedAt": "2026-06-27",
+        "season": "2011 book"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Verbatim from Garrido’s Life Is Yours to Win (2011), Chapter 4; relayed through the SimmonsField book review."
+    }
+  },
+  {
+    "id": "saban-the-process",
+    "attribution": "Nick Saban",
+    "context": "On \"the Process\"",
+    "claim": {
+      "value": "Don’t think about winning the championship. Think about what you needed to do in this drill, on this play, in this moment. That is the process: think about what we can do today, the task at hand.",
+      "source": {
+        "id": "saban-process-std",
+        "label": "Nick Saban's \"the Process\", as relayed in process-thinking leadership writing",
+        "url": "https://www.samuelthomasdavies.com/nick-saban-process/",
+        "retrievedAt": "2026-06-27"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Saban’s framing of \"the Process,\" widely relayed through leadership writing (it traces back to Bob Rotella’s How Champions Think); cited here via a secondary source, not a primary Saban transcript."
+    }
+  },
+  {
+    "id": "q-craftsman-bob-gibson",
+    "attribution": "Bob Gibson",
+    "context": "Slider",
+    "claim": {
+      "value": "The part of pitching that separates the stars from everyone else is about 90 percent mental. That is why I considered it so important to mess with a batter’s head without letting him inside mine.",
+      "source": {
+        "id": "gibson-wiki",
+        "label": "Wikipedia, Bob Gibson",
+        "url": "https://en.wikipedia.org/wiki/Bob_Gibson",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Gibson's own phrasing, but reachable only through the Wikipedia biography — no primary interview, autobiography passage, or transcript placing this exact sentence in his direct words was located. The label reflects the secondary pathway, not doubt about the sentiment."
+    }
+  },
+  {
+    "id": "q-craftsman-nolan-ryan",
+    "attribution": "Nolan Ryan",
+    "context": "Four-seam fastball",
+    "claim": {
+      "value": "If I’m going to lose, I’m going to lose my way. Who gets the L?",
+      "source": {
+        "id": "ryan-espn",
+        "label": "ESPN, There's never been another pitcher like Nolan Ryan",
+        "url": "https://www.espn.com/mlb/story/_/id/29171065/legendary-dominating-historically-wild-there-never-another-pitcher-nolan-ryan",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "To Tony Kornheiser, on his conviction-first approach."
+    }
+  },
+  {
+    "id": "q-craftsman-roger-clemens",
+    "attribution": "Roger Clemens",
+    "context": "Split-finger fastball",
+    "claim": {
+      "value": "If someone met me on a game day, he wouldn’t like me. The days in between, I’m the goodest guy you can find.",
+      "source": {
+        "id": "clemens-espn-classic",
+        "label": "ESPN Classic, Clemens thrives on confrontation",
+        "url": "https://www.espn.com/classic/biography/s/clemens_roger.html",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "Said in 1990 with the Red Sox, on his game-day persona."
+    }
+  },
+  {
+    "id": "q-craftsman-greg-maddux",
+    "attribution": "Greg Maddux",
+    "context": "Two-seam fastball",
+    "claim": {
+      "value": "But if a pitcher can change speeds, every hitter is helpless, limited by human vision. Except for that (expletive) Tony Gwynn.",
+      "source": {
+        "id": "maddux-daringfireball",
+        "label": "Daring Fireball, quoting Thomas Boswell (Washington Post, Jan 7, 2014)",
+        "url": "https://daringfireball.net/linked/2014/01/13/maddux",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "To Thomas Boswell, originally in his January 7, 2014 Washington Post column; confirmed verbatim at two reachable reproductions."
+    }
+  },
+  {
+    "id": "q-craftsman-johan-santana",
+    "attribution": "Johan Santana",
+    "context": "Circle changeup",
+    "claim": {
+      "value": "I was challenging myself and forcing myself to take command of that pitch.",
+      "source": {
+        "id": "santana-sabr",
+        "label": "Society for American Baseball Research, Johan Santana (BioProject)",
+        "url": "https://sabr.org/bioproj/person/johan-santana/",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "On developing the changeup at Triple-A Edmonton in 2002."
+    }
+  },
+  {
+    "id": "q-craftsman-adam-wainwright",
+    "attribution": "Adam Wainwright",
+    "context": "12-6 curveball",
+    "claim": {
+      "value": "If I didn’t have my curveball, I don’t get out of A-ball.",
+      "source": {
+        "id": "wainwright-espn-curve",
+        "label": "ESPN, The secret to Adam Wainwright's success: a curveball like none other (Buster Olney)",
+        "url": "https://www.espn.com/mlb/insider/story/_/id/34178817/the-secret-st-louis-cardinals-righty-adam-wainwright-success-curveball-other",
+        "retrievedAt": "2026-06-05"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "To ESPN, on how completely his career rested on the one pitch."
+    }
+  },
+  {
+    "id": "q-craftsman-paul-skenes",
+    "attribution": "Paul Skenes",
+    "context": "Splinker",
+    "claim": {
+      "value": "I still think of it as a sinker. It’s funny to see guys swing at fastballs in the dirt.",
+      "source": {
+        "id": "skenes-mlb-confidence",
+        "label": "MLB.com, Skenes' newest pitch is his confidence pitch (Alex Stumpf)",
+        "url": "https://www.mlb.com/news/paul-skenes-adds-splinker-to-pitch-mix",
+        "retrievedAt": "2026-06-05",
+        "season": "2024"
+      },
+      "confidence": "pitcher-own-words"
+    }
+  },
+  {
+    "id": "q-craftsman-phil-niekro",
+    "attribution": "Phil Niekro",
+    "context": "Knuckleball",
+    "claim": {
+      "value": "I figured if there's any way I'm going to win my 300th game by striking the guy out, I was going to do it with the pitch that won the first game for me.",
+      "source": {
+        "id": "niekro-fangraphs",
+        "label": "FanGraphs, Remembering Phil Niekro, King of the Knuckleballers",
+        "url": "https://blogs.fangraphs.com/remembering-phil-niekro-king-of-the-knuckleballers-1939-2020/",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "On finishing his 300th win with the knuckleball."
+    }
+  },
+  {
+    "id": "q-craftsman-carl-hubbell",
+    "attribution": "Carl Hubbell",
+    "context": "Screwball",
+    "claim": {
+      "value": "The screwball's an unnatural pitch. Nature never intended a man to turn his hand like that throwing rocks at a bear.",
+      "source": {
+        "id": "hubbell-almanac",
+        "label": "Baseball Almanac, Carl Hubbell Quotes",
+        "url": "https://www.baseball-almanac.com/quotes/carl_hubbell_quotes.shtml",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "pitcher-own-words"
+    }
+  },
+  {
+    "id": "q-craftsman-mariano-rivera",
+    "attribution": "Mariano Rivera",
+    "context": "Cutter",
+    "claim": {
+      "value": "The Lord gave it to me. Oh, the Lord. Definitely.",
+      "source": {
+        "id": "rivera-cbs-cutter",
+        "label": "CBS Sports, Mariano Rivera: birth of the cutter was a gift from God",
+        "url": "https://www.cbssports.com/mlb/news/mariano-rivera-birth-of-the-cutter-was-gift-from-god-part-4-of-5/",
+        "retrievedAt": "2026-06-06",
+        "season": "1997"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "On the 1997 accidental discovery of the cutter while playing catch with Ramiro Mendoza."
+    }
+  },
+  {
+    "id": "q-craftsman-cole-hamels",
+    "attribution": "Cole Hamels",
+    "context": "Circle changeup",
+    "claim": {
+      "value": "It just rolls off my fingers.",
+      "source": {
+        "id": "hamels-espn-crasnick",
+        "label": "ESPN, Jerry Crasnick on Cole Hamels and his changeup",
+        "url": "https://www.espn.com/mlb/columns/story?columnist=crasnick_jerry&id=2878204",
+        "retrievedAt": "2026-06-06",
+        "season": "2007"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "On the feel of his changeup."
+    }
+  },
+  {
+    "id": "q-craftsman-jurrangelo-cijntje",
+    "attribution": "Jurrangelo Cijntje",
+    "context": "Switch-pitching",
+    "claim": {
+      "value": "I'm pretty excited to keep doing both. At the end of the day, if a team wants me only on the right side, I'm happy to do it because at the end of the day I just want to win games. But I think (pitching) from both sides is what I really want to do.",
+      "source": {
+        "id": "cijntje-draft-quote",
+        "label": "Yahoo Sports, What Mississippi State's Jurrangelo Cijntje said on pitching with both arms",
+        "url": "https://sports.yahoo.com/mississippi-state-baseballs-jurrangelo-cijntje-225548074.html",
+        "retrievedAt": "2026-07-05",
+        "season": "2024 draft day"
+      },
+      "confidence": "pitcher-own-words",
+      "note": "His own words on 2024 draft day, printed by the Yahoo/Mississippi State write-up of the ESPN broadcast interview. Verbatim-confirmed against the page."
+    }
+  },
+  {
+    "id": "q-craftsman-gyroball",
+    "attribution": "The gyroball",
+    "context": "A pitch, not a person",
+    "claim": {
+      "value": "I have done it in a game, but not too much. Sometimes accidentally.",
+      "source": {
+        "id": "gyro-sabr-brj",
+        "label": "SABR Baseball Research Journal, An Analysis of the Gyroball (Nathan & Baldwin)",
+        "url": "https://baseball.physics.illinois.edu/BRJGyro.pdf",
+        "retrievedAt": "2026-06-05",
+        "season": "2007"
+      },
+      "confidence": "secondhand-attributed",
+      "note": "Daisuke Matsuzaka, asked whether he throws the gyroball; relayed from a 2006 Yahoo! Sports piece and cited in the SABR analysis."
+    }
+  }
+]

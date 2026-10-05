@@ -15,7 +15,8 @@
     npm install && npm run generate
     PITCH_ATLAS_WEB=/path/to/Pitch-Atlas npm run generate   # override web repo
 */
-import { writeFile, mkdir } from 'node:fs/promises'
+import { writeFile, mkdir, readFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { dirname, resolve, join } from 'node:path'
@@ -35,7 +36,8 @@ if (!existsSync(DATA)) {
 
 const imp = (rel: string) => import(pathToFileURL(join(DATA, rel)).href)
 
-const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade, archive, tiktok] =
+const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade, archive, tiktok,
+  softball, softballFund, tidbits, quotes, external, craftsmanMedia, plate273] =
   await Promise.all([
     imp('pitches/index.ts'),
     imp('repertoire/index.ts'),
@@ -50,7 +52,53 @@ const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimen
     // references the app embeds via the official player — no media file is bundled.
     // The web side reads the same module. Promoted to the iOS bundle 2026-06-25.
     imp('media/tiktok.ts'),
+    // The wings the app gained in 1.2 (2026-10-05): softball, the hidden notes
+    // (tidbits), the rotating quote pool, credited external media, the media
+    // filed to craftsmen, and Muybridge plate 273. All pure data modules.
+    imp('softball/index.ts'),
+    imp('softball/fundamentals.ts'),
+    imp('tidbits/index.ts'),
+    imp('quotes/index.ts'),
+    imp('media/external.ts'),
+    imp('media/craftsmen.ts'),
+    imp('media/plate273.ts'),
   ])
+
+/*
+  Plate 273 ships as ten traced outlines (public domain). Only straight-line
+  path commands occur (M/L/Z), so each frame becomes numeric subpaths the app
+  draws with Path — the outline is generated from the web file, never redrawn.
+*/
+async function plateFrames(svgPath: string) {
+  const svg = await readFile(svgPath, 'utf8')
+  const frames = [...svg.matchAll(/<symbol id="(f\d+)" viewBox="([^"]+)">\s*<path[^>]* d="([^"]+)"/g)]
+  if (frames.length === 0) throw new Error(`no frames in ${svgPath}`)
+  return frames.map(([, id, viewBox, d]) => {
+    if (/[^MLZ0-9.\-\s]/.test(d)) throw new Error(`${id}: unexpected path command`)
+    const subpaths = d
+      .split('Z')
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .map((part) =>
+        [...part.matchAll(/[ML]\s*(-?\d+(?:\.\d+)?)\s*(-?\d+(?:\.\d+)?)/g)].map((m) => [Number(m[1]), Number(m[2])]),
+      )
+    return { id, viewBox: viewBox.split(/\s+/).map(Number), subpaths }
+  })
+}
+
+const plate = plate273.PLATE_273
+const plateBundle = {
+  viewBox: plate.viewBox,
+  frameCount: plate.frames,
+  plate: plate.plate,
+  title: plate.title,
+  maker: plate.maker,
+  work: plate.work,
+  year: plate.year,
+  rights: plate.rights,
+  source: plate.source,
+  frames: await plateFrames(join(WEB, 'public', plate.src.replace(/^\//, ''))),
+}
 
 /*
   Film mapping at the boundary. The web models a looping grip video as GripClip
@@ -125,6 +173,35 @@ const bundles: Record<string, unknown> = {
   // Embed-or-link, never rehost. The app embeds the official TikTok player from
   // these refs; no MP4 ships. See docs/MEDIA-LEDGER.md (web repo) rows T1–T3.
   'teaching-clips.json': tiktok.TEACHING_CLIPS,
+  'softball.json': {
+    fastpitchCopy: softballFund.SOFTBALL_FASTPITCH_COPY,
+    hubFastpitchBlurb: softballFund.SOFTBALL_HUB_FASTPITCH_BLURB,
+    pitches: softball.SOFTBALL_PITCHES,
+    craftsmen: softball.SOFTBALL_CRAFTSMEN,
+    windmillPhases: softball.WINDMILL_PHASES,
+    fundamentalBlocks: softball.FUNDAMENTAL_BLOCKS,
+    slowpitchNotes: softball.SLOWPITCH_NOTES,
+    slowpitchCraft: softball.SLOWPITCH_CRAFT,
+    slowpitchFormats: softball.SLOWPITCH_FORMATS,
+  },
+  'tidbits.json': tidbits.TIDBITS,
+  // The rotating pool the web UI reads: curated lines plus every craftsman quote.
+  'quotes.json': quotes.quotePool(),
+  // Embed-or-link: TikTok rows play in the official player; X rows link out.
+  'external-media.json': { sources: external.EXTERNAL_SOURCES, items: external.EXTERNAL_CONTENT_ITEMS },
+  'craftsman-media.json': craftsmanMedia.allCraftsmanMedia(),
+  'plate-273.json': plateBundle,
+}
+
+// Object-shaped bundles have no single record array, so their counts are named
+// explicitly (countOf would read them as 0).
+const explicitCounts: Record<string, Record<string, number>> = {
+  'softball.json': {
+    'softball.pitches': softball.SOFTBALL_PITCHES.length,
+    'softball.craftsmen': softball.SOFTBALL_CRAFTSMEN.length,
+  },
+  'external-media.json': { 'external-media.items': external.EXTERNAL_CONTENT_ITEMS.length },
+  'plate-273.json': { 'plate-273.frames': plateBundle.frames.length },
 }
 
 function countOf(v: unknown): number {
@@ -144,17 +221,25 @@ for (const [file, data] of Object.entries(bundles)) {
     process.exit(1)
   }
   await writeFile(join(OUT, file), JSON.stringify(data, null, 2) + '\n', 'utf8')
-  counts[file] = countOf(data)
-  console.log(`  ${file.padEnd(20)} ${String(counts[file]).padStart(4)} records`)
+  if (explicitCounts[file]) Object.assign(counts, explicitCounts[file])
+  else counts[file] = countOf(data)
+  const shown = explicitCounts[file] ? Object.values(explicitCounts[file])[0] : counts[file]
+  console.log(`  ${file.padEnd(20)} ${String(shown).padStart(4)} records`)
 }
 
 // Manifest: counts read from source (never hardcoded). A change here is a real
 // content delta, surfaced in the diff — not silent drift.
 const allSources = sources.allSources()
 const sourcesLastChecked = sources.latestRetrievedAt(allSources)
+// Content hash over every bundle written above (sorted name + bytes): it
+// changes exactly when shipped content changes, and needs no clock — so the
+// drift job, which regenerates and diffs, stays deterministic.
+const hash = createHash('sha256')
+for (const file of Object.keys(bundles).sort()) hash.update(file).update(await readFile(join(OUT, file)))
+const contentHash = hash.digest('hex')
 await writeFile(
   join(OUT, 'manifest.json'),
-  JSON.stringify({ counts, sourcesLastChecked }, null, 2) + '\n',
+  JSON.stringify({ counts, sourcesLastChecked, contentHash }, null, 2) + '\n',
   'utf8',
 )
 

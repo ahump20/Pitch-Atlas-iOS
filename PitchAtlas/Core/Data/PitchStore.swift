@@ -31,6 +31,12 @@ final class PitchStore {
     let sources: [Source]
     let archiveImages: [ArchiveImage]
     let teachingClips: [TeachingClip]
+    let softball: SoftballBundle
+    let tidbits: [Tidbit]
+    let quotes: [AtlasQuote]
+    let externalMedia: ExternalMediaBundle
+    let craftsmanMedia: [CraftsmanMediaItem]
+    let plate273: Plate273?
     let manifest: ContentManifest
     let status: Status
 
@@ -47,7 +53,7 @@ final class PitchStore {
         }
 
         self.manifest = load("manifest", ContentManifest.self,
-                             fallback: ContentManifest(counts: [:], sourcesLastChecked: ""))
+                             fallback: ContentManifest(counts: [:], sourcesLastChecked: "", contentHash: nil))
         self.pitches = load("pitches", [PitchAtlasEntry].self, fallback: [])
         self.repertoire = load("repertoire", RepertoireRoot.self,
                                fallback: RepertoireRoot(families: [], entries: []))
@@ -63,6 +69,12 @@ final class PitchStore {
         self.sources = load("sources", [Source].self, fallback: [])
         self.archiveImages = load("archive-images", [ArchiveImage].self, fallback: [])
         self.teachingClips = load("teaching-clips", [TeachingClip].self, fallback: [])
+        self.softball = load("softball", SoftballBundle.self, fallback: .empty)
+        self.tidbits = load("tidbits", [Tidbit].self, fallback: [])
+        self.quotes = load("quotes", [AtlasQuote].self, fallback: [])
+        self.externalMedia = load("external-media", ExternalMediaBundle.self, fallback: .empty)
+        self.craftsmanMedia = load("craftsman-media", [CraftsmanMediaItem].self, fallback: [])
+        self.plate273 = load("plate-273", Plate273?.self, fallback: nil)
 
         self.status = problems.isEmpty ? .ready : .failed(problems.joined(separator: " | "))
     }
@@ -118,6 +130,17 @@ final class PitchStore {
     /// several slugs (Ryan → four-seam + two-seam), mirroring the web's lookup.
     func teachingClip(slug: String) -> TeachingClip? {
         teachingClips.first { $0.slugs.contains(slug) }
+    }
+
+    func softballPitch(slug: String) -> SoftballPitch? { softball.pitches.first { $0.slug == slug } }
+    func softballCraftsman(slug: String) -> Craftsman? { softball.craftsmen.first { $0.slug == slug } }
+    func tidbit(id: String) -> Tidbit? { tidbits.first { $0.id == id } }
+    func craftsmanMedia(forCraftsman slug: String) -> [CraftsmanMediaItem] {
+        craftsmanMedia.filter { $0.craftsmanSlug == slug }
+    }
+    /// Credited posts filed to a pitch, same gate as the web (published, not removed).
+    func externalItems(forPitch slug: String) -> [ExternalContentItem] {
+        externalMedia.items.filter { $0.isShowable && $0.tags.pitchSlugs.contains(slug) }
     }
 }
 
