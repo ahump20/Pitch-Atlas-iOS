@@ -111,10 +111,10 @@ struct IndexView: View {
                 }
                 .onAppear { restoreScrollPositionIfNeeded(using: proxy) }
                 .onDisappear { scrollRestoration.indexDidDisappear() }
-                .onChange(of: query) { resetScrollPosition(using: proxy) }
-                .onChange(of: family) { resetScrollPosition(using: proxy) }
-                .onChange(of: status) { resetScrollPosition(using: proxy) }
-                .onChange(of: sort) { resetScrollPosition(using: proxy) }
+                .onChange(of: query) { applyFilterChange(.query, using: proxy) }
+                .onChange(of: family) { applyFilterChange(.family, using: proxy) }
+                .onChange(of: status) { applyFilterChange(.status, using: proxy) }
+                .onChange(of: sort) { applyFilterChange(.sort, using: proxy) }
             }
         }
         .navigationTitle("Index")
@@ -366,9 +366,9 @@ struct IndexView: View {
         }
     }
 
-    private func resetScrollPosition(using proxy: ScrollViewProxy) {
+    private func applyFilterChange(_ change: IndexFilterChange, using proxy: ScrollViewProxy) {
         scrollRestoration.invalidate()
-        proxy.scrollTo(Self.topScrollTarget, anchor: .top)
+        if change.resetsToTop { proxy.scrollTo(Self.topScrollTarget, anchor: .top) }
     }
 
     /// Entries matching the live search query (name + aka), case-insensitive.
@@ -416,6 +416,13 @@ struct IndexView: View {
         let info: RepertoireFamilyInfo
         let entries: [RepertoireEntry]
     }
+}
+
+/// What changed in the Index controls. Typing narrows the list where the reader
+/// already is; a new family, status or sort is a new list and starts at the top.
+enum IndexFilterChange {
+    case query, family, status, sort
+    var resetsToTop: Bool { self != .query }
 }
 
 private struct IndexScrollFramesPreferenceKey: PreferenceKey {

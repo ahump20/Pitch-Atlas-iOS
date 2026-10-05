@@ -34,12 +34,15 @@ import Observation
         error = nil
         inspection = nil
         if slugs.contains(slug) { presented = true; return }
-        if slugs.count < 2 { slugs.append(slug) } else { pending = slug }
+        if slugs.count < 2 {
+            slugs.append(slug)
+            if pending == slug { pending = nil }
+        } else { pending = slug }
         presented = true
     }
     func replace(_ index: Int) {
         guard slugs.indices.contains(index), let pending else { return }
-        slugs[index] = pending
+        if !slugs.contains(pending) { slugs[index] = pending }
         self.pending = nil
     }
     func remove(_ slug: String) {
