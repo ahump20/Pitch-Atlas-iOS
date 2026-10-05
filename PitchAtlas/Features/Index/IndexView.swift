@@ -191,12 +191,12 @@ struct IndexView: View {
     private var familyChips: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: PitchAtlasSpacing.xs) {
-                FilterChip(label: "All", dot: nil, selected: family == nil) {
+                PitchChip(kind: .filter, label: "All", dot: nil, selected: family == nil) {
                     Haptics.toggle()
                     family = nil
                 }
                 ForEach(store.repertoire.families) { info in
-                    FilterChip(label: info.label,
+                    PitchChip(kind: .filter, label: info.label,
                                dot: info.family.accent,
                                selected: family == info.family) {
                         Haptics.toggle()
@@ -234,12 +234,12 @@ struct IndexView: View {
 
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: PitchAtlasSpacing.xs) {
-                        FilterChip(label: "All", dot: nil, selected: status == nil) {
+                        PitchChip(kind: .filter, label: "All", dot: nil, selected: status == nil) {
                             Haptics.toggle()
                             status = nil
                         }
                         ForEach(presentStatuses, id: \.self) { tier in
-                            FilterChip(label: tier.displayLabel, dot: tier.tone, selected: status == tier) {
+                            PitchChip(kind: .filter, label: tier.displayLabel, dot: tier.tone, selected: status == tier) {
                                 Haptics.toggle()
                                 status = (status == tier) ? nil : tier
                             }
@@ -265,7 +265,7 @@ struct IndexView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: PitchAtlasSpacing.xs) {
                     ForEach(IndexSort.allCases) { option in
-                        FilterChip(label: option.label, dot: nil, selected: sort == option) {
+                        PitchChip(kind: .filter, label: option.label, dot: nil, selected: sort == option) {
                             Haptics.toggle()
                             sort = option
                         }
@@ -429,44 +429,5 @@ private struct IndexScrollFramesPreferenceKey: PreferenceKey {
 
     static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
         value.merge(nextValue(), uniquingKeysWith: { _, next in next })
-    }
-}
-
-// MARK: - Filter chip
-
-/// A selectable family filter chip. The accent dot reads the family color; the
-/// selected state fills cyan-tinted, the resting state is a hairline outline.
-private struct FilterChip: View {
-    let label: String
-    let dot: Color?
-    let selected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                if let dot { FamilyDot(color: dot, size: 6) }
-                Text(label.uppercased())
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.2)
-                    .foregroundStyle(selected ? PitchAtlasTheme.void : PitchAtlasTheme.bone2)
-            }
-            .padding(.horizontal, PitchAtlasSpacing.sm)
-            .padding(.vertical, PitchAtlasSpacing.xs)
-            .background(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .fill(selected ? PitchAtlasTheme.cyan : PitchAtlasTheme.press)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .strokeBorder(selected ? Color.clear : PitchAtlasTheme.machined, lineWidth: 1)
-            )
-            // Guarantee a 44pt hit area (Fitts) without ballooning the painted pill.
-            .frame(minHeight: 44)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(label)
-        .accessibilityAddTraits(selected ? [.isSelected, .isButton] : .isButton)
     }
 }

@@ -58,4 +58,32 @@ final class ComponentKitTests: XCTestCase {
     func testRosinPuffIsDeterministic() {
         XCTAssertEqual(RosinPuff.grain(7, at: 0.2), RosinPuff.grain(7, at: 0.2))
     }
+
+    func testTagChipIsCyanWhenOnAndBoneWhenOff() {
+        let on = ChipAppearance.of(.tag, selected: true), off = ChipAppearance.of(.tag, selected: false)
+        XCTAssertEqual(on.fill, PitchAtlasTheme.cyan)
+        XCTAssertEqual(on.ink, ComponentInk.onCyanInk)
+        XCTAssertEqual(on.weight, .martian600)
+        XCTAssertNil(off.fill)
+        XCTAssertEqual(off.ink, PitchAtlasTheme.bone)
+        XCTAssertEqual(off.border, PitchAtlasTheme.cyan.opacity(0.4))
+    }
+
+    func testFilterChipIsBurntWithWhiteInkWhenOn() {
+        let on = ChipAppearance.of(.filter, selected: true)
+        XCTAssertEqual(on.fill, Color(rgb: WebTokens.Accent.burnt))
+        XCTAssertEqual(on.ink, Color(rgb: WebTokens.Palette.white.rgb))
+    }
+
+    func testControlsKeep44ptHitAreas() {
+        XCTAssertGreaterThanOrEqual(PitchChip.hitHeight, 44)
+        XCTAssertGreaterThanOrEqual(PillToggle<Int>.hitHeight, 44)
+        XCTAssertGreaterThanOrEqual(SegmentToggle<Int>.hitHeight, 44)
+        XCTAssertGreaterThanOrEqual(FilterSortPill.hitHeight, 44)
+    }
+
+    func testFilterPillCountsActiveFilters() {
+        XCTAssertEqual(FilterSortPill.title(activeCount: 0), "Filter & sort")
+        XCTAssertEqual(FilterSortPill.title(activeCount: 2), "Filter & sort (2)")
+    }
 }
