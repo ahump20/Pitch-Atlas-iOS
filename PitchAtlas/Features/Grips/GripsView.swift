@@ -116,17 +116,7 @@ struct GripsView: View {
     }
 
     private var searchField: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "magnifyingglass").accessibilityHidden(true)
-            TextField("Search grips, families or cues", text: $query)
-                .textInputAutocapitalization(.never).autocorrectionDisabled()
-                .accessibilityLabel("Search grip library")
-            if !query.isEmpty {
-                Button { query = "" } label: {
-                    Image(systemName: "xmark.circle.fill").frame(width: 44, height: 44)
-                }.accessibilityLabel("Clear grip search")
-            }
-        }.pitchTextFieldSurface()
+        PitchSearchField(text: $query, prompt: "Search grips, families or cues")
     }
 
     // MARK: - Honesty banner (proof limit, shown once near the top)

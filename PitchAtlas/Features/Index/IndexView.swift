@@ -151,40 +151,10 @@ struct IndexView: View {
     // MARK: - Search field
 
     private var searchField: some View {
-        HStack(spacing: PitchAtlasSpacing.sm) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(PitchAtlasTheme.text3)
-                .accessibilityHidden(true)
-
-            TextField("", text: $query, prompt: searchPrompt)
-                .font(PitchAtlasTheme.hanken(16))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .tint(PitchAtlasTheme.cyan)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled(true)
-                .submitLabel(.search)
-                .accessibilityLabel("Search pitches")
-
-            if !query.isEmpty {
-                Button {
-                    query = ""
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 15))
-                        .foregroundStyle(PitchAtlasTheme.text3)
-                }
-                .accessibilityLabel("Clear search")
-            }
-        }
-        .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.chip)
+        PitchSearchField(text: $query, prompt: "Search pitches")
     }
 
-    private var searchPrompt: Text {
-        Text("Search pitches")
-            .font(PitchAtlasTheme.hanken(16))
-            .foregroundStyle(PitchAtlasTheme.text3)
-    }
+    
 
     // MARK: - Family filter chips
 

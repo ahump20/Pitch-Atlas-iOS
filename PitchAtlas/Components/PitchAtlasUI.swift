@@ -393,16 +393,16 @@ private struct PitchTextFieldSurface: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .padding(.horizontal, PitchAtlasSpacing.sm)
-            .padding(.vertical, 10)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
             .frame(minHeight: minHeight, alignment: .topLeading)
             .background(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .fill(PitchAtlasTheme.void.opacity(0.96))
+                RoundedRectangle(cornerRadius: PitchAtlasRadius.input, style: .continuous)
+                    .fill(ComponentInk.inputFill)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+                RoundedRectangle(cornerRadius: PitchAtlasRadius.input, style: .continuous)
+                    .strokeBorder(PitchAtlasTheme.cyan.opacity(0.4), lineWidth: 1)
             )
             .tint(PitchAtlasTheme.cyan)
     }
@@ -440,26 +440,30 @@ struct PitchMenuField<Selection: Hashable, Content: View>: View {
             } label: {
                 HStack(spacing: PitchAtlasSpacing.sm) {
                     Text(selectedText)
-                        .font(PitchAtlasTheme.hankenMedium(14))
+                        .font(PitchAtlasType.font(.martian400, size: 13, relativeTo: .callout))
                         .foregroundStyle(PitchAtlasTheme.bone)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                     Spacer(minLength: PitchAtlasSpacing.xs)
-                    Image(systemName: "chevron.up.chevron.down")
+                }
+                .padding(.leading, 13)
+                .padding(.trailing, 34)
+                .padding(.vertical, 9)
+                .frame(minHeight: 44)
+                .overlay(alignment: .trailing) {
+                    Image(systemName: "chevron.down")
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(PitchAtlasTheme.cyan)
+                        .padding(.trailing, 13)
                         .accessibilityHidden(true)
                 }
-                .padding(.horizontal, PitchAtlasSpacing.sm)
-                .padding(.vertical, 10)
-                .frame(minHeight: 46)
                 .background(
-                    RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                        .fill(PitchAtlasTheme.void.opacity(0.96))
+                    RoundedRectangle(cornerRadius: PitchAtlasRadius.select, style: .continuous)
+                        .fill(ComponentInk.inputFill)
                 )
                 .overlay(
-                    RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                        .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+                    RoundedRectangle(cornerRadius: PitchAtlasRadius.select, style: .continuous)
+                        .strokeBorder(PitchAtlasTheme.cyan.opacity(0.4), lineWidth: 1)
                 )
             }
             .pickerStyle(.menu)

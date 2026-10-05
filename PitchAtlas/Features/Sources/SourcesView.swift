@@ -181,45 +181,6 @@ struct SourcesView: View {
     }
 
     private var searchField: some View {
-        HStack(spacing: PitchAtlasSpacing.xs) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(PitchAtlasTheme.text3)
-                .accessibilityHidden(true)
-
-            TextField(
-                "",
-                text: $query,
-                prompt: Text("Search by source or link")
-                    .foregroundColor(PitchAtlasTheme.placeholder)
-            )
-            .font(PitchAtlasTheme.hanken(15))
-            .foregroundStyle(PitchAtlasTheme.bone)
-            .textInputAutocapitalization(.never)
-            .autocorrectionDisabled(true)
-            .submitLabel(.search)
-
-            if !query.isEmpty {
-                Button {
-                    query = ""
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 15))
-                        .foregroundStyle(PitchAtlasTheme.text3)
-                }
-                .accessibilityLabel("Clear search")
-            }
-        }
-        .padding(.horizontal, PitchAtlasSpacing.sm)
-        .padding(.vertical, PitchAtlasSpacing.sm)
-        .frame(minHeight: 44)
-        .background(
-            RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                .fill(PitchAtlasTheme.paper2)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
-        )
+        PitchSearchField(text: $query, prompt: "Search by source or link")
     }
 }

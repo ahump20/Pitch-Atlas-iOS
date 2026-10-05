@@ -104,6 +104,7 @@ struct RootView: View {
     @Environment(AuthSessionStore.self) private var auth
     @State private var router = DeepLinkRouter()
     @State private var comparison = CompareSelection()
+    @State private var toasts = ToastCenter()
 
     /// DEBUG-only launch override so QA can open straight to a tab; production always starts on Atlas.
     static var initialTab: AppTab {
@@ -145,6 +146,8 @@ struct RootView: View {
                 .tag(AppTab.sources)
         }
         .environment(\.compareSelection, comparison)
+        .toastHost()
+        .environment(toasts)
         .sheet(isPresented: $comparison.presented) { CompareView().environment(\.compareSelection, comparison) }
         .tint(PitchAtlasTheme.kicker)
         .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar)

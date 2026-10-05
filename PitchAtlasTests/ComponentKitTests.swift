@@ -86,4 +86,25 @@ final class ComponentKitTests: XCTestCase {
         XCTAssertEqual(FilterSortPill.title(activeCount: 0), "Filter & sort")
         XCTAssertEqual(FilterSortPill.title(activeCount: 2), "Filter & sort (2)")
     }
+
+    func testToastShowsThenClearsItself() async throws {
+        let center = ToastCenter()
+        center.show("Sent for review", duration: 0.05)
+        XCTAssertEqual(center.current?.message, "Sent for review")
+        try await Task.sleep(nanoseconds: 300_000_000)
+        XCTAssertNil(center.current)
+    }
+
+    func testANewerToastIsNotClearedByAnOlderTimer() async throws {
+        let center = ToastCenter()
+        center.show("first", duration: 0.05)
+        center.show("second", duration: 1)
+        try await Task.sleep(nanoseconds: 200_000_000)
+        XCTAssertEqual(center.current?.message, "second")
+    }
+
+    func testSearchFieldMetricsMatchTheWeb() {
+        XCTAssertEqual(PitchSearchField.height, 44)
+        XCTAssertEqual(PitchSearchField.radius, 14)
+    }
 }
