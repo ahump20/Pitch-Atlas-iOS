@@ -183,6 +183,23 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(chase?.specimenGrade.label, "Ember · 1 of 1")
     }
 
+    /// Arm-health and youth wings are boundary-only on the web: no discussion
+    /// thread. The flag (and each related link's reason line) must survive
+    /// decoding, matched against the raw bundle so nothing is hardcoded.
+    func testBoundaryOnlyWingsDecodeFromTheBundle() throws {
+        let url = try XCTUnwrap(Bundle.main.url(forResource: "knowledge", withExtension: "json"))
+        let raw = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [[String: Any]])
+        let expected = Set(raw.filter { ($0["boundaryOnly"] as? Bool) == true }.compactMap { $0["slug"] as? String })
+        XCTAssertFalse(expected.isEmpty, "the bundle should carry at least one boundary-only wing")
+        let store = PitchStore()
+        let decoded = Set(store.knowledge.filter { $0.boundaryOnly == true }.map(\.slug))
+        XCTAssertEqual(decoded, expected)
+        for wing in store.knowledge { XCTAssertEqual(wing.allowsDiscussion, !expected.contains(wing.slug)) }
+        let rawReasons = raw.flatMap { ($0["related"] as? [[String: Any]]) ?? [] }.compactMap { $0["reason"] as? String }
+        let decodedReasons = store.knowledge.flatMap { $0.related ?? [] }.compactMap(\.reason)
+        XCTAssertEqual(decodedReasons.count, rawReasons.count, "a related link's reason was dropped in decoding")
+    }
+
     /// The same-family rail reads off the filed family: every sibling shares the
     /// subject's family, the subject never lists itself, and the relationship is
     /// symmetric (if A lists B, B lists A). No baked relatedSlugs, no fabricated link.

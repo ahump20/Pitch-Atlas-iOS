@@ -817,7 +817,11 @@ struct KnowledgeWing: Codable, Hashable, Identifiable {
     let confidenceNote: String
     let educational: Bool?
     let related: [KnowledgeRelatedLink]?
+    /// Web `KnowledgeWing.boundaryOnly`: an education-only wing (arm health,
+    /// youth) that opens no discussion thread.
+    let boundaryOnly: Bool?
     var id: String { slug }
+    var allowsDiscussion: Bool { boundaryOnly != true }
 }
 
 // MARK: - Grip Library (grips.json → GripsFile)
