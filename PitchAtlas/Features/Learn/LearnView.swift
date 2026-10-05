@@ -96,7 +96,7 @@ private struct WingHubCard: View {
 
             Text(wing.summary)
                 .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .leatherPress()

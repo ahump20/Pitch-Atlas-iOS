@@ -95,7 +95,7 @@ struct SpecimenStage: View {
 
             Text("On this device the same curve is swept in three dimensions — drag to turn the specimen.")
                 .font(PitchAtlasTheme.hanken(12))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, PitchAtlasSpacing.sm)

@@ -136,7 +136,7 @@ struct TeachingClipCard: View {
 
             Text("\u{201C}\(clip.caption)\u{201D}")
                 .font(PitchAtlasTheme.newsreaderItalic(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
 
             if let post = clip.postURL {

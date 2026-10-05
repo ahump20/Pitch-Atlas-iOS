@@ -54,7 +54,7 @@ struct FoilRake: ViewModifier {
             GeometryReader { geo in
                 let dx = reduceMotion ? 0 : motion.roll * geo.size.width * 0.45 * intensity
                 let dy = reduceMotion ? 0 : motion.pitch * geo.size.height * 0.45 * intensity
-                PitchAtlasTheme.foil
+                PitchAtlasMaterials.foil()
                     .scaleEffect(2.0)
                     .offset(x: dx, y: dy)
                     .blendMode(.colorDodge)

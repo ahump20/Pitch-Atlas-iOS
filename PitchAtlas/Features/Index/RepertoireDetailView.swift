@@ -195,7 +195,7 @@ struct RepertoireDetailView: View {
             .accessibilityLabel("View the filed specimen for \(entry.name)")
             .accessibilityAddTraits(.isButton)
         } else {
-            SectionLabel(text: "Fuller breakdown coming", color: PitchAtlasTheme.ink3, size: 9)
+            SectionLabel(text: "Fuller breakdown coming", color: PitchAtlasTheme.text3, size: 9)
                 .padding(.top, PitchAtlasSpacing.xs)
         }
     }

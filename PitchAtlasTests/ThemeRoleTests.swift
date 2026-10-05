@@ -79,6 +79,20 @@ final class ThemeRoleTests: XCTestCase {
         }
     }
 
+    func testBasePaletteIsTheWebField() {
+        XCTAssertEqual(PitchAtlasTheme.voidRGB, 0x070509)
+        XCTAssertEqual(PitchAtlasTheme.cyanRGB, 0x5FE0EA)
+        XCTAssertEqual(PitchAtlasTheme.bone2RGB, WebTokens.Palette.bone2.rgb)
+    }
+
+    func testInkFollowsTheSurface() {
+        XCTAssertEqual(InkContext.void.text3RGB, WebTokens.Palette.ink3.rgb)
+        XCTAssertEqual(InkContext.object.text3RGB, WebTokens.Palette.bone3.rgb)
+        XCTAssertEqual(InkContext.object.text2RGB, WebTokens.Palette.bone2.rgb)
+        XCTAssertEqual(InkContext.cream.text2RGB, WebTokens.CreamInk.ink2.rgb)
+        XCTAssertGreaterThanOrEqual(PitchAccents.contrast(PitchAtlasTheme.pressRGB, InkContext.object.text3RGB), 4.5)
+    }
+
     func testFamilyAccentsReadTheWebInkwells() {
         XCTAssertEqual(RepertoireFamily.fastball.accentRGB, 0xBF5700)
         XCTAssertEqual(PitchFamily.breaking.accentRGB, 0x5FE0EA)

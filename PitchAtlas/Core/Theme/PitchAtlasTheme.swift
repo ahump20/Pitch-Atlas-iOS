@@ -16,32 +16,50 @@ import SwiftUI
 
 enum PitchAtlasTheme {
 
-    // MARK: - Surfaces
-    /// App background, every screen, sitewide — the web's cool black field.
-    static let void = Color(hex: 0x15120F)
+    // MARK: - Surfaces (web --color-void / -press / -paper-2 / -paper-3)
+    /// App background, every screen, sitewide — the web's near-black field.
+    static let void = Color(web: WebTokens.Palette.void)
     /// Raised content cards — the "leather-press" surface.
-    static let press = Color(hex: 0x221E18)
+    static let press = Color(web: WebTokens.Palette.press)
     /// Alternating panels, secondary card fill.
-    static let paper2 = Color(hex: 0x2C241D)
+    static let paper2 = Color(web: WebTokens.Palette.paper2)
     /// Deepest insets, edge frames.
-    static let paper3 = Color(hex: 0x3D3023)
+    static let paper3 = Color(web: WebTokens.Palette.paper3)
+
+    static var voidRGB: UInt32 { WebTokens.Palette.void.rgb }
+    static var pressRGB: UInt32 { WebTokens.Palette.press.rgb }
 
     // MARK: - Text
     /// Primary text on the field.
-    static let bone = Color(hex: 0xF6F1E6)
-    /// Secondary text, captions.
-    static let bone2 = Color(hex: 0xE8D8C7)
-    /// Muted / tertiary, hairlines, the "unverified" tier.
-    static let ink3 = Color(hex: 0xE8D8C7)
+    static let bone = Color(web: WebTokens.Palette.bone)
+    /// Secondary text, captions, labels — web --color-bone-2.
+    static let bone2 = Color(web: WebTokens.Palette.bone2)
+    /// Tertiary text inside objects — web --color-bone-3.
+    static let bone3 = Color(web: WebTokens.Palette.bone3)
+    /// Secondary ink on the void — web --color-ink-2.
+    static let ink2 = Color(web: WebTokens.Palette.ink2)
+    /// Tertiary ink on the void — web --color-ink-3. Inside a raised surface it
+    /// measures 4.32:1, so tertiary text there uses `text3`, which resolves to
+    /// bone-3. Use this concrete value only where a plain Color is required.
+    static let ink3 = Color(web: WebTokens.Palette.ink3)
+    /// Secondary text ink that follows the surface (ink-2 on the void, bone-2 in objects).
+    static let text2 = ContextInk(level: .secondary)
+    /// Tertiary text ink that follows the surface (ink-3 on the void, bone-3 in objects).
+    static let text3 = ContextInk(level: .tertiary)
+
+    static var bone2RGB: UInt32 { WebTokens.Palette.bone2.rgb }
 
     // MARK: - Accent
-    // Legacy names stay so call sites retone in place. These map to the web
-    // dark-scene interaction accent; powder remains a provenance tone below.
-    static let cyan = Color(hex: 0x37D6FF)
-    static let cyanDeep = Color(hex: 0x1C8FD6)
+    /// The interaction accent — web --color-cyan.
+    static let cyan = Color(web: WebTokens.Palette.cyan)
+    static let cyanDeep = Color(web: WebTokens.Palette.cyanDeep)
+
+    static var cyanRGB: UInt32 { WebTokens.Palette.cyan.rgb }
+    /// Input placeholder text — web --color-ctl-placeholder.
+    static let placeholder = Color(web: WebTokens.Palette.ctlPlaceholder)
 
     // MARK: - Seam red (graphic / seam / banned-tier only — never body text on void)
-    static let seamBright = Color(hex: 0xFF2D44)
+    static let seamBright = Color(web: WebTokens.Palette.seam)
 
     // MARK: - Roles (generated web tokens)
     /// Section kickers and the app-wide tint — the web's `--color-kicker` (cyan).
@@ -57,7 +75,7 @@ enum PitchAtlasTheme {
     static let okBright = Color(hex: 0x34E27E)   // official-data
     static let tealGlow = Color(hex: 0x00A2A0)   // coach-observed
     static let amberBright = Color(hex: 0xFFC23C) // reputable-analysis
-    static let sandBright = Color(hex: 0x8A7A5E)  // secondhand / community-firsthand
+    static let sandBright = Color(web: WebTokens.Palette.sandBright)
     /// pitcher-own-words — its own powder tier color (matches the web), no longer
     /// riding the interactive accent.
     static let powder = Color(hex: 0x6CACE4)
@@ -81,10 +99,10 @@ enum PitchAtlasTheme {
     static let cardbackGoldInk = Color(hex: 0xF1D1A0)
 
     // MARK: - Hairlines / texture
-    /// The 1px card border — bone at 12%.
-    static let machined = Color(hex: 0xF6F1E6, opacity: 0.12)
-    /// Subtle dividers — bone at 16%.
-    static let navyLine = Color(hex: 0xF6F1E6, opacity: 0.16)
+    /// The 1px machined hairline — web --color-machined.
+    static let machined = Color(web: WebTokens.Palette.machined)
+    /// Subtle dividers — web --color-navy-line.
+    static let navyLine = Color(web: WebTokens.Palette.navyLine)
 
     // MARK: - Gradients
     /// The holographic foil — refractor card borders, the diamond mark, holo wordmark.

@@ -72,7 +72,7 @@ struct SourceClaimLabel: View {
                     Text(source.label)
                         .font(PitchAtlasTheme.martian(9))
                         .tracking(0.4)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .lineLimit(2)
                 }
 
@@ -83,14 +83,14 @@ struct SourceClaimLabel: View {
                 if let note = claim.note, !note.isEmpty {
                     Text(note)
                         .font(PitchAtlasTheme.newsreaderItalic(12))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
                 if showMeaning {
                     Text(claim.confidence.meaning)
                         .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -126,7 +126,7 @@ struct ClaimText: View {
                     Text("approx.")
                         .font(PitchAtlasTheme.martian(8))
                         .tracking(0.5)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
             SourceClaimLabel(claim: claim)
@@ -157,7 +157,7 @@ struct GaugeView: View {
                     Text("approx.")
                         .font(PitchAtlasTheme.martian(8))
                         .tracking(0.5)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
             SourceClaimLabel(claim: claim)
@@ -202,7 +202,7 @@ struct SourceRow: View {
             } else {
                 Text(source.url)
                     .font(PitchAtlasTheme.martian(9))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .lineLimit(1)
                     .truncationMode(.middle)
             }
@@ -211,11 +211,11 @@ struct SourceRow: View {
                 Text("CHECKED \(source.retrievedAt)")
                     .font(PitchAtlasTheme.martian(8))
                     .tracking(1)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                 if let season = source.season {
                     Text("· \(season)")
                         .font(PitchAtlasTheme.martian(8))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
         }

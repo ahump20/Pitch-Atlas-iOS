@@ -90,7 +90,7 @@ struct SourcesView: View {
             if checked.isEmpty {
                 Text("Not recorded in this build.")
                     .font(PitchAtlasTheme.hanken(14))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
             } else {
                 Text(checked)
                     .font(PitchAtlasTheme.newsreader(24))
@@ -98,7 +98,7 @@ struct SourcesView: View {
             }
             Text("Checked, not auto-refreshed.")
                 .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
         }
         .leatherPress()
         .accessibilityElement(children: .combine)
@@ -132,7 +132,7 @@ struct SourcesView: View {
                 TierWords(confidence: tier, size: 10, tracking: 1.4)
                 Text(tier.meaning)
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -184,14 +184,14 @@ struct SourcesView: View {
         HStack(spacing: PitchAtlasSpacing.xs) {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .accessibilityHidden(true)
 
             TextField(
                 "",
                 text: $query,
                 prompt: Text("Search by source or link")
-                    .foregroundColor(PitchAtlasTheme.ink3)
+                    .foregroundColor(PitchAtlasTheme.placeholder)
             )
             .font(PitchAtlasTheme.hanken(15))
             .foregroundStyle(PitchAtlasTheme.bone)
@@ -205,7 +205,7 @@ struct SourcesView: View {
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 15))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
                 .accessibilityLabel("Clear search")
             }

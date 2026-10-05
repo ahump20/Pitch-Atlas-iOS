@@ -136,7 +136,7 @@ struct GripsView: View {
     private var honestyBanner: some View {
         if !store.grips.proofLimit.isEmpty {
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3)
+                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.text3)
                 Text(store.grips.proofLimit)
                     .font(PitchAtlasTheme.hanken(14))
                     .foregroundStyle(PitchAtlasTheme.bone2)
@@ -321,7 +321,7 @@ struct GripsView: View {
             if entry.photos.isEmpty {
                 Text("Photos: \(entry.photoStatus ?? "none on file")")
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .padding(.top, PitchAtlasSpacing.xs2)
             } else {
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
@@ -341,7 +341,7 @@ struct GripsView: View {
                     SectionLabel(text: "Proof limit")
                     Text(entry.proofLimit)
                         .font(PitchAtlasTheme.hanken(13))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }

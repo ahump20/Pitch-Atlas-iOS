@@ -98,7 +98,7 @@ struct CraftsmanDetailView: View {
                 SectionLabel(text: craftsman.signaturePitch, color: PitchAtlasTheme.cyan, size: 9)
                 Text(craftsman.era)
                     .font(PitchAtlasTheme.martian(9))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
             }
             .padding(.top, 2)
 

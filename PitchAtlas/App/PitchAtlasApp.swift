@@ -40,10 +40,10 @@ struct PitchAtlasApp: App {
 
 private enum AppChromeAppearance {
     static func install() {
-        let field = UIColor(red: 7.0 / 255.0, green: 5.0 / 255.0, blue: 9.0 / 255.0, alpha: 0.98)
-        let bone = UIColor(red: 246.0 / 255.0, green: 241.0 / 255.0, blue: 230.0 / 255.0, alpha: 1)
-        let bone2 = UIColor(red: 201.0 / 255.0, green: 194.0 / 255.0, blue: 176.0 / 255.0, alpha: 0.78)
-        let cyan = UIColor(red: 55.0 / 255.0, green: 214.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
+        let field = UIColor(web: WebTokens.Palette.void).withAlphaComponent(0.98)
+        let bone = UIColor(web: WebTokens.Palette.bone)
+        let bone2 = UIColor(web: WebTokens.Palette.bone2).withAlphaComponent(0.78)
+        let cyan = UIColor(web: WebTokens.Palette.cyan)
 
         let tab = UITabBarAppearance()
         tab.configureWithTransparentBackground()

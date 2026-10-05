@@ -261,7 +261,7 @@ struct PitchDetailView: View {
         return Text(pips.joined(separator: "   ·   "))
             .font(PitchAtlasTheme.martian(8))
             .tracking(0.5)
-            .foregroundStyle(PitchAtlasTheme.ink3)
+            .foregroundStyle(PitchAtlasTheme.text3)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
             .padding(.horizontal, PitchAtlasSpacing.sm)
@@ -275,7 +275,7 @@ struct PitchDetailView: View {
             SectionLabel(text: "FOUNDATION")
             Text(display.foundationCaption)
                 .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
 
             if let shape = physics.shape {
@@ -365,7 +365,7 @@ struct PitchDetailView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                             Text("\(contact.seamRelation) · \(contact.pressureRole)")
                                 .font(PitchAtlasTheme.martian(8))
-                                .foregroundStyle(PitchAtlasTheme.ink3)
+                                .foregroundStyle(PitchAtlasTheme.text3)
                         }
                     }
 
@@ -378,7 +378,7 @@ struct PitchDetailView: View {
 
             Text(model.visualCaveat)
                 .font(PitchAtlasTheme.newsreaderItalic(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
 
             // First-party grip photography — minus the frame already carrying
@@ -400,7 +400,7 @@ struct PitchDetailView: View {
         let labelText = Text(label.uppercased())
             .font(PitchAtlasTheme.martian(8))
             .tracking(1)
-            .foregroundStyle(PitchAtlasTheme.ink3)
+            .foregroundStyle(PitchAtlasTheme.text3)
         let valueText = Text(value)
             .font(PitchAtlasTheme.hanken(14))
             .foregroundStyle(PitchAtlasTheme.bone)
@@ -492,7 +492,7 @@ struct PitchDetailView: View {
             SectionLabel(text: "MASTER VARIANTS")
             Text(display.mastersIntro)
                 .font(PitchAtlasTheme.hanken(14))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
 
             ForEach(Array(entry.masterVariants.enumerated()), id: \.offset) { _, variant in
@@ -580,7 +580,7 @@ struct PitchDetailView: View {
                 .foregroundStyle(PitchAtlasTheme.bone)
             Image(systemName: "arrow.right")
                 .font(.system(size: 10, weight: .semibold))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
         }
         .padding(.vertical, PitchAtlasSpacing.xs)
         .padding(.horizontal, PitchAtlasSpacing.sm)

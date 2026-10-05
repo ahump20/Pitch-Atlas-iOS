@@ -17,6 +17,7 @@ struct CardBackPanel<Content: View>: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundStyle(PitchAtlasTheme.cardbackInk)
             .background { ArchiveCoverSurface(radius: 14) }
+            .inkContext(.object)
     }
 
 }

@@ -87,7 +87,7 @@ struct AccountView: View {
                 SignInPanel(email: $email)
                 Text("Reading the atlas and posting anonymously need no account. Sign in only if you want your record to travel with you.")
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .leatherPress()
@@ -217,7 +217,7 @@ struct AccountView: View {
                 .fixedSize(horizontal: false, vertical: true)
             Text("Blocking hides community content both ways. The list below is private to your signed-in account.")
                 .font(PitchAtlasTheme.newsreaderItalic(14))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
             blockedContributorsSection
         }
@@ -246,7 +246,7 @@ struct AccountView: View {
                                     .foregroundStyle(PitchAtlasTheme.bone)
                                 Text("Blocked contributor")
                                     .font(PitchAtlasTheme.hanken(12))
-                                    .foregroundStyle(PitchAtlasTheme.ink3)
+                                    .foregroundStyle(PitchAtlasTheme.text3)
                             }
                             Spacer()
                             Button {
@@ -266,7 +266,7 @@ struct AccountView: View {
         } else {
             Text("No contributor record on this device yet. Block someone from a community post and the private list appears here.")
                 .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }

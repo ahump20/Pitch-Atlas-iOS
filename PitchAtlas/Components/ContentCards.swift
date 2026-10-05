@@ -122,7 +122,7 @@ struct BundledImage: View {
                     BrandSealMark(size: 40, shadow: false)
                     Text(alt)
                         .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, PitchAtlasSpacing.sm)
                         .lineLimit(3)
@@ -198,7 +198,7 @@ struct GripPhotoTile: View {
                 if let view = photo.view {
                     SectionLabel(text: view.rawValue, color: PitchAtlasTheme.cyanDeep, size: 8)
                 }
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
+                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.text3, size: 8)
             }
         }
     }
@@ -256,7 +256,7 @@ struct PitchSpecimenCard: View {
                     Spacer(minLength: PitchAtlasSpacing.xs)
                     Text(entry.canonical.grip.source?.label ?? "Source gap visible")
                         .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                 }
@@ -372,14 +372,14 @@ struct RepertoireRow: View {
                 if let aka = entry.aka, !aka.isEmpty {
                     Text(aka.joined(separator: " · "))
                         .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 HStack(spacing: PitchAtlasSpacing.xs) {
                     cardStrip(entry.family.label, color: entry.family.accent)
                     cardStrip(entry.filedSlug == nil ? "Basic file" : "Filed specimen",
-                              color: entry.filedSlug == nil ? PitchAtlasTheme.ink3 : PitchAtlasTheme.cyanDeep)
+                              color: entry.filedSlug == nil ? PitchAtlasTheme.bone3 : PitchAtlasTheme.cyanDeep)
                 }
             }
             Spacer(minLength: PitchAtlasSpacing.xs)
@@ -388,7 +388,7 @@ struct RepertoireRow: View {
                 if entry.filedSlug != nil {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
         }
@@ -473,7 +473,7 @@ struct CraftsmanCard: View {
                 Text(craftsman.era)
                     .font(PitchAtlasTheme.martian(8))
                     .tracking(1.2)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 3)
                     .overlay(
@@ -525,7 +525,7 @@ struct LostPitchCard: View {
 
             Text(pitch.era)
                 .font(PitchAtlasTheme.martian(9))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .padding(.top, 2)
         }
         .leatherPress()

@@ -424,8 +424,8 @@ enum SpecimenSceneBuilder {
     /// rasterized for the 3D stage.
     private static func pipImage(label: String) -> UIImage {
         let size = CGSize(width: 64, height: 64)
-        let cyan = UIColor(hexRGB: 0x37D6FF)
-        let void = UIColor(hexRGB: 0x070509).withAlphaComponent(0.82)
+        let cyan = UIColor(web: WebTokens.Palette.cyan)
+        let void = UIColor(web: WebTokens.Palette.void).withAlphaComponent(0.82)
         return UIGraphicsImageRenderer(size: size).image { ctx in
             let disc = CGRect(x: 3, y: 3, width: 58, height: 58)
             void.setFill()

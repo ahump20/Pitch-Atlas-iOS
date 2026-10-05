@@ -207,7 +207,7 @@ struct AtlasView: View {
                     .foregroundStyle(PitchAtlasTheme.bone)
                 Text(sub)
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
             }
             Spacer()
             Image(systemName: "arrow.up.right")

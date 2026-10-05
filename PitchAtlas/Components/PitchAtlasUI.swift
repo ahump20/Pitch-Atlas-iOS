@@ -12,68 +12,69 @@ import SwiftUI
 
 /// Shared warm archive field with fine rules; Reduce Transparency uses solid charcoal.
 struct FieldBackdrop: View {
+    /// The section's scene tint for the two depth pools (web .scene-* pools).
+    var sceneTint: Color = Color(web: WebTokens.Palette.columbia)
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
     var body: some View {
         ZStack {
             PitchAtlasTheme.void
             if !reduceTransparency {
-                LinearGradient(
-                colors: [
-                    Color(hex: 0xA87C4B).opacity(0.18),
-                    .clear,
-                    PitchAtlasTheme.void,
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            RadialGradient(
-                colors: [
-                    PitchAtlasTheme.cardbackPaper.opacity(0.065),
-                    .clear,
-                ],
-                center: .topLeading,
-                startRadius: 0,
-                endRadius: 340
-            )
-            RadialGradient(
-                colors: [
-                    PitchAtlasTheme.seamBright.opacity(0.06),
-                    .clear,
-                ],
-                center: .bottomLeading,
-                startRadius: 24,
-                endRadius: 360
-            )
-            RadialGradient(
-                colors: [
-                    PitchAtlasTheme.kicker.opacity(0.045),
-                    .clear,
-                ],
-                center: .topTrailing,
-                startRadius: 0,
-                endRadius: 320
-            )
-            FieldRuleMesh()
-                .opacity(0.20)
+                RadialGradient(colors: [sceneTint.opacity(0.10), .clear],
+                               center: UnitPoint(x: 0.18, y: 0.08), startRadius: 0, endRadius: 360)
+                RadialGradient(colors: [sceneTint.opacity(0.06), .clear],
+                               center: UnitPoint(x: 0.88, y: 0.72), startRadius: 0, endRadius: 420)
+                FieldDotGrid()
+                    .mask(RadialGradient(colors: [.black, .clear],
+                                         center: .top, startRadius: 0, endRadius: 640))
+                FieldGrain()
+                    .opacity(0.035)
+                    .blendMode(.overlay)
             }
         }
         .ignoresSafeArea()
+        .accessibilityHidden(true)
     }
 }
 
-private struct FieldRuleMesh: View {
+/// The web's dot grid: one bone dot per 22pt tile at 5%.
+private struct FieldDotGrid: View {
     var body: some View {
         Canvas { context, size in
             let step: CGFloat = 22
+            let dot = PitchAtlasTheme.bone.opacity(0.05)
             var x: CGFloat = 0
             while x <= size.width {
                 var y: CGFloat = 0
                 while y <= size.height {
-                    let rect = CGRect(x: x, y: y, width: 1.2, height: 1.2)
-                    context.fill(Path(ellipseIn: rect), with: .color(PitchAtlasTheme.bone.opacity(0.18)))
+                    context.fill(Path(ellipseIn: CGRect(x: x, y: y, width: 1.4, height: 1.4)), with: .color(dot))
                     y += step
                 }
                 x += step
+            }
+        }
+    }
+}
+
+/// Deterministic film grain (no randomness at draw time: a fixed hash per cell).
+private struct FieldGrain: View {
+    var body: some View {
+        Canvas { context, size in
+            let cell: CGFloat = 3
+            var row: UInt32 = 0
+            var y: CGFloat = 0
+            while y < size.height {
+                var col: UInt32 = 0
+                var x: CGFloat = 0
+                while x < size.width {
+                    var h = row &* 73_856_093 ^ col &* 19_349_663
+                    h ^= h >> 13; h = h &* 0x5bd1e995; h ^= h >> 15
+                    if h % 7 == 0 {
+                        context.fill(Path(CGRect(x: x, y: y, width: 1, height: 1)), with: .color(PitchAtlasTheme.bone))
+                    }
+                    x += cell; col += 1
+                }
+                y += cell; row += 1
             }
         }
     }
@@ -84,8 +85,18 @@ private struct FieldRuleMesh: View {
 /// All-caps tracked micro-label. The "stamp" that heads a section or card.
 struct SectionLabel: View {
     let text: String
-    var color: Color = PitchAtlasTheme.bone2
-    var size: CGFloat = 10
+    var color: AnyShapeStyle
+    var size: CGFloat
+
+    init(text: String, size: CGFloat = 10) {
+        self.init(text: text, color: PitchAtlasTheme.bone2, size: size)
+    }
+
+    init<S: ShapeStyle>(text: String, color: S, size: CGFloat = 10) {
+        self.text = text
+        self.color = AnyShapeStyle(color)
+        self.size = size
+    }
 
     var body: some View {
         Text(text.uppercased())
@@ -160,6 +171,7 @@ struct LeatherPress: ViewModifier {
     func body(content: Content) -> some View {
         content.padding(padding).frame(maxWidth: .infinity, alignment: .leading)
             .background { ArchiveCoverSurface(radius: radius) }
+            .inkContext(.object)
     }
 }
 
@@ -172,19 +184,20 @@ struct SpecimenCardFrame: ViewModifier {
     func body(content: Content) -> some View {
         content.padding(padding).frame(maxWidth: .infinity, alignment: .leading)
             .background { ArchiveCoverSurface(radius: radius) }
+            .inkContext(.object)
     }
 }
 
 extension View {
     /// Wrap content as a leather-press card.
     func leatherPress(padding: CGFloat = PitchAtlasSpacing.md,
-                      radius: CGFloat = PitchAtlasRadius.card) -> some View {
+                      radius: CGFloat = PitchAtlasRadius.panel) -> some View {
         modifier(LeatherPress(padding: padding, radius: radius))
     }
 
     /// Wrap content as a foil-edged specimen card.
     func specimenCardFrame(padding: CGFloat = PitchAtlasSpacing.md,
-                           radius: CGFloat = PitchAtlasRadius.card,
+                           radius: CGFloat = PitchAtlasRadius.panel,
                            foilIntensity: Double = 0.75,
                            foilFillOpacity: Double = 0.055) -> some View {
         modifier(SpecimenCardFrame(
@@ -298,7 +311,7 @@ struct ErrorStateView: View {
                 .foregroundStyle(PitchAtlasTheme.bone)
             Text(reason)
                 .font(PitchAtlasTheme.hanken(14))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
@@ -368,7 +381,7 @@ struct PitchFormLabel: View {
 
 struct PitchFormCaption: View {
     let text: String
-    var color: Color = PitchAtlasTheme.ink3
+    var color: AnyShapeStyle = AnyShapeStyle(PitchAtlasTheme.text3)
 
     var body: some View {
         Text(text)
@@ -473,7 +486,7 @@ struct PitchToggleField: View {
                 if let caption {
                     Text(caption)
                         .font(PitchAtlasTheme.hanken(12))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }

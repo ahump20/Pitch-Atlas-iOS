@@ -74,7 +74,7 @@ struct AboutView: View {
                         .foregroundStyle(PitchAtlasTheme.bone)
                     Text("A small field-manual dog in the margin. Reduced Motion keeps her still.")
                         .font(PitchAtlasTheme.hanken(13))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -145,7 +145,7 @@ struct AboutView: View {
                 if checked.isEmpty {
                     Text("Not recorded in this build.")
                         .font(PitchAtlasTheme.hanken(14))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 } else {
                     Text(checked)
                         .font(PitchAtlasTheme.newsreader(22))
@@ -153,7 +153,7 @@ struct AboutView: View {
                 }
                 Text("Checked, not auto-refreshed.")
                     .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
             }
         }
         .leatherPress()
@@ -176,7 +176,7 @@ struct AboutView: View {
                     SectionLabel(text: "Pitch Atlas")
                     Text("The tell first. The claim boundary right behind it.")
                         .font(PitchAtlasTheme.newsreaderItalic(14))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }

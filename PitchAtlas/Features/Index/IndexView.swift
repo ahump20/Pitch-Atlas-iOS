@@ -155,7 +155,7 @@ struct IndexView: View {
         HStack(spacing: PitchAtlasSpacing.sm) {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .accessibilityHidden(true)
 
             TextField("", text: $query, prompt: searchPrompt)
@@ -173,7 +173,7 @@ struct IndexView: View {
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .font(.system(size: 15))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
                 .accessibilityLabel("Clear search")
             }
@@ -184,7 +184,7 @@ struct IndexView: View {
     private var searchPrompt: Text {
         Text("Search pitches")
             .font(PitchAtlasTheme.hanken(16))
-            .foregroundStyle(PitchAtlasTheme.ink3)
+            .foregroundStyle(PitchAtlasTheme.text3)
     }
 
     // MARK: - Family filter chips
@@ -229,7 +229,7 @@ struct IndexView: View {
                 Text("Status")
                     .font(PitchAtlasTheme.martian(9))
                     .tracking(1.3)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .textCase(.uppercase)
                     .accessibilityHidden(true)
 
@@ -259,7 +259,7 @@ struct IndexView: View {
             Text("Sort")
                 .font(PitchAtlasTheme.martian(9))
                 .tracking(1.3)
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .textCase(.uppercase)
                 .accessibilityHidden(true)
 

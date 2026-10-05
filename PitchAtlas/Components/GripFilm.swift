@@ -151,9 +151,9 @@ private struct GripMediaCredit: View {
     @ViewBuilder
     private var labels: some View {
         SectionLabel(text: "From the hand", color: PitchAtlasTheme.cardbackInk3, size: 8)
-        SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
+        SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.text3, size: 8)
         if let attribution {
-            SectionLabel(text: attribution, color: PitchAtlasTheme.ink3, size: 8)
+            SectionLabel(text: attribution, color: PitchAtlasTheme.text3, size: 8)
         }
     }
 }
