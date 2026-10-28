@@ -36,7 +36,7 @@ struct CraftsmenView: View {
         .navigationTitle("Craftsmen")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
         .navigationDestination(for: Craftsman.self) { CraftsmanDetailView(craftsman: $0) }
     }

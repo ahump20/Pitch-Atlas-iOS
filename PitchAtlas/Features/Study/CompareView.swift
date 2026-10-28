@@ -48,7 +48,7 @@ struct CompareView: View {
             .navigationTitle("Compare")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+                ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
                 ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
             }
             .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar)

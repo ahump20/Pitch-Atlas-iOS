@@ -182,25 +182,6 @@ struct RotatingQuote: View {
     }
 }
 
-/// BrandMark at `md`: the seal and the skewed wordmark, ATLAS in foil.
-struct BrandLockup: View {
-    var markSize: CGFloat = 44
-    var wordSize: CGFloat = 30
-
-    var body: some View {
-        HStack(spacing: 12) {
-            BrandSealMark(size: markSize, shadow: false)
-            (Text("Pitch ") + Text("Atlas").foregroundStyle(PitchAtlasMaterials.foilType()))
-                .font(PitchAtlasTheme.anton(wordSize, relativeTo: .title))
-                .textCase(.uppercase)
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .antonSkew()
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Pitch Atlas")
-    }
-}
-
 /// `flex-wrap` for a row of links: items left to right, wrapping to a new line.
 struct FlowRow: Layout {
     var spacing: CGFloat

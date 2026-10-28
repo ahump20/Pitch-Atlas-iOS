@@ -37,7 +37,7 @@ struct SourcesView: View {
         .navigationTitle("Sources")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
     }
 

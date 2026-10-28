@@ -93,7 +93,7 @@ struct PitchDetailView: View {
         .navigationTitle(entry.display.shortName)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
     }
 

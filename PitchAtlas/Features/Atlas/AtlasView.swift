@@ -56,7 +56,7 @@ struct AtlasView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                BrandLockup(markSize: 26, wordSize: 20)
+                BrandLockup(size: .sm)
             }
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink(value: AtlasRoute.account) {

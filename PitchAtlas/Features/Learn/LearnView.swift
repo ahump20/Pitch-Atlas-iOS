@@ -36,7 +36,7 @@ struct LearnView: View {
         .navigationTitle("Learn")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
         // Its wings open through the Atlas stack's root destination (AtlasView).
     }

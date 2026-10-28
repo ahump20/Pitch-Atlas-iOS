@@ -85,7 +85,7 @@ private struct BasicFileView: View {
         .navigationTitle(entry.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
     }
 

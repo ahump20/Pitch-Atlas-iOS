@@ -48,7 +48,7 @@ struct GripsView: View {
         .navigationTitle("Grips")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
         .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }
         .navigationDestination(for: RepertoireEntry.self) { RepertoireDetailView(entry: $0) }

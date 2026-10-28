@@ -37,7 +37,7 @@ struct LostPitchesView: View {
         .navigationTitle("Lost Pitches")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
         // Its files open through the Atlas stack's root destination (AtlasView).
     }

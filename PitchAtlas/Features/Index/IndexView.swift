@@ -75,7 +75,7 @@ struct IndexView: View {
         .navigationTitle("The Pitch Index")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
         .navigationDestination(item: Binding(
             get: { selectedEntry },

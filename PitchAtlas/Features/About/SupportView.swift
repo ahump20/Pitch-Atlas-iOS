@@ -21,7 +21,7 @@ struct SupportView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
                     SectionHero(eyebrow: "Support",
-                                title: Text("Something off? ") + Text("Flag it.").foregroundStyle(PitchAtlasMaterials.foilType()),
+                                title: Text("Something off? ") + Text("Flag it.").foregroundStyle(PitchAtlasMaterials.holoType()),
                                 sub: Text(SupportCopy.sub),
                                 trail: [Crumb(label: "Pitch Atlas", path: "home"), Crumb(label: "Support")])
                     PageSection {
@@ -45,7 +45,7 @@ struct SupportView: View {
         .navigationTitle("Support")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
     }
 

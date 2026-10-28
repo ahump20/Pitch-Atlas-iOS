@@ -19,7 +19,7 @@ struct AboutView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     SectionHero(eyebrow: "About Pitch Atlas",
                                 title: Text("Preserve and progress the ")
-                                    + Text("art of the pitch").foregroundStyle(PitchAtlasMaterials.foilType())
+                                    + Text("art of the pitch").foregroundStyle(PitchAtlasMaterials.holoType())
                                     + Text("."),
                                 sub: Text(AboutCopy.sub),
                                 trail: [Crumb(label: "Pitch Atlas", path: "home"), Crumb(label: "About")],
@@ -41,7 +41,7 @@ struct AboutView: View {
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
     }
 
@@ -51,8 +51,12 @@ struct AboutView: View {
     /// button into the source model.
     private var ways: some View {
         FlowRow(spacing: 12, lineSpacing: 12) {
+            // .btn-foil sets its arrow 9px off the words (`gap: 9px`)
             RouteButton(path: "repertoire") {
-                Text("Open the Pitch Index") + Text(" →")
+                HStack(spacing: 9) {
+                    Text("Open the Pitch Index")
+                    Text("→")
+                }
             }
             .buttonStyle(.pitch(.waxSeal))
             .accessibilityLabel("Open the Pitch Index")

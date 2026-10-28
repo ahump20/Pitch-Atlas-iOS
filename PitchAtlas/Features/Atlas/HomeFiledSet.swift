@@ -18,7 +18,7 @@ struct HomeFiledSet: View {
             VStack(alignment: .leading, spacing: 0) {
                 ChapterMark(.filedSet, accent: ArchiveInk.filedSetTint)
                     .padding(.bottom, 16)
-                AthleticTitle(text: Text("The ") + Text("filed set.").foregroundStyle(PitchAtlasMaterials.foilType()), size: 30)
+                AthleticTitle(text: Text("The ") + Text("filed set.").foregroundStyle(PitchAtlasMaterials.holoType()), size: 30)
                 Text("\(featured.count) shown · \(store.pitches.count) filed. Flip a card for its sources.")
                     .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
                     .textCase(.uppercase)

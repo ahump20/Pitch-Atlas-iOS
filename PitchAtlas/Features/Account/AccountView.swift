@@ -16,6 +16,7 @@ struct AccountView: View {
 
     /// The delete button's words; Support's delete route names them.
     static let deleteLabel = "Delete account"
+    static let emailPrompt = "you@example.com"
 
     /// The header's line: what needs no account, and what an account is for.
     static let heroSub = "Field notes, discussion, reports, and blocks work anonymously. Sign in only to keep your record across devices; image uploads need a claimed account."
@@ -27,7 +28,7 @@ struct AccountView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     // Every page opens the site's way; the controls stay the app's own.
                     SectionHero(eyebrow: AtlasView.accountLabel,
-                                title: Text("No sign-in to ") + Text("read or post.").foregroundStyle(PitchAtlasMaterials.foilType()),
+                                title: Text("No sign-in to ") + Text("read or post.").foregroundStyle(PitchAtlasMaterials.holoType()),
                                 sub: Text(Self.heroSub),
                                 trail: [Crumb(label: "Pitch Atlas", path: "home"), Crumb(label: AtlasView.accountLabel)])
                     VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
@@ -44,7 +45,7 @@ struct AccountView: View {
         .navigationTitle("Account")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
         .task(id: auth.userID) { await loadBlockedContributors() }
         .alert("Delete this account?", isPresented: $deleteRequested) {
@@ -153,7 +154,9 @@ struct AccountView: View {
 
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
                 PitchFormLabel("Email")
-                TextField("you@example.com", text: $claimEmail)
+                // verbatim: a titled key parses Markdown, which turned the address into a link
+                TextField("", text: $claimEmail, prompt: Text(verbatim: AccountView.emailPrompt).foregroundStyle(PitchAtlasTheme.placeholder))
+                    .accessibilityLabel("Email")
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
@@ -341,7 +344,9 @@ struct SignInPanel: View {
 
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
                 PitchFormLabel("Email")
-                TextField("you@example.com", text: $email)
+                // verbatim: a titled key parses Markdown, which turned the address into a link
+                TextField("", text: $email, prompt: Text(verbatim: AccountView.emailPrompt).foregroundStyle(PitchAtlasTheme.placeholder))
+                    .accessibilityLabel("Email")
                     .keyboardType(.emailAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()

@@ -22,6 +22,23 @@ enum PitchAtlasMaterials {
 
     static func foil(aspect: CGFloat = 5.0 / 7.0) -> LinearGradient { gradient(WebTokens.Gradient.foil, aspect: aspect) }
     static func foilType(aspect: CGFloat = 4) -> LinearGradient { gradient(WebTokens.Gradient.foilType, aspect: aspect) }
+
+    /// `.rfx-holo` at rest, the frame the site holds under reduced motion: the
+    /// --foil-type ramp drawn at 300% of the words (`background-size: 300% 100%`)
+    /// from position 0, so a run shows the ramp's first third, not all of it.
+    /// The site slides that window every 7s; the app holds the rest frame.
+    static func holoType(aspect: CGFloat = 4) -> LinearGradient {
+        let ends = holoTypeEndpoints(aspect: aspect)
+        let g = WebTokens.Gradient.foilType
+        return LinearGradient(stops: g.stops.map { .init(color: Color(web: $0.color), location: $0.location) },
+                              startPoint: ends.start, endPoint: ends.end)
+    }
+
+    /// The ramp's line for a box three runs wide, in the run's own unit space.
+    static func holoTypeEndpoints(aspect: CGFloat) -> (start: UnitPoint, end: UnitPoint) {
+        let box = cssEndpoints(angle: WebTokens.Gradient.foilType.angle, aspect: 3 * aspect)
+        return (UnitPoint(x: 3 * box.start.x, y: box.start.y), UnitPoint(x: 3 * box.end.x, y: box.end.y))
+    }
     static func ember(aspect: CGFloat = 5.0 / 7.0) -> LinearGradient { gradient(WebTokens.Gradient.ember, aspect: aspect) }
 
     static func finish(_ name: String?) -> WebCardFinish? {
