@@ -281,19 +281,28 @@ struct IndexView: View {
             .accessibilityElement(children: .combine)
             .accessibilityLabel("\(group.info.label). \(group.info.blurb)")
 
-            VStack(spacing: 0) {
-                ForEach(Array(group.entries.enumerated()), id: \.element.id) { idx, entry in
-                    VStack(spacing: 0) {
-                        if idx > 0 { HairlineDivider() }
+            // Each row is its own card (the web's rows grid, 11pt apart); a filed
+            // row carries Compare beneath it, outside the row's button, under a
+            // white .067 rule (compare.css, max-width 600px).
+            VStack(spacing: 11) {
+                ForEach(group.entries) { entry in
+                    VStack(alignment: .leading, spacing: 0) {
                         Button {
                             // Capture before the push can relayout this scroll view.
                             // Button activation includes VoiceOver and Switch Control.
                             scrollRestoration.beginNavigation()
                             selectedEntry = entry
                         } label: {
-                            RepertoireRow(entry: entry)
+                            IndexRow(entry: entry)
                         }
                         .buttonStyle(.plain)
+                        if let slug = entry.filedSlug {
+                            CompareButton(slug: slug).padding(.leading, 64)
+                        }
+                    }
+                    .padding(.bottom, 8)
+                    .overlay(alignment: .bottom) {
+                        Rectangle().fill(Color.white.opacity(17.0 / 255)).frame(height: 1).accessibilityHidden(true)
                     }
                     .id(scrollTarget(for: entry))
                     .background {
@@ -310,12 +319,6 @@ struct IndexView: View {
                     }
                 }
             }
-            .specimenCardFrame(
-                padding: PitchAtlasSpacing.xs,
-                radius: PitchAtlasRadius.card,
-                foilIntensity: 0.08,
-                foilFillOpacity: 0
-            )
         }
     }
 

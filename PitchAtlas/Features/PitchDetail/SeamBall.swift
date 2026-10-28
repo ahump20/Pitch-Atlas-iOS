@@ -243,6 +243,9 @@ struct SeamBall: View {
     /// Numbered pips on the study ball; plain marks on a thumbnail too small for
     /// numbers (the card back's grip twin), as the web hides its labels there.
     var contactMarks: ContactMarks = .numbered
+    /// The herringbone lacing; off where the web's schematic draws showStitches={false}
+    /// (the craftsman plate's 56pt actor).
+    var showsLacing = true
 
     enum ContactMarks { case numbered, dots }
 
@@ -284,16 +287,18 @@ struct SeamBall: View {
                 .stroke(BallMaterial.color(BallMaterial.seamLip).opacity(0.55),
                         style: StrokeStyle(lineWidth: max(0.5, size * 0.0035), lineCap: .round))
                 .offset(y: max(0.45, size * 0.003))
-            SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(BallMaterial.color(BallMaterial.lacingShadow).opacity(0.6),
-                        style: StrokeStyle(lineWidth: max(1, size * 0.0085), lineCap: .round, lineJoin: .round))
-            SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(BallMaterial.color(BallMaterial.stitch),
-                        style: StrokeStyle(lineWidth: max(0.65, size * 0.0058), lineCap: .round, lineJoin: .round))
-            SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(BallMaterial.color(BallMaterial.stitchCrown).opacity(0.6),
-                        style: StrokeStyle(lineWidth: max(0.25, size * 0.0018), lineCap: .round))
-                .offset(y: -0.3)
+            if showsLacing {
+                SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
+                    .stroke(BallMaterial.color(BallMaterial.lacingShadow).opacity(0.6),
+                            style: StrokeStyle(lineWidth: max(1, size * 0.0085), lineCap: .round, lineJoin: .round))
+                SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
+                    .stroke(BallMaterial.color(BallMaterial.stitch),
+                            style: StrokeStyle(lineWidth: max(0.65, size * 0.0058), lineCap: .round, lineJoin: .round))
+                SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
+                    .stroke(BallMaterial.color(BallMaterial.stitchCrown).opacity(0.6),
+                            style: StrokeStyle(lineWidth: max(0.25, size * 0.0018), lineCap: .round))
+                    .offset(y: -0.3)
+            }
 
             // Motion overlay: gyro dot / flutter ring / break arrow.
             if showMovement { MotionCueOverlay(motion: motion, size: size) }
