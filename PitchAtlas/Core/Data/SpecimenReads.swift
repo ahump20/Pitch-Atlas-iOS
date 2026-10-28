@@ -70,6 +70,43 @@ enum SpecimenReads {
         return claims.compactMap { $0?.source }.filter { seen.insert($0.id).inserted }
     }
 
+    /// The pager's neighbours in filed order. The first file has no previous and
+    /// the last no next; the site does not wrap.
+    static func neighbors(of entry: PitchAtlasEntry, in pitches: [PitchAtlasEntry])
+        -> (previous: PitchAtlasEntry?, next: PitchAtlasEntry?) {
+        guard let index = pitches.firstIndex(where: { $0.slug == entry.slug }) else { return (nil, nil) }
+        return (index > 0 ? pitches[index - 1] : nil,
+                index + 1 < pitches.count ? pitches[index + 1] : nil)
+    }
+
+    /// Step 04's cue: the pitcher's own words when they are filed, else the mechanics.
+    static func sourcedCue(_ entry: PitchAtlasEntry) -> Claim {
+        entry.canonical.voice ?? entry.canonical.mechanics
+    }
+
+    /// Step 03's line (GripStudy.tsx): what the seam step can honestly show.
+    static func seamStepLine(_ entry: PitchAtlasEntry) -> String {
+        entry.canonical.gripModel.status == .unfiled
+            ? "A canonical seam relationship has not been filed for this pitch."
+            : "Use \u{201C}Lift the hand\u{201D} on the reference model to see the seam beneath the hold."
+    }
+
+    /// The accuracy line under the seam note: the filed level, and no more.
+    static func seamAccuracyLine(_ entry: PitchAtlasEntry) -> String {
+        "\(entry.seam.accuracyLevel.rawValue). No additional contact positions are inferred."
+    }
+
+    /// The colophon's legend: the five tiers the site prints, in its order.
+    static let colophonTiers: [ClaimConfidence] = [
+        .officialData, .pitcherOwnWords, .coachObserved, .reputableAnalysis, .secondhandAttributed,
+    ]
+
+    /// The hero film's chip. It says the clip moves only while it is moving.
+    static func heroChip(hasClip: Bool, reduced: Bool, held: Bool) -> String {
+        guard hasClip, !reduced else { return "Austin\u{2019}s grip" }
+        return held ? "Austin\u{2019}s grip · held" : "Austin\u{2019}s grip · in motion"
+    }
+
     /// The grip bench's four steps and the line each one opens with.
     static let studySteps = ["Hold", "Fingers", "Seam", "Sourced cue"]
     static let studyTitles = [
