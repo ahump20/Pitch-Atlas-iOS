@@ -1163,12 +1163,9 @@ private func relaxed(_ text: String, size: CGFloat, ink: Color) -> some View {
 /// transforms do.
 private func athletic(_ text: String, size: CGFloat, leading: CGFloat, ink: Color = PitchAtlasTheme.bone,
                       trackingEm: CGFloat = 0.01) -> some View {
-    Text(text.uppercased())
-        .font(PitchAtlasTheme.anton(size, relativeTo: size >= 22 ? .title2 : .headline))
-        .tracking(em: trackingEm, size: size)
+    TightLines(text.uppercased(), face: .anton400, size: size, lineHeight: leading,
+               relativeTo: size >= 22 ? .title2 : .headline, trackingEm: trackingEm)
         .foregroundStyle(ink)
-        .cssLineHeight(leading, face: .anton400, size: size, relativeTo: size >= 22 ? .title2 : .headline)
-        .fixedSize(horizontal: false, vertical: true)
         .modifier(CenteredSkew(degrees: -7))
 }
 

@@ -26,11 +26,9 @@ struct LineageMap: View {
                 .tracking(em: 0.18, size: 11)
                 .foregroundStyle(PitchAtlasTheme.cyan)
             // .rfx-stitle at clamp(24px, 3.6vw, 40px), leading 1.04
-            Text("Every pitch, by family.".uppercased())
-                .font(PitchAtlasTheme.anton(24, relativeTo: .title2))
+            TightLines("Every pitch, by family.".uppercased(), face: .anton400, size: 24, lineHeight: 1.04,
+                       relativeTo: .title2)
                 .foregroundStyle(PitchAtlasTheme.bone)
-                .cssLineHeight(1.04, face: .anton400, size: 24, relativeTo: .title2)
-                .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 12)
                 .accessibilityAddTraits(.isHeader)
             Text("The accepted catalog at a glance, grouped by family and read by how common the pitch is. A solid dot is a filed specimen; a hollow dot is a basic file; a dashed node is an edge case - an alias, an illusion, or a name that is not really a distinct pitch.")

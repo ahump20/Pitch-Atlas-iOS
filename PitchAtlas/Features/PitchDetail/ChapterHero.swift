@@ -43,14 +43,9 @@ struct ChapterHero: View {
             HoloWordmark(text: entry.canonical.name.uppercased(), size: 40, lineSpacing: -18)
                 .padding(.vertical, -11)
                 .padding(.top, 8)
-            BalancedLines {
-                Text((entry.guide?.tagline ?? entry.display.heroSub).uppercased())
-                    .font(PitchAtlasTheme.anton(15, relativeTo: .subheadline))
-                    .tracking(em: 0.01, size: 15)
-                    .foregroundStyle(ink)
-                    .cssLineHeight(1.18, face: .anton400, size: 15, relativeTo: .subheadline)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
+            TightLines((entry.guide?.tagline ?? entry.display.heroSub).uppercased(), face: .anton400, size: 15,
+                       lineHeight: 1.18, relativeTo: .subheadline, trackingEm: 0.01, balanced: true)
+            .foregroundStyle(ink)
             .transformEffect(CardSkew.transform(degrees: -7))
             .padding(.top, 10)
             // Verbatim, PitchChapter.tsx.
@@ -85,12 +80,9 @@ struct ChapterHero: View {
                     .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
                     .tracking(em: 0.14, size: 10)
                     .foregroundStyle(ink)
-                Text(SpecimenReads.shapeLabel(entry).uppercased())
-                    .font(PitchAtlasTheme.anton(22, relativeTo: .title2))
-                    .tracking(em: 0.01, size: 22)
+                TightLines(SpecimenReads.shapeLabel(entry).uppercased(), face: .anton400, size: 22,
+                           lineHeight: 1.05, relativeTo: .title2, trackingEm: 0.01)
                     .foregroundStyle(PitchAtlasTheme.bone)
-                    .cssLineHeight(1.05, face: .anton400, size: 22, relativeTo: .title2)
-                    .fixedSize(horizontal: false, vertical: true)
                     .transformEffect(CardSkew.transform(degrees: -7))
                     .padding(.top, 8)
                 Text(shape.value)

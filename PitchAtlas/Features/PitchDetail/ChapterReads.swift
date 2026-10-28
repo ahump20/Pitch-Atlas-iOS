@@ -64,12 +64,9 @@ private func relaxed(_ text: String, size: CGFloat, ink: Color) -> some View {
 
 /// The athletic line set in the shear: Anton, upper case, skewed −7°.
 private func athletic(_ text: String, size: CGFloat, leading: CGFloat, ink: Color = PitchAtlasTheme.bone) -> some View {
-    Text(text.uppercased())
-        .font(PitchAtlasTheme.anton(size, relativeTo: size >= 22 ? .title2 : .headline))
-        .tracking(em: 0.01, size: size)
+    TightLines(text.uppercased(), face: .anton400, size: size, lineHeight: leading,
+               relativeTo: size >= 22 ? .title2 : .headline, trackingEm: 0.01)
         .foregroundStyle(ink)
-        .cssLineHeight(leading, face: .anton400, size: size, relativeTo: size >= 22 ? .title2 : .headline)
-        .fixedSize(horizontal: false, vertical: true)
         .transformEffect(CardSkew.transform(degrees: -7))
 }
 

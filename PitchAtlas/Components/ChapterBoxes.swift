@@ -111,14 +111,10 @@ struct ChapterSectionHead: View {
                     .foregroundStyle(PitchAccents.accentInk(accent))
             }
             .accessibilityElement(children: .combine)
-            BalancedLines {
-                Text(title.uppercased())
-                    .font(PitchAtlasTheme.anton(26, relativeTo: .title2))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .cssLineHeight(0.98, face: .anton400, size: 26, relativeTo: .title2)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .padding(.top, 12)
+            TightLines(title.uppercased(), face: .anton400, size: 26, lineHeight: 0.98,
+                       relativeTo: .title2, balanced: true)
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .padding(.top, 12)
             .accessibilityAddTraits(.isHeader)
             if let lede {
                 Text(lede)
