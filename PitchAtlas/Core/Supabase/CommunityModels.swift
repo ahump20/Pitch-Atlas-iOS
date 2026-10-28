@@ -548,17 +548,32 @@ extension NewFieldNote {
                 max: CommunityFieldNoteLimits.evidenceURL
             )
         }
+        guard webEvidenceURL(trimmed) != nil else {
+            throw CommunityValidationError.invalidEvidenceURL
+        }
+        return trimmed
+    }
+
+    /// The one rule for an evidence link, filed or read: an http or https
+    /// address with a host. Anything else (tel:, sms:, another app's scheme,
+    /// this app's own routes) is never a link.
+    static func webEvidenceURL(_ value: String) -> URL? {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
         guard
             let components = URLComponents(string: trimmed),
             let scheme = components.scheme?.lowercased(),
             (scheme == "http" || scheme == "https"),
             let host = components.host,
             !host.isEmpty
-        else {
-            throw CommunityValidationError.invalidEvidenceURL
-        }
-        return trimmed
+        else { return nil }
+        return components.url
     }
+}
+
+extension CommunityFieldNote {
+    /// The evidence link a card may open. The server only bounds evidence_url's
+    /// length, so a row filed from another client is held to filing's rule here.
+    var evidenceLink: URL? { evidenceURL.flatMap(NewFieldNote.webEvidenceURL) }
 }
 
 /// The insert payload for a discussion post. The id is NOT sent: the server

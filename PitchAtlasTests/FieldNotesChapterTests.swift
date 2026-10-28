@@ -151,6 +151,26 @@ final class FieldNotesChapterTests: XCTestCase {
         XCTAssertNil(try decode("null").velocityBand)
     }
 
+    /// The server only bounds evidence_url's length, so a note filed from another
+    /// client can carry any scheme. The card opens a link only for a web address,
+    /// the same rule filing enforces.
+    func testANoteOpensOnlyAWebEvidenceLink() throws {
+        func link(_ stored: String) throws -> URL? {
+            let json = """
+            {"id":"n1","pitch_slug":"four-seam","author_id":"a1","display_name":"RHP","tweak":"Thumb under.","player_level":"high-school","arm_slot":"three-quarter","evidence_url":\(stored),"intent":"more-movement","claimed_result_kind":"worked-in-bullpen","source_tier":"community-firsthand","created_at":"2026-10-27T12:00:00Z"}
+            """
+            return try JSONDecoder().decode(CommunityFieldNote.self, from: Data(json.utf8)).evidenceLink
+        }
+        XCTAssertEqual(try link("\"https://example.com/session\"")?.absoluteString, "https://example.com/session")
+        XCTAssertEqual(try link("\"  http://example.com/a  \"")?.absoluteString, "http://example.com/a")
+        XCTAssertNotNil(try link("\"HTTPS://Example.com/x\""), "the scheme is case-insensitive")
+        for stored in ["\"tel:5551234\"", "\"sms:5551234\"", "\"javascript:alert(1)\"",
+                       "\"pitchatlas://pitch/four-seam\"", "\"https://\"", "\"ftp://example.com/x\"",
+                       "\"\"", "null"] {
+            XCTAssertNil(try link(stored), "\(stored) must not open from a note card")
+        }
+    }
+
     // MARK: The age line and the bullpen card
 
     func testTheAgeLineMatchesTheSite() {

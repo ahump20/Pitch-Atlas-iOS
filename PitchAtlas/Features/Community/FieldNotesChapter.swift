@@ -913,7 +913,7 @@ private struct NoteCard: View {
                         }
                         .padding(.top, 8)
                 }
-                if let link = note.evidenceURL, let url = URL(string: link) {
+                if let url = note.evidenceLink {
                     Link(destination: url) {
                         Text("\(note.evidenceLabel.flatMap { $0.isEmpty ? nil : $0 } ?? "Evidence") ↗")
                             .font(PitchAtlasType.font(.martian400, size: 12, relativeTo: .caption))
