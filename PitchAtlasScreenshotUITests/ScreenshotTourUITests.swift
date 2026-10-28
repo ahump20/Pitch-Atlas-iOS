@@ -40,6 +40,7 @@ final class ScreenshotTourUITests: XCTestCase {
     @MainActor
     func testTour() throws {
         let raw = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? "all"
+        try XCTSkipIf(raw.contains("homediag"), "the home diagnostic runs alone")
         let wanted = Set(raw.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) })
         let stops = wanted.contains("all") || wanted.isEmpty ? Self.tour : Self.tour.filter { wanted.contains($0.name) }
         XCTAssertFalse(stops.isEmpty, "PA_SHOTS=\(raw) names no stop on the tour")
