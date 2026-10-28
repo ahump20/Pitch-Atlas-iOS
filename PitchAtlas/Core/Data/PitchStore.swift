@@ -125,6 +125,8 @@ final class PitchStore {
     func wing(slug: String) -> KnowledgeWing? { knowledge.first { $0.slug == slug } }
     func repertoireEntry(id: String) -> RepertoireEntry? { repertoire.entries.first { $0.id == id } }
     func gripEntry(id: String) -> GripEntry? { grips.entries.first { $0.id == id } }
+    /// The grip-library entry filed against a specimen (the card's face and short cue).
+    func gripEntry(forSpecimen slug: String) -> GripEntry? { grips.entries.first { $0.specimenSlug == slug } }
 
     /// The teaching clip filed against a specimen slug, if any. One clip may serve
     /// several slugs (Ryan → four-seam + two-seam), mirroring the web's lookup.
