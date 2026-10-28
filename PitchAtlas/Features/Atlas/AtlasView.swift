@@ -34,8 +34,11 @@ struct AtlasView: View {
                     }
                     if let featured = FeaturedSet.entries(in: store).first {
                         HomeHero(featured: featured)
+                            .background { DiagRow(name: "HomeHero", page: "atlas", space: "atlasPage") }
                         HomeDiscovery()
+                        .background { DiagRow(name: "HomeDiscovery", page: "atlas", space: "atlasPage") }
                         HomeSeam(featured: featured)
+                            .background { DiagRow(name: "HomeSeam", page: "atlas", space: "atlasPage") }
                     } else {
                         // Four-state honesty: a bundle without filed specimens says
                         // so, and the doors below still lead into the archive.
@@ -43,14 +46,21 @@ struct AtlasView: View {
                             .padding(PitchAtlasSpacing.lg)
                     }
                     HomeFiledSet()
+                        .background { DiagRow(name: "HomeFiledSet", page: "atlas", space: "atlasPage") }
                     HomeMediaRail()
+                        .background { DiagRow(name: "HomeMediaRail", page: "atlas", space: "atlasPage") }
                     HomeDoors()
+                        .background { DiagRow(name: "HomeDoors", page: "atlas", space: "atlasPage") }
                     HomeRecord()
+                        .background { DiagRow(name: "HomeRecord", page: "atlas", space: "atlasPage") }
                     SiteFooter(path: "/")
+                        .background { DiagRow(name: "footer", page: "atlas", space: "atlasPage") }
                 }
+                .coordinateSpace(name: "atlasPage")
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
                 .emitsScrollProgress()
             }
+            .modifier(DiagScroll(page: "atlas"))
         }
         .navigationTitle("Atlas")
         .navigationBarTitleDisplayMode(.inline)
