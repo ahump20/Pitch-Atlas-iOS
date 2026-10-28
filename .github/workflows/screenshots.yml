@@ -53,7 +53,7 @@ jobs:
             -destination "platform=iOS Simulator,id=$UDID" \
             -derivedDataPath .build/DerivedData \
             -resultBundlePath shots.xcresult \
-            2>&1 | tee xcodebuild.log | grep -E "error:|failed|Test Case|\*\* TEST" | tail -80
+            2>&1 | tee xcodebuild.log | grep -E "error:|failed|Test Case|TOUR |\*\* TEST" | tail -400
 
       - name: Export the screenshots
         if: always()

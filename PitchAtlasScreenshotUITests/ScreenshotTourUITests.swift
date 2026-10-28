@@ -59,7 +59,10 @@ final class ScreenshotTourUITests: XCTestCase {
         Thread.sleep(forTimeInterval: 3)
 
         var previous: Data?
+        let started = Date()
         for page in 1...stop.pages {
+            // the run's log keeps these lines: a page that turns slowly shows here
+            print(String(format: "TOUR %@ page %02d at %.1fs", stop.name, page, Date().timeIntervalSince(started)))
             let shot = XCUIScreen.main.screenshot()
             let png = shot.pngRepresentation
             if png == previous { break }
