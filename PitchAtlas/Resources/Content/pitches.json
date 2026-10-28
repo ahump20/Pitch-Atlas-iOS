@@ -257,7 +257,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/four-seam-grip-poster.webp"
+        "poster": "/grips/four-seam-grip-poster.webp",
+        "start": 0.8,
+        "focus": {
+          "x": 50,
+          "y": 44
+        }
       }
     },
     "motion": {
@@ -632,7 +637,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/two-seam-grip-poster.webp"
+        "poster": "/grips/two-seam-grip-poster.webp",
+        "start": 0.6,
+        "focus": {
+          "x": 50,
+          "y": 38
+        }
       }
     },
     "motion": {
@@ -996,7 +1006,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/twelve-six-grip-poster.webp"
+        "poster": "/grips/twelve-six-grip-poster.webp",
+        "start": 2.2,
+        "focus": {
+          "x": 50,
+          "y": 46
+        }
       }
     },
     "motion": {

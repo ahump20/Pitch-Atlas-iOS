@@ -84,7 +84,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/four-seam-grip-poster.webp"
+        "poster": "/grips/four-seam-grip-poster.webp",
+        "start": 0.8,
+        "focus": {
+          "x": 50,
+          "y": 44
+        }
       }
     },
     {
@@ -140,7 +145,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/two-seam-grip-poster.webp"
+        "poster": "/grips/two-seam-grip-poster.webp",
+        "start": 0.6,
+        "focus": {
+          "x": 50,
+          "y": 38
+        }
       }
     },
     {
@@ -196,7 +206,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/twelve-six-grip-poster.webp"
+        "poster": "/grips/twelve-six-grip-poster.webp",
+        "start": 2.2,
+        "focus": {
+          "x": 50,
+          "y": 46
+        }
       }
     },
     {
@@ -330,7 +345,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/three-finger-change-grip-poster.webp"
+        "poster": "/grips/three-finger-change-grip-poster.webp",
+        "start": 1.6,
+        "focus": {
+          "x": 50,
+          "y": 44
+        }
       }
     },
     {
