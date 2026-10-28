@@ -8,6 +8,8 @@ enum CommunityLoadState<Value> {
     case failed(String)
 }
 
+/// PLAYER_LEVELS (data/field-notes.ts); FieldNotesChapterTests holds these words
+/// to the generated field-notes.json.
 enum CommunityPlayerLevel: String, Codable, CaseIterable, Identifiable, Hashable {
     case youth
     case highSchool = "high-school"
@@ -17,9 +19,9 @@ enum CommunityPlayerLevel: String, Codable, CaseIterable, Identifiable, Hashable
 
     var label: String {
         switch self {
-        case .youth: return "Youth"
-        case .highSchool: return "High school"
-        case .collegePlus: return "College and up"
+        case .youth: return "Developing competition"
+        case .highSchool: return "School competition"
+        case .collegePlus: return "College and adult competition"
         }
     }
 }
@@ -74,7 +76,9 @@ enum CommunityPitchIntent: String, Codable, CaseIterable, Identifiable, Hashable
         case .reducedVelocity: return "Softer feel"
         case .betterCommand: return "Better command"
         case .deception: return "More deception"
-        case .reduceStress: return "Easier feel"
+        // A retired, medical-adjacent category: old rows stay readable
+        // (lib/community fieldNoteIntentLabel) but it is never offered.
+        case .reduceStress: return "Legacy category (closed)"
         case .other: return "Something else"
         }
     }
@@ -95,9 +99,9 @@ enum CommunityClaimedResultKind: String, Codable, CaseIterable, Identifiable, Ha
             .moreMovement,
             .betterCommand,
             .velocityGain,
-            .inconsistent,
             .workedInBullpen,
             .workedInGame,
+            .inconsistent,
             .noNoticeableChange,
         ]
     }
@@ -108,8 +112,8 @@ enum CommunityClaimedResultKind: String, Codable, CaseIterable, Identifiable, Ha
         switch self {
         case .moreMovement: return "More movement"
         case .betterCommand: return "Better command"
-        case .velocityGain: return "Firmer result"
-        case .reducedDiscomfort: return "Easier feel"
+        case .velocityGain: return "Firmer feel"
+        case .reducedDiscomfort: return "Legacy category (closed)"
         case .inconsistent: return "Inconsistent so far"
         case .workedInBullpen: return "Worked in the bullpen"
         case .workedInGame: return "Worked in a game"
@@ -155,6 +159,9 @@ struct CommunityFieldNote: Decodable, Identifiable, Hashable {
     let evidenceLabel: String?
     let note: String?
     let sourceTier: CommunitySourceTier
+    /// The pace context, read leniently (lib/community paceFromDb): an unknown
+    /// band reads as none rather than failing the note.
+    var velocityBand: CommunityVelocityBand?
     /// Trigger-maintained on the server, read-only to clients. `var` so the
     /// optimistic toggle can adjust a local copy; the server stays authoritative.
     var adoptionCount: Int = 0
@@ -180,6 +187,7 @@ struct CommunityFieldNote: Decodable, Identifiable, Hashable {
         case evidenceLabel = "evidence_label"
         case note
         case sourceTier = "source_tier"
+        case velocityBand = "velocity_band"
         case adoptionCount = "adoption_count"
         case helpfulCount = "helpful_count"
         case baseRank = "base_rank"
@@ -209,6 +217,9 @@ extension CommunityFieldNote {
         evidenceLabel = try container.decodeIfPresent(String.self, forKey: .evidenceLabel)
         note = try container.decodeIfPresent(String.self, forKey: .note)
         sourceTier = try container.decode(CommunitySourceTier.self, forKey: .sourceTier)
+        velocityBand = (try? container.decodeIfPresent(String.self, forKey: .velocityBand))
+            .flatMap { $0 }
+            .flatMap(CommunityVelocityBand.init(stored:))
         adoptionCount = try container.decodeIfPresent(Int.self, forKey: .adoptionCount) ?? 0
         helpfulCount = try container.decodeIfPresent(Int.self, forKey: .helpfulCount) ?? 0
         baseRank = try container.decodeIfPresent(Double.self, forKey: .baseRank) ?? 0
@@ -365,6 +376,8 @@ struct NewFieldNote: Encodable {
     let evidenceLabel: String?
     let sourceTier: CommunitySourceTier
     let note: String?
+    /// Sent as the database band (paceToDb); omitted when the form left it blank.
+    var velocityBand: CommunityVelocityBand?
 
     enum CodingKeys: String, CodingKey {
         case pitchSlug = "pitch_slug"
@@ -380,11 +393,14 @@ struct NewFieldNote: Encodable {
         case evidenceLabel = "evidence_label"
         case sourceTier = "source_tier"
         case note
+        case velocityBand = "velocity_band"
     }
 }
 
 enum CommunityValidationError: LocalizedError, Equatable {
     case missingTweak
+    /// A relayed claim or a hunch with no word on where it came from.
+    case missingContext
     case invalidDisplayName
     case valueTooLong(field: String, max: Int)
     case invalidSampleSize
@@ -394,6 +410,8 @@ enum CommunityValidationError: LocalizedError, Equatable {
         switch self {
         case .missingTweak:
             return "Add the grip change or cue before filing."
+        case .missingContext:
+            return "A relayed or untested claim must say where it comes from."
         case .invalidDisplayName:
             return "Your display name must be 2 to 40 characters."
         case .valueTooLong(let field, let max):
@@ -430,7 +448,8 @@ extension NewFieldNote {
         evidenceURL: String,
         evidenceLabel: String,
         sourceTier: CommunitySourceTier,
-        note: String
+        note: String,
+        velocityBand: CommunityVelocityBand? = nil
     ) throws -> NewFieldNote {
         let cleanDisplayName = try validatedDisplayName(displayName)
         let cleanTweak = try requiredText(
@@ -456,6 +475,11 @@ extension NewFieldNote {
             max: CommunityFieldNoteLimits.note
         )
         let sampleSize = try parsedSampleSize(sampleSizeText)
+        // The server's weak_tier_requires_note: a relayed claim or a hunch says
+        // where it came from.
+        if [.secondhandAttributed, .unverified].contains(sourceTier), cleanNote == nil {
+            throw CommunityValidationError.missingContext
+        }
 
         return NewFieldNote(
             pitchSlug: pitchSlug,
@@ -470,7 +494,8 @@ extension NewFieldNote {
             evidenceURL: cleanEvidenceURL,
             evidenceLabel: cleanEvidenceLabel,
             sourceTier: sourceTier,
-            note: cleanNote
+            note: cleanNote,
+            velocityBand: velocityBand
         )
     }
 

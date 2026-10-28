@@ -27,8 +27,9 @@ final class ReleaseGateUITests: XCTestCase {
         app.launchEnvironment["PA_PITCH"] = "slider"
         app.launch()
 
-        // The community panel sits far down the specimen page. Swipe until the
-        // Field Notes / Discussion switcher is on screen and tappable.
+        // The discussion drawer sits far down the specimen page, under the field
+        // notes chapter. Swipe until its bar is on screen and tappable, then
+        // open it.
         //
         // Do NOT use app.swipeUp(): it starts at screen center, which on this
         // page is the interactive 3D specimen stage — the drag orbits the ball
@@ -39,7 +40,7 @@ final class ReleaseGateUITests: XCTestCase {
             start.press(forDuration: 0.05, thenDragTo: end)
         }
 
-        let discussionTab = app.buttons["Discussion"]
+        let discussionTab = app.buttons["discussion-drawer"]
         var swipes = 0
         while !(discussionTab.exists && discussionTab.isHittable), swipes < 40 {
             scrollUpOnePage()
@@ -47,7 +48,7 @@ final class ReleaseGateUITests: XCTestCase {
         }
         XCTAssertTrue(
             discussionTab.exists && discussionTab.isHittable,
-            "Discussion tab never became tappable after \(swipes) swipes"
+            "The discussion drawer never became tappable after \(swipes) swipes"
         )
         discussionTab.tap()
 

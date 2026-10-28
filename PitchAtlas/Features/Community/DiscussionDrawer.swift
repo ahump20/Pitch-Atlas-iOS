@@ -26,15 +26,18 @@ struct DiscussionDrawer: View {
             VStack(spacing: 0) {
                 bar
                 if open {
-                    CommunityPanel(topic: topic, topicName: topicName, chrome: false)
+                    CommunityPanel(topic: topic, topicName: topicName)
                         .padding(.horizontal, 20)
                         .padding(.vertical, 24)
                         .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.15)).frame(height: 1) }
                 }
             }
-            .background(RoundedRectangle(cornerRadius: 12).fill(PitchAtlasTheme.press))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(PitchAtlasTheme.bone.opacity(0.10), lineWidth: 1))
+            // .rfx-panel: the bar and the thread sit inside its hairline, over
+            // the raking catch.
+            .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
+            .padding(1)
+            .background { PanelSurface(radius: 12) }
+            .inkContext(.object)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -65,6 +68,7 @@ struct DiscussionDrawer: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Discussion. \(title)")
+        .accessibilityIdentifier("discussion-drawer")
         .accessibilityValue(open ? "Open" : "Closed")
         .accessibilityHint(open ? "Folds the discussion away" : "Opens the discussion")
     }

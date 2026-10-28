@@ -31,7 +31,8 @@ private extension View {
     func chapterSection(flush: Bool = false) -> some View { modifier(ChapterSection(flush: flush)) }
 }
 
-/// `.rfx-panel`: a press panel with a white 10% rim.
+/// `.rfx-panel`: the press ground, its bone hairline, the raking catch and the
+/// cyan rim (PanelSurface).
 private struct PressPanel: ViewModifier {
     var radius: CGFloat = 14
     var padding: CGFloat = 20
@@ -39,8 +40,7 @@ private struct PressPanel: ViewModifier {
         content
             .padding(padding)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(RoundedRectangle(cornerRadius: radius).fill(PitchAtlasTheme.press))
-            .overlay(RoundedRectangle(cornerRadius: radius).strokeBorder(Color.white.opacity(0.1), lineWidth: 1))
+            .background { PanelSurface(radius: radius) }
     }
 }
 

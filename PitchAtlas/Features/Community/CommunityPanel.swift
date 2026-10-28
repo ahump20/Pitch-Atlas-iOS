@@ -2,13 +2,11 @@ import AVKit
 import PhotosUI
 import SwiftUI
 
+/// A topic's discussion thread (web sections/DiscussionForum.tsx): the
+/// composer, the safety line, and the posts with their replies and media. It
+/// lives inside DiscussionDrawer, which frames and names the thread; a pitch's
+/// field notes are their own chapter (FieldNotesChapter).
 struct CommunityPanel: View {
-    enum Mode: String, CaseIterable, Identifiable {
-        case notes = "Field Notes"
-        case discussion = "Discussion"
-        var id: String { rawValue }
-    }
-
     /// A user-facing status line with a tone, so a success reads as a success
     /// (not in the warning color) and a real error reads as an error.
     private enum ActionTone { case success, error }
@@ -30,61 +28,18 @@ struct CommunityPanel: View {
     /// The web's outage line. The heading names what failed; this says why, and
     /// no server text reaches the reader (FieldNotes.tsx, DiscussionForum.tsx).
     static let outageReason = "The server didn't answer."
-    struct NoteReportReason: Hashable { let value: String; let label: String }
-    /// The web's field-note report reasons (FieldNotes.tsx REPORT_REASONS).
-    static let noteReportReasons = [
-        NoteReportReason(value: "abusive-unsafe", label: "Abusive / unsafe"),
-        NoteReportReason(value: "off-topic", label: "Off-topic"),
-        NoteReportReason(value: "spam", label: "Spam"),
-    ]
 
     @Environment(AuthSessionStore.self) private var auth
     @Environment(ToastCenter.self) private var toasts
-    @AppStorage("pa.community.guidelinesAccepted") private var guidelinesAccepted = false
-    @AppStorage("pa.community.ageConfirmed") private var ageConfirmed = false
+    @AppStorage(ContributionGate.guidelinesKey) private var guidelinesAccepted = false
+    @AppStorage(ContributionGate.ageKey) private var ageConfirmed = false
     @AppStorage("pa.community.mediaTermsAccepted") private var mediaTermsAccepted = false
 
     let topic: CommunityTopic
     /// The thread's name as a reader says it ("Four-Seam Fastball").
     let topicName: String
-    let provenanceNote: String?
-    let safetyNote: String?
-    /// A chapter-navigation request only; it never performs a community write.
-    var openDiscussionRequest = 0
-    /// Off inside a drawer that already frames and names the thread
-    /// (DiscussionDrawer): no press panel, no "Community" header.
-    var chrome = true
 
-    init(
-        topic: CommunityTopic,
-        topicName: String,
-        provenanceNote: String? = nil,
-        safetyNote: String? = nil,
-        openDiscussionRequest: Int = 0,
-        chrome: Bool = true
-    ) {
-        self.topic = topic
-        self.topicName = topicName
-        self.provenanceNote = provenanceNote
-        self.safetyNote = safetyNote
-        self.openDiscussionRequest = openDiscussionRequest
-        self.chrome = chrome
-        _mode = State(initialValue: topic.allowsFieldNotes ? .notes : .discussion)
-    }
-
-    @State private var mode: Mode
-    @State private var notesState: CommunityLoadState<[CommunityFieldNote]> = .idle
     @State private var postsState: CommunityLoadState<[DiscussionPost]> = .idle
-    @State private var fieldTweak = ""
-    @State private var fieldNote = ""
-    @State private var fieldResultNote = ""
-    @State private var fieldSampleSize = ""
-    @State private var fieldEvidenceLabel = ""
-    @State private var fieldEvidenceURL = ""
-    @State private var fieldPlayerLevel: CommunityPlayerLevel = .collegePlus
-    @State private var fieldArmSlot: CommunityArmSlot = .threeQuarter
-    @State private var fieldIntent: CommunityPitchIntent = .moreMovement
-    @State private var fieldResultKind: CommunityClaimedResultKind = .workedInBullpen
     @State private var postBody = ""
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var preparedImage: PreparedCommunityImage?
@@ -92,23 +47,17 @@ struct CommunityPanel: View {
     @State private var undoBlock: BlockUndo?
     @State private var pendingMediaRetry: PendingMediaRetry?
     @State private var hiddenAuthorIDs: Set<String> = []
-    @State private var hiddenAuthorsHydratedForUserID: String?
-    /// The viewer's own Tried This / Helpful marks, hydrated after loadFieldNotes
-    /// ONLY when a session already exists. A signed-out reader sees the counts
-    /// with neutral chips — hydration never mints an account.
-    @State private var viewerTried: Set<String> = []
-    @State private var viewerHelpful: Set<String> = []
+    /// The reader and block-list revision the hidden set was read for.
+    @State private var hiddenAuthorsHydratedFor: String?
     /// In-flight guard: blocks a second submit Task from spawning before the first
     /// await returns, so a slow-network double-tap can't file two identical rows.
     @State private var isSubmitting = false
-    @State private var showGuidelines = false
     /// The top-level post the reply box is open under; one at a time, like the web.
     @State private var replyTo: String?
     @State private var replyBody = ""
     @State private var replyError: String?
     /// The post a reply is being filed under, so only that button says "Filing…".
     @State private var filingReplyTo: String?
-    @State private var noteReportID: String?
     @State private var reporting: ReportTarget?
     @State private var reportReason = ""
     /// The viewer's own post a delete confirmation is open for.
@@ -123,10 +72,10 @@ struct CommunityPanel: View {
         CommunityContributionGate.canContribute(guidelinesAccepted: guidelinesAccepted, ageConfirmed: ageConfirmed)
     }
     /// Includes the user id so a lazy anonymous mint mid-session re-runs reload
-    /// under the new identity (viewer flags, block list).
-    private var reloadKey: String { "\(topic.key)|\(auth.userID ?? "signed-out")" }
-    private var fieldNoteSubmitDisabled: Bool {
-        isSubmitting || fieldTweak.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    /// under the new identity, and the block revision so a block or unblock on
+    /// any screen re-reads the block list here.
+    private var reloadKey: String {
+        "\(topic.key)|\(auth.userID ?? "signed-out")|\(auth.communityBlockRevision)"
     }
     private var postSubmitDisabled: Bool {
         isSubmitting || postBody.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
@@ -137,38 +86,14 @@ struct CommunityPanel: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-            if chrome { header }
-            if topic.allowsFieldNotes {
-                Picker("Community section", selection: $mode) {
-                    ForEach(Mode.allCases) { mode in
-                        Text(mode.rawValue).tag(mode)
-                    }
-                }
-                .pickerStyle(.segmented)
-            }
-
             // The web's order: the composer first, then what's been filed below it.
-            switch mode {
-            case .notes:
-                fieldNoteComposer
-                actionLine
-                fieldNotesList
-            case .discussion:
-                discussionComposer
-                actionLine
-                discussionSafetyLine
-                discussionList
-            }
+            discussionComposer
+            actionLine
+            discussionSafetyLine
+            discussionList
         }
-        .modifier(CommunityChrome(on: chrome))
+        .frame(maxWidth: .infinity, alignment: .leading)
         .task(id: reloadKey) { await reload() }
-        .onChange(of: openDiscussionRequest) { _, _ in mode = .discussion }
-        // Switching between Field Notes and Discussion clears a stale status line
-        // so a "submitted" note from one tab doesn't linger over the other.
-        .onChange(of: mode) { _, _ in
-            actionMessage = nil
-            undoBlock = nil
-        }
         .alert(
             "Report this?",
             isPresented: Binding(get: { reporting != nil }, set: { if !$0 { reporting = nil } }),
@@ -182,24 +107,6 @@ struct CommunityPanel: View {
         }
         .sheet(item: $playingVideo) { video in
             MotionSpecimenPlayer(url: video.url, topicName: topicName)
-        }
-    }
-
-    private var header: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "Community")
-            if let provenanceNote {
-                Text(provenanceNote)
-                    .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.text3)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            if let safetyNote {
-                Text(safetyNote)
-                    .font(PitchAtlasTheme.newsreaderItalic(12))
-                    .foregroundStyle(PitchAtlasTheme.text3)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
         }
     }
 
@@ -235,266 +142,6 @@ struct CommunityPanel: View {
             .font(PitchAtlasTheme.hanken(12))
             .foregroundStyle(PitchAtlasTheme.text3)
             .fixedSize(horizontal: false, vertical: true)
-    }
-
-    // MARK: Field notes
-
-    private var fieldNotesList: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            HStack(alignment: .firstTextBaseline, spacing: PitchAtlasSpacing.sm) {
-                Text("Field notes for the \(topicName.lowercased())")
-                    .font(PitchAtlasTheme.newsreader(18))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .accessibilityAddTraits(.isHeader)
-                Spacer(minLength: 0)
-                if case .loaded(let notes) = notesState {
-                    Text(notes.count == 1 ? "1 note" : "\(notes.count) notes")
-                        .font(PitchAtlasTheme.martian(9))
-                        .tracking(1)
-                        .foregroundStyle(PitchAtlasTheme.text3)
-                }
-            }
-
-            switch notesState {
-            case .idle, .loading:
-                LoadingTile(label: "Loading field notes")
-            case .empty:
-                EmptyStateView(
-                    title: "No field notes filed yet",
-                    message: "No field notes filed yet for this pitch. The first one starts the drawer. Add how you throw it above."
-                )
-            case .failed(let reason):
-                ErrorStateView(title: "Couldn't load the field notes.", reason: reason) {
-                    Task { await reload() }
-                }
-            case .loaded(let notes):
-                ForEach(notes) { note in
-                    communityNoteCard(note)
-                }
-            }
-        }
-        .confirmationDialog(
-            "Flag this note for review",
-            isPresented: Binding(get: { noteReportID != nil }, set: { if !$0 { noteReportID = nil } }),
-            titleVisibility: .visible,
-            presenting: noteReportID
-        ) { noteID in
-            ForEach(Self.noteReportReasons, id: \.value) { reason in
-                Button(reason.label) { Task { await reportFieldNote(noteID, reason: reason.value) } }
-            }
-            Button("Cancel", role: .cancel) {}
-        }
-    }
-
-    private func communityNoteCard(_ note: CommunityFieldNote) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(note.displayName)
-                        .font(PitchAtlasTheme.hankenMedium(14))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                    communityTierLabel(note.sourceTier)
-                }
-                Spacer()
-                safetyMenu(authorID: note.authorID, displayName: note.displayName) {
-                    noteReportID = note.id
-                }
-            }
-
-            Text(note.tweak)
-                .font(PitchAtlasTheme.newsreader(18))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .fixedSize(horizontal: false, vertical: true)
-
-            if let detail = note.note, !detail.isEmpty {
-                Text(detail)
-                    .font(PitchAtlasTheme.hanken(14))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text("\(note.playerLevel.label) · \(note.armSlot.label) · \(note.intent.label)")
-                Text("Result: \(note.claimedResultKind.label)")
-                if let sample = note.sampleSize {
-                    Text("Sample: \(sample)")
-                }
-                if let label = note.evidenceLabel, !label.isEmpty {
-                    Text("Evidence: \(label)")
-                }
-            }
-            .font(PitchAtlasTheme.hanken(12))
-            .foregroundStyle(PitchAtlasTheme.text3)
-            .fixedSize(horizontal: false, vertical: true)
-
-            // The web's viewerIsAuthor guard: an author never marks their own
-            // note, so the chips are absent entirely on the viewer's own cards.
-            // A signed-out reader owns nothing and always sees them.
-            if !CommunityVisibility.viewerIsAuthor(note.authorID, viewerID: auth.userID) {
-                HStack(spacing: PitchAtlasSpacing.sm) {
-                    engagementChip(
-                        label: "Tried this",
-                        count: note.adoptionCount,
-                        isOn: viewerTried.contains(note.id)
-                    ) {
-                        Haptics.selection()
-                        Task { await toggleEngagement(noteID: note.id, kind: .tried) }
-                    }
-                    engagementChip(
-                        label: "Helpful",
-                        count: note.helpfulCount,
-                        isOn: viewerHelpful.contains(note.id)
-                    ) {
-                        Haptics.selection()
-                        Task { await toggleEngagement(noteID: note.id, kind: .helpful) }
-                    }
-                }
-            }
-        }
-        .padding(PitchAtlasSpacing.sm)
-        .background(PitchAtlasTheme.void, in: RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: PitchAtlasRadius.tile, style: .continuous).stroke(PitchAtlasTheme.machined))
-    }
-
-    private func engagementChip(label: String, count: Int, isOn: Bool, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text("\(label.uppercased()) · \(count)")
-                .font(PitchAtlasTheme.martian(9))
-                .tracking(1)
-                .foregroundStyle(isOn ? PitchAtlasTheme.cyan : PitchAtlasTheme.bone2)
-                .padding(.horizontal, PitchAtlasSpacing.sm)
-                .padding(.vertical, 8)
-                .background(Capsule().fill(isOn ? PitchAtlasTheme.cyan.opacity(0.12) : Color.clear))
-                .overlay(Capsule().stroke(isOn ? PitchAtlasTheme.cyanDeep : PitchAtlasTheme.machined))
-                .frame(minHeight: 44)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(label)
-        .accessibilityValue("\(count)")
-        .accessibilityAddTraits(isOn ? [.isSelected] : [])
-        .accessibilityHint(isOn ? "Removes your mark" : "Adds your mark")
-    }
-
-    private func communityTierLabel(_ tier: CommunitySourceTier) -> some View {
-        let color = PitchAtlasTheme.color(forConfidence: tier.rawValue)
-        return HStack(spacing: PitchAtlasSpacing.xs2) {
-            Circle()
-                .fill(color)
-                .frame(width: 7, height: 7)
-                .shadow(color: color.opacity(0.65), radius: 4)
-                .accessibilityHidden(true)
-            Text(ClaimConfidence(lenient: tier.rawValue).glyph)
-                .font(PitchAtlasTheme.martian(8))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .accessibilityHidden(true)
-            Text(tier.label.uppercased())
-                .font(PitchAtlasTheme.martian(8))
-                .tracking(1)
-                .foregroundStyle(PitchAtlasTheme.bone2)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(tier.label)
-    }
-
-    @ViewBuilder
-    private var fieldNoteComposer: some View {
-        if canContribute {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                SectionLabel(text: "File what worked")
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    PitchFormLabel("Tell, grip feel, or mound cue", required: true)
-                    TextField("Thumb deeper under the leather, ring finger off the seam", text: $fieldTweak, axis: .vertical)
-                        .font(PitchAtlasTheme.hanken(15))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                        .pitchTextFieldSurface(minHeight: 76)
-                    PitchFormCaption(text: "\(fieldTweak.count)/\(CommunityFieldNoteLimits.tweak)")
-                }
-
-                PitchMenuField("Player level", selectedText: fieldPlayerLevel.label, selection: $fieldPlayerLevel) {
-                    ForEach(CommunityPlayerLevel.allCases) { level in
-                        Text(level.label).tag(level)
-                    }
-                }
-
-                PitchMenuField("Arm slot", selectedText: fieldArmSlot.label, selection: $fieldArmSlot) {
-                    ForEach(CommunityArmSlot.allCases) { slot in
-                        Text(slot.label).tag(slot)
-                    }
-                }
-
-                PitchMenuField("Intent", selectedText: fieldIntent.label, selection: $fieldIntent) {
-                    ForEach(CommunityPitchIntent.allCases) { intent in
-                        Text(intent.label).tag(intent)
-                    }
-                }
-
-                PitchMenuField("Result", selectedText: fieldResultKind.label, selection: $fieldResultKind) {
-                    ForEach(CommunityClaimedResultKind.allCases) { result in
-                        Text(result.label).tag(result)
-                    }
-                }
-
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    PitchFormLabel("Result detail")
-                    TextField("What changed after the tweak?", text: $fieldResultNote, axis: .vertical)
-                        .font(PitchAtlasTheme.hanken(15))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                        .pitchTextFieldSurface(minHeight: 62)
-                }
-
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    PitchFormLabel("Reps")
-                    TextField("40", text: $fieldSampleSize)
-                        .keyboardType(.numberPad)
-                        .font(PitchAtlasTheme.hanken(15))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                        .pitchTextFieldSurface()
-                    PitchFormCaption(text: "Optional. Use a real count or leave it blank.")
-                }
-
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    PitchFormLabel("Evidence label")
-                    TextField("Bullpen notes", text: $fieldEvidenceLabel)
-                        .font(PitchAtlasTheme.hanken(15))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                        .pitchTextFieldSurface()
-                }
-
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    PitchFormLabel("Evidence URL")
-                    TextField("https://", text: $fieldEvidenceURL)
-                        .keyboardType(.URL)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .font(PitchAtlasTheme.hanken(15))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                        .pitchTextFieldSurface()
-                }
-
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    PitchFormLabel("Plain words note")
-                    TextField("What the hand did, what the ball did, what the hitter saw", text: $fieldNote, axis: .vertical)
-                        .font(PitchAtlasTheme.hanken(15))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                        .pitchTextFieldSurface(minHeight: 76)
-                }
-                Button {
-                    Task { await submitFieldNote() }
-                } label: {
-                    Label(isSubmitting ? "Filing…" : "File field note", systemImage: "tray.and.arrow.up")
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .disabled(fieldNoteSubmitDisabled)
-                .opacity(fieldNoteSubmitDisabled ? 0.55 : 1)
-
-                anonymousContributionFooter
-            }
-        } else {
-            contributionGate
-        }
     }
 
     /// The quiet replacement for the old mandatory sign-in panel: contribution
@@ -580,38 +227,7 @@ struct CommunityPanel: View {
                 anonymousContributionFooter
             }
         } else {
-            contributionGate
-        }
-    }
-
-    private var contributionGate: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            PitchToggleField(
-                text: "I accept the community guidelines",
-                caption: "Post your own experience. Report problems. Keep the archive clean.",
-                isOn: $guidelinesAccepted
-            )
-
-            Button {
-                showGuidelines = true
-            } label: {
-                Label("Read the community guidelines", systemImage: "doc.text")
-                    .font(PitchAtlasTheme.hanken(13))
-                    .frame(minHeight: 44)
-                    .contentShape(Rectangle())
-            }
-            .buttonStyle(.plain)
-            .foregroundStyle(PitchAtlasTheme.caution)
-            .accessibilityHint("Opens the community guidelines you are accepting")
-
-            PitchToggleField(
-                text: "I confirm I am 17 or older before posting or uploading",
-                caption: "Required before community posting or image uploads.",
-                isOn: $ageConfirmed
-            )
-        }
-        .sheet(isPresented: $showGuidelines) {
-            CommunityGuidelinesView()
+            ContributionGate()
         }
     }
 
@@ -951,105 +567,29 @@ struct CommunityPanel: View {
 
     private func reload() async {
         guard await hydrateHiddenAuthorsForCurrentUser() else { return }
-        if topic.allowsFieldNotes {
-            async let notes: Void = loadFieldNotes()
-            async let posts: Void = loadDiscussion()
-            _ = await (notes, posts)
-        } else {
-            await loadDiscussion()
-        }
+        await loadDiscussion()
     }
 
     private func hydrateHiddenAuthorsForCurrentUser() async -> Bool {
         guard auth.isSignedIn, let userID = auth.userID else {
             hiddenAuthorIDs = []
-            hiddenAuthorsHydratedForUserID = nil
+            hiddenAuthorsHydratedFor = nil
             return true
         }
 
-        guard hiddenAuthorsHydratedForUserID != userID else { return true }
+        let readFor = "\(userID)|\(auth.communityBlockRevision)"
+        guard hiddenAuthorsHydratedFor != readFor else { return true }
 
         do {
             let contributors = try await service.blockedContributors()
             hiddenAuthorIDs = CommunityVisibility.hiddenAuthorIDs(from: contributors)
-            hiddenAuthorsHydratedForUserID = userID
+            hiddenAuthorsHydratedFor = readFor
             return true
         } catch {
             // Fail closed: nothing shows until the viewer's blocks can be honored.
-            // The reason rides the error tiles alone, so it isn't said twice.
-            let reason = "Your block list didn't load, so community posts are paused until it can be checked."
-            notesState = .failed(reason)
-            postsState = .failed(reason)
+            // The reason rides the error tile alone, so it isn't said twice.
+            postsState = .failed(FieldNotesChapter.blockListReason)
             return false
-        }
-    }
-
-    private func loadFieldNotes() async {
-        guard let pitchSlug = topic.fieldNoteSlug else { return }
-        notesState = .loading
-        do {
-            let rows = try await service.fieldNotes(pitchSlug: pitchSlug)
-            let visibleRows = CommunityVisibility.visibleFieldNotes(rows, hiddenAuthorIDs: hiddenAuthorIDs)
-            notesState = visibleRows.isEmpty ? .empty : .loaded(visibleRows)
-            // Viewer flags hydrate only over an EXISTING session — this is a read,
-            // and reads never mint an account. Signed-out readers keep the counts
-            // with both chips neutral.
-            if auth.isSignedIn, !visibleRows.isEmpty {
-                let engagement = await service.viewerEngagement(noteIDs: visibleRows.map(\.id))
-                viewerTried = engagement.tried
-                viewerHelpful = engagement.helpful
-            } else {
-                viewerTried = []
-                viewerHelpful = []
-            }
-        } catch {
-            notesState = .failed(Self.outageReason)
-        }
-    }
-
-    /// Optimistic Tried This / Helpful toggle, mirroring the web's
-    /// useFieldNotes.toggleEngagement: flip locally first (same pattern as
-    /// hideAuthor's rebuild), then persist; on failure, resync from the server —
-    /// loadFieldNotes reverts both the count and the viewer flag.
-    private func toggleEngagement(noteID: String, kind: CommunityEngagementKind) async {
-        guard case .loaded(let notes) = notesState else { return }
-        guard let note = notes.first(where: { $0.id == noteID }),
-              !CommunityVisibility.viewerIsAuthor(note.authorID, viewerID: auth.userID) else { return }
-
-        let outcome = CommunityEngagement.toggled(
-            noteID: noteID,
-            kind: kind,
-            tried: viewerTried,
-            helpful: viewerHelpful,
-            notes: notes
-        )
-        viewerTried = outcome.tried
-        viewerHelpful = outcome.helpful
-        notesState = .loaded(outcome.notes)
-
-        do {
-            // Write intent: the only moment an account may be minted.
-            _ = try await auth.ensureSessionForWrite()
-            switch kind {
-            case .tried:
-                try await service.setTried(noteID: noteID, on: outcome.isNowOn)
-            case .helpful:
-                try await service.setHelpful(noteID: noteID, on: outcome.isNowOn)
-            }
-            // A first-ever mark from a signed-out reader mints a session, which
-            // changes reloadKey and can hydrate the viewer flags BEFORE this
-            // insert commits. Re-assert the flag so that race can't leave a
-            // just-confirmed mark rendered neutral.
-            switch kind {
-            case .tried:
-                if outcome.isNowOn { viewerTried.insert(noteID) } else { viewerTried.remove(noteID) }
-            case .helpful:
-                if outcome.isNowOn { viewerHelpful.insert(noteID) } else { viewerHelpful.remove(noteID) }
-            }
-        } catch {
-            Haptics.failure()
-            actionMessage = ActionMessage(text: CommunityService.userMessage(for: error), tone: .error)
-            await loadFieldNotes()
         }
     }
 
@@ -1065,46 +605,6 @@ struct CommunityPanel: View {
     }
 
     // MARK: Writes
-
-    private func submitFieldNote() async {
-        guard !isSubmitting, let pitchSlug = topic.fieldNoteSlug else { return }
-        isSubmitting = true
-        defer { isSubmitting = false }
-        do {
-            // Write intent: the only moment an account may be minted.
-            _ = try await auth.ensureSessionForWrite()
-            let note = try NewFieldNote.validated(
-                pitchSlug: pitchSlug,
-                displayName: auth.displayName,
-                tweak: fieldTweak,
-                playerLevel: fieldPlayerLevel,
-                armSlot: fieldArmSlot,
-                intent: fieldIntent,
-                claimedResultKind: fieldResultKind,
-                claimedResultNote: fieldResultNote,
-                sampleSizeText: fieldSampleSize,
-                evidenceURL: fieldEvidenceURL,
-                evidenceLabel: fieldEvidenceLabel,
-                sourceTier: .communityFirsthand,
-                note: fieldNote
-            )
-            try await service.submitFieldNote(note)
-            fieldTweak = ""
-            fieldNote = ""
-            fieldResultNote = ""
-            fieldSampleSize = ""
-            fieldEvidenceLabel = ""
-            fieldEvidenceURL = ""
-            // A new note waits for review; it never shows in the public list
-            // until it's approved, so the confirmation says exactly that.
-            actionMessage = ActionMessage(text: "Sent for review ✓ · it stays private until approved.", tone: .success)
-            Haptics.success()
-            await loadFieldNotes()
-        } catch {
-            actionMessage = ActionMessage(text: CommunityService.userMessage(for: error), tone: .error)
-            Haptics.failure()
-        }
-    }
 
     private func submitDiscussionPost() async {
         guard !isSubmitting else { return }
@@ -1225,17 +725,6 @@ struct CommunityPanel: View {
         }
     }
 
-    private func reportFieldNote(_ id: String, reason: String) async {
-        do {
-            _ = try await auth.ensureSessionForWrite()
-            try await service.reportFieldNote(id: id, reason: reason)
-            toasts.show("Flagged for review. Thank you.")
-        } catch {
-            // A safety report never claims a success it didn't earn.
-            toasts.show("Report didn't send. Try again.", isFailure: true)
-        }
-    }
-
     private func fileReport(_ target: ReportTarget, reason: String) async {
         let cleanReason = CommunityReport.cleanReason(reason)
         reportReason = ""
@@ -1262,7 +751,9 @@ struct CommunityPanel: View {
             undoBlock = BlockUndo(authorID: authorID, displayName: displayName)
             actionMessage = ActionMessage(text: "Contributor blocked.", tone: .success)
             Haptics.success()
-            await reload()
+            // Every community list on screen re-reads the block list (this one
+            // through reloadKey).
+            auth.noteBlockListChanged()
         } catch {
             actionMessage = ActionMessage(text: CommunityService.userMessage(for: error), tone: .error)
             Haptics.failure()
@@ -1277,7 +768,7 @@ struct CommunityPanel: View {
             undoBlock = nil
             actionMessage = ActionMessage(text: "Contributor unblocked.", tone: .success)
             Haptics.success()
-            await reload()
+            auth.noteBlockListChanged()
         } catch {
             actionMessage = ActionMessage(text: CommunityService.userMessage(for: error), tone: .error)
             Haptics.failure()
@@ -1330,10 +821,6 @@ struct CommunityPanel: View {
     }
 
     private func hideAuthor(_ authorID: String) {
-        if case .loaded(let notes) = notesState {
-            let visible = CommunityVisibility.visibleFieldNotes(notes, hiddenAuthorIDs: [authorID])
-            notesState = visible.isEmpty ? .empty : .loaded(visible)
-        }
         if case .loaded(let posts) = postsState {
             let visible = CommunityVisibility.visibleDiscussionPosts(posts, hiddenAuthorIDs: [authorID])
             postsState = visible.isEmpty ? .empty : .loaded(visible)
@@ -1378,18 +865,5 @@ private struct MotionSpecimenPlayer: View {
             }
         }
         .onDisappear { player?.pause() }
-    }
-}
-
-/// The panel's own press frame, dropped where a drawer frames the thread.
-private struct CommunityChrome: ViewModifier {
-    let on: Bool
-
-    func body(content: Content) -> some View {
-        if on {
-            content.leatherPress()
-        } else {
-            content.frame(maxWidth: .infinity, alignment: .leading)
-        }
     }
 }

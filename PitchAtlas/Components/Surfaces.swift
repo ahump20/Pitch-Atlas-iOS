@@ -1,7 +1,9 @@
 import SwiftUI
 
 /// `.rfx-panel`: press ground, bone .10 hairline, the raking catch (white .4 band
-/// at 20%, screen, .55) and a 16% accent rim. No hover, no motion — the web has none.
+/// at 20%, screen, .55, laid at 101° across the panel's own shape) and a 16%
+/// accent rim just inside the hairline, where the site's ::before sits. No
+/// hover, no motion — the web has none.
 struct PanelSurface: View {
     static let catchPeakOpacity = 0.4
     static let catchLayerOpacity = 0.55
@@ -11,19 +13,21 @@ struct PanelSurface: View {
 
     var body: some View {
         let shape = RoundedRectangle(cornerRadius: radius, style: .continuous)
-        shape.fill(PitchAtlasTheme.press)
-            .overlay {
-                shape.fill(LinearGradient(stops: [
-                    .init(color: .clear, location: 0.06),
-                    .init(color: .white.opacity(Self.catchPeakOpacity), location: 0.20),
-                    .init(color: .clear, location: 0.40)],
-                    startPoint: PitchAtlasMaterials.cssEndpoints(angle: 101, aspect: 2).start,
-                    endPoint: PitchAtlasMaterials.cssEndpoints(angle: 101, aspect: 2).end))
-                .blendMode(.screen).opacity(Self.catchLayerOpacity)
-            }
-            .overlay { shape.strokeBorder(accent.opacity(Self.rimOpacity), lineWidth: 1) }
-            .overlay { shape.strokeBorder(PitchAtlasTheme.bone.opacity(0.10), lineWidth: 1) }
-            .accessibilityHidden(true).allowsHitTesting(false)
+        GeometryReader { geo in
+            let ends = PitchAtlasMaterials.cssEndpoints(angle: 101, aspect: geo.size.width / max(geo.size.height, 1))
+            shape.fill(PitchAtlasTheme.press)
+                .overlay {
+                    shape.inset(by: 1).fill(LinearGradient(stops: [
+                        .init(color: .clear, location: 0.06),
+                        .init(color: .white.opacity(Self.catchPeakOpacity), location: 0.20),
+                        .init(color: .clear, location: 0.40)],
+                        startPoint: ends.start, endPoint: ends.end))
+                    .blendMode(.screen).opacity(Self.catchLayerOpacity)
+                }
+                .overlay { shape.inset(by: 1).strokeBorder(accent.opacity(Self.rimOpacity), lineWidth: 1) }
+                .overlay { shape.strokeBorder(PitchAtlasTheme.bone.opacity(0.10), lineWidth: 1) }
+        }
+        .accessibilityHidden(true).allowsHitTesting(false)
     }
 }
 

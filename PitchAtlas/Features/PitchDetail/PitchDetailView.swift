@@ -17,7 +17,6 @@ struct PitchDetailView: View {
     @Environment(PitchStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @State private var discussionRequest = 0
     @State private var currentChapter: String?
 
     private static let scrollSpace = "specimen-scroll"
@@ -38,7 +37,6 @@ struct PitchDetailView: View {
                                     .padding(.top, 24)
                                 ChapterHero(entry: entry, grip: grip) { scroll(proxy, to: SpecimenChapter.grip) }
                                 ChapterBoxes(chapters: SpecimenChapter.allCases.map(\.chapter), current: currentChapter) { id in
-                                    if id == SpecimenChapter.discussion.chapter.id { discussionRequest += 1 }
                                     scroll(proxy, toID: id)
                                 }
                                 CompareButton(slug: entry.slug)
@@ -63,7 +61,6 @@ struct PitchDetailView: View {
                                     .chapterAnchor(SpecimenChapter.sources.chapter.id, space: Self.scrollSpace)
                                 PitchConnections(entry: entry, accentRGB: accentRGB)
                                 community
-                                    .chapterAnchor(SpecimenChapter.discussion.chapter.id, space: Self.scrollSpace)
                                 SpecimenPager(entry: entry)
                             }
                             .padding(.horizontal, 20)
@@ -102,16 +99,19 @@ struct PitchDetailView: View {
         }
     }
 
-    /// The field notes and the discussion on this pitch (FieldNotes +
-    /// DiscussionPanel on the site), under a bone hairline.
+    /// The field notes and the discussion on this pitch (FieldNotes and
+    /// DiscussionPanel on the site), under a bone hairline. The Discussion box
+    /// lands on the drawer, as the site's #discussion does, and leaves it shut.
     private var community: some View {
-        CommunityPanel(topic: .specimen(slug: entry.slug),
-                       topicName: entry.canonical.name,
-                       provenanceNote: entry.community.provenanceNote,
-                       safetyNote: entry.community.safetyNote,
-                       openDiscussionRequest: discussionRequest)
-            .padding(.top, 32)
-            .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1) }
+        VStack(alignment: .leading, spacing: 0) {
+            FieldNotesChapter(entry: entry)
+            DiscussionDrawer(topic: .specimen(slug: entry.slug), topicName: entry.canonical.name)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 48)
+                .chapterAnchor(SpecimenChapter.discussion.chapter.id, space: Self.scrollSpace)
+        }
+        .padding(.top, 32)
+        .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1) }
     }
 
     private func scroll(_ proxy: ScrollViewProxy, to chapter: SpecimenChapter) {

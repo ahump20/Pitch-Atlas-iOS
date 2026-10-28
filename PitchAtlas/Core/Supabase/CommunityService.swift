@@ -170,6 +170,30 @@ struct CommunityService {
         stride(from: 0, to: items.count, by: size).map { Array(items[$0..<min($0 + size, items.count)]) }
     }
 
+    /// The viewer's contributor profile (lib/community getIdentity): the handle,
+    /// the claimed flag and the score. READ path: the caller only asks over an
+    /// existing session, so a bullpen card never mints an account.
+    func contributorIdentity(userID: String) async throws -> ContributorIdentity? {
+        let rows: [ContributorIdentity] = try await client
+            .from("profiles")
+            .select("display_name, is_claimed, contribution_score, notes_count")
+            .eq("id", value: userID)
+            .limit(1)
+            .execute()
+            .value
+        return rows.first
+    }
+
+    /// Keeps the handle a contributor files under (lib/community submitNote saves
+    /// it before the insert). The profiles UPDATE grant covers display_name only.
+    func setDisplayName(_ name: String, userID: String) async throws {
+        try await client
+            .from("profiles")
+            .update(DisplayNameUpdate(displayName: name))
+            .eq("id", value: userID)
+            .execute()
+    }
+
     func submitFieldNote(_ note: NewFieldNote) async throws {
         let trimmedTweak = note.tweak.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedTweak.isEmpty else {
@@ -492,4 +516,10 @@ enum CommunityServiceError: LocalizedError, Equatable {
             return message
         }
     }
+}
+
+/// The one profile column a contributor may change (grant update (display_name)).
+struct DisplayNameUpdate: Encodable {
+    let displayName: String
+    enum CodingKeys: String, CodingKey { case displayName = "display_name" }
 }

@@ -26,6 +26,10 @@ final class AuthSessionStore {
     /// the claim block can confirm "check your email" the same way the magic-link
     /// panel does. Cleared when a new claim starts or once the claim confirms.
     private(set) var claimEmailSentTo: String?
+    /// Bumped whenever this reader blocks or unblocks someone, from any surface,
+    /// so every community list on screen re-reads the block list and stops
+    /// showing (or shows again) that contributor without waiting for a relaunch.
+    private(set) var communityBlockRevision = 0
     private var lastMagicLinkAt: Date?
     private let magicLinkCooldown: TimeInterval = 30
 
@@ -37,6 +41,11 @@ final class AuthSessionStore {
     }
 
     var isSignedIn: Bool { userID != nil }
+
+    /// A block or unblock just landed on the server.
+    func noteBlockListChanged() {
+        communityBlockRevision += 1
+    }
 
     /// A permanent account: signed in AND not anonymous. Server policy restricts
     /// media uploads and media-terms acceptance to claimed accounts, so upload UI

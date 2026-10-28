@@ -208,6 +208,8 @@ struct FlowRow: Layout {
     /// `items-center`: each item centered in its row's height (a dot beside a
     /// source link); `.top` keeps the rows flush, as the footer and map set them.
     var rowAlignment: VerticalAlignment = .top
+    /// `ml-auto` on the last item: it sits flush to the row's trailing edge.
+    var trailingLast = false
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         let width = proposal.width ?? .infinity
@@ -224,6 +226,7 @@ struct FlowRow: Layout {
             for index in row.items {
                 let size = Self.size(of: subviews[index], within: bounds.width)
                 let drop = rowAlignment == .center ? (row.height - size.height) / 2 : 0
+                if trailingLast, index == subviews.indices.last { x = max(x, bounds.maxX - size.width) }
                 subviews[index].place(at: CGPoint(x: x, y: y + drop), proposal: ProposedViewSize(size))
                 x += size.width + spacing
             }

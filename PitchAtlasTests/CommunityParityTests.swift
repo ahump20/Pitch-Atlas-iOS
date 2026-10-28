@@ -170,7 +170,7 @@ final class CommunityParityTests: XCTestCase {
         XCTAssertNil(CommunityReport.cleanReason("   \n"), "an empty reason is stored as NULL, not ''")
         XCTAssertEqual(CommunityReport.cleanReason("  spam  "), "spam")
         XCTAssertEqual(CommunityReport.cleanReason(String(repeating: "x", count: 400))?.count, CommunityReport.reasonLimit)
-        XCTAssertEqual(CommunityPanel.noteReportReasons.map(\.value), ["abusive-unsafe", "off-topic", "spam"])
+        XCTAssertEqual(FieldNotesChapter.reportReasons.map(\.value), ["abusive-unsafe", "off-topic", "spam"])
     }
 
     // MARK: The web's words

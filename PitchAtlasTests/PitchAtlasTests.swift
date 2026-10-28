@@ -652,8 +652,10 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertFalse(CommunityPitchIntent.allCases.contains(.reduceStress))
         XCTAssertFalse(CommunityClaimedResultKind.allCases.contains(.reducedDiscomfort))
 
-        XCTAssertEqual(CommunityPitchIntent(rawValue: "reduce-stress")?.label, "Easier feel")
-        XCTAssertEqual(CommunityClaimedResultKind(rawValue: "reduced-discomfort")?.label, "Easier feel")
+        // Old rows stay readable under the site's closed-category label
+        // (lib/community fieldNoteIntentLabel / fieldNoteResultLabel).
+        XCTAssertEqual(CommunityPitchIntent(rawValue: "reduce-stress")?.label, "Legacy category (closed)")
+        XCTAssertEqual(CommunityClaimedResultKind(rawValue: "reduced-discomfort")?.label, "Legacy category (closed)")
     }
 
     func testDiscussionMediaDecodesPublicReadGrantShape() throws {

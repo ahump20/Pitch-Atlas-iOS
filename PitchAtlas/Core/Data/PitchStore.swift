@@ -37,6 +37,9 @@ final class PitchStore {
     let externalMedia: ExternalMediaBundle
     let craftsmanMedia: [CraftsmanMediaItem]
     let plate273: Plate273?
+    /// The pitch page's tier-03 chapter: how notes rank, the vocabulary, and the
+    /// note form's context lists (field-notes.json).
+    let fieldNotesGuide: FieldNotesGuide
     let manifest: ContentManifest
     let status: Status
 
@@ -75,6 +78,7 @@ final class PitchStore {
         self.externalMedia = load("external-media", ExternalMediaBundle.self, fallback: .empty)
         self.craftsmanMedia = load("craftsman-media", [CraftsmanMediaItem].self, fallback: [])
         self.plate273 = load("plate-273", Plate273?.self, fallback: nil)
+        self.fieldNotesGuide = load("field-notes", FieldNotesGuide.self, fallback: .empty)
 
         self.status = problems.isEmpty ? .ready : .failed(problems.joined(separator: " | "))
     }

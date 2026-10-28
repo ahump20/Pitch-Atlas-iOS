@@ -316,6 +316,7 @@ struct AccountView: View {
         guard let userID = auth.userID else { return }
         do {
             try await service.unblockUser(blockedID: contributor.blockedID)
+            auth.noteBlockListChanged()
             guard auth.userID == userID else { return }
             await loadBlockedContributors()
             Haptics.success()

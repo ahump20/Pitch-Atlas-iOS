@@ -38,7 +38,7 @@ if (!existsSync(DATA)) {
 const imp = (rel: string) => import(pathToFileURL(join(DATA, rel)).href)
 
 const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade, archive, tiktok,
-  softball, softballFund, tidbits, quotes, external, craftsmanMedia, plate273] =
+  softball, softballFund, tidbits, quotes, external, craftsmanMedia, plate273, fieldNotes] =
   await Promise.all([
     imp('pitches/index.ts'),
     imp('repertoire/index.ts'),
@@ -63,6 +63,9 @@ const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimen
     imp('media/external.ts'),
     imp('media/craftsmen.ts'),
     imp('media/plate273.ts'),
+    // The pitch page's tier-03 chapter (2026-10-28): the ranking model as the
+    // site prints it, the vocabulary, and the note form's context lists.
+    imp('field-notes.ts'),
   ])
 
 /*
@@ -195,6 +198,18 @@ const bundles: Record<string, unknown> = {
   'external-media.json': { sources: external.EXTERNAL_SOURCES, items: external.EXTERNAL_CONTENT_ITEMS },
   'craftsman-media.json': craftsmanMedia.allCraftsmanMedia(),
   'plate-273.json': plateBundle,
+  // Each weight rides beside its signal so the app prints the same percentages.
+  'field-notes.json': {
+    rankSignals: (fieldNotes.RANK_SIGNALS as AnyRecord[]).map((s) => ({
+      ...s,
+      weight: (fieldNotes.RANK_WEIGHTS as Record<string, number>)[s.key as string],
+    })),
+    vocabulary: fieldNotes.FIELD_NOTE_PRIMITIVES,
+    playerLevels: fieldNotes.PLAYER_LEVELS,
+    armSlots: fieldNotes.ARM_SLOTS,
+    velocityBands: fieldNotes.VELOCITY_BANDS,
+    limits: fieldNotes.FIELD_NOTE_CONSTRAINTS,
+  },
 }
 
 // Object-shaped bundles have no single record array, so their counts are named
@@ -206,6 +221,10 @@ const explicitCounts: Record<string, Record<string, number>> = {
   },
   'external-media.json': { 'external-media.items': external.EXTERNAL_CONTENT_ITEMS.length },
   'plate-273.json': { 'plate-273.frames': plateBundle.frames.length },
+  'field-notes.json': {
+    'field-notes.signals': fieldNotes.RANK_SIGNALS.length,
+    'field-notes.vocabulary': fieldNotes.FIELD_NOTE_PRIMITIVES.length,
+  },
 }
 
 function countOf(v: unknown): number {

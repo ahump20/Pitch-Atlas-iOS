@@ -15,8 +15,10 @@
     "quotes.json": 19,
     "external-media.items": 6,
     "craftsman-media.json": 3,
-    "plate-273.frames": 10
+    "plate-273.frames": 10,
+    "field-notes.signals": 5,
+    "field-notes.vocabulary": 8
   },
   "sourcesLastChecked": "2026-10-24",
-  "contentHash": "a0be07ef287845a75d54aae37c8a027bcf281477fa21551235d15d0afe936128"
+  "contentHash": "d659eff9aff65d3628969be8bad0d61599e844114a48b45c51ef19bfa27525c4"
 }
