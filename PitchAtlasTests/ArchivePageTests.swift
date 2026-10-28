@@ -42,9 +42,13 @@ final class ArchivePageTests: XCTestCase {
         let height: (CGFloat) -> CGFloat = { width in 40 * (300 / width).rounded(.up) }
         // Two lines at 200: the narrowest width that still sets two is 150 — even halves.
         XCTAssertEqual(BalancedLines.balancedWidth(full: 200, height: height), 150, accuracy: 0.5)
-        // One line at 400 or 380: it stays one line, at the 300 the line needs.
+        // One line at 400 or 380: it stays one line, at the 300 the line needs —
+        // rounded up to the next whole point, so a fractional measure never adds a line.
         XCTAssertEqual(BalancedLines.balancedWidth(full: 400, height: height), 300, accuracy: 0.5)
-        XCTAssertEqual(BalancedLines.balancedWidth(full: 380, height: height), 300, accuracy: 0.5)
+        let narrowest = BalancedLines.balancedWidth(full: 380, height: height)
+        XCTAssertEqual(narrowest, 300, accuracy: 1)
+        XCTAssertEqual(narrowest, narrowest.rounded(.up))
+        XCTAssertEqual(height(narrowest), height(380), "the balanced width keeps the line count")
         XCTAssertEqual(BalancedLines.balancedWidth(full: .infinity, height: height), .infinity)
     }
 
