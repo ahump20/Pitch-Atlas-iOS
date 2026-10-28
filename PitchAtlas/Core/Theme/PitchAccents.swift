@@ -34,6 +34,17 @@ enum PitchAccents {
         return (ctaLight, ctaDark)
     }
 
+    /// CSS `color-mix(in srgb, a, b amount)` on packed RGB: `a` weighted 1 − amount,
+    /// `b` weighted amount, each channel rounded.
+    static func mixRGB(_ a: UInt32, _ b: UInt32, _ amount: Double) -> UInt32 {
+        let t = min(1, max(0, amount))
+        func channel(_ shift: UInt32) -> UInt32 {
+            let x = Double((a >> shift) & 0xFF), y = Double((b >> shift) & 0xFF)
+            return UInt32((x + (y - x) * t).rounded()) << shift
+        }
+        return channel(16) | channel(8) | channel(0)
+    }
+
     /// WCAG 2 contrast ratio between two sRGB colors.
     static func contrast(_ a: UInt32, _ b: UInt32) -> Double {
         let (la, lb) = (luminance(a), luminance(b))

@@ -86,6 +86,43 @@ final class SpecimenCardModelTests: XCTestCase {
         }
     }
 
+    /// `.rfx-field`: color-mix(in srgb, c2 34%, #0B0805), then #0B0805 at 52% and
+    /// #070503, on a 170° run. Every stop is opaque, as the site's are.
+    func testTheFieldRunsOpaqueWarmBlackTintedByTheAccent() {
+        let stops = ComponentInk.fieldStops(c2: 0x125B63)   // the two-seam's c2
+        XCTAssertEqual(stops.map(\.rgb), [0x0D2425, 0x0B0805, 0x070503], "rgb(13,36,37) is what the site computes")
+        XCTAssertEqual(stops.map(\.location), [0, 0.52, 1])
+        XCTAssertEqual(ComponentInk.fieldAngle, 170)
+        XCTAssertEqual(PitchAccents.mixRGB(0x000000, 0xFFFFFF, 0.5), 0x808080)
+        XCTAssertEqual(PitchAccents.mixRGB(0x0B0805, 0x125B63, 0), 0x0B0805)
+    }
+
+    /// The face is the warm-black field, never the foil stock showing through it:
+    /// a standard card's head band reads dark, as the site's does.
+    @MainActor
+    func testTheFaceOfAStandardCardReadsDark() throws {
+        let store = PitchStore()
+        let e = try XCTUnwrap(store.pitch(slug: "slider"))
+        let content = SpecimenCardContent.make(entry: e, grip: store.gripEntry(forSpecimen: "slider"))
+        XCTAssertEqual(content.frame, .standard)
+        let metrics = SpecimenCardMetrics(width: 300, frame: content.frame)
+        let r = ImageRenderer(content: SpecimenCardFront(content: content, metrics: metrics, playsFilm: false).environment(store))
+        r.scale = 1
+        let image = try XCTUnwrap(r.cgImage)
+        let probe = try XCTUnwrap(Self.pixel(image, x: 165, y: Int(metrics.stockPadding) + 8))
+        let luminance = 0.2126 * probe.r + 0.7152 * probe.g + 0.0722 * probe.b
+        XCTAssertLessThan(luminance, 0.25, "the head band shows the field, not the foil: \(probe)")
+    }
+
+    private static func pixel(_ image: CGImage, x: Int, y: Int) -> (r: Double, g: Double, b: Double)? {
+        var bytes = [UInt8](repeating: 0, count: 4)
+        guard let ctx = CGContext(data: &bytes, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                                  space: CGColorSpaceCreateDeviceRGB(),
+                                  bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return nil }
+        ctx.draw(image, in: CGRect(x: -x, y: y - image.height + 1, width: image.width, height: image.height))
+        return (Double(bytes[0]) / 255, Double(bytes[1]) / 255, Double(bytes[2]) / 255)
+    }
+
     @MainActor
     func testCardWordsRepeatCueAndTierInScalableText() throws {
         let store = PitchStore()

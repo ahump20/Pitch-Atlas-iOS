@@ -21,6 +21,12 @@ enum ComponentInk {
     static let filterPanelFill = Color(hex: 0x0E0B15, opacity: 0.5)
     // Card stock — .rfx-card, .rfx-field, .rfx-head, .rfx-stage, .rfx-read, .rfx-strip (index.css 938-1526)
     static let fieldBase = Color(hex: 0x0B0805)
+    /// The field's run: color-mix(in srgb, c2 34%, #0B0805) 0%, #0B0805 52%,
+    /// #070503 100% at 170°. Opaque at every stop, so the foil never shows through.
+    static let fieldAngle: Double = 170
+    static func fieldStops(c2: UInt32) -> [(rgb: UInt32, location: Double)] {
+        [(PitchAccents.mixRGB(0x0B0805, c2, 0.34), 0), (0x0B0805, 0.52), (0x070503, 1)]
+    }
     static let stageDeep = Color(hex: 0x060403)
     static let cardName = Color(hex: 0xFBF7EE)
     static let cardFileLabel = Color(hex: 0x9D927D)

@@ -67,14 +67,22 @@ struct SpecimenCardFront: View {
         .padding(m.fieldPadding)
         .background {
             fieldShape
-                .fill(ember ? LinearGradient(colors: ComponentInk.emberField, startPoint: .top, endPoint: .bottom)
-                            : LinearGradient(colors: [c2.opacity(0.34), ComponentInk.fieldBase], startPoint: .top, endPoint: .bottom))
+                .fill(ember ? LinearGradient(colors: ComponentInk.emberField, startPoint: .top, endPoint: .bottom) : fieldRun)
                 .overlay { fieldShape.strokeBorder(.black, lineWidth: 2) }
                 .overlay { fieldShape.inset(by: 2).strokeBorder((ember ? Color(rgb: WebTokens.Accent.burnt) : c3).opacity(0.42), lineWidth: 1) }
                 .overlay { Hatch(angle: 45, spacing: 6).stroke(PitchAtlasTheme.bone, lineWidth: 0.5).opacity(0.075) }
                 .overlay { RadialGradient(colors: [.white.opacity(0.3), .clear], center: light, startRadius: 0, endRadius: m.width * 0.6).blendMode(.screen) }
                 .clipShape(fieldShape)
         }
+    }
+
+    /// `.rfx-field`'s warm-black run, tinted at the top by the pitch's c2.
+    private var fieldRun: LinearGradient {
+        let m = metrics
+        let line = CSSGradientLine.points(degrees: ComponentInk.fieldAngle,
+                                          size: CGSize(width: m.width - 2 * m.stockPadding, height: m.height - 2 * m.stockPadding))
+        return LinearGradient(stops: ComponentInk.fieldStops(c2: content.triad.c2).map { .init(color: Color(rgb: $0.rgb), location: $0.location) },
+                              startPoint: line.start, endPoint: line.end)
     }
 
     private var head: some View {
