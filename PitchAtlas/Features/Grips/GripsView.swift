@@ -23,20 +23,33 @@ struct GripsView: View {
     /// Verbatim, GripsPage.tsx's SectionHero sub.
     static let heroSub = "The grip is the one thing a hitter never gets to see. These are the real ones, photographed in one pitcher’s hand, on his own ball, owned outright and captioned in his own words. Not the textbook’s idea of correct; one arm’s actual hold."
 
+    /// The page's own coordinate space: the coal room's rows place their slice of it.
+    static let pageSpace = "gripsPage"
+    /// The room's top (the hero's foot) and bottom (the footer's head), as measured.
+    @State private var room = CoalRoomEdges()
+
     var body: some View {
         ZStack {
             FieldBackdrop()
 
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 0) {
+                    // One lazy column as the scroll's own content, as 1.1.0 shipped it.
+                    // A lazy stack nested inside an eager one handed SwiftUI's prefetch
+                    // a size that kept moving, and past the sixth grip the page spun the
+                    // main thread at full use without ever settling.
+                    LazyVStack(alignment: .leading, spacing: 0) {
                         SectionHero(eyebrow: "Grip library",
                                     title: Text("Grips, from the hand."),
                                     sub: Text(Self.heroSub),
                                     trail: [Crumb(label: "The Atlas", path: "home"), Crumb(label: "Grip Library")])
-                        content(proxy)
+                            .background { CoalRoomEdges.mark("top", edge: \.maxY, in: Self.pageSpace) }
+                        rows(proxy)
                         SiteFooter(path: "/grips")
+                            .background { CoalRoomEdges.mark("bottom", edge: \.minY, in: Self.pageSpace) }
                     }
+                    .coordinateSpace(name: Self.pageSpace)
+                    .onPreferenceChange(CoalRoomEdges.Key.self) { room.take($0) }
                     .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
                     .emitsScrollProgress()
                 }
@@ -56,25 +69,36 @@ struct GripsView: View {
 
     // MARK: - Four states
 
+    /// The page's rows between the hero and the footer. In the dark room a grip is
+    /// read in (.scene-coal), each row paints its own slice of the room.
     @ViewBuilder
-    private func content(_ proxy: ScrollViewProxy) -> some View {
+    private func rows(_ proxy: ScrollViewProxy) -> some View {
         if case .failed(let msg) = store.status {
             ErrorStateView(reason: msg).padding(20)
         } else if store.grips.entries.isEmpty {
             EmptyStateView(message: "The grip library couldn't load.").padding(20)
         } else {
-            // .scene-coal: the theater, footage and film read in the dark
-            VStack(alignment: .leading, spacing: 0) {
-                GripJumpRow(entries: store.grips.entries) { jump(proxy, to: $0) }
-                library
+            let file = store.grips
+            let shown = GripLibraryReads.matches(file.entries, query: query)
+            Group {
+                GripJumpRow(entries: file.entries) { jump(proxy, to: $0) }
+                libraryHead(file, shown: shown)
+                ForEach(shown) { entry in
+                    GripArticle(entry: entry, gap: GripLibraryReads.gap(for: entry, in: file))
+                        .padding(.horizontal, 20)
+                        .padding(.top, 48)
+                }
+                // the library's foot (py-14)
+                Color.clear.frame(height: 56)
                 MediaRail(eyebrow: "Grip lessons in motion",
                           title: "More hands in the conversation.",
                           intro: "First-party photographs remain the evidence in this library. These official, credited embeds add outside teaching and history without becoming the canonical grip.",
                           items: MediaShelf.query(store.externalMedia.items, placement: .grips, limit: 4))
-                AttackPlanSection(file: store.grips)
+                AttackPlanSection(file: file)
                 GripCompareEntry()
             }
-            .background { CoalScene() }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background { CoalRoomSlice(roomTop: room.top, roomHeight: room.height, space: Self.pageSpace) }
         }
     }
 
@@ -90,10 +114,10 @@ struct GripsView: View {
 
     // MARK: - The library
 
-    private var library: some View {
-        let file = store.grips
-        let shown = GripLibraryReads.matches(file.entries, query: query)
-        return VStack(alignment: .leading, spacing: 48) {
+    /// The library's head (py-14 px-5): the through-line and the arsenal, then
+    /// "Find a grip". Each grip follows as its own row of the page.
+    private func libraryHead(_ file: GripsFile, shown: [GripEntry]) -> some View {
+        VStack(alignment: .leading, spacing: 48) {
             VStack(alignment: .leading, spacing: 16) {
                 Text(file.intro)
                     .font(PitchAtlasType.font(.hanken400, size: 16, relativeTo: .body))
@@ -115,19 +139,38 @@ struct GripsView: View {
             }
             GripLibrarySearch(query: $query, shown: shown.count, total: file.entries.count,
                               loops: GripLibraryReads.loops(shown, reduceMotion: reduceMotion))
-            if !shown.isEmpty {
-                // Lazy, so a grip's film and photographs build only as it scrolls in,
-                // and a film that scrolls away stops.
-                LazyVStack(alignment: .leading, spacing: 48) {
-                    ForEach(shown) { entry in
-                        GripArticle(entry: entry, gap: GripLibraryReads.gap(for: entry, in: file))
-                    }
-                }
-            }
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 56)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.top, 56)
+    }
+}
+
+/// The coal room's two edges in the page's space, read off the rows that bound
+/// it as they lay out. A row a lazy page has dropped keeps its last reading.
+struct CoalRoomEdges: Equatable {
+    var top: CGFloat = 0
+    var bottom: CGFloat?
+    /// Until the footer has been laid out, the room is taken as this tall.
+    static let assumedHeight: CGFloat = 36_000
+
+    var height: CGFloat { max(1, (bottom ?? top + Self.assumedHeight) - top) }
+
+    mutating func take(_ edges: [String: CGFloat]) {
+        if let t = edges["top"] { top = t }
+        if let b = edges["bottom"] { bottom = b }
+    }
+
+    struct Key: PreferenceKey {
+        static var defaultValue: [String: CGFloat] = [:]
+        static func reduce(value: inout [String: CGFloat], nextValue: () -> [String: CGFloat]) {
+            value.merge(nextValue()) { _, new in new }
+        }
+    }
+
+    static func mark(_ name: String, edge: KeyPath<CGRect, CGFloat>, in space: String) -> some View {
+        GeometryReader { geo in
+            Color.clear.preference(key: Key.self, value: [name: geo.frame(in: .named(space))[keyPath: edge]])
+        }
     }
 }
 

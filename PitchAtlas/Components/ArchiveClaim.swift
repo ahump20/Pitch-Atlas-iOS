@@ -192,6 +192,41 @@ struct CoalScene: View {
     }
 }
 
+/// `.scene-coal` painted row by row on a lazy page. Each row of the room draws its
+/// own slice of one room's washes, placed by where the row sits in the room, so
+/// rows that are built and dropped as they scroll still read as one dark room.
+struct CoalRoomSlice: View {
+    /// The room's top and height in the page's own coordinate space.
+    let roomTop: CGFloat
+    let roomHeight: CGFloat
+    let space: String
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    /// The crown and the bone wash, in a row's own coordinates, for a row that
+    /// starts `rowOffset` below the room's top.
+    static func centers(width w: CGFloat, roomHeight h: CGFloat, rowOffset: CGFloat) -> (crown: CGPoint, wash: CGPoint) {
+        (CGPoint(x: w * 0.5, y: -h * 0.06 - rowOffset), CGPoint(x: w * 0.12, y: h * 0.16 - rowOffset))
+    }
+
+    var body: some View {
+        GeometryReader { geo in
+            let w = geo.size.width, h = max(roomHeight, 1)
+            let at = Self.centers(width: w, roomHeight: h, rowOffset: geo.frame(in: .named(space)).minY - roomTop)
+            ZStack {
+                PitchAtlasTheme.void
+                if !reduceTransparency {
+                    CSSEllipseWash(color: ArchiveInk.coalCrown, center: at.crown,
+                                   radii: CGSize(width: w * 0.5, height: h * 0.4), fade: 0.6)
+                    CSSEllipseWash(color: ArchiveInk.coalWash, center: at.wash,
+                                   radii: CGSize(width: w * 0.4, height: h * 0.36), fade: 0.6)
+                }
+            }
+        }
+        .clipped()
+        .accessibilityHidden(true)
+    }
+}
+
 /// A CSS elliptical radial gradient: a color at the center fading to clear at
 /// `fade` of the way out to an ellipse of the given radii.
 struct CSSEllipseWash: View {

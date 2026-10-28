@@ -71,4 +71,18 @@ final class GripLibraryTests: XCTestCase {
         XCTAssertFalse(GripLoopFace.isOnScreen(film(1060), in: screen))
         XCTAssertFalse(GripLoopFace.isOnScreen(.zero, in: screen), "a film with no size never plays")
     }
+
+    /// The coal room is painted row by row on the lazy page: each row draws its
+    /// slice of one room, so the crown (50% 40% at 50% −6%) and the bone wash
+    /// (40% 36% at 12% 16%) sit at the same room point whatever row draws them.
+    func testCoalRoomSlicesShareOneRoom() {
+        let first = CoalRoomSlice.centers(width: 440, roomHeight: 30_000, rowOffset: 0)
+        let later = CoalRoomSlice.centers(width: 440, roomHeight: 30_000, rowOffset: 1_200)
+        XCTAssertEqual(first.crown.x, 220, accuracy: 1e-9)
+        XCTAssertEqual(first.crown.y, -1_800, accuracy: 1e-9)
+        XCTAssertEqual(first.wash.x, 52.8, accuracy: 1e-9)
+        XCTAssertEqual(first.wash.y, 4_800, accuracy: 1e-9)
+        XCTAssertEqual(first.crown.y - later.crown.y, 1_200, accuracy: 1e-9)
+        XCTAssertEqual(first.wash.y - later.wash.y, 1_200, accuracy: 1e-9)
+    }
 }
