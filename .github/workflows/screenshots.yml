@@ -36,8 +36,9 @@ jobs:
           if [ -z "$UDID" ]; then xcrun simctl list devices available; exit 1; fi
           xcrun simctl boot "$UDID" || true
           xcrun simctl bootstatus "$UDID" -b
-          xcrun simctl status_override "$UDID" --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 \
-            --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
+          xcrun simctl status_bar "$UDID" override --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 \
+            --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100 \
+            || echo "status bar override unavailable; shots keep the live clock"
           xcrun simctl list devices | grep "$UDID"
           echo "UDID=$UDID" >> "$GITHUB_ENV"
 
