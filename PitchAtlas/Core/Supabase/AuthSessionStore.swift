@@ -84,7 +84,7 @@ final class AuthSessionStore {
         do {
             let session = try await client.auth.session
             apply(session: session)
-            return String(describing: session.user.id)
+            return Self.idString(session.user.id)
         } catch AuthError.sessionMissing {
             // Genuinely signed out — fall through and mint on this write intent.
         } catch {
@@ -96,7 +96,7 @@ final class AuthSessionStore {
         do {
             let session = try await client.auth.signInAnonymously()
             apply(session: session)
-            return String(describing: session.user.id)
+            return Self.idString(session.user.id)
         } catch {
             throw CommunityServiceError.sessionStartFailed
         }
@@ -303,8 +303,14 @@ final class AuthSessionStore {
         }
     }
 
+    /// The user id as Postgres prints it: lowercase. `UUID.description` is
+    /// uppercase, and the server compares storage folders and author ids as
+    /// `auth.uid()::text`, so an uppercase id never matched — image uploads were
+    /// refused and "is this mine" checks never passed.
+    nonisolated static func idString(_ id: UUID) -> String { id.uuidString.lowercased() }
+
     private func apply(session: Session?) {
-        userID = session.map { String(describing: $0.user.id) }
+        userID = session.map { Self.idString($0.user.id) }
         email = session?.user.email
         accessToken = session?.accessToken
         isAnonymous = session?.user.isAnonymous ?? false
