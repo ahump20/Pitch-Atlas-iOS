@@ -588,12 +588,10 @@ struct CraftsmanCard: View {
                 }
                 .frame(width: 56, height: 56)
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(craftsman.name)
-                        .font(PitchAtlasType.font(.anton400, size: 24, relativeTo: .title2))
-                        .tracking(em: 0.01, size: 24)
-                        .textCase(.uppercase)
+                    // .rfx-platetitle under text-2xl: 24 on a 32 line, tighter than Anton's own box
+                    TightLines(craftsman.name.uppercased(), face: .anton400, size: 24, lineHeight: 32.0 / 24.0,
+                               relativeTo: .title2, trackingEm: 0.01)
                         .foregroundStyle(PitchAtlasTheme.bone)
-                        .fixedSize(horizontal: false, vertical: true)
                     PlateMono(craftsman.signaturePitch, ink: PitchAtlasTheme.bone2)
                 }
             }
@@ -663,12 +661,9 @@ struct LostPitchCard: View {
             HStack(spacing: 16) {
                 ArchiveSealMark(size: 48).opacity(0.8)
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(pitch.name)
-                        .font(PitchAtlasType.font(.anton400, size: 24, relativeTo: .title2))
-                        .tracking(em: 0.01, size: 24)
-                        .textCase(.uppercase)
+                    TightLines(pitch.name.uppercased(), face: .anton400, size: 24, lineHeight: 32.0 / 24.0,
+                               relativeTo: .title2, trackingEm: 0.01)
                         .foregroundStyle(PitchAtlasTheme.bone)
-                        .fixedSize(horizontal: false, vertical: true)
                     PlateMono(LostPitchPlate.kindLabel(pitch.kind), ink: PitchAtlasTheme.bone2)
                 }
             }
