@@ -126,8 +126,8 @@ struct SiteFooter: View {
 }
 
 /// RotatingQuote: the page's line from the quote pool (craft and the philosophy
-/// of the game, each sourced), stepping on the site's slow tick. Reduce Motion
-/// holds the page's own line.
+/// of the game, each sourced), stepping on the site's slow tick with no fade, as
+/// the site's line never animates. Reduce Motion holds the page's own line.
 struct RotatingQuote: View {
     let path: String
 
@@ -145,24 +145,31 @@ struct RotatingQuote: View {
                     .fixedSize(horizontal: false, vertical: true)
                 attribution(quote)
             }
-            .id(quote.id)
-            .transition(.opacity)
-            .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: quote.id)
             .accessibilityElement(children: .combine)
             .task(id: reduceMotion) { await advance() }
         }
     }
 
+    /// The figcaption: the attribution underlined as the site's link, then
+    /// " · {context}" in plain words on the same line of type. The whole credit
+    /// is the 44pt target that opens the source.
     private func attribution(_ quote: AtlasQuote) -> some View {
-        let words = quote.context.map { "\(quote.attribution) · \($0)" } ?? quote.attribution
+        let credit = QuotePick.credit(quote)
+        let source = quote.claim.source.flatMap { URL(string: $0.url) }
+        let name = Text(credit.link.uppercased())
+        let words = (source == nil ? name : name.underline(color: PitchAtlasTheme.bone2.opacity(0.3)))
+            + Text((credit.tail ?? "").uppercased())
         return Group {
-            if let source = quote.claim.source, let url = URL(string: source.url) {
-                Link(destination: url) {
-                    Text(words.uppercased()).underline(color: PitchAtlasTheme.bone2.opacity(0.3)).multilineTextAlignment(.leading)
+            if let source {
+                Link(destination: source) {
+                    words
+                        .multilineTextAlignment(.leading)
+                        .frame(minHeight: 44, alignment: .topLeading)
+                        .contentShape(Rectangle())
                 }
-                    .accessibilityHint("Opens the source in Safari")
+                .accessibilityHint("Opens the source in Safari")
             } else {
-                Text(words.uppercased())
+                words
             }
         }
         .font(SiteFooter.labelFont)
@@ -179,7 +186,7 @@ struct RotatingQuote: View {
         while !Task.isCancelled {
             try? await Task.sleep(nanoseconds: UInt64(QuotePick.interval * 1_000_000_000))
             if Task.isCancelled { return }
-            withAnimation(.easeInOut(duration: 0.5)) { tick += 1 }
+            tick += 1
         }
     }
 }

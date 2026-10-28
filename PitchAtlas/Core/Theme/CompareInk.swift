@@ -43,6 +43,16 @@ enum CompareInk {
     /// .archive-action--quiet's rim
     static let quietRim = Color(hex: 0x8A7A5E)
 
+    // MARK: The tray (.compare-tray)
+    /// Its ground, rim (#aa8b575c), words and open place (.compare-empty-slot),
+    /// the lip of light inside its top edge (#f4e3b818) and its drop (#0009)
+    static let trayFill = Color(hex: 0x171610)
+    static let trayRim = Color(hex: 0xAA8B57, opacity: 0x5C / 255.0)
+    static let trayInk = Color(hex: 0xEEE1C6)
+    static let trayEmpty = Color(hex: 0xB6A98F)
+    static let trayLip = Color(hex: 0xF4E3B8, opacity: 0x18 / 255.0)
+    static let trayShadow = Color(hex: 0x000000, opacity: 0x99 / 255.0)
+
     // MARK: The bench (.bench--page)
     /// .bench--page's rim (#a38a5e44) and ground
     static let benchRim = Color(hex: 0xA38A5E, opacity: 0x44 / 255.0)

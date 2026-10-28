@@ -122,31 +122,46 @@ struct RootView: View {
             NavigationStack(path: $router.atlasPath) {
                 TabScaffold(tab: .atlas) { AtlasView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.atlas.title, systemImage: AppTab.atlas.systemImage) }
                 .tag(AppTab.atlas)
             NavigationStack(path: $router.indexPath) {
                 TabScaffold(tab: .index) { IndexView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.index.title, systemImage: AppTab.index.systemImage) }
                 .tag(AppTab.index)
             NavigationStack(path: $router.gripsPath) {
                 TabScaffold(tab: .grips) { GripsView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.grips.title, systemImage: AppTab.grips.systemImage) }
                 .tag(AppTab.grips)
             NavigationStack(path: $router.craftsmenPath) {
                 TabScaffold(tab: .craftsmen) { CraftsmenView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.craftsmen.title, systemImage: AppTab.craftsmen.systemImage) }
                 .tag(AppTab.craftsmen)
             NavigationStack(path: $router.sourcesPath) {
                 TabScaffold(tab: .sources) { SourcesView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.sources.title, systemImage: AppTab.sources.systemImage) }
                 .tag(AppTab.sources)
         }
         .environment(\.compareSelection, comparison)
         .environment(router)
+        // a third pitch asks for room over any page while the table is shut
+        .overlay {
+            if let pending = comparison.pending, !comparison.presented {
+                MakeRoom(pending: pending).environment(\.compareSelection, comparison)
+            }
+        }
+        // the tray's status line (role="status"), spoken once for every tab's tray
+        .onChange(of: comparison.slugs.count) { _, chosen in
+            AccessibilityNotification.Announcement(CompareTrayReads.status(chosen: chosen)).post()
+        }
         .toastHost()
         .environment(toasts)
         // The cover sits outside the environment written above, so it carries its own:

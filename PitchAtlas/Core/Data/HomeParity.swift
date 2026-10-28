@@ -41,6 +41,12 @@ enum QuotePick {
     static func quote(forPath path: String, tick: Int, in store: PitchStore) -> AtlasQuote? {
         index(path: path, tick: tick, count: store.quotes.count).map { store.quotes[$0] }
     }
+
+    /// RotatingQuote's figcaption: the attribution is the link to the source, and
+    /// " · {context}" follows it as plain words when the quote has a context.
+    static func credit(_ quote: AtlasQuote) -> (link: String, tail: String?) {
+        (quote.attribution, quote.context.flatMap { $0.isEmpty ? nil : " · \($0)" })
+    }
 }
 
 /// asOfDate() (web src/lib/format.ts): "October 24, 2026", parsed by parts so no

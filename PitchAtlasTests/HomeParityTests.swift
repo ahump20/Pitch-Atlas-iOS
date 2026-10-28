@@ -20,6 +20,18 @@ final class HomeParityTests: XCTestCase {
         XCTAssertEqual(QuotePick.quote(forPath: "/", tick: 0, in: store)?.id, "q-craftsman-greg-maddux")
     }
 
+    /// RotatingQuote.tsx: the attribution is the link; " · {context}" follows it
+    /// as plain words, and a quote with no context ends at the name.
+    func testQuoteLinksOnlyTheAttribution() throws {
+        let quote = try XCTUnwrap(store.quotes.first { $0.id == "q-craftsman-greg-maddux" })
+        let credit = QuotePick.credit(quote)
+        XCTAssertEqual(credit.link, "Greg Maddux")
+        XCTAssertEqual(credit.tail, " · Two-seam fastball")
+        let bare = AtlasQuote(id: "bare", attribution: "Greg Maddux", context: nil, claim: quote.claim)
+        XCTAssertEqual(QuotePick.credit(bare).link, "Greg Maddux")
+        XCTAssertNil(QuotePick.credit(bare).tail)
+    }
+
     /// asOfDate(): "October 24, 2026"; anything that isn't a plain ISO date stays as written.
     func testAsOfFormatsLikeTheWeb() {
         XCTAssertEqual(AsOf.format("2026-10-24"), "October 24, 2026")

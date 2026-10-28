@@ -981,8 +981,9 @@ struct FlightFigure: View {
 
 // MARK: - Making room (CompareProvider.tsx)
 
-/// A third pitch asks which place it takes; the other pitch stays.
-private struct MakeRoom: View {
+/// A third pitch asks which place it takes; the other pitch stays. The table
+/// shows it over the pair; RootView shows it over any page when the table is shut.
+struct MakeRoom: View {
     let pending: String
     @Environment(\.compareSelection) private var selection
     @Environment(PitchStore.self) private var store

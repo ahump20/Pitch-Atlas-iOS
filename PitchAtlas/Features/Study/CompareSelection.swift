@@ -69,15 +69,22 @@ import Observation
         inspection = nil
     }
 
-    /// Compare fills A, then B; a third pitch waits for the reader to choose which
-    /// place it takes. A pitch already at the table only opens the table.
+    /// CompareProvider's add: A, then B; a third pitch waits for the reader to
+    /// choose which place it takes, and a pitch already chosen stays where it is.
+    /// The table stays shut: the tray says what is chosen.
     func add(_ slug: String) {
         inspection = nil
-        presented = true
         if slugs.contains(slug) { return }
         if a == nil { a = slug } else if b == nil { b = slug } else { pending = slug; return }
         // a pitch that joined the pair is no longer waiting
         if pending == slug { pending = nil }
+    }
+
+    /// CompareButton: a chosen pitch leaves its place, the other keeping its own;
+    /// any other pitch is added.
+    func toggle(_ slug: String) {
+        if a == slug { a = nil } else if b == slug { b = nil } else { add(slug); return }
+        if let inspection, !slugs.contains(inspection.slug) { self.inspection = nil }
     }
 
     /// The waiting pitch takes this place; the other stays.
@@ -131,13 +138,14 @@ import Observation
     }
 }
 
+/// CompareButton.tsx: "Compare" puts the pitch in the tray; "Selected" takes it out.
 struct CompareButton: View {
     let slug: String
     @Environment(\.compareSelection) private var selection
     var body: some View {
         let on = selection.slugs.contains(slug)
-        Button { selection.add(slug); Haptics.selection() } label: {
-            Label(on ? "In comparison" : "Compare", systemImage: "square.split.2x1")
+        Button { selection.toggle(slug); Haptics.selection() } label: {
+            Label(CompareTrayReads.buttonLabel(selected: on), systemImage: on ? "checkmark" : "square.split.2x1")
                 .font(PitchAtlasType.font(.hanken600, size: 12, relativeTo: .caption))
                 .foregroundStyle(on ? ComponentInk.compareOnInk : ComponentInk.compareInk)
                 .padding(.horizontal, 12.8)
@@ -148,6 +156,8 @@ struct CompareButton: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(CompareTrayReads.buttonAccessibility(selected: on, slug: slug))
+        .accessibilityAddTraits(on ? .isSelected : [])
     }
 }
 
