@@ -149,7 +149,15 @@ struct RootView: View {
         .environment(router)
         .toastHost()
         .environment(toasts)
-        .sheet(isPresented: $comparison.presented) { CompareView().environment(\.compareSelection, comparison) }
+        // The cover sits outside the environment written above, so it carries its own:
+        // the specimen pages it opens post toasts, and its links leave through the router.
+        .fullScreenCover(isPresented: $comparison.presented) {
+            CompareView()
+                .toastHost()
+                .environment(toasts)
+                .environment(router)
+                .environment(\.compareSelection, comparison)
+        }
         .tint(PitchAtlasTheme.kicker)
         .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)

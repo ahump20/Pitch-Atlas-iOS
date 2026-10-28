@@ -646,16 +646,3 @@ private struct GripCompareEntry: View {
         }
     }
 }
-
-extension GripEntry {
-    /// Search only existing record text; navigation uses the explicit authored slug.
-    func matchesStudySearch(_ query: String) -> Bool {
-        let words = query.split(whereSeparator: \.isWhitespace)
-        let text = [label, family.rawValue, shortCue, visibleCue, note].joined(separator: " ")
-        return words.allSatisfy { text.localizedCaseInsensitiveContains(String($0)) }
-    }
-
-    func filedSpecimen(in store: PitchStore) -> PitchAtlasEntry? {
-        specimenSlug.flatMap { store.pitch(slug: $0) }
-    }
-}

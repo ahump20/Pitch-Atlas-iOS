@@ -26,6 +26,7 @@ const stops = {
   about: '/about',
   account: '/support',
   compare: '/compare?a=slider&b=sweeper',
+  compareflight: '/compare?a=slider&b=sweeper&view=movement',
 }
 const W = 440
 const H = 956

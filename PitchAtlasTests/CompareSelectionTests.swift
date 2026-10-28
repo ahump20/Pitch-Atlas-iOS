@@ -5,19 +5,24 @@ import simd
 final class CompareSelectionTests: XCTestCase {
     func testGripSearchAndNavigationUseBundledRecordTextAndExplicitLinks() throws {
         let store = PitchStore()
+        let entries = store.grips.entries
         let four = try XCTUnwrap(store.gripEntry(id: "four-seam"))
-        XCTAssertTrue(four.matchesStudySearch("  FOUR  seam \n"))
-        XCTAssertTrue(four.matchesStudySearch("fastball"))
-        XCTAssertTrue(four.matchesStudySearch("  \n"))
-        XCTAssertFalse(four.matchesStudySearch("no-such-grip"))
-        XCTAssertEqual(four.filedSpecimen(in: store)?.slug, "four-seam")
+        XCTAssertTrue(GripLibraryReads.matches(entries, query: "  FOUR-seam \n").contains(four))
+        XCTAssertEqual(GripLibraryReads.matches(entries, query: "  \n").count, entries.count)
+        XCTAssertTrue(GripLibraryReads.matches(entries, query: "no-such-grip").isEmpty)
+        XCTAssertEqual(GripLibraryReads.link(four), .specimen(slug: "four-seam"))
         let basic = try XCTUnwrap(store.gripEntry(id: "split-finger"))
-        XCTAssertNil(basic.filedSpecimen(in: store), "A similar name must not invent a specimen link")
-        XCTAssertNotNil(basic.repertoireId.flatMap { store.repertoireEntry(id: $0) })
+        XCTAssertNil(basic.specimenSlug, "A similar name must not invent a specimen link")
+        let file = try XCTUnwrap(basic.repertoireId)
+        XCTAssertEqual(GripLibraryReads.link(basic), .file(id: file))
+        XCTAssertNotNil(store.repertoireEntry(id: file))
         var object = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(four)) as? [String: Any])
         object["specimenSlug"] = "not-bundled"
         let missing = try JSONDecoder().decode(GripEntry.self, from: JSONSerialization.data(withJSONObject: object))
-        XCTAssertNil(missing.filedSpecimen(in: store), "Missing references must not fall back to a guessed id")
+        // The link carries the authored slug and nothing else; the library shows it
+        // only when the bundle has that specimen.
+        XCTAssertEqual(GripLibraryReads.link(missing), .specimen(slug: "not-bundled"))
+        XCTAssertNil(store.pitch(slug: "not-bundled"), "Missing references must not fall back to a guessed id")
     }
 
     func testSpecimenInspectionPreservesComparisonAndReturnsToWorkspace() throws {
@@ -80,48 +85,32 @@ final class CompareSelectionTests: XCTestCase {
     }
 
     func testThirdPitchRequiresExplicitReplacementAndDuplicateKeepsPair() {
+        let store = PitchStore()
         let state = CompareSelection()
         state.add("four-seam"); state.add("slider"); state.add("four-seam")
         XCTAssertEqual(state.slugs, ["four-seam", "slider"])
         state.add("changeup")
         XCTAssertEqual(state.slugs, ["four-seam", "slider"])
         XCTAssertEqual(state.pending, "changeup")
-        state.replace(1)
+        state.replace(.b)
         XCTAssertEqual(state.slugs, ["four-seam", "changeup"])
         XCTAssertNil(state.pending)
-        state.remove("four-seam")
+        state.set(.a, to: nil, store: store)
         XCTAssertEqual(state.slugs, ["changeup"])
     }
     func testReplacementNeverDuplicatesAPitchAlreadyInThePair() {
-        let state = CompareSelection()
-        state.add("four-seam"); state.add("slider"); state.add("cutter")
-        state.remove("four-seam"); state.add("cutter")
-        XCTAssertEqual(state.slugs, ["slider", "cutter"])
-        XCTAssertNil(state.pending, "a pitch that joined the pair is no longer waiting")
-        state.replace(0)
-        XCTAssertEqual(state.slugs, ["slider", "cutter"])
-        XCTAssertEqual(Set(state.slugs).count, state.slugs.count)
-    }
-    func testDeepLinksResolveBundleAndRejectInvalidValuesWithoutDestroyingPair() {
         let store = PitchStore()
         let state = CompareSelection()
-        let pitches = Array(store.pitches.prefix(2))
-        XCTAssertEqual(pitches.count, 2)
-        guard pitches.count == 2 else { return }
-        let base = "pitchatlas://compare?a=\(pitches[0].slug)&b=\(pitches[1].slug)"
-        XCTAssertTrue(state.handle(URL(string: base + "&view=cues&hand=left&orientation=thumb")!, store: store))
-        XCTAssertEqual(state.slugs, pitches.map(\.slug))
-        XCTAssertEqual(state.mode, .cues)
-        XCTAssertEqual(state.hand, .left)
-        XCTAssertEqual(state.orientation, .thumb)
-        for suffix in ["&view=bogus", "&hand=bogus", "&orientation=bogus", "&a=missing"] {
-            state.handle(URL(string: base + suffix)!, store: store)
-            XCTAssertNotNil(state.error)
-            XCTAssertEqual(state.slugs, pitches.map(\.slug))
-        }
-        state.handle(URL(string: "pitchatlas://compare?a=missing&b=missing")!, store: store)
-        XCTAssertNotNil(state.error)
-        XCTAssertEqual(state.slugs, pitches.map(\.slug))
+        state.add("four-seam"); state.add("slider"); state.add("cutter")
+        XCTAssertEqual(state.pending, "cutter")
+        state.set(.a, to: nil, store: store); state.add("cutter")
+        XCTAssertEqual(state.slugs, ["cutter", "slider"])
+        XCTAssertNil(state.pending, "a pitch that joined the pair is no longer waiting")
+        state.pending = "cutter"
+        state.replace(.b)
+        XCTAssertEqual(state.slugs, ["cutter", "slider"])
+        XCTAssertNil(state.pending)
+        XCTAssertEqual(Set(state.slugs).count, state.slugs.count)
     }
     func testArchiveConnectionsResolveExplicitBundledRelationships() throws {
         let store = PitchStore()

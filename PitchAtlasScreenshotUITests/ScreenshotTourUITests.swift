@@ -32,6 +32,7 @@ final class ScreenshotTourUITests: XCTestCase {
         Stop(name: "about", env: ["PA_ROUTE": "about"], pages: 8),
         Stop(name: "account", env: ["PA_ROUTE": "account"], pages: 8),
         Stop(name: "compare", env: ["PA_ROUTE": "compare?a=slider&b=sweeper"], pages: 8),
+        Stop(name: "compareflight", env: ["PA_ROUTE": "compare?a=slider&b=sweeper&view=movement"], pages: 6),
     ]
 
     override func setUpWithError() throws {

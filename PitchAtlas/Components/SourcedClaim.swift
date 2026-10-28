@@ -115,6 +115,9 @@ struct RefractorClaimView: View {
     var size: CGFloat = 15
     var ink: Color = PitchAtlasTheme.bone2
     var ground: ClaimGround = .void
+    /// Spoken before the words where the eye reads them under a column head (the
+    /// compare table's sr-only pitch name).
+    var spokenPrefix: String? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -124,6 +127,7 @@ struct RefractorClaimView: View {
                 .cssLineHeight(1.625, face: .hanken400, size: size, relativeTo: size >= 15 ? .body : .subheadline)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityLabel(spokenPrefix.map { "\($0): \(claim.value)" } ?? claim.value)
             ClaimTierLine(claim: claim, ground: ground)
             if let note = claim.note { RefractorNoteView(text: note, ground: ground) }
         }
