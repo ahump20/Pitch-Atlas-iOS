@@ -40,7 +40,7 @@ private struct DropShadow: View {
 }
 
 /// The plates' mono micro-label (`.mono-label`): Martian 11, 0.18em, uppercase.
-private struct PlateMono: View {
+struct PlateMono: View {
     let text: String
     let ink: AnyShapeStyle
     init<S: ShapeStyle>(_ text: String, ink: S) {
@@ -80,21 +80,36 @@ struct Plate<Content: View>: View {
 
     let accent: Color
     let variant: PlateVariant
+    /// The plate's corner: 13 on a directory plate, 6 on a "Keep reading" link.
+    var radius: CGFloat
+    /// The corner ticks; a featured or link plate goes without.
+    var ticks: Bool
+    /// The site's 20pt padding inside its 1pt border: the content sits 21 in.
+    var insets: EdgeInsets
+    var alignment: HorizontalAlignment
+    var spacing: CGFloat
     let content: Content
 
-    init(accent: Color, variant: PlateVariant = .standard, @ViewBuilder content: () -> Content) {
+    init(accent: Color, variant: PlateVariant = .standard, radius: CGFloat = PitchAtlasRadius.plate,
+         ticks: Bool = true, insets: EdgeInsets = EdgeInsets(top: 21, leading: 21, bottom: 21, trailing: 21),
+         alignment: HorizontalAlignment = .leading, spacing: CGFloat = 14, @ViewBuilder content: () -> Content) {
         self.accent = accent
         self.variant = variant
+        self.radius = radius
+        self.ticks = ticks
+        self.insets = insets
+        self.alignment = alignment
+        self.spacing = spacing
         self.content = content()
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) { content }
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .overlay(alignment: .topLeading) { CornerTick().padding(10) }
-            .overlay(alignment: .topTrailing) { CornerTick().scaleEffect(x: -1).padding(10) }
-            .background { PlateField(accent: accent, variant: variant) }
+        VStack(alignment: alignment, spacing: spacing) { content }
+            .padding(insets)
+            .frame(maxWidth: .infinity, alignment: Alignment(horizontal: alignment, vertical: .center))
+            .overlay(alignment: .topLeading) { if ticks { CornerTick().padding(10) } }
+            .overlay(alignment: .topTrailing) { if ticks { CornerTick().scaleEffect(x: -1).padding(10) } }
+            .background { PlateField(accent: accent, variant: variant, radius: radius) }
             .inkContext(.object)
     }
 }
@@ -102,8 +117,9 @@ struct Plate<Content: View>: View {
 private struct PlateField: View {
     let accent: Color
     let variant: PlateVariant
+    let radius: CGFloat
     var body: some View {
-        let shape = RoundedRectangle(cornerRadius: PitchAtlasRadius.plate, style: .continuous)
+        let shape = RoundedRectangle(cornerRadius: radius, style: .continuous)
         GeometryReader { geo in
             let aspect = geo.size.width / max(geo.size.height, 1)
             let field = variant == .filed
@@ -128,7 +144,7 @@ private struct PlateField: View {
                                        style: StrokeStyle(lineWidth: 1, dash: variant.isDashed ? [3, 3] : []))
                 }
         }
-        .background { DropShadow(radius: PitchAtlasRadius.plate, y: 16, blur: 30, spread: -22, color: .black.opacity(0.8)) }
+        .background { DropShadow(radius: radius, y: 16, blur: 30, spread: -22, color: .black.opacity(0.8)) }
         .accessibilityHidden(true)
         .allowsHitTesting(false)
     }

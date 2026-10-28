@@ -20,6 +20,7 @@ const stops = {
   craftsman: '/craftsmen/greg-maddux',
   learn: '/learn',
   wing: '/learn/spin',
+  boundary: '/learn/arm-health',
   lost: '/lost-pitches',
   lostdetail: '/lost-pitches/rube-foster-fadeaway',
   about: '/about',

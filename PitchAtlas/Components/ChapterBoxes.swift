@@ -16,6 +16,8 @@ struct ChapterBoxes: View {
     let current: String?
     /// ChapterSections' `label`: what VoiceOver calls the row.
     var label = "In this pitch"
+    /// The boxes' gutter inside the rules, which run edge to edge.
+    var inset: CGFloat = 0
     let go: (String) -> Void
 
     /// The site observes each section with rootMargin -15% 0 -55% 0: a section
@@ -36,6 +38,7 @@ struct ChapterBoxes: View {
                 box(chapter, number: index + 1)
             }
         }
+        .padding(.horizontal, inset)
         .padding(.vertical, 16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .overlay(alignment: .top) { Rectangle().fill(ChapterInk.chapterRule).frame(height: 1) }

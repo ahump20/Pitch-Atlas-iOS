@@ -26,6 +26,7 @@ final class ScreenshotTourUITests: XCTestCase {
         Stop(name: "craftsman", env: ["PA_ROUTE": "craftsmen/greg-maddux"], pages: 12),
         Stop(name: "learn", env: ["PA_ROUTE": "learn"], pages: 8),
         Stop(name: "wing", env: ["PA_ROUTE": "learn/spin"], pages: 12),
+        Stop(name: "boundary", env: ["PA_ROUTE": "learn/arm-health"], pages: 8),
         Stop(name: "lost", env: ["PA_ROUTE": "lost-pitches"], pages: 44),
         Stop(name: "lostdetail", env: ["PA_ROUTE": "lost-pitches/rube-foster-fadeaway"], pages: 14),
         Stop(name: "about", env: ["PA_ROUTE": "about"], pages: 8),

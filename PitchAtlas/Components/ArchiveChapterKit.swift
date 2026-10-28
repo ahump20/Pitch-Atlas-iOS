@@ -155,8 +155,11 @@ struct PanelSheen: View {
 /// ChapterNav: the previous file, the way back to the hall, the next file, on a
 /// press panel. An end of the run leaves its cell empty, as the site's grid
 /// does. Previous and next open the neighbor's file; the hall is the site's own
-/// address.
+/// address. A Learn wing turns its page on the void under a hairline instead
+/// (knowledge/WingNav.tsx), its neighbors named by their place in the order.
 struct ChapterWalk<PrevDestination: View, NextDestination: View>: View {
+    enum Style { case panel, rule }
+
     /// The walk's name to VoiceOver ("Craftsmen chapters").
     let name: String
     let prevName: String?
@@ -165,13 +168,52 @@ struct ChapterWalk<PrevDestination: View, NextDestination: View>: View {
     let hallLabel: String
     let hallLine: String
     let hallPath: String
+    var style: Style = .panel
+    var prevLabel = "← Previous"
+    var nextLabel = "Next →"
     @ViewBuilder let prevDestination: () -> PrevDestination
     @ViewBuilder let nextDestination: () -> NextDestination
 
     var body: some View {
+        styled
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(name)
+    }
+
+    @ViewBuilder
+    private var styled: some View {
+        switch style {
+        case .panel:
+            cells
+                .padding(.horizontal, 21)
+                .padding(.vertical, 49)
+                .frame(maxWidth: .infinity)
+                .background {
+                    ZStack {
+                        PitchAtlasTheme.press
+                        PanelSheen()
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
+                .inkContext(.object)
+        case .rule:
+            // border-top bone/15 over py-12: the cells sit 49 under the line.
+            cells
+                .padding(.horizontal, 20)
+                .padding(.top, 49)
+                .padding(.bottom, 48)
+                .frame(maxWidth: .infinity)
+                .overlay(alignment: .top) {
+                    Rectangle().fill(PitchAtlasTheme.bone.opacity(0.15)).frame(height: 1).accessibilityHidden(true)
+                }
+        }
+    }
+
+    private var cells: some View {
         VStack(spacing: 16) {
             if let prevName {
-                NavigationLink { prevDestination() } label: { neighbor(prevName, label: "← Previous", trailing: false) }
+                NavigationLink { prevDestination() } label: { neighbor(prevName, label: prevLabel, trailing: false) }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Previous, \(prevName)")
             } else {
@@ -181,27 +223,13 @@ struct ChapterWalk<PrevDestination: View, NextDestination: View>: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel("\(hallLabel). \(hallLine.replacingOccurrences(of: " →", with: ""))")
             if let nextName {
-                NavigationLink { nextDestination() } label: { neighbor(nextName, label: "Next →", trailing: true) }
+                NavigationLink { nextDestination() } label: { neighbor(nextName, label: nextLabel, trailing: true) }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Next, \(nextName)")
             } else {
                 Color.clear.frame(height: 0)
             }
         }
-        .padding(.horizontal, 21)
-        .padding(.vertical, 49)
-        .frame(maxWidth: .infinity)
-        .background {
-            ZStack {
-                PitchAtlasTheme.press
-                PanelSheen()
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-        }
-        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
-        .inkContext(.object)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(name)
     }
 
     private func neighbor(_ title: String, label: String, trailing: Bool) -> some View {

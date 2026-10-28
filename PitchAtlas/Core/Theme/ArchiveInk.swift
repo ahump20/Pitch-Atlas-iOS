@@ -171,4 +171,8 @@ enum ArchiveInk {
     static let timelinePanel = Color(hex: 0x0B0A12, opacity: 0.4)
     /// `.archive-history-next`'s border-block (#ac966344).
     static let historyNextRule = Color(hex: 0xAC9663, opacity: 0x44 / 255.0)
+
+    // MARK: A Learn wing (KnowledgePage.tsx)
+    /// The "Keep reading" plates' accent, `--gc: #B9D4E5`.
+    static let keepReadingPlate = Color(hex: 0xB9D4E5)
 }
