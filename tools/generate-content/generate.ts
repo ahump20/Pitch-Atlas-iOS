@@ -135,6 +135,35 @@ function filmFor(entry: AnyRecord): AnyRecord | undefined {
   }
 }
 
+/*
+  The Lost Pitches through-line ("Why pitches die.") is written as a module-
+  private const inside the web's WhyPitchesDie component, built with the same
+  claim() helper as the data modules. The component imports React-side modules,
+  so it can't be imported here: its FORCES literal is sliced out of the file and
+  evaluated against the real claim(), so the copy and every source come from the
+  web file. It runs the same first-party source the module imports above already
+  execute, nothing from outside the web repo. A reshaped file fails the run
+  rather than shipping a guess.
+*/
+async function lostPitchForces(): Promise<AnyRecord[]> {
+  const file = join(WEB, 'src', 'components', 'sections', 'WhyPitchesDie.tsx')
+  const text = await readFile(file, 'utf8')
+  const decl = text.indexOf('const FORCES: Force[] = [')
+  const end = decl < 0 ? -1 : text.indexOf('\n]\n', decl)
+  if (decl < 0 || end < 0) throw new Error(`${file}: FORCES is no longer a top-level array`)
+  const literal = text.slice(text.indexOf('= [', decl) + 2, end + 2)
+  const forces = new Function('claim', `return ${literal}`)(sources.claim) as AnyRecord[]
+  for (const f of forces) {
+    const claims = f.claims as AnyRecord[] | undefined
+    if (typeof f.era !== 'string' || typeof f.heading !== 'string' || typeof f.body !== 'string' || !claims?.length) {
+      throw new Error(`${file}: a force lost its era, heading, body or claims`)
+    }
+  }
+  return forces
+}
+
+const forces = await lostPitchForces()
+
 const gripEntries = (grips.AUSTIN_GRIPS as AnyRecord[]).map((e) => {
   const { clip: _clip, ...rest } = e
   const film = filmFor(e)
@@ -162,7 +191,8 @@ const bundles: Record<string, unknown> = {
   'pitches.json': pitchEntries,
   'repertoire.json': { families: repertoire.REPERTOIRE_FAMILIES, entries: repertoire.REPERTOIRE },
   'craftsmen.json': craftsmen.CRAFTSMEN,
-  'lost-pitches.json': { tiers: lost.LOST_PITCH_TIERS, entries: lost.LOST_PITCHES },
+  // The four forces ride beside the tiers and entries they explain.
+  'lost-pitches.json': { tiers: lost.LOST_PITCH_TIERS, entries: lost.LOST_PITCHES, forces },
   'knowledge.json': knowledge.WINGS,
   'grips.json': {
     intro: grips.GRIP_LIBRARY_INTRO,
@@ -215,6 +245,10 @@ const bundles: Record<string, unknown> = {
 // Object-shaped bundles have no single record array, so their counts are named
 // explicitly (countOf would read them as 0).
 const explicitCounts: Record<string, Record<string, number>> = {
+  'lost-pitches.json': {
+    'lost-pitches.json': lost.LOST_PITCHES.length,
+    'lost-pitches.forces': forces.length,
+  },
   'softball.json': {
     'softball.pitches': softball.SOFTBALL_PITCHES.length,
     'softball.craftsmen': softball.SOFTBALL_CRAFTSMEN.length,

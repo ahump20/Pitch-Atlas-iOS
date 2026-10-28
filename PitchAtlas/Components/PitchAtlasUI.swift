@@ -176,6 +176,25 @@ struct BrandSealMark: View {
     }
 }
 
+/// The site's `/brand/seal-128.webp`: the cream compass seal a card, a media
+/// well or a missing photo prints where a likeness would sit. Decorative.
+struct ArchiveSealMark: View {
+    static let src = "/brand/seal-128.webp"
+    var size: CGFloat = 48
+
+    var body: some View {
+        Group {
+            if let image = BundledImage.load(Self.src) {
+                Image(uiImage: image).resizable().interpolation(.high)
+            } else {
+                BrandSealMark(size: size, shadow: false)
+            }
+        }
+        .frame(width: size, height: size)
+        .accessibilityHidden(true)
+    }
+}
+
 /// The seam S-curve, drawn so a missing photo shows a brand mark, never a gray box.
 struct SeamArc: Shape {
     func path(in rect: CGRect) -> Path {

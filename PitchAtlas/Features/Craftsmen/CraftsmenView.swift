@@ -244,7 +244,7 @@ private struct FilmShelfCard: View {
             RoundedRectangle(cornerRadius: 6)
                 .strokeBorder(PitchAtlasTheme.bone.opacity(0.10), lineWidth: 1)
                 .aspectRatio(16.0 / 9.0, contentMode: .fit)
-                .overlay { BrandSealMark(size: 54, shadow: false).opacity(0.75) }
+                .overlay { ArchiveSealMark(size: 54).opacity(0.75) }
                 .accessibilityHidden(true)
         }
         .padding(17)

@@ -321,7 +321,7 @@ struct MasterFiles: View {
 
     private var empty: some View {
         VStack(spacing: 16) {
-            BrandSealMark(size: 56, shadow: false).opacity(0.8).accessibilityHidden(true)
+            ArchiveSealMark(size: 56).opacity(0.8)
             Text("No master files for this pitch yet. A master is filed only when a named arm and a cited source both exist. Nothing is added to fill the page.")
                 .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
                 .foregroundStyle(PitchAtlasTheme.bone2)

@@ -4,6 +4,7 @@
     "repertoire.json": 42,
     "craftsmen.json": 13,
     "lost-pitches.json": 15,
+    "lost-pitches.forces": 4,
     "knowledge.json": 10,
     "grips.json": 7,
     "sources.json": 305,
@@ -20,5 +21,5 @@
     "field-notes.vocabulary": 8
   },
   "sourcesLastChecked": "2026-10-24",
-  "contentHash": "d659eff9aff65d3628969be8bad0d61599e844114a48b45c51ef19bfa27525c4"
+  "contentHash": "d6636a3fea5f633ca80f0091f6c655e74189d624f9c43eb8dc1d4e41dbb2b404"
 }

@@ -163,4 +163,12 @@ enum ArchiveInk {
     static let craftsmanStageLight = Color(hex: 0x6CACE4, opacity: 0.15)
     /// The film shelf's frame (CraftsmanMedia.tsx `bg-[#070605]`).
     static let filmFrame = Color(hex: 0x070605)
+
+    // MARK: The lost pitches (LostPitchesHall.tsx, EraTimeline.tsx, LostPitchChapter.tsx)
+    /// A lost pitch's stage light, rgba(200,16,46,.15) under the 10% layer.
+    static let lostStageLight = Color(hex: 0xC8102E, opacity: 0.15)
+    /// The timeline's panel, `bg-[rgba(11,10,18,0.4)]`.
+    static let timelinePanel = Color(hex: 0x0B0A12, opacity: 0.4)
+    /// `.archive-history-next`'s border-block (#ac966344).
+    static let historyNextRule = Color(hex: 0xAC9663, opacity: 0x44 / 255.0)
 }

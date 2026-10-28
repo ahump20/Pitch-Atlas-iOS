@@ -62,7 +62,7 @@ final class PitchStore {
                                fallback: RepertoireRoot(families: [], entries: []))
         self.craftsmen = load("craftsmen", [Craftsman].self, fallback: [])
         self.lostPitches = load("lost-pitches", LostPitchesRoot.self,
-                                fallback: LostPitchesRoot(tiers: [], entries: []))
+                                fallback: LostPitchesRoot(tiers: [], entries: [], forces: []))
         self.knowledge = load("knowledge", [KnowledgeWing].self, fallback: [])
         self.grips = load("grips", GripsFile.self,
                           fallback: GripsFile(intro: "", arsenal: "", commandNote: "",

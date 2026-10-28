@@ -51,7 +51,12 @@ struct CraftsmanDetailView: View {
                             if !craftsman.recordProse.isEmpty {
                                 record.chapterAnchor("record", space: Self.scrollSpace)
                             }
-                            CraftsmanChapterNav(prev: neighbors.prev, next: neighbors.next)
+                            ChapterWalk(name: "Craftsmen chapters", prevName: neighbors.prev?.name, nextName: neighbors.next?.name,
+                                        hallLabel: "The Craftsmen", hallLine: "Back to the hall →", hallPath: "craftsmen") {
+                                if let prev = neighbors.prev { CraftsmanDetailView(craftsman: prev) }
+                            } nextDestination: {
+                                if let next = neighbors.next { CraftsmanDetailView(craftsman: next) }
+                            }
                             SiteFooter(path: "/craftsmen/\(craftsman.slug)")
                         }
                         .readsWidth(into: $pageWidth)
@@ -126,7 +131,7 @@ struct CraftsmanDetailView: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 64)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background { CraftsmanStage() }
+        .background { ArchiveStageGround(light: ArchiveInk.craftsmanStageLight) }
     }
 
     /// "Signature pitch" and the pitch in powder, in a bone hairline box.
@@ -233,9 +238,9 @@ struct CraftsmanDetailView: View {
                 StageTierMarker(index: "02", label: heading)
                 if let edge = craftsman.mentalEdge {
                     ClaimProse(claim: edge, size: 20, ink: PitchAtlasTheme.bone)
-                    if let quote = craftsman.quote { QuoteFigure(quote: quote).padding(.top, 40) }
+                    if let quote = craftsman.quote { ArchiveQuoteFigure(quote: quote).padding(.top, 40) }
                 } else if let quote = craftsman.quote {
-                    QuoteFigure(quote: quote)
+                    ArchiveQuoteFigure(quote: quote)
                 }
             }
             .padding(.horizontal, 20)
@@ -291,68 +296,6 @@ struct CraftsmanDetailView: View {
     }
 }
 
-// MARK: - The stage's ground
-
-/// `.on-stage` with its faint light: the stage under a powder glow at 72% 34%,
-/// gone by 42% of the reach, the whole layer at 10%. (The site's 34pt diagonal
-/// hatch sits at 0.6% and is left out.)
-private struct CraftsmanStage: View {
-    var body: some View {
-        GeometryReader { geo in
-            let w = geo.size.width, h = geo.size.height
-            let cx = w * 0.72, cy = h * 0.34
-            let reach = hypot(max(cx, w - cx), max(cy, h - cy))
-            ZStack {
-                PitchAtlasTheme.void
-                RadialGradient(colors: [ArchiveInk.craftsmanStageLight, .clear], center: UnitPoint(x: 0.72, y: 0.34),
-                               startRadius: 0, endRadius: reach * 0.42)
-                    .opacity(0.1)
-            }
-        }
-        .accessibilityHidden(true)
-    }
-}
-
-// MARK: - Their words
-
-/// The pulled quote: Newsreader italic behind a seam rule, its tier and source
-/// beneath, its caveat under those.
-private struct QuoteFigure: View {
-    let quote: Claim
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text("\u{201C}\(quote.value)\u{201D}")
-                .font(PitchAtlasType.font(.newsreader400i, size: 24, relativeTo: .title2))
-                .tracking(em: -0.012, size: 24)
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .cssLineHeight(1.375, face: .newsreader400i, size: 24, relativeTo: .title2)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: 40 * 0.5665 * 24, alignment: .leading)
-            FlowRow(spacing: 8, lineSpacing: 4, rowAlignment: .center) {
-                ConfidenceLabel(confidence: quote.confidence)
-                if let source = quote.source {
-                    Text("/")
-                        .font(PitchAtlasType.body())
-                        .foregroundStyle(PitchAtlasTheme.text3)
-                        .accessibilityHidden(true)
-                    SourceBadge(source: source)
-                }
-            }
-            .padding(.top, 16)
-            if let note = quote.note, !note.isEmpty {
-                ClaimNote(text: note)
-            }
-        }
-        .padding(.leading, 26)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .overlay(alignment: .leading) {
-            Rectangle().fill(PitchAtlasTheme.seamBright.opacity(0.6)).frame(width: 2).accessibilityHidden(true)
-        }
-        .accessibilityElement(children: .contain)
-    }
-}
-
 // MARK: - The record's way out
 
 /// RecordLinks: the record-keepers' line under an ivory hairline, then each
@@ -379,94 +322,5 @@ private struct RecordLinksRow: View {
         .overlay(alignment: .top) {
             Rectangle().fill(ArchiveInk.paperInk.opacity(0.15)).frame(height: 1).accessibilityHidden(true)
         }
-    }
-}
-
-// MARK: - The walk through the hall
-
-/// ChapterNav: the previous era, the way back to the hall, the next era, on a
-/// press panel. An end of the hall leaves its cell empty, as the site's grid
-/// does. Previous and next open the neighbor's file; the hall is the site's
-/// own address.
-private struct CraftsmanChapterNav: View {
-    let prev: Craftsman?
-    let next: Craftsman?
-
-    var body: some View {
-        VStack(spacing: 16) {
-            if let prev {
-                NavigationLink { CraftsmanDetailView(craftsman: prev) } label: { neighbor(prev, label: "← Previous", trailing: false) }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Previous, \(prev.name)")
-            } else {
-                Color.clear.frame(height: 0)
-            }
-            RouteButton(path: "craftsmen") { hall }
-                .buttonStyle(.plain)
-                .accessibilityLabel("The Craftsmen. Back to the hall")
-            if let next {
-                NavigationLink { CraftsmanDetailView(craftsman: next) } label: { neighbor(next, label: "Next →", trailing: true) }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("Next, \(next.name)")
-            } else {
-                Color.clear.frame(height: 0)
-            }
-        }
-        .padding(.horizontal, 21)
-        .padding(.vertical, 49)
-        .frame(maxWidth: .infinity)
-        .background(RoundedRectangle(cornerRadius: 12).fill(PitchAtlasTheme.press))
-        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
-        .inkContext(.object)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("Craftsmen chapters")
-    }
-
-    private func neighbor(_ c: Craftsman, label: String, trailing: Bool) -> some View {
-        VStack(alignment: trailing ? .trailing : .leading, spacing: 4) {
-            Text(label.uppercased())
-                .font(MonoLabel.font)
-                .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
-                .foregroundStyle(PitchAtlasTheme.text3)
-                .cssLineHeight(1, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
-            Text(c.name.uppercased())
-                .font(PitchAtlasType.font(.anton400, size: 18, relativeTo: .headline))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .cssLineHeight(28.0 / 18.0, face: .anton400, size: 18, relativeTo: .headline)
-                .multilineTextAlignment(trailing ? .trailing : .leading)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(maxWidth: .infinity, alignment: trailing ? .trailing : .leading)
-        .padding(.leading, trailing ? 16 : 18)
-        .padding(.trailing, trailing ? 18 : 16)
-        .padding(.vertical, 12)
-        .background(alignment: trailing ? .trailing : .leading) {
-            // a 2pt cyan border on one side of a 6pt-radius box
-            RoundedRectangle(cornerRadius: 6)
-                .fill(PitchAtlasTheme.cyan.opacity(0.4))
-                .mask(alignment: trailing ? .trailing : .leading) { Rectangle().frame(width: 2) }
-                .accessibilityHidden(true)
-        }
-        .contentShape(Rectangle())
-    }
-
-    private var hall: some View {
-        VStack(spacing: 4) {
-            Text("The Craftsmen".uppercased())
-                .font(MonoLabel.font)
-                .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
-                .foregroundStyle(PitchAtlasTheme.cyan)
-                .cssLineHeight(1, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
-            Text("Back to the hall →")
-                .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
-                .foregroundStyle(PitchAtlasTheme.text2)
-                .cssLineHeight(1.375, face: .hanken400, size: 14, relativeTo: .subheadline)
-        }
-        .multilineTextAlignment(.center)
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 17)
-        .padding(.vertical, 13)
-        .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
-        .contentShape(Rectangle())
     }
 }

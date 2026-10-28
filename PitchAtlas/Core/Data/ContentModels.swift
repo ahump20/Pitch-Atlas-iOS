@@ -715,9 +715,20 @@ struct LostPitch: Codable, Hashable, Identifiable {
     var recordEntries: [LabeledClaim] { record ?? numbers ?? [] }
 }
 
+/// One of the four ways a pitch dies (WhyPitchesDie.tsx): when, the force in a
+/// line, the account, and the sourced statements the account paraphrases.
+struct LostPitchForce: Codable, Hashable {
+    let era: String
+    let heading: String
+    let body: String
+    let claims: [Claim]
+}
+
 struct LostPitchesRoot: Codable, Hashable {
     let tiers: [LostPitchTierInfo]
     let entries: [LostPitch]
+    /// The through-line, in the order the forces take a pitch out of the game.
+    let forces: [LostPitchForce]
 }
 
 // MARK: - Archive plates (archive-images.json → [ArchiveImage])

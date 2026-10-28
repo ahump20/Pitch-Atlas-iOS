@@ -583,7 +583,7 @@ struct CraftsmanCard: View {
                     if let signature {
                         SeamBall(motion: signature.motion, size: 44, showMovement: false, showsLacing: false)
                     } else {
-                        BrandSealMark(size: 48, shadow: false).opacity(0.8)
+                        ArchiveSealMark(size: 48).opacity(0.8)
                     }
                 }
                 .frame(width: 56, height: 56)
@@ -642,30 +642,26 @@ enum LostPitchPlate {
 }
 
 /// A lost pitch or an arm, filed as a Tier B plate on the sand archive accent. No
-/// likeness, ever: the visual mark is the Atlas seal.
+/// likeness, ever: the visual mark is the Atlas seal. The tier is the shelf the
+/// plate is filed on, so the plate itself carries no tier pill (LostPitchCard.tsx).
 struct LostPitchCard: View {
     let pitch: LostPitch
 
     var body: some View {
         let legend = pitch.tier == .legend
         Plate(accent: PitchAtlasTheme.sandBright, variant: LostPitchPlate.variant(pitch)) {
-            ViewThatFits(in: .horizontal) {
-                HStack(alignment: .center, spacing: 10) {
-                    PlateMono(pitch.specimenNo, ink: legend ? PitchAtlasTheme.seamBright : PitchAtlasTheme.bone2)
-                    StatusPill(text: pitch.tier.label, tone: pitch.tier.tone)
-                    Spacer(minLength: 0)
-                    PlateMono(pitch.era, ink: PitchAtlasTheme.text3)
-                }
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack(spacing: 10) {
-                        PlateMono(pitch.specimenNo, ink: legend ? PitchAtlasTheme.seamBright : PitchAtlasTheme.bone2)
-                        StatusPill(text: pitch.tier.label, tone: pitch.tier.tone)
-                    }
-                    PlateMono(pitch.era, ink: PitchAtlasTheme.text3)
-                }
+            // The number holds its width; the era takes the rest, wrapping there
+            // when it runs long and pushed to the edge when it doesn't.
+            HStack(alignment: .center, spacing: 12) {
+                PlateMono(pitch.specimenNo, ink: legend ? PitchAtlasTheme.seamBright : PitchAtlasTheme.bone2)
+                    .fixedSize()
+                Spacer(minLength: 0)
+                PlateMono(pitch.era, ink: PitchAtlasTheme.text3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .layoutPriority(1)
             }
             HStack(spacing: 16) {
-                BrandSealMark(size: 48, shadow: false).opacity(0.8).frame(width: 48, height: 48)
+                ArchiveSealMark(size: 48).opacity(0.8)
                 VStack(alignment: .leading, spacing: 6) {
                     Text(pitch.name)
                         .font(PitchAtlasType.font(.anton400, size: 24, relativeTo: .title2))
