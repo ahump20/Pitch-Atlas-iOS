@@ -275,6 +275,19 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertGreaterThan(hooked, 10, "expected many basic files to carry a study hook")
     }
 
+    /// The web crops each grip loop to the point where the fingertips meet the seam
+    /// (GripClip.focus, set from each loop's own frames 2026-10-23); the card window
+    /// keeps that point in view. The point and the opening second ride in from the
+    /// web source, never re-guessed here.
+    func testGripFilmsCarryTheWebCropPointAndStart() throws {
+        let store = PitchStore()
+        let film = try XCTUnwrap(store.pitch(slug: "four-seam")?.canonical.gripFilm)
+        XCTAssertEqual(film.focus, FilmFocus(x: 50, y: 44))
+        XCTAssertEqual(try XCTUnwrap(film.start), 0.8, accuracy: 1e-9)
+        let library = store.grips.entries.compactMap(\.film)
+        XCTAssertTrue(library.allSatisfy { $0.focus != nil }, "every filmed grip names its crop point")
+    }
+
     /// The owner's grip films: every film referenced by the content must resolve
     /// to a real bundled clip and poster, carry first-party/original rights, and
     /// cover exactly the four grips that were filmed — no fabricated films, no

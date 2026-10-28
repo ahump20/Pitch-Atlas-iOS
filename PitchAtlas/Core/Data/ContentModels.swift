@@ -261,6 +261,17 @@ struct GripFilm: Codable, Hashable {
     let clip: VisualReference
     /// Bundled still (`/grips/<stem>-poster.webp`).
     let poster: String
+    /// The second the loop opens on, so a card window shows the grip, never the room.
+    var start: Double? = nil
+    /// Where the grip sits in the frame (percent across and down): the point a card
+    /// window's crop keeps in view.
+    var focus: FilmFocus? = nil
+}
+
+/// A point in a frame, in percent across (x) and down (y), as the web's GripClip.focus.
+struct FilmFocus: Codable, Hashable {
+    let x: Double
+    let y: Double
 }
 
 // MARK: - Pitch specimen (pitches.json → [PitchAtlasEntry])

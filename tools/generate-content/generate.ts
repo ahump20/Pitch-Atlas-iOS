@@ -126,6 +126,9 @@ function filmFor(entry: AnyRecord): AnyRecord | undefined {
       capturedAt: photos[0]?.capturedAt,
     },
     poster: c.poster,
+    // where the loop opens and the point the card window's crop keeps in view
+    start: c.start,
+    focus: c.focus,
   }
 }
 
