@@ -7,9 +7,12 @@ import Observation
 // Owns the selected tab and a NavigationPath per tab so a link can select a tab
 // and stack the screens under it. A link names a place the way the site's path
 // does: pitchatlas://learn/<slug> opens what pitch-atlas.com/learn/<slug> shows.
+//   pitchatlas://home                     -> Atlas, the home (the site's "/")
 //   pitchatlas://tab/<atlas|index|grips|craftsmen|sources>
 //   pitchatlas://pitch/<slug>             -> Atlas, the filed specimen
-//   pitchatlas://repertoire[/<id>]        -> Index, the basic file
+//   pitchatlas://repertoire[/<id>]        -> Index, the basic file; an entry with a
+//                                            filed specimen opens it, as the site
+//                                            sends /repertoire/<id> to /pitch/<slug>
 //   pitchatlas://craftsmen[/<slug>]       -> Craftsmen, the craftsman (craftsman/<slug> too)
 //   pitchatlas://learn[/<slug>]           -> Atlas, Learn, the wing
 //   pitchatlas://lost-pitches[/<slug>]    -> Atlas, Lost Pitches, the pitch
@@ -83,6 +86,8 @@ final class DeepLinkRouter {
         }
 
         switch host {
+        case "home":
+            return land(.atlas)
         case "tab":
             return slug.flatMap(AppTab.init(rawValue:)).map { land($0) }
         case "pitch":
@@ -90,6 +95,9 @@ final class DeepLinkRouter {
             return land(.atlas, [.pitch(entry)])
         case "repertoire":
             guard let entry = slug.flatMap(store.repertoireEntry(id:)) else { return land(.index) }
+            if let filed = entry.filedSlug.flatMap(store.pitch(slug:)) {
+                return land(.atlas, [.pitch(filed)])
+            }
             return land(.index, [.basicFile(entry)])
         case "craftsmen", "craftsman":
             guard let craftsman = slug.flatMap(store.craftsman(slug:)) else { return land(.craftsmen) }

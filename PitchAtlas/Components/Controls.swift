@@ -36,7 +36,8 @@ struct PitchChip: View {
             }
             .foregroundStyle(look.ink)
             .padding(.horizontal, kind == .tag ? 13 : 12).padding(.vertical, kind == .tag ? 7 : 6)
-            .frame(minHeight: kind == .filter ? 32 : nil)
+            // touch screens: `.pi-toggle { min-height: 44px }` paints the filter chip at 44
+            .frame(minHeight: kind == .filter ? 44 : nil)
             .background { if let f = look.fill { Capsule().fill(f) } }
             .overlay { Capsule().strokeBorder(look.border, lineWidth: 1) }
             .frame(minHeight: Self.hitHeight).contentShape(Rectangle())
@@ -48,7 +49,8 @@ struct PitchChip: View {
     }
 }
 
-/// `.pi-toggle` — the Index ROWS/BINDER group. On = burnt with white ink.
+/// `.pi-toggle` — the Index ROWS/BINDER group. On = burnt with white ink. On a
+/// touch screen each item paints at 44 inside the group's 2pt inset and rim.
 struct PillToggle<Value: Hashable>: View {
     static var hitHeight: CGFloat { 44 }
     @Binding var selection: Value
@@ -62,7 +64,7 @@ struct PillToggle<Value: Hashable>: View {
                     Label(o.label.uppercased(), systemImage: o.systemImage)
                         .font(PitchAtlasType.font(.martian500, size: 12, relativeTo: .caption)).tracking(em: 0.06, size: 12)
                         .foregroundStyle(on ? Color(rgb: WebTokens.Palette.white.rgb) : PitchAtlasTheme.bone)
-                        .padding(.horizontal, 10).frame(height: 32)
+                        .padding(.horizontal, 12).frame(height: 44)
                         .background { if on { Capsule().fill(Color(rgb: WebTokens.Accent.burnt)) } }
                         .frame(minHeight: Self.hitHeight).contentShape(Rectangle())
                 }
@@ -71,7 +73,8 @@ struct PillToggle<Value: Hashable>: View {
             }
         }
         .padding(.horizontal, 2)
-        .background(Capsule().strokeBorder(Color.white.opacity(0.14), lineWidth: 1).frame(height: 38))
+        .padding(.vertical, 2)
+        .background(Capsule().strokeBorder(Color.white.opacity(0.14), lineWidth: 1))
     }
 }
 
@@ -102,7 +105,7 @@ struct SegmentToggle<Value: Hashable>: View {
     }
 }
 
-/// The Index "Filter & sort" pill: 36pt painted, 44pt hit; burnt rim when open.
+/// The Index "Filter & sort" pill: painted at the touch floor, 44pt; burnt rim when open.
 struct FilterSortPill: View {
     static let hitHeight: CGFloat = 44
     static func title(activeCount: Int) -> String { activeCount > 0 ? "Filter & sort (\(activeCount))" : "Filter & sort" }
@@ -114,7 +117,7 @@ struct FilterSortPill: View {
             Label(Self.title(activeCount: activeCount).uppercased(), systemImage: "slider.horizontal.3")
                 .font(PitchAtlasType.chip).tracking(em: 0.1, size: 9.5)
                 .foregroundStyle(isOpen ? PitchAtlasTheme.bone : PitchAtlasTheme.bone2)
-                .padding(.horizontal, 14).frame(height: 36)
+                .padding(.horizontal, 14).frame(height: 44)
                 .overlay(Capsule().strokeBorder(isOpen ? Color(rgb: WebTokens.Accent.burnt) : Color.white.opacity(0.14), lineWidth: 1))
                 .frame(minHeight: Self.hitHeight).contentShape(Rectangle())
         }

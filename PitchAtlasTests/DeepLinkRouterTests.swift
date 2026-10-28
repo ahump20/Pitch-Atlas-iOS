@@ -11,13 +11,16 @@ final class DeepLinkRouterTests: XCTestCase {
 
     func testWebPathsOpenTheSameScreens() throws {
         let fourSeam = try XCTUnwrap(store.pitch(slug: "four-seam"))
-        let sinker = try XCTUnwrap(store.repertoireEntry(id: "sinker"))
+        let twoSeam = try XCTUnwrap(store.pitch(slug: "two-seam"))
+        let splitFinger = try XCTUnwrap(store.repertoireEntry(id: "split-finger-fastball"))
         let maddux = try XCTUnwrap(store.craftsman(slug: "greg-maddux"))
         let spin = try XCTUnwrap(store.wing(slug: "spin"))
         let fadeaway = try XCTUnwrap(store.lostPitch(slug: "rube-foster-fadeaway"))
 
         XCTAssertEqual(destination("pitchatlas://pitch/four-seam"), DeepLinkDestination(tab: .atlas, stack: [.pitch(fourSeam)]))
-        XCTAssertEqual(destination("pitchatlas://repertoire/sinker"), DeepLinkDestination(tab: .index, stack: [.basicFile(sinker)]))
+        XCTAssertEqual(destination("pitchatlas://repertoire/sinker"), DeepLinkDestination(tab: .atlas, stack: [.pitch(twoSeam)]))
+        XCTAssertEqual(destination("pitchatlas://repertoire/split-finger-fastball"), DeepLinkDestination(tab: .index, stack: [.basicFile(splitFinger)]))
+        XCTAssertEqual(destination("pitchatlas://home"), DeepLinkDestination(tab: .atlas, stack: []))
         XCTAssertEqual(destination("pitchatlas://repertoire"), DeepLinkDestination(tab: .index, stack: []))
         XCTAssertEqual(destination("pitchatlas://craftsmen/greg-maddux"), DeepLinkDestination(tab: .craftsmen, stack: [.craftsman(maddux)]))
         XCTAssertEqual(destination("pitchatlas://craftsman/greg-maddux"), DeepLinkDestination(tab: .craftsmen, stack: [.craftsman(maddux)]))
@@ -40,6 +43,21 @@ final class DeepLinkRouterTests: XCTestCase {
         XCTAssertEqual(destination("pitchatlas://lost-pitches/no-such-pitch"), DeepLinkDestination(tab: .atlas, stack: [.atlas(.lostPitches)]))
     }
 
+    /// The site sends /repertoire/<id> to /pitch/<filedSlug> when the entry has a
+    /// filed specimen; every other entry keeps its basic file.
+    func testAFiledBasicFileOpensItsSpecimen() throws {
+        XCTAssertFalse(store.repertoire.entries.isEmpty)
+        for entry in store.repertoire.entries {
+            let landed = destination("pitchatlas://repertoire/\(entry.id)")
+            if let slug = entry.filedSlug {
+                let pitch = try XCTUnwrap(store.pitch(slug: slug), "\(entry.id) names \(slug), which is not bundled")
+                XCTAssertEqual(landed, DeepLinkDestination(tab: .atlas, stack: [.pitch(pitch)]), entry.id)
+            } else {
+                XCTAssertEqual(landed, DeepLinkDestination(tab: .index, stack: [.basicFile(entry)]), entry.id)
+            }
+        }
+    }
+
     func testForeignAndUnknownLinksAreIgnored() {
         XCTAssertNil(destination("https://pitch-atlas.com/learn/spin"))
         XCTAssertNil(destination("pitchatlas://nowhere"))
@@ -57,7 +75,7 @@ final class DeepLinkRouterTests: XCTestCase {
         router.handle(URL(string: "pitchatlas://about")!, store: store)
         XCTAssertEqual(router.atlasPath.count, 1, "a second link lands in place instead of stacking on the first")
 
-        router.handle(URL(string: "pitchatlas://repertoire/sinker")!, store: store)
+        router.handle(URL(string: "pitchatlas://repertoire/split-finger-fastball")!, store: store)
         XCTAssertEqual(router.selection, .index)
         XCTAssertEqual(router.indexPath.count, 1)
         XCTAssertEqual(router.atlasPath.count, 1, "another tab's stack is left alone")

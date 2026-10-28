@@ -120,4 +120,23 @@ enum ArchiveInk {
     static let plateCaption = Color(hex: 0xA99E8F)
     static let plateTitle = Color(hex: 0xCDB48F)
     static let plateLink = Color(hex: 0xE0B285)
+
+    // MARK: The page header (SectionHero.tsx, archive.css .archive-section-hero)
+    /// .archive-section-hero background
+    static let sectionHeroField = Color(hex: 0x141411)
+    /// SectionHero ACCENT_WASH: powder rgba(75,146,219,.12), seam rgba(200,16,46,.10)
+    static let heroWashPowder = Color(hex: 0x4B92DB, opacity: 0.12)
+    static let heroWashSeam = Color(hex: 0xC8102E, opacity: 0.10)
+
+    // MARK: The Pitch Index (RepertoirePage.tsx, PitchIndex.tsx)
+    /// the title's "Index" (text-[#d1b58b])
+    static let indexTitleAccent = Color(hex: 0xD1B58B)
+    /// the filter panel (border-white/10, bg-card/50 on #0e0b15)
+    static let indexPanelFill = Color(hex: 0x0E0B15, opacity: 0.5)
+    /// the Lost Pitches callout: a teal glow (rgba(31,182,166,.28)) at 75% 10%
+    /// falling to #16120D, over --color-press, rimmed in teal-glow at 34%
+    static let lostCalloutGlow = Color(hex: 0x1FB6A6, opacity: 0.28)
+    static let lostCalloutFloor = Color(hex: 0x16120D)
+    static let tealGlow = Color(web: WebTokens.Palette.tealGlow)
+    static let lostCalloutRim = tealGlow.opacity(0.34)
 }

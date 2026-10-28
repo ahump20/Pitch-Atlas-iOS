@@ -80,15 +80,39 @@ enum SourceRegistry {
 /// externalContentFor({ placement: 'home' }) and ExternalMediaCard's words (web
 /// src/data/media/external.ts, components/media/ExternalMediaCard.tsx).
 enum MediaShelf {
-    /// Featured, published and not pulled down; newest first, ties in filed order.
-    static func home(_ items: [ExternalContentItem], limit: Int) -> [ExternalContentItem] {
-        items.enumerated()
-            .filter { $0.element.isShowable && $0.element.featured == true }
-            .sorted { a, b in
-                a.element.publishedAt == b.element.publishedAt ? a.offset < b.offset : a.element.publishedAt > b.element.publishedAt
+    /// Where a shelf stands (web ExternalContentQuery.placement).
+    enum Placement { case home, repertoire, grips }
+
+    /// web externalContentFor: published and not pulled down, then the shelf's
+    /// rule — a placement's own, else any post tagged to the pitch, the craftsman,
+    /// the family or one of the topics. Newest first, ties in filed order.
+    static func query(_ items: [ExternalContentItem], placement: Placement? = nil, pitchSlug: String? = nil,
+                      craftsmanSlug: String? = nil, family: RepertoireFamily? = nil, topics: [String] = [],
+                      limit: Int? = nil) -> [ExternalContentItem] {
+        let wanted = Set(topics)
+        let matches = items.enumerated().filter { _, item in
+            guard item.isShowable else { return false }
+            switch placement {
+            case .home: return item.featured == true
+            case .repertoire: return item.featured == true || !item.tags.families.isEmpty
+            case .grips: return item.tags.topics.contains("grip")
+            case nil: break
             }
-            .prefix(max(0, limit))
-            .map(\.element)
+            if let pitchSlug, item.tags.pitchSlugs.contains(pitchSlug) { return true }
+            if let craftsmanSlug, item.tags.craftsmanSlugs.contains(craftsmanSlug) { return true }
+            if let family, item.tags.families.contains(family.rawValue) { return true }
+            if !wanted.isEmpty, item.tags.topics.contains(where: wanted.contains) { return true }
+            return false
+        }
+        let sorted = matches.sorted { a, b in
+            a.element.publishedAt == b.element.publishedAt ? a.offset < b.offset : a.element.publishedAt > b.element.publishedAt
+        }.map(\.element)
+        return limit.map { Array(sorted.prefix(max(0, $0))) } ?? sorted
+    }
+
+    /// The home's shelf: featured posts only.
+    static func home(_ items: [ExternalContentItem], limit: Int) -> [ExternalContentItem] {
+        query(items, placement: .home, limit: limit)
     }
 
     static func laneLabel(_ trustLane: String) -> String {

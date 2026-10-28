@@ -16,7 +16,7 @@ const stops = {
   craftsmen: '/craftsmen',
   sources: '/sources',
   specimen: '/pitch/four-seam',
-  basic: '/repertoire/sinker',
+  basic: '/repertoire/split-finger-fastball',
   craftsman: '/craftsmen/greg-maddux',
   learn: '/learn',
   wing: '/learn/spin',

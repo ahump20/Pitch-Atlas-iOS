@@ -1,26 +1,42 @@
 import SwiftUI
 
 // =============================================================================
-// HomeMediaRail — "From one hand to another."
+// MediaRail — credited posts filed beside a page
 // =============================================================================
-// Web: media/ExternalMediaRail.tsx + ExternalMediaCard.tsx with the home's
-// world.css order (header, story, then the player well). Three featured posts,
-// newest first. Nothing loads until the reader asks: a TikTok post plays in
-// TikTok's official player inside the card; an X post stays a credited link out.
-// Every post is the poster's own, credited and never rehosted.
+// Web: media/ExternalMediaRail.tsx + ExternalMediaCard.tsx (the home's world.css
+// order: header, story, then the player well). Each page passes its own words
+// and its own shelf (MediaShelf.query). Nothing loads until the reader asks: a
+// TikTok post plays in TikTok's official player inside the card; an X post stays
+// a credited link out. Every post is the poster's own, credited, never rehosted.
 // =============================================================================
 
+/// The home's shelf: three featured posts under "From one hand to another."
 struct HomeMediaRail: View {
     @Environment(PitchStore.self) private var store
 
     var body: some View {
-        let items = MediaShelf.home(store.externalMedia.items, limit: 3)
+        MediaRail(eyebrow: "Fresh from the game",
+                  title: "From one hand to another.",
+                  intro: "Listen to a pitcher explain it. Watch a grip turn. These lessons and recovered conversations keep the people beside the pitch. Choose a player when you are ready to watch.",
+                  items: MediaShelf.home(store.externalMedia.items, limit: 3))
+    }
+}
+
+/// ExternalMediaRail: a kicker, an athletic title, the intro, then the cards.
+/// An empty shelf renders nothing, as the site's rail returns null.
+struct MediaRail: View {
+    var eyebrow = "Fresh from the game"
+    var title = "The craft keeps moving."
+    var intro = "Current lessons and old knowledge, filed where they are useful and kept with the people who shared them."
+    let items: [ExternalContentItem]
+
+    var body: some View {
         if !items.isEmpty {
             VStack(alignment: .leading, spacing: 0) {
-                kicker
-                AthleticTitle(text: Text("From one hand to another."), size: 28)
+                KickerLabel(text: eyebrow)
+                AthleticTitle(text: Text(title), size: 28)
                     .padding(.top, 12)
-                Text("Listen to a pitcher explain it. Watch a grip turn. These lessons and recovered conversations keep the people beside the pitch. Choose a player when you are ready to watch.")
+                Text(intro)
                     .font(PitchAtlasTheme.hanken(15))
                     .lineSpacing(6)
                     .foregroundStyle(PitchAtlasTheme.bone2)
@@ -47,18 +63,6 @@ struct HomeMediaRail: View {
             .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1) }
             .overlay(alignment: .bottom) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1) }
         }
-    }
-
-    /// `.rfx-skick`: the short rule and the mono kicker, in cyan.
-    private var kicker: some View {
-        HStack(spacing: 9) {
-            Rectangle().frame(width: 22, height: 2).accessibilityHidden(true)
-            Text("Fresh from the game")
-                .font(PitchAtlasType.font(.martian500, size: 11, relativeTo: .caption2))
-                .textCase(.uppercase)
-                .tracking(11 * 0.2)
-        }
-        .foregroundStyle(PitchAtlasTheme.cyan)
     }
 }
 

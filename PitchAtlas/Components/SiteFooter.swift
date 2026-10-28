@@ -30,7 +30,7 @@ struct SiteFooter: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
-                StitchOrbit()
+                SeamGuide(variant: .orbit)
                     .padding(.bottom, 16)
                 Text("The archive stays open.")
                     .font(PitchAtlasTheme.anton(20, relativeTo: .title3))
@@ -193,32 +193,6 @@ struct BrandLockup: View {
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Pitch Atlas")
-    }
-}
-
-/// SeamGuide "orbit": a short run of stitches along the curve of a seam,
-/// alternating in, like the thread over the top of a ball. Decorative.
-struct StitchOrbit: View {
-    var body: some View {
-        Canvas { context, size in
-            let center = CGPoint(x: size.width / 2, y: size.height + 6)
-            let radius = size.height
-            let count = 6
-            for i in 0..<count {
-                let angle = Double.pi * (1.12 + 0.76 * Double(i) / Double(count - 1))
-                let point = CGPoint(x: center.x + radius * cos(angle), y: center.y + radius * sin(angle))
-                let along = angle + .pi / 2
-                let lean = (i % 2 == 0 ? 1.0 : -1.0) * 0.55
-                let dx = cos(along + lean) * 4.5, dy = sin(along + lean) * 4.5
-                var tick = Path()
-                tick.move(to: CGPoint(x: point.x - dx, y: point.y - dy))
-                tick.addLine(to: CGPoint(x: point.x + dx, y: point.y + dy))
-                context.stroke(tick, with: .color(PitchAtlasTheme.seamBright.opacity(0.8)),
-                               style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
-            }
-        }
-        .frame(width: 92, height: 38)
-        .accessibilityHidden(true)
     }
 }
 
