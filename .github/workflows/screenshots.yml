@@ -47,13 +47,36 @@ jobs:
           SET="${GITHUB_REF_NAME#shots/}"; SET="${SET%%/*}"
           STOPS="${SET%-full}"
           echo "Tour stops: $STOPS"
-          set -o pipefail
-          TEST_RUNNER_PA_SHOTS="$STOPS" xcodebuild test \
-            -scheme PitchAtlasScreenshots \
-            -destination "platform=iOS Simulator,id=$UDID" \
-            -derivedDataPath .build/DerivedData \
-            -resultBundlePath shots.xcresult \
-            2>&1 | tee xcodebuild.log | grep -E "error:|failed|Test Case|TOUR |\*\* TEST" | tail -400
+          mkdir -p diag
+          ( TEST_RUNNER_PA_SHOTS="$STOPS" xcodebuild test \
+              -scheme PitchAtlasScreenshots \
+              -destination "platform=iOS Simulator,id=$UDID" \
+              -derivedDataPath .build/DerivedData \
+              -resultBundlePath shots.xcresult > xcodebuild.log 2>&1; echo "XCB_EXIT=$?" >> xcodebuild.log ) &
+          # Sample the app's threads where the grip library stalls the tour.
+          stage=0
+          for i in $(seq 1 3000); do
+            grep -q "XCB_EXIT=" xcodebuild.log && break
+            if [ $stage -eq 0 ] && grep -q "TOUR grips page 20" xcodebuild.log; then
+              PID="$(pgrep -x PitchAtlas | head -1)"; echo "app pid: $PID"
+              sudo spindump "$PID" 8 10 -file diag/spin-0-page20.txt >/dev/null 2>&1 || echo "spindump failed"
+              stage=1
+            fi
+            if [ $stage -eq 1 ] && grep -q "TOUR grips page 29" xcodebuild.log; then
+              PID="$(pgrep -x PitchAtlas | head -1)"
+              sleep 5
+              top -l 1 -n 12 -o cpu > diag/top-b.txt 2>&1 || true
+              sudo spindump "$PID" 15 10 -file diag/spin-b-page29.txt >/dev/null 2>&1 || echo "spindump failed"
+              sleep 45
+              top -l 1 -n 12 -o cpu > diag/top-c.txt 2>&1 || true
+              sudo spindump "$PID" 15 10 -file diag/spin-c-later.txt >/dev/null 2>&1 || echo "spindump failed"
+              stage=2
+            fi
+            sleep 1
+          done
+          wait
+          cp xcodebuild.log diag/ || true
+          grep -E "error:|failed|Test Case|TOUR |\*\* TEST|XCB_EXIT" xcodebuild.log | tail -400
 
       - name: Export the screenshots
         if: always()
@@ -63,6 +86,13 @@ jobs:
           xcrun xcresulttool export attachments --path shots.xcresult --output-path raw
           python3 scripts/export-shots.py raw shots $FLAG
           ls shots | head -200
+
+      - name: Upload the diagnosis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diag
+          path: diag
 
       - name: Upload the screenshots
         if: always()
