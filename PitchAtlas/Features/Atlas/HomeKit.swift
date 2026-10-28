@@ -115,24 +115,6 @@ struct SeamDescent: View {
     }
 }
 
-/// The quiet bordered control under the hero card (`Pause motion`).
-struct CardActionLabel: View {
-    let title: String
-    let systemImage: String
-
-    var body: some View {
-        Label(title, systemImage: systemImage)
-            .font(PitchAtlasType.font(.hanken600, size: 12, relativeTo: .caption))
-            .foregroundStyle(ComponentInk.compareInk)
-            .padding(.horizontal, 12.8)
-            .frame(minHeight: 36)
-            .background(RoundedRectangle(cornerRadius: 6).fill(ComponentInk.compareFill))
-            .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(ComponentInk.compareBorder, lineWidth: 1))
-            .frame(minHeight: 44)
-            .contentShape(Rectangle())
-    }
-}
-
 extension View {
     /// `.v2-display`: bone type pressed into the stage, a lit top edge and a soft drop.
     func stageDisplay() -> some View {

@@ -230,6 +230,11 @@ struct SourceRow: View {
 struct ConfidenceDot: View {
     let confidence: ClaimConfidence
     var approximate = false
+    /// withLabel={false}: the dot alone, where the tier's words print beside it.
+    var withLabel = true
+    /// The words' ink when not the field's text-2: the grip bench's reading panel
+    /// retints its bone-2 to #d2bca6.
+    var labelInk: Color? = nil
     static func accessibilityText(for c: ClaimConfidence, approximate: Bool) -> String {
         "Source: \(c.label)" + (approximate ? ", approximate" : "")
     }
@@ -237,8 +242,11 @@ struct ConfidenceDot: View {
         HStack(spacing: 8) {
             Circle().fill(PitchAtlasTheme.color(forConfidence: confidence.rawValue)).frame(width: 8, height: 8)
                 .shadow(color: PitchAtlasTheme.color(forConfidence: confidence.rawValue), radius: 4.5)
-            Text(confidence.label.uppercased()).font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
-                .tracking(em: 0.1, size: 10).foregroundStyle(PitchAtlasTheme.text2)
+            if withLabel {
+                Text(confidence.label.uppercased()).font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                    .tracking(em: 0.1, size: 10)
+                    .foregroundStyle(labelInk.map(AnyShapeStyle.init) ?? AnyShapeStyle(PitchAtlasTheme.text2))
+            }
             if approximate { ApproxPill() }
         }
         .accessibilityElement(children: .ignore)

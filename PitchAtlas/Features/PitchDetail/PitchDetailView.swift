@@ -1,632 +1,123 @@
 import SwiftUI
 
 // =============================================================================
-// PitchDetailView: the filed specimen (v1 native)
+// PitchDetailView — one pitch, one file
 // =============================================================================
-// The flagship surface. Native everything: the SeamBall specimen, the foundation
-// gauges, the grip lab, the coaching guide, the master-variant ledger, and the
-// seam-geometry honesty card. This native version is what makes the screen valid
-// and complete on its own.
+// Web: pages/PitchChapter.tsx, in its order. The breadcrumb, the card opened
+// (ChapterHero), the five chapter boxes, Compare, the grip bench, the grip
+// evidence, the release room, the movement read, the lessons filed from the
+// conversation, the master files, the colophon, the connections, the field notes
+// and discussion, the pager, and the site's footer. Every claim keeps its tier
+// and source; the page holds no number the record doesn't.
 // =============================================================================
 
 struct PitchDetailView: View {
     let entry: PitchAtlasEntry
 
-    /// Drives the grip-fact layout: at accessibility text sizes the fixed label
-    /// column can't hold "PRESSURE FINGER" without clipping, so the row stacks.
+    @Environment(PitchStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var discussionRequest = 0
+    @State private var currentChapter: String?
 
-    /// The shared content store, read for the same-family rail.
-    @Environment(PitchStore.self) private var store
-
-    private var canonical: CanonicalPitchRecord { entry.canonical }
-    private var display: PitchDisplay { entry.display }
-    private var physics: PhysicsReference { canonical.physics }
-
-    /// The photo that carries the hero when no film is on file. The grip lab
-    /// below skips it so the same frame never renders twice on one screen.
-    private var heroPhoto: VisualReference? {
-        canonical.gripFilm == nil ? canonical.gripImages?.first : nil
-    }
+    private static let scrollSpace = "specimen-scroll"
 
     var body: some View {
+        let grip = store.gripEntry(forSpecimen: entry.slug)
+        let accentRGB = SpecimenReads.accentRGB(entry)
         ZStack {
             FieldBackdrop()
-            ScrollViewReader { proxy in
-                ScrollView {
-                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    hero {
-                        withAnimation((reduceMotion || dynamicTypeSize.isAccessibilitySize) ? nil : .easeOut(duration: 0.25)) {
-                            proxy.scrollTo(SpecimenChapter.grip.chapter.id, anchor: .top)
+            GeometryReader { viewport in
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 0) {
+                            VStack(alignment: .leading, spacing: 0) {
+                                Breadcrumb(trail: [Crumb(label: "Pitch Atlas", path: "home"),
+                                                   Crumb(label: "Pitch Index", path: "repertoire"),
+                                                   Crumb(label: entry.canonical.name)])
+                                    .padding(.top, 24)
+                                ChapterHero(entry: entry, grip: grip) { scroll(proxy, to: SpecimenChapter.grip) }
+                                ChapterBoxes(chapters: SpecimenChapter.allCases.map(\.chapter), current: currentChapter) { id in
+                                    if id == SpecimenChapter.discussion.chapter.id { discussionRequest += 1 }
+                                    scroll(proxy, toID: id)
+                                }
+                                CompareButton(slug: entry.slug)
+                                    .padding(.top, 8)
+                                    .padding(.bottom, 20)
+                                GripBench(entry: entry, grip: grip, accentRGB: accentRGB)
+                                    .chapterAnchor(SpecimenChapter.grip.chapter.id, space: Self.scrollSpace)
+                                if let grip {
+                                    SpecimenGripEvidence(grip: grip, accentRGB: accentRGB) {
+                                        scroll(proxy, to: SpecimenChapter.grip)
+                                    }
+                                }
+                                ReleaseRoom(entry: entry, accentRGB: accentRGB)
+                                MovementRead(entry: entry, accentRGB: accentRGB)
+                            }
+                            .padding(.horizontal, 20)
+                            lessons
+                                .chapterAnchor(SpecimenChapter.lessons.chapter.id, space: Self.scrollSpace)
+                            VStack(alignment: .leading, spacing: 0) {
+                                MasterFiles(entry: entry, accentRGB: accentRGB)
+                                    .chapterAnchor(SpecimenChapter.variants.chapter.id, space: Self.scrollSpace)
+                                Colophon(entry: entry, accentRGB: accentRGB)
+                                    .chapterAnchor(SpecimenChapter.sources.chapter.id, space: Self.scrollSpace)
+                                PitchConnections(entry: entry, accentRGB: accentRGB)
+                                community
+                                    .chapterAnchor(SpecimenChapter.discussion.chapter.id, space: Self.scrollSpace)
+                                SpecimenPager(entry: entry)
+                            }
+                            .padding(.horizontal, 20)
+                            SiteFooter(path: "/pitch/\(entry.slug)")
                         }
+                        .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
                     }
-                    PitchStudy(entry: entry)
-                        .id(SpecimenChapter.grip.chapter.id)
-                    archiveConnections
-                    foundation
-                    gripLab
-                    if let guide = entry.guide { coaching(guide) }
-                    mechanics
-                    if let voice = canonical.voice { voiceQuote(voice) }
-                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-                        if !entry.masterVariants.isEmpty { mastersLedger }
-                        else {
-                            SectionLabel(text: "VARIANTS")
-                            Text("No sourced variants are documented for this specimen.")
-                        }
-                    }.id(SpecimenChapter.variants.chapter.id)
-                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-                        SectionLabel(text: "LESSONS")
-                        teaching
-                        if let clip = store.teachingClip(slug: entry.slug) {
-                            TeachingClipCard(clip: clip, accent: canonical.family.accent)
-                        }
-                        lessonLinks
-                    }.id(SpecimenChapter.lessons.chapter.id)
-                    relatedFamily
-                    communityPreview
-                        .id(SpecimenChapter.discussion.chapter.id)
-                    // When real footage or photography carries the hero, the
-                    // drawn specimen files down here beside the seam-geometry
-                    // record.
-                    if canonical.gripFilm != nil || heroPhoto != nil { specimenCard }
-                    seamGeometry
-                    sourceLedger
-                        .id(SpecimenChapter.sources.chapter.id)
-                }
-                .padding(PitchAtlasSpacing.lg)
-                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-                }
-                .safeAreaInset(edge: .top, spacing: 0) {
-                    ArchiveChapterNavigation(chapters: SpecimenChapter.allCases.map(\.chapter)) { id in
-                        if id == SpecimenChapter.discussion.chapter.id { discussionRequest += 1 }
-                        withAnimation((reduceMotion || dynamicTypeSize.isAccessibilitySize) ? nil : .easeOut(duration: 0.25)) {
-                            proxy.scrollTo(id, anchor: .top)
+                    .coordinateSpace(.named(Self.scrollSpace))
+                    .onPreferenceChange(ChapterFramesKey.self) { frames in
+                        if let place = ChapterBoxes.activeChapter(frames: frames, viewportHeight: viewport.size.height),
+                           place != currentChapter {
+                            currentChapter = place
                         }
                     }
                 }
             }
         }
-        .navigationTitle(display.shortName)
+        .navigationTitle(entry.display.shortName)
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    private var archiveConnections: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            if !store.practitioners(for: entry).isEmpty {
-                SectionLabel(text: "FOLLOW THE ARCHIVE")
-            }
-            ForEach(store.practitioners(for: entry)) { person in
-                NavigationLink { CraftsmanDetailView(craftsman: person) } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Label(person.name, systemImage: "person.crop.rectangle")
-                        Text("Filed signature: \(person.signaturePitch) · \(person.era)").font(.caption)
-                    }.frame(minHeight: 44, alignment: .leading)
-                }
-            }
+    /// The lessons filed from the conversation: two credited posts tagged to the
+    /// pitch, full bleed. The chapter keeps its place even when none are filed.
+    private var lessons: some View {
+        VStack(spacing: 0) {
+            Color.clear.frame(height: 1)
+            MediaRail(eyebrow: "Filed from the conversation",
+                      title: "See the \(entry.canonical.name.lowercased()) taught.",
+                      intro: "Credited posts that add a useful grip, release, history, or craft perspective to this specimen. The original provider serves every clip.",
+                      items: MediaShelf.query(store.externalMedia.items, pitchSlug: entry.slug, limit: 2))
         }
     }
 
-    private var lessonLinks: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            ForEach(store.lessons(for: entry)) { wing in
-                NavigationLink { KnowledgeWingView(wing: wing) } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Label(wing.title, systemImage: "book")
-                        Text(wing.related?.first(where: { $0.to == "/pitch/" + entry.slug })?.reason ?? wing.summary)
-                            .font(.subheadline).fixedSize(horizontal: false, vertical: true)
-                    }.frame(minHeight: 44, alignment: .leading)
-                }
-            }
+    /// The field notes and the discussion on this pitch (FieldNotes +
+    /// DiscussionPanel on the site), under a bone hairline.
+    private var community: some View {
+        CommunityPanel(topic: .specimen(slug: entry.slug),
+                       topicName: entry.canonical.name,
+                       provenanceNote: entry.community.provenanceNote,
+                       safetyNote: entry.community.safetyNote,
+                       openDiscussionRequest: discussionRequest)
+            .padding(.top, 32)
+            .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1) }
+    }
+
+    private func scroll(_ proxy: ScrollViewProxy, to chapter: SpecimenChapter) {
+        scroll(proxy, toID: chapter.chapter.id)
+    }
+
+    private func scroll(_ proxy: ScrollViewProxy, toID id: String) {
+        withAnimation((reduceMotion || dynamicTypeSize.isAccessibilitySize) ? nil : .easeOut(duration: 0.25)) {
+            proxy.scrollTo(id, anchor: .top)
         }
-    }
-
-    private var sourceLedger: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-            SectionLabel(text: "SOURCES")
-            Text("The claims above keep their confidence and caveats. These are the sources filed with the specimen.")
-                .font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
-            ForEach(entry.studySources) { source in
-                VStack(alignment: .leading, spacing: 4) {
-                    if let url = URL(string: source.url) {
-                        Link(destination: url) { Label(source.label, systemImage: "arrow.up.right.square") }
-                            .frame(minHeight: 44, alignment: .leading)
-                    } else {
-                        Text(source.label)
-                    }
-                    Text("Retrieved \(source.retrievedAt)").font(.caption)
-                        .foregroundStyle(PitchAtlasTheme.bone2)
-                }
-            }
-            if entry.studySources.isEmpty { Text("Not documented.") }
-        }.leatherPress()
-    }
-
-    // MARK: Hero + specimen
-
-    private func hero(studyAction: @escaping () -> Void) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            HStack {
-                SectionLabel(text: "SPECIMEN \(display.specimenNo)", color: PitchAtlasTheme.cyanDeep, size: 9)
-                Spacer()
-                SectionLabel(text: canonical.family.label, color: canonical.family.accent, size: 9)
-            }
-            // Filing metadata remains readable without consuming the entire
-            // accessibility viewport; the title and actions continue to scale.
-            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-            .lineLimit(1)
-            .minimumScaleFactor(0.55)
-
-            // The preservation grade — how richly this specimen is documented,
-            // the same stamp the web card wears. Gold is the real 1/1 chase.
-            SectionLabel(
-                text: entry.specimenGrade.label,
-                color: PitchAtlasTheme.bone2,
-                size: 9
-            )
-            .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-            .lineLimit(1)
-            .minimumScaleFactor(0.55)
-
-            Text(canonical.name.uppercased())
-                .font(PitchAtlasTheme.anton(dynamicTypeSize.isAccessibilitySize ? 34 : 36))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .antonSkew()
-
-            Text(display.heroSub)
-                .font(PitchAtlasTheme.newsreaderItalic(17))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-
-            // The specimen face: real footage first, then real photography,
-            // the drawn SeamBall only where nothing real is on file.
-            if let film = canonical.gripFilm {
-                GripFilmCard(film: film, height: dynamicTypeSize.isAccessibilitySize ? 190 : 230)
-                    .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
-            } else if let photo = heroPhoto {
-                GripStillCard(photo: photo)
-            } else {
-                specimenCard
-            }
-
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: PitchAtlasSpacing.sm) {
-                    studyButton(action: studyAction)
-                    CompareButton(slug: entry.slug)
-                }
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                    studyButton(action: studyAction)
-                    CompareButton(slug: entry.slug)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Text(display.heroIntro)
-                .font(PitchAtlasTheme.hanken(14))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-    }
-
-    private func studyButton(action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Label("Study this grip", systemImage: "hand.raised.fingers.spread")
-                .frame(maxWidth: .infinity)
-        }
-        .buttonStyle(.borderedProminent)
-        .tint(PitchAtlasTheme.cardbackPaper)
-        .foregroundStyle(PitchAtlasTheme.cardbackInk)
-        .controlSize(.large)
-    }
-
-    // MARK: Drawn specimen (SeamBall)
-
-    private var specimenCard: some View {
-        VStack(spacing: PitchAtlasSpacing.xs) {
-            SpecimenStage(entry: entry, size: 240)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, PitchAtlasSpacing.sm)
-
-            // Legend for the numbered pips on the seam — only when contacts exist.
-            if !canonical.fingerPlacement.isEmpty {
-                fingerLegend
-            }
-
-            Text(entry.motion.forceLabel)
-                .font(PitchAtlasTheme.martian(9))
-                .tracking(1)
-                .foregroundStyle(PitchAtlasTheme.cyan)
-            SectionLabel(text: humanize(entry.seam.accuracyLevel.rawValue), size: 8)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, PitchAtlasSpacing.lg)
-        .specimenCardFrame(padding: PitchAtlasSpacing.lg, foilIntensity: 0.82)
-    }
-
-    /// Maps the seam pips (1 index, 2 middle, 3 ring, 4 pinky, T thumb) to names so
-    /// the numbered dots on the specimen are legible. Pure derived data, no sourcing.
-    private var fingerLegend: some View {
-        let pips = canonical.fingerPlacement.map { contact -> String in
-            let n: String
-            switch contact.finger {
-            case .index: n = "1"
-            case .middle: n = "2"
-            case .ring: n = "3"
-            case .pinky: n = "4"
-            case .thumb: n = "T"
-            }
-            return "\(n) \(contact.label)"
-        }
-        return Text(pips.joined(separator: "   ·   "))
-            .font(PitchAtlasTheme.martian(8))
-            .tracking(0.5)
-            .foregroundStyle(PitchAtlasTheme.text3)
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
-            .padding(.horizontal, PitchAtlasSpacing.sm)
-            .accessibilityHidden(true)
-    }
-
-    // MARK: Foundation gauges
-
-    private var foundation: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "FOUNDATION")
-            Text(display.foundationCaption)
-                .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.text3)
-                .fixedSize(horizontal: false, vertical: true)
-
-            if let shape = physics.shape {
-                GaugeView(label: "Shape", claim: shape, accent: true)
-            }
-
-            if let primary = physics.primaryBreak {
-                GaugeView(label: primary.label,
-                          claim: primary.claim,
-                          accent: primary.accent ?? true)
-            }
-
-            if let secondary = physics.secondaryBreak {
-                GaugeView(label: secondary.label, claim: secondary.claim,
-                          accent: secondary.accent ?? false)
-            }
-            if let spinRate = physics.spinRateRpm {
-                GaugeView(label: "Spin rate", claim: spinRate)
-            }
-            if let active = physics.activeSpinPct {
-                GaugeView(label: "Active spin", claim: active)
-            }
-            GaugeView(label: "Spin axis", claim: physics.spinAxis)
-        }
-    }
-
-    // MARK: Teaching line
-
-    private var teaching: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "WHAT MAKES IT MOVE")
-            Text(physics.teaching.value)
-                .font(PitchAtlasTheme.newsreader(20))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .fixedSize(horizontal: false, vertical: true)
-            SourceClaimLabel(claim: physics.teaching)
-        }
-        .leatherPress()
-    }
-
-    // MARK: Grip lab
-
-    private var gripLab: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-            SectionLabel(text: "THE GRIP")
-            ClaimText(claim: canonical.grip, valueFont: PitchAtlasTheme.hanken(17))
-
-            if !canonical.gripDetails.isEmpty {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                    ForEach(Array(canonical.gripDetails.enumerated()), id: \.offset) { _, detail in
-                        ClaimText(claim: detail, valueFont: PitchAtlasTheme.hanken(15))
-                    }
-                }
-            }
-
-            // Grip model prose
-            let model = canonical.gripModel
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                gripFact("Ball depth", humanize(model.ballDepth.rawValue))
-                gripFact("Finger spacing", humanize(model.fingerSpacing.rawValue))
-                gripFact("Pressure finger", humanize(model.primaryPressureFinger.rawValue))
-                gripFact("Thumb", model.thumbRole)
-                gripFact("Palm gap", model.palmGapCue)
-                gripFact("Release", model.releaseCue)
-                if let orientation = model.orientation {
-                    gripFact("Knuckle line", orientation.knuckleLine)
-                    gripFact("Palm facing", orientation.palmFacing)
-                }
-            }
-            .leatherPress()
-
-            // Per-finger contacts
-            if !model.contacts.isEmpty {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                    SectionLabel(text: "ON THE SEAM", size: 9)
-                    ForEach(Array(model.contacts.enumerated()), id: \.offset) { _, contact in
-                        VStack(alignment: .leading, spacing: 2) {
-                            HStack(spacing: PitchAtlasSpacing.xs) {
-                                FamilyDot(color: canonical.family.accent)
-                                Text("\(humanize(contact.finger.rawValue)) · \(contact.label)")
-                                    .font(PitchAtlasTheme.hankenMedium(14))
-                                    .foregroundStyle(PitchAtlasTheme.bone)
-                            }
-                            Text(contact.cue)
-                                .font(PitchAtlasTheme.hanken(13))
-                                .foregroundStyle(PitchAtlasTheme.bone2)
-                                .fixedSize(horizontal: false, vertical: true)
-                            Text("\(contact.seamRelation) · \(contact.pressureRole)")
-                                .font(PitchAtlasTheme.martian(8))
-                                .foregroundStyle(PitchAtlasTheme.text3)
-                        }
-                    }
-
-                    // The solved pose is itself a claim — it wears its source.
-                    if let provenance = model.provenance {
-                        SourceClaimLabel(claim: provenance)
-                    }
-                }
-            }
-
-            Text(model.visualCaveat)
-                .font(PitchAtlasTheme.newsreaderItalic(13))
-                .foregroundStyle(PitchAtlasTheme.text3)
-                .fixedSize(horizontal: false, vertical: true)
-
-            // First-party grip photography — minus the frame already carrying
-            // the hero, so nothing renders twice.
-            let labPhotos = (canonical.gripImages ?? []).filter { $0 != heroPhoto }
-            if !labPhotos.isEmpty {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                    SectionLabel(text: "FROM THE HAND", size: 9)
-                    ForEach(Array(labPhotos.enumerated()), id: \.offset) { _, photo in
-                        GripPhotoTile(photo: photo)
-                    }
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func gripFact(_ label: String, _ value: String) -> some View {
-        let labelText = Text(label.uppercased())
-            .font(PitchAtlasTheme.martian(8))
-            .tracking(1)
-            .foregroundStyle(PitchAtlasTheme.text3)
-        let valueText = Text(value)
-            .font(PitchAtlasTheme.hanken(14))
-            .foregroundStyle(PitchAtlasTheme.bone)
-
-        if dynamicTypeSize.isAccessibilitySize {
-            // Stack at accessibility sizes so neither the label nor the value
-            // truncates inside a fixed column.
-            VStack(alignment: .leading, spacing: 2) {
-                labelText.fixedSize(horizontal: false, vertical: true)
-                valueText.fixedSize(horizontal: false, vertical: true)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        } else {
-            HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
-                labelText
-                    .frame(width: 96, alignment: .leading)
-                valueText
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-    }
-
-    // MARK: Coaching guide
-
-    private func coaching(_ guide: GripGuide) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: guide.family, color: PitchAtlasTheme.cyan)
-            Text(guide.tagline)
-                .font(PitchAtlasTheme.newsreader(19))
-                .foregroundStyle(PitchAtlasTheme.bone)
-            Text(guide.feel)
-                .font(PitchAtlasTheme.hanken(15))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
-
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                ForEach(Array(guide.steps.enumerated()), id: \.offset) { i, step in
-                    HStack(alignment: .top, spacing: PitchAtlasSpacing.xs) {
-                        Text("\(i + 1)")
-                            .font(PitchAtlasTheme.martian(11))
-                            .foregroundStyle(PitchAtlasTheme.cyan)
-                            .frame(width: 18, alignment: .leading)
-                        Text(step)
-                            .font(PitchAtlasTheme.hanken(14))
-                            .foregroundStyle(PitchAtlasTheme.bone)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-            }
-            .padding(.vertical, PitchAtlasSpacing.xs)
-
-            VStack(alignment: .leading, spacing: 4) {
-                SectionLabel(text: guide.does.headline, size: 9)
-                Text(guide.does.plain)
-                    .font(PitchAtlasTheme.hanken(14))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-        .leatherPress()
-    }
-
-    // MARK: Mechanics
-
-    private var mechanics: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "MECHANICS")
-            ClaimText(claim: canonical.mechanics, valueFont: PitchAtlasTheme.hanken(15))
-        }
-    }
-
-    // MARK: Voice quote
-
-    private func voiceQuote(_ voice: Claim) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            Text("\u{201C}\(voice.value)\u{201D}")
-                .font(PitchAtlasTheme.newsreaderItalic(20))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .fixedSize(horizontal: false, vertical: true)
-            SourceClaimLabel(claim: voice)
-        }
-        .leatherPress()
-    }
-
-    // MARK: Master-variant ledger
-
-    private var mastersLedger: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-            SectionLabel(text: "MASTER VARIANTS")
-            Text(display.mastersIntro)
-                .font(PitchAtlasTheme.hanken(14))
-                .foregroundStyle(PitchAtlasTheme.text3)
-                .fixedSize(horizontal: false, vertical: true)
-
-            ForEach(Array(entry.masterVariants.enumerated()), id: \.offset) { _, variant in
-                masterCard(variant)
-            }
-        }
-    }
-
-    private func masterCard(_ variant: MasterVariantRecord) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            HStack {
-                Text(variant.pitcher.uppercased())
-                    .font(PitchAtlasTheme.anton(20))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .antonSkew()
-                Spacer()
-                if variant.verifiedPro {
-                    StatusPill(text: "Verified", tone: PitchAtlasTheme.success)
-                }
-            }
-            Text(variant.context)
-                .font(PitchAtlasTheme.hanken(14))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
-
-            if let distinction = variant.distinction {
-                ClaimText(claim: distinction, valueFont: PitchAtlasTheme.hanken(14))
-            }
-
-            ForEach(Array(variant.recordNumbers.enumerated()), id: \.offset) { i, number in
-                GaugeView(label: number.label, claim: number.claim, accent: i == 0)
-            }
-
-            if let quote = variant.quote {
-                Text("\u{201C}\(quote.value)\u{201D}")
-                    .font(PitchAtlasTheme.newsreaderItalic(15))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .fixedSize(horizontal: false, vertical: true)
-                SourceClaimLabel(claim: quote)
-            }
-        }
-        .leatherPress()
-    }
-
-    // MARK: Same-family rail
-
-    /// The native mate to the web's "Others in the {family}" rail: a horizontal strip
-    /// of the other filed specimens in this pitch's family, each pushing its own detail.
-    /// Hidden entirely when the family has no other filed member, so it never shows an
-    /// empty rail.
-    @ViewBuilder
-    private var relatedFamily: some View {
-        let kin = store.siblings(of: entry)
-        if !kin.isEmpty {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                SectionLabel(text: "Others in the \(canonical.family.label)")
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: PitchAtlasSpacing.sm) {
-                        ForEach(kin) { sib in
-                            NavigationLink {
-                                PitchDetailView(entry: sib)
-                            } label: {
-                                siblingPill(sib)
-                            }
-                                .buttonStyle(.plain)
-                        }
-                    }
-                    .padding(.vertical, 2)
-                }
-            }
-        }
-    }
-
-    private func siblingPill(_ sib: PitchAtlasEntry) -> some View {
-        // Burnt dot for the lone 1/1 chase, the pitch's own accent otherwise — the
-        // same read as the web sibling pill (pitch/PitchConnections.tsx).
-        let dot = Color(rgb: sib.display.specimenNo == "00" ? WebTokens.Accent.burnt
-                                                            : PitchAccents.triad(for: sib.display.slug).c3)
-        return HStack(spacing: PitchAtlasSpacing.xs) {
-            Circle()
-                .fill(dot)
-                .frame(width: 9, height: 9)
-            Text(sib.canonical.name)
-                .font(PitchAtlasTheme.hankenMedium(14))
-                .foregroundStyle(PitchAtlasTheme.bone)
-            Image(systemName: "arrow.right")
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundStyle(PitchAtlasTheme.text3)
-        }
-        .padding(.vertical, PitchAtlasSpacing.xs)
-        .padding(.horizontal, PitchAtlasSpacing.sm)
-        .frame(minHeight: 44)
-        .contentShape(Rectangle())
-        .overlay(Capsule().stroke(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(sib.canonical.name), open specimen")
-    }
-
-    // MARK: Community
-
-    private var communityPreview: some View {
-        CommunityPanel(
-            topic: .specimen(slug: entry.slug),
-            topicName: canonical.name,
-            provenanceNote: entry.community.provenanceNote,
-            safetyNote: entry.community.safetyNote,
-            openDiscussionRequest: discussionRequest
-        )
-    }
-
-    // MARK: Seam geometry honesty card
-
-    private var seamGeometry: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "HOW THIS SEAM IS DRAWN")
-            Text(entry.seam.equationPlain)
-                .font(PitchAtlasTheme.martian(11))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
-            Text(entry.seam.parameterization)
-                .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
-            ClaimText(claim: entry.seam.stitchCount, valueFont: PitchAtlasTheme.hanken(14))
-            ClaimText(claim: entry.seam.accuracyNote, valueFont: PitchAtlasTheme.hanken(13))
-        }
-        .leatherPress()
-    }
-
-    // MARK: helpers
-
-    private func humanize(_ raw: String) -> String {
-        raw.replacingOccurrences(of: "-", with: " ")
-            .prefix(1).uppercased() + raw.replacingOccurrences(of: "-", with: " ").dropFirst()
     }
 }
 

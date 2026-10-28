@@ -246,6 +246,9 @@ struct SeamBall: View {
     /// The herringbone lacing; off where the web's schematic draws showStitches={false}
     /// (the craftsman plate's 56pt actor).
     var showsLacing = true
+    /// The finger a reader picked at the grip bench (step 02's contact buttons):
+    /// its pip fills cyan and grows, as the site's hand lights the touched pad.
+    var highlightedFinger: Finger? = nil
 
     enum ContactMarks { case numbered, dots }
 
@@ -329,14 +332,15 @@ struct SeamBall: View {
     }
 
     private func contactMarker(_ contact: SeamAnchoredPoint) -> some View {
-        let dot = max(14, size * 0.085)
+        let lit = contact.finger == highlightedFinger
+        let dot = max(14, size * 0.085) * (lit ? 1.3 : 1)
         return Text(contact.finger.pipLabel)
             .font(PitchAtlasTheme.martian(max(8, size * 0.042)))
-            .foregroundStyle(PitchAtlasTheme.cyan)
+            .foregroundStyle(lit ? PitchAtlasTheme.void : PitchAtlasTheme.cyan)
             .frame(width: dot, height: dot)
-            .background(Circle().fill(PitchAtlasTheme.void.opacity(0.82)))
+            .background(Circle().fill(lit ? PitchAtlasTheme.cyan : PitchAtlasTheme.void.opacity(0.82)))
             .overlay(Circle().strokeBorder(PitchAtlasTheme.cyan, lineWidth: 1.5))
-            .shadow(color: PitchAtlasTheme.void.opacity(0.6), radius: 2)
+            .shadow(color: lit ? PitchAtlasTheme.cyan.opacity(0.7) : PitchAtlasTheme.void.opacity(0.6), radius: lit ? 6 : 2)
     }
 
     private var accessibilityText: String {

@@ -123,6 +123,25 @@ final class PitchChapterTests: XCTestCase {
         XCTAssertEqual(SpecimenReads.heroChip(hasClip: false, reduced: false, held: false), "Austin\u{2019}s grip")
     }
 
+    /// ChapterSections.tsx observes with rootMargin -15% 0 -55% 0: a section counts
+    /// while it crosses the band from 15% to 45% of the screen, and the highest one
+    /// is the place. Nothing in the band keeps the last mark (nil here).
+    func testTheChapterBoxMarksTheHighestSectionInTheReadingBand() {
+        let frames: [String: CGRect] = [
+            "specimen-grip": CGRect(x: 0, y: -900, width: 10, height: 1000),
+            "specimen-variants": CGRect(x: 0, y: 200, width: 10, height: 700),
+            "specimen-lessons": CGRect(x: 0, y: 400, width: 10, height: 200),
+            "specimen-sources": CGRect(x: 0, y: 1200, width: 10, height: 300),
+        ]
+        XCTAssertEqual(ChapterBoxes.activeChapter(frames: frames, viewportHeight: 1000), "specimen-variants")
+        var spanning = frames
+        spanning["specimen-grip"] = CGRect(x: 0, y: -500, width: 10, height: 800)
+        XCTAssertEqual(ChapterBoxes.activeChapter(frames: spanning, viewportHeight: 1000), "specimen-grip")
+        let between: [String: CGRect] = ["specimen-grip": CGRect(x: 0, y: -900, width: 10, height: 1000),
+                                         "specimen-sources": CGRect(x: 0, y: 460, width: 10, height: 300)]
+        XCTAssertNil(ChapterBoxes.activeChapter(frames: between, viewportHeight: 1000))
+    }
+
     func testTheSiblingsAreTheOtherFiledPitchesOfTheFamilyInFiledOrder() throws {
         let four = try entry("four-seam")
         let expected = store.pitches.filter { $0.canonical.family == four.canonical.family && $0.slug != four.slug }

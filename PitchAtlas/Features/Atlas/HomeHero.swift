@@ -13,7 +13,7 @@ struct HomeHero: View {
 
     @Environment(PitchStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var motionPaused = false
+    @AppStorage(MotionPreference.pausedKey) private var motionPaused = false
 
     /// The pause control only appears where something moves: a filmed face, motion allowed.
     private var hasFilm: Bool {
@@ -97,14 +97,7 @@ struct HomeHero: View {
     private var cardControls: some View {
         HStack(spacing: 10) {
             CompareButton(slug: featured.slug)
-            if hasFilm && !reduceMotion {
-                Button { motionPaused.toggle(); Haptics.selection() } label: {
-                    CardActionLabel(title: motionPaused ? "Play motion" : "Pause motion",
-                                    systemImage: motionPaused ? "play.fill" : "pause.fill")
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(motionPaused ? "Play the grip film" : "Pause the grip film")
-            }
+            if hasFilm && !reduceMotion { PauseMotionButton() }
         }
         .frame(width: PitchSpecimenCard.width(for: .hero), alignment: .leading)
         .frame(maxWidth: .infinity)
