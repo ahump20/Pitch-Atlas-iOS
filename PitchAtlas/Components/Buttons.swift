@@ -78,18 +78,16 @@ private struct PitchButtonBody: View {
                         .overlay { Capsule().strokeBorder(PitchAtlasTheme.bone.opacity(0.4), lineWidth: 1) }
                 }
         case .waxSeal:
+            // .btn-foil: 13×22 inside a 1pt seam rim, the words at line-height 1 in
+            // a 16pt row; its two rings are box-shadows, drawn outside the box
+            // without taking room, as the site lays them.
             configuration.label
                 .font(PitchAtlasType.font(.anton400, size: 14, relativeTo: .callout)).tracking(em: 0.06, size: 14).textCase(.uppercase)
+                .cssLineHeight(1, face: .anton400, size: 14, relativeTo: .callout)
+                .frame(minHeight: 16)
                 .foregroundStyle(PitchAtlasTheme.bone)
-                .padding(.horizontal, 22).padding(.vertical, 13)
-                .background {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(LinearGradient(colors: [ComponentInk.sealFaceTop, ComponentInk.sealFaceBottom], startPoint: .top, endPoint: .bottom))
-                        .overlay { RoundedRectangle(cornerRadius: 10).strokeBorder(ComponentInk.sealBorder, lineWidth: 1) }
-                        .padding(-3).overlay { RoundedRectangle(cornerRadius: 13).strokeBorder(PitchAtlasTheme.bone, lineWidth: 3) }
-                        .padding(-4).overlay { RoundedRectangle(cornerRadius: 17).strokeBorder(ComponentInk.sealHalo, lineWidth: 4) }
-                }
-                .padding(7)
+                .padding(.horizontal, 23).padding(.vertical, 14)
+                .background { WaxSealFace() }
         case .chapter:
             configuration.label
                 .font(PitchAtlasType.font(.martian500, size: 14, relativeTo: .callout))
@@ -102,6 +100,36 @@ private struct PitchButtonBody: View {
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .opacity(configuration.isPressed ? 0.7 : 1)
         }
+    }
+}
+
+/// `.btn-foil`: the warm-black face (#221B12 → #16120D) inside a seam rim at 55%,
+/// the raking light across its left (::before, 100°, screen at .5), a 1pt bone lip
+/// inside its top, a 3pt bone ring and, 1pt past it, the seam halo at 32%.
+private struct WaxSealFace: View {
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 14).fill(ComponentInk.sealHalo).padding(-4)
+            RoundedRectangle(cornerRadius: 13).fill(PitchAtlasTheme.bone).padding(-3)
+            RoundedRectangle(cornerRadius: 10)
+                .fill(LinearGradient(colors: [ComponentInk.sealFaceTop, ComponentInk.sealFaceBottom], startPoint: .top, endPoint: .bottom))
+                .overlay {
+                    GeometryReader { geo in
+                        let line = CSSGradientLine.points(degrees: 100, size: geo.size)
+                        LinearGradient(stops: [
+                            .init(color: .clear, location: 0.08),
+                            .init(color: PitchAtlasTheme.bone.opacity(0.34), location: 0.22),
+                            .init(color: .clear, location: 0.38)], startPoint: line.start, endPoint: line.end)
+                    }
+                    .blendMode(.screen).opacity(0.5)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .overlay(alignment: .top) {
+                    PitchAtlasTheme.bone.opacity(0.14).frame(height: 1).padding(.horizontal, 6).padding(.top, 1)
+                }
+                .overlay { RoundedRectangle(cornerRadius: 10).strokeBorder(ComponentInk.sealBorder, lineWidth: 1) }
+        }
+        .accessibilityHidden(true)
     }
 }
 

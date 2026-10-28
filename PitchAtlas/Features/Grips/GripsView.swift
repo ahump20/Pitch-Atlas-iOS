@@ -131,37 +131,6 @@ struct GripsView: View {
     }
 }
 
-// MARK: - Small type
-
-/// A mono line in capitals at the site's size and tracking.
-private struct MonoCaps: View {
-    let text: String
-    var size: CGFloat = 10
-    var trackingEm: CGFloat = 0.1
-    var ink: Color = PitchAtlasTheme.ink3
-
-    var body: some View {
-        Text(text.uppercased())
-            .font(PitchAtlasType.font(.martian400, size: size, relativeTo: .caption2))
-            .tracking(em: trackingEm, size: size)
-            .foregroundStyle(ink)
-            .cssLineHeight(1.5, face: .martian400, size: size, relativeTo: .caption2)
-            .fixedSize(horizontal: false, vertical: true)
-            .accessibilityLabel(text)
-    }
-}
-
-/// `.rfx-skew`: skewX(−7°) about the box's center, as CSS transforms it — the
-/// lean without the wordmark's stroke shadow.
-private struct SkewX: GeometryEffect {
-    var degrees: Double = -7
-
-    func effectValue(size: CGSize) -> ProjectionTransform {
-        let t = CGFloat(tan(degrees * .pi / 180))
-        return ProjectionTransform(CGAffineTransform(a: 1, b: 0, c: t, d: 1, tx: -t * size.height / 2, ty: 0))
-    }
-}
-
 // MARK: - Jump to a grip
 
 /// GripLibraryIndex: "Jump to a grip" and a chip per grip; a chip scrolls the
@@ -535,7 +504,7 @@ private struct AttackPlanSection: View {
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .cssLineHeight(32.0 / 24.0, face: .anton400, size: 24, relativeTo: .title2)
                 .fixedSize(horizontal: false, vertical: true)
-                .modifier(SkewX())
+                .modifier(CSSSkewX())
                 .accessibilityLabel(plan.sequenceTitle)
                 .accessibilityAddTraits(.isHeader)
             Text(plan.sequenceNote)
@@ -565,7 +534,7 @@ private struct AttackPlanSection: View {
                 .tracking(em: 0.01, size: 24)
                 .foregroundStyle(last ? PitchAtlasTheme.cyan : ArchiveInk.orange)
                 .cssLineHeight(1, face: .anton400, size: 24, relativeTo: .title2)
-                .modifier(SkewX())
+                .modifier(CSSSkewX())
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 4) {
                 (Text(step.label)

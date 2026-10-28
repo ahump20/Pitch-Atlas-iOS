@@ -30,6 +30,7 @@ final class DeepLinkRouterTests: XCTestCase {
                        DeepLinkDestination(tab: .atlas, stack: [.atlas(.lostPitches), .lostPitch(fadeaway)]))
         XCTAssertEqual(destination("pitchatlas://about"), DeepLinkDestination(tab: .atlas, stack: [.atlas(.about)]))
         XCTAssertEqual(destination("pitchatlas://account"), DeepLinkDestination(tab: .atlas, stack: [.atlas(.account)]))
+        XCTAssertEqual(destination("pitchatlas://support"), DeepLinkDestination(tab: .atlas, stack: [.atlas(.support)]))
         XCTAssertEqual(destination("pitchatlas://grips"), DeepLinkDestination(tab: .grips, stack: []))
         XCTAssertEqual(destination("pitchatlas://sources"), DeepLinkDestination(tab: .sources, stack: []))
         XCTAssertEqual(destination("pitchatlas://tab/index"), DeepLinkDestination(tab: .index, stack: []))

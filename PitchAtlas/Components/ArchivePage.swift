@@ -206,6 +206,8 @@ struct SectionHero<Badge: View, Extra: View>: View {
     var sub: Text? = nil
     var trail: [Crumb] = []
     var accent: ArchiveAccent = .powder
+    /// `atmoClassName`: an atmosphere plate over the field (About's archive paper).
+    var atmosphere: AtmospherePlate? = nil
     @ViewBuilder var badge: Badge
     @ViewBuilder var extra: Extra
 
@@ -254,7 +256,12 @@ struct SectionHero<Badge: View, Extra: View>: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 48)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background { SectionHeroField(accent: accent) }
+        .background {
+            ZStack {
+                SectionHeroField(accent: accent)
+                atmosphere
+            }
+        }
         .overlay(alignment: .bottom) {
             Rectangle().fill(PitchAtlasTheme.bone.opacity(0.12)).frame(height: 1).accessibilityHidden(true)
         }
@@ -263,15 +270,50 @@ struct SectionHero<Badge: View, Extra: View>: View {
 }
 
 extension SectionHero where Badge == EmptyView, Extra == EmptyView {
-    init(eyebrow: String, title: Text, sub: Text? = nil, trail: [Crumb] = [], accent: ArchiveAccent = .powder) {
-        self.init(eyebrow: eyebrow, title: title, sub: sub, trail: trail, accent: accent, badge: { EmptyView() }, extra: { EmptyView() })
+    init(eyebrow: String, title: Text, sub: Text? = nil, trail: [Crumb] = [], accent: ArchiveAccent = .powder,
+         atmosphere: AtmospherePlate? = nil) {
+        self.init(eyebrow: eyebrow, title: title, sub: sub, trail: trail, accent: accent, atmosphere: atmosphere,
+                  badge: { EmptyView() }, extra: { EmptyView() })
     }
 }
 
 extension SectionHero where Badge == EmptyView {
     init(eyebrow: String, title: Text, sub: Text? = nil, trail: [Crumb] = [], accent: ArchiveAccent = .powder,
-         @ViewBuilder extra: () -> Extra) {
-        self.init(eyebrow: eyebrow, title: title, sub: sub, trail: trail, accent: accent, badge: { EmptyView() }, extra: extra)
+         atmosphere: AtmospherePlate? = nil, @ViewBuilder extra: () -> Extra) {
+        self.init(eyebrow: eyebrow, title: title, sub: sub, trail: trail, accent: accent, atmosphere: atmosphere,
+                  badge: { EmptyView() }, extra: extra)
+    }
+}
+
+/// `.pa-atmo`: a macro cut from Austin's own game ball, a whisper over a hero's
+/// field — cover-fit, centered, faded at its edges by
+/// radial-gradient(110% 90% at 50% 40%, #000 30%, transparent 95%).
+struct AtmospherePlate: View {
+    let src: String
+    let opacity: Double
+
+    var body: some View {
+        GeometryReader { geo in
+            let w = geo.size.width, h = geo.size.height
+            if let image = BundledImage.load(src) {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: w, height: h)
+                    .clipped()
+                    .mask {
+                        let rx = max(w * 1.1, 1), ry = max(h * 0.9, 1)
+                        RadialGradient(stops: [.init(color: .black, location: 0.3), .init(color: .clear, location: 0.95)],
+                                       center: .center, startRadius: 0, endRadius: rx)
+                            .frame(width: rx * 2, height: rx * 2)
+                            .scaleEffect(x: 1, y: ry / rx)
+                            .position(x: w * 0.5, y: h * 0.4)
+                    }
+                    .opacity(opacity)
+            }
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 }
 

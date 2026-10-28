@@ -27,7 +27,7 @@ struct SiteFooter: View {
         ("Sources", "sources"),
         ("About", "about"),
         ("Privacy", "https://pitch-atlas.com/privacy"),
-        ("Support", "account"),
+        ("Support", "support"),
     ]
 
     var body: some View {

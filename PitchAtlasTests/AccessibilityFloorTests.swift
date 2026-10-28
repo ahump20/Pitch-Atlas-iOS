@@ -56,9 +56,9 @@ final class AccessibilityFloorTests: XCTestCase {
         }
     }
 
-    func testAboutSpeaksTheSentenceItShows() {
-        XCTAssertTrue(AboutView.honestyLine.contains("work anonymously"))
-        XCTAssertFalse(AboutView.honestyLine.contains("require sign-in"))
+    func testAccountSaysContributingWorksAnonymously() {
+        XCTAssertTrue(AccountView.heroSub.contains("work anonymously"))
+        XCTAssertFalse(AccountView.heroSub.contains("require sign-in"))
     }
 
     func testMotionPermissionNamesTheCardTilt() throws {

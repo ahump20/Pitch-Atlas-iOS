@@ -17,6 +17,10 @@ import SwiftUI
 // wing and record in one step (DeepLinkRouter) resolves both.
 
 struct AtlasView: View {
+    /// The toolbar's way into the account screen, by the name Support's delete
+    /// route walks.
+    static let accountLabel = "Account and Safety"
+
     @Environment(PitchStore.self) private var store
 
     var body: some View {
@@ -62,7 +66,7 @@ struct AtlasView: View {
                         .frame(minWidth: 44, minHeight: 44)
                         .contentShape(Rectangle())
                 }
-                .accessibilityLabel("Account and Safety")
+                .accessibilityLabel(Self.accountLabel)
                 .accessibilityHint("Sign in, report, block, support, and delete account")
             }
         }
@@ -73,6 +77,7 @@ struct AtlasView: View {
             case .lostPitches: LostPitchesView()
             case .about: AboutView()
             case .account: AccountView()
+            case .support: SupportView()
             }
         }
         .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }

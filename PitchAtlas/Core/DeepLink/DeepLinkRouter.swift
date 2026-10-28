@@ -16,7 +16,8 @@ import Observation
 //   pitchatlas://craftsmen[/<slug>]       -> Craftsmen, the craftsman (craftsman/<slug> too)
 //   pitchatlas://learn[/<slug>]           -> Atlas, Learn, the wing
 //   pitchatlas://lost-pitches[/<slug>]    -> Atlas, Lost Pitches, the pitch
-//   pitchatlas://about, ://account        -> Atlas, that page
+//   pitchatlas://about, ://account,
+//     ://support                          -> Atlas, that page
 //   pitchatlas://grips, ://sources        -> that tab
 // pitchatlas://compare belongs to CompareSelection. A link replaces the stack on
 // its tab, so it always lands in the same place. A slug that misses opens the
@@ -25,7 +26,7 @@ import Observation
 
 /// The Atlas tab's own pages: the wings that are not tabs.
 enum AtlasRoute: Hashable {
-    case craftsmen, learn, lostPitches, about, account
+    case craftsmen, learn, lostPitches, about, account, support
 }
 
 /// One screen a link stacks onto a tab, carrying the value its destination reads.
@@ -112,6 +113,8 @@ final class DeepLinkRouter {
             return land(.atlas, [.atlas(.about)])
         case "account":
             return land(.atlas, [.atlas(.account)])
+        case "support":
+            return land(.atlas, [.atlas(.support)])
         case "grips":
             return land(.grips)
         case "sources":

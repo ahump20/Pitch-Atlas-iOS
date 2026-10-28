@@ -1,186 +1,207 @@
 import SwiftUI
 
 // =============================================================================
-// Pitch Atlas — Sources (the provenance colophon)
+// Pitch Atlas — Sources, the colophon
 // =============================================================================
-// The tab that earns the whole product its line: "Sourced, not corrected."
-// It explains the tier dots used everywhere else, states an honest tally drawn
-// from the bundle, and lists every source with the date it was last checked.
-//
-// Freshness is never invented here: the only "as of" is store.sourcesLastChecked,
-// computed off the build manifest. Four states are explicit — a decode failure
-// shows ErrorStateView, no sources shows EmptyStateView, a search miss shows its
-// own empty reason, and the normal path lists the colophon.
+// Web: pages/SourcesPage.tsx, in its order and words. Where you are, the room's
+// marker, the headline and what the labels are for, then the "as of": the
+// newest retrievedAt across the whole colophon, never a hardcoded freshness.
+// How to read a claim, with the seven tiers strongest to weakest; the citation
+// registry, the specimen sources in their filed order and then what the
+// teaching wings cite that the registry lacks; the rights line. A search over
+// the registry is the app's one addition. Four states: a decode failure, no
+// sources, a search that misses, the registry.
 // =============================================================================
 
 struct SourcesView: View {
     @Environment(PitchStore.self) private var store
-    @State private var query: String = ""
-
-    /// The provenance ladder, top tier to honest gray — the legend for every dot
-    /// the app draws. Order matches the contract and the web colophon.
-    private let ladder: [ClaimConfidence] = [
-        .officialData,
-        .pitcherOwnWords,
-        .coachObserved,
-        .reputableAnalysis,
-        .secondhandAttributed,
-        .communityFirsthand,
-        .unverified
-    ]
-
-    private var filteredSources: [Source] {
-        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return store.sources }
-        let needle = trimmed.lowercased()
-        return store.sources.filter {
-            $0.label.lowercased().contains(needle)
-                || $0.url.lowercased().contains(needle)
-        }
-    }
+    @State private var query = ""
 
     var body: some View {
+        let colophon = SourceRegistry.colophon(registry: store.sources, wings: store.knowledge)
         ZStack {
             FieldBackdrop()
 
             ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    masthead
-                    freshnessCard
-                    ladderCard
-                    tallyLine
-                    sourceList
+                VStack(alignment: .leading, spacing: 0) {
+                    page(colophon)
+                    SiteFooter(path: "/sources")
                 }
-                .padding(.horizontal, PitchAtlasSpacing.lg)
-                .padding(.top, PitchAtlasSpacing.lg)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
                 .emitsScrollProgress()
             }
+            .scrollDismissesKeyboard(.interactively)
         }
+        // The site's header carries the brand on every page; the title still names
+        // the back button on the pages this one opens.
         .navigationTitle("Sources")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+        }
     }
 
-    // MARK: - Masthead
-
-    private var masthead: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "Provenance", color: PitchAtlasTheme.kicker)
-            Text("SOURCES")
-                .font(PitchAtlasTheme.anton(52))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .antonSkew()
-            Text("The proof boundary stays visible. A story can breathe without pretending to be tracked data.")
-                .font(PitchAtlasTheme.newsreaderItalic(18))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
+    /// `mx-auto max-w-6xl px-5 py-16`
+    private func page(_ colophon: [Source]) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Breadcrumb(trail: [Crumb(label: "The Atlas", path: "home"), Crumb(label: "Sources")])
+                .padding(.bottom, 24)
+            StageTierMarker(index: "04", label: "Sources")
+            SectionTitle(text: "Every voice keeps its trail.", measure: 18, size: 36, lineHeight: 1.04)
+            PageProse(text: SourcesCopy.lede, size: 18, measure: 58).padding(.top, 20)
+            asOf(colophon).padding(.top, 24)
+            legend.padding(.top, 56)
+            registry(colophon).padding(.top, 48)
+            // `mt-14 border-t border-ink/15 pt-8`
+            PageProse(text: SourcesCopy.rights, size: 14, measure: 72)
+                .padding(.top, 1 + 32)
+                .overlay(alignment: .top) { PageInk.rule.frame(height: 1).accessibilityHidden(true) }
+                .padding(.top, 56)
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 64)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Provenance. Sources. The proof boundary stays visible. A story can breathe without pretending to be tracked data.")
     }
 
-    // MARK: - Freshness (computed, never hardcoded)
+    // MARK: - As of (computed, never hardcoded)
 
-    @ViewBuilder
-    private var freshnessCard: some View {
-        let checked = store.sourcesLastChecked
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "Sources last checked")
-            if checked.isEmpty {
-                Text("Not recorded in this build.")
-                    .font(PitchAtlasTheme.hanken(14))
-                    .foregroundStyle(PitchAtlasTheme.text3)
-            } else {
-                Text(checked)
-                    .font(PitchAtlasTheme.newsreader(24))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-            }
-            Text("Checked, not auto-refreshed.")
-                .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.text3)
-        }
-        .leatherPress()
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(
-            checked.isEmpty
-                ? "Sources last checked. Not recorded in this build. Checked, not auto-refreshed."
-                : "Sources last checked \(checked). Checked, not auto-refreshed."
-        )
+    /// `.mono-label`: the date in bone and in its own case, as the site's
+    /// button keeps it (preflight's text-transform: none).
+    private func asOf(_ colophon: [Source]) -> some View {
+        let date = SourceRegistry.latestRetrievedAt(colophon).map(AsOf.format)
+        let tail = "Sources last checked, not auto-refreshed."
+        let line = date.map { Text("AS OF ") + Text($0).foregroundStyle(PitchAtlasTheme.bone) + Text(". " + tail.uppercased()) }
+            ?? Text(("Not recorded in this build. " + tail).uppercased())
+        return line
+            .font(MonoLabel.font)
+            .tracking(MonoLabel.trackingEm * MonoLabel.size)
+            .foregroundStyle(PitchAtlasTheme.ink2)
+            .fixedSize(horizontal: false, vertical: true)
+            .accessibilityLabel(date.map { "As of \($0). \(tail)" } ?? "Not recorded in this build. \(tail)")
     }
 
-    // MARK: - Provenance ladder (the legend for the dots)
+    // MARK: - How to read a claim
 
-    private var ladderCard: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-            SectionLabel(text: "The provenance ladder")
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                ForEach(Array(ladder.enumerated()), id: \.element) { index, tier in
-                    if index > 0 { HairlineDivider() }
-                    ladderRow(tier)
+    private var legend: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            SectionKick(text: "How to read a claim")
+            PageProse(text: SourcesCopy.howToRead, size: 14, ink: PageInk.legend, measure: 46)
+                .padding(.top, 24)
+            VStack(alignment: .leading, spacing: 16) {
+                ForEach(SourcesCopy.legendOrder, id: \.self) { tier in
+                    VStack(alignment: .leading, spacing: 4) {
+                        ConfidenceLabel(confidence: tier)
+                        PageProse(text: tier.meaning, size: 14, ink: PageInk.legend, measure: 44, leading: 1.375)
+                    }
+                    .accessibilityElement(children: .combine)
                 }
             }
+            .padding(.top, 24)
+            approximateNote.padding(.top, 24)
         }
-        .leatherPress()
     }
 
-    private func ladderRow(_ tier: ClaimConfidence) -> some View {
-        HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
-            ProvenanceDot(confidence: tier)
-                .padding(.top, 4)
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                TierWords(confidence: tier, size: 10, tracking: 1.4)
-                Text(tier.meaning)
-                    .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.text3)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(tier.label). \(tier.meaning)")
-    }
-
-    // MARK: - Honest tally (computed from the store)
-
-    private var tallyLine: some View {
-        Text("\(store.sources.count) sources across \(store.pitches.count) filed pitches.")
-            .font(PitchAtlasTheme.hankenMedium(14))
-            .foregroundStyle(PitchAtlasTheme.bone2)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .accessibilityLabel("\(store.sources.count) sources across \(store.pitches.count) filed pitches.")
-    }
-
-    // MARK: - Source list (with search + four states)
-
+    /// The approximate sign, and how faithful the seam render is (the seam
+    /// reference any filed pitch carries).
     @ViewBuilder
-    private var sourceList: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-            SectionLabel(text: "Every source")
+    private var approximateNote: some View {
+        let lead = Text("A value marked with a leading approximate sign is rounded, era-dependent, or methodology-bound.")
+        let note: Text = store.pitches.first.map { pitch in
+            lead + Text(" The seam render is a \(pitch.seam.accuracyLevel.rawValue), documented in ")
+                + Text(pitch.seam.calibrationDoc)
+                    .font(PitchAtlasType.font(.martian400, size: 14, relativeTo: .subheadline))
+                    .foregroundStyle(PitchAtlasTheme.ink2)
+                + Text(".")
+        } ?? lead
+        note
+            .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
+            .foregroundStyle(PageInk.legend)
+            .cssLineHeight(1.375, face: .hanken400, size: 14, relativeTo: .subheadline)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: 46 * 0.56 * 14, alignment: .leading)
+    }
 
-            if case .failed(let msg) = store.status {
-                ErrorStateView(reason: msg)
-            } else if store.sources.isEmpty {
-                EmptyStateView(message: "Sources couldn't load.")
-            } else {
-                searchField
+    // MARK: - The citation registry (with search and four states)
 
-                let results = filteredSources
-                if results.isEmpty {
-                    EmptyStateView(message: "No sources match \(query).")
+    private func registry(_ colophon: [Source]) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            SectionKick(text: "The citation registry")
+            Group {
+                if case .failed(let message) = store.status {
+                    ErrorStateView(reason: message)
+                } else if colophon.isEmpty {
+                    EmptyStateView(message: "No sources ship in this build.")
                 } else {
-                    LazyVStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-                        ForEach(Array(results.enumerated()), id: \.element.id) { index, source in
-                            if index > 0 { HairlineDivider() }
-                            SourceRow(source: source)
+                    VStack(alignment: .leading, spacing: 24) {
+                        PitchSearchField(text: $query, prompt: "Search by source or link")
+                        let shown = SourcesCopy.matches(colophon, query: query)
+                        if shown.isEmpty {
+                            EmptyStateView(message: "No sources match \(query).")
+                        } else {
+                            // `gap-y-[34px]` on a coarse pointer
+                            LazyVStack(alignment: .leading, spacing: 34) {
+                                ForEach(Array(shown.enumerated()), id: \.offset) { _, source in
+                                    RegistryEntry(source: source)
+                                }
+                            }
                         }
                     }
                 }
             }
+            .padding(.top, 24)
         }
     }
+}
 
-    private var searchField: some View {
-        PitchSearchField(text: $query, prompt: "Search by source or link")
+/// SourceBadge with `wrapLabel`: the whole credential wraps instead of cutting
+/// at 26 characters — mono 12 at leading-relaxed, tracked .18em, its season at
+/// 70%, the outbound arrow, underlined in ink-3 at 40%. A 44pt target.
+private struct RegistryEntry: View {
+    let source: Source
+
+    var body: some View {
+        let season = source.season.map { Text(" / \($0)".uppercased()).foregroundStyle(PitchAtlasTheme.ink2.opacity(0.7)) }
+        let credential = (Text(source.label.uppercased()) + (season ?? Text("")) + Text(" ↗\u{FE0E}"))
+            .font(PitchAtlasType.font(.martian400, size: 12, relativeTo: .caption))
+            .tracking(MonoLabel.trackingEm * 12)
+            .foregroundStyle(PitchAtlasTheme.ink2)
+            .underline(true, color: PitchAtlasTheme.ink3.opacity(0.4))
+        let label = credential
+            .cssLineHeight(1.625, face: .martian400, size: 12, relativeTo: .caption)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 17)
+            .contentShape(Rectangle())
+            .padding(.vertical, -17)
+        if let url = URL(string: source.url) {
+            Link(destination: url) { label }
+                .accessibilityLabel(source.label + (source.season.map { ", \($0)" } ?? ""))
+                .accessibilityHint("Opens the source outside the app")
+        } else {
+            label
+        }
+    }
+}
+
+/// SourcesPage.tsx's words, and the registry's search.
+enum SourcesCopy {
+    /// LEGEND_ORDER: strongest to weakest.
+    static let legendOrder: [ClaimConfidence] = [
+        .officialData, .reputableAnalysis, .secondhandAttributed, .pitcherOwnWords,
+        .coachObserved, .communityFirsthand, .unverified,
+    ]
+
+    static let lede = "Pitching knowledge travels through official records, pitchers, coaches, analysts, historians, and the community. Every claim is labeled by where it came from and how confident that source is, so those voices can share one museum without losing their context."
+
+    /// The site says "on the site"; in here it is the atlas.
+    static let howToRead = "Every claim in the atlas wears one of seven badges, strongest to weakest. The badge is the point: official tracking context and a coaching cue from a blog can both belong here, but they do not look the same. Each claim was checked against the source it cites before it shipped; what a source could not support is shown as unverified, not hidden."
+
+    static let rights = "Original geometry, diagrams, and words. Real grip photos ship only from clean sources: our own photography, community own-grip uploads, and verified Creative Commons or public-domain images with attribution; never an unlicensed agency photo, a team or league mark, or broadcast footage. Instructional text is paraphrased and cited, never copied. No runtime API calls: every figure here is static and sourced in the repository."
+
+    /// A source matches when its name or its link holds the query, any case.
+    static func matches(_ sources: [Source], query: String) -> [Source] {
+        let needle = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !needle.isEmpty else { return sources }
+        return sources.filter { $0.label.lowercased().contains(needle) || $0.url.lowercased().contains(needle) }
     }
 }

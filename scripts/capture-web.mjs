@@ -25,6 +25,7 @@ const stops = {
   lostdetail: '/lost-pitches/rube-foster-fadeaway',
   about: '/about',
   account: '/support',
+  support: '/support',
   compare: '/compare?a=slider&b=sweeper',
   compareflight: '/compare?a=slider&b=sweeper&view=movement',
 }

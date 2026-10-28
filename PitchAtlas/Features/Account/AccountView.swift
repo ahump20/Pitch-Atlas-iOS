@@ -14,22 +14,38 @@ struct AccountView: View {
 
     private var service: CommunityService { CommunityService(client: auth.client) }
 
+    /// The delete button's words; Support's delete route names them.
+    static let deleteLabel = "Delete account"
+
+    /// The header's line: what needs no account, and what an account is for.
+    static let heroSub = "Field notes, discussion, reports, and blocks work anonymously. Sign in only to keep your record across devices; image uploads need a claimed account."
+
     var body: some View {
         ZStack {
             FieldBackdrop()
             ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    masthead
-                    accountState
-                    safety
-                    links
+                VStack(alignment: .leading, spacing: 0) {
+                    // Every page opens the site's way; the controls stay the app's own.
+                    SectionHero(eyebrow: AtlasView.accountLabel,
+                                title: Text("No sign-in to ") + Text("read or post.").foregroundStyle(PitchAtlasMaterials.foilType()),
+                                sub: Text(Self.heroSub),
+                                trail: [Crumb(label: "Pitch Atlas", path: "home"), Crumb(label: AtlasView.accountLabel)])
+                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
+                        accountState
+                        safety
+                        links
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 48)
                 }
-                .padding(PitchAtlasSpacing.lg)
-                .padding(.bottom, PitchAtlasSpacing.xl3)
+                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
         .navigationTitle("Account")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+        }
         .task(id: auth.userID) { await loadBlockedContributors() }
         .alert("Delete this account?", isPresented: $deleteRequested) {
             Button("Cancel", role: .cancel) {}
@@ -54,25 +70,6 @@ struct AccountView: View {
             }
         } message: {
             Text("Signing out abandons this anonymous record — its notes stay public but can never be claimed.")
-        }
-    }
-
-    private var masthead: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            HStack(alignment: .center, spacing: PitchAtlasSpacing.sm) {
-                BrandSealMark(size: 48)
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    SectionLabel(text: "Account and Safety", color: PitchAtlasTheme.kicker)
-                    Text("PITCH ATLAS")
-                        .font(PitchAtlasTheme.anton(38))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                        .antonSkew()
-                }
-            }
-            Text("The field manual is readable without an account, and posting, reports, and blocks work anonymously. Sign in only to keep your record across devices; image uploads need a claimed account.")
-                .font(PitchAtlasTheme.hanken(15))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -120,7 +117,7 @@ struct AccountView: View {
                 Button(role: .destructive) {
                     deleteRequested = true
                 } label: {
-                    Label("Delete account", systemImage: "trash")
+                    Label(Self.deleteLabel, systemImage: "trash")
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
@@ -204,7 +201,7 @@ struct AccountView: View {
                 Button(role: .destructive) {
                     deleteRequested = true
                 } label: {
-                    Label("Delete account", systemImage: "trash")
+                    Label(Self.deleteLabel, systemImage: "trash")
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
@@ -280,9 +277,8 @@ struct AccountView: View {
     private var links: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "Links")
-            Button {
-                openURL(URL(string: "https://pitch-atlas.com/support")!)
-            } label: {
+            // The site's support page, in the app: back returns here.
+            NavigationLink(value: AtlasRoute.support) {
                 Label("Support", systemImage: "lifepreserver")
             }
             Button {
