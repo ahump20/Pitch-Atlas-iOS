@@ -397,7 +397,7 @@ private struct EdgeStack: ViewModifier {
     func body(content: Content) -> some View {
         if off { content } else { stacked(content) }
     }
-    private func stacked(_ content: Content) -> some View {
+    @ViewBuilder private func stacked(_ content: Content) -> some View {
         let stack = ComponentInk.edgeStack
         let layer = { (i: Int) in stack.isEmpty ? Color.black : stack[min(i, stack.count - 1)] }
         content
