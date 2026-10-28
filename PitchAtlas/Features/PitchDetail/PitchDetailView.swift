@@ -595,8 +595,8 @@ struct PitchDetailView: View {
 
     private var communityPreview: some View {
         CommunityPanel(
-            pitchSlug: entry.slug,
-            pitchName: canonical.name,
+            topic: .specimen(slug: entry.slug),
+            topicName: canonical.name,
             provenanceNote: entry.community.provenanceNote,
             safetyNote: entry.community.safetyNote,
             openDiscussionRequest: discussionRequest

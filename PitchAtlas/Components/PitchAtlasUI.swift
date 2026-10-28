@@ -241,38 +241,60 @@ struct LoadingTile: View {
 struct ErrorStateView: View {
     let title: String
     let reason: String
+    /// When set, a "Try again" button re-runs the read that failed.
+    var retry: (() -> Void)?
 
-    init(title: String = "Couldn't load this", reason: String) {
+    init(title: String = "Couldn't load this", reason: String, retry: (() -> Void)? = nil) {
         self.title = title
         self.reason = reason
+        self.retry = retry
     }
 
     var body: some View {
         VStack(spacing: PitchAtlasSpacing.sm) {
-            BrandSealMark(size: 58)
-            Text(title)
-                .font(PitchAtlasTheme.newsreader(18))
-                .foregroundStyle(PitchAtlasTheme.bone)
-            Text(reason)
-                .font(PitchAtlasTheme.hanken(14))
-                .foregroundStyle(PitchAtlasTheme.text3)
-                .multilineTextAlignment(.center)
+            VStack(spacing: PitchAtlasSpacing.sm) {
+                BrandSealMark(size: 58)
+                Text(title)
+                    .font(PitchAtlasTheme.newsreader(18))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .multilineTextAlignment(.center)
+                Text(reason)
+                    .font(PitchAtlasTheme.hanken(14))
+                    .foregroundStyle(PitchAtlasTheme.text3)
+                    .multilineTextAlignment(.center)
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(title). \(reason)")
+
+            if let retry {
+                Button(action: retry) {
+                    Label("Try again", systemImage: "arrow.clockwise")
+                        .font(PitchAtlasTheme.hankenMedium(13))
+                        .frame(minHeight: 44)
+                }
+                .buttonStyle(.bordered)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, PitchAtlasSpacing.xl2)
         .leatherPress()
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title). \(reason)")
     }
 }
 
 /// Empty: explains *why* there is nothing here.
 struct EmptyStateView: View {
+    var title: String?
     let message: String
 
     var body: some View {
         VStack(spacing: PitchAtlasSpacing.sm) {
             BrandSealMark(size: 50)
+            if let title {
+                Text(title)
+                    .font(PitchAtlasTheme.newsreader(18))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .multilineTextAlignment(.center)
+            }
             Text(message)
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone2)
@@ -282,7 +304,7 @@ struct EmptyStateView: View {
         .padding(.vertical, PitchAtlasSpacing.xl2)
         .leatherPress()
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(message)
+        .accessibilityLabel(title.map { "\($0). \(message)" } ?? message)
     }
 }
 

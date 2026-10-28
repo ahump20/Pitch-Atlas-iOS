@@ -35,14 +35,15 @@ struct PitchSearchField: View {
 
 struct Toast: Identifiable, Equatable { let id = UUID(); let message: String }
 
-/// One toast at a time, bottom-center, 4s — spoken to VoiceOver and felt as the success haptic.
+/// One toast at a time, bottom-center, 4s — spoken to VoiceOver and felt as the
+/// success haptic, or the error haptic when it reports a failure.
 @Observable final class ToastCenter {
     private(set) var current: Toast?
-    func show(_ message: String, duration: TimeInterval = 4) {
+    func show(_ message: String, duration: TimeInterval = 4, isFailure: Bool = false) {
         let toast = Toast(message: message)
         current = toast
         UIAccessibility.post(notification: .announcement, argument: message)
-        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        UINotificationFeedbackGenerator().notificationOccurred(isFailure ? .error : .success)
         Task { @MainActor [weak self] in
             try? await Task.sleep(nanoseconds: UInt64(duration * 1_000_000_000))
             if self?.current?.id == toast.id { self?.current = nil }

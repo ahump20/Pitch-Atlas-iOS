@@ -553,7 +553,7 @@ final class PitchAtlasTests: XCTestCase {
 
     func testDiscussionPostValidationTrimsAndRejectsBadBodies() throws {
         let post = try NewDiscussionPost.validated(
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             displayName: "Austin",
             body: "  This grip finally held through catch play.  ",
             parentID: nil
@@ -562,7 +562,7 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(post.body, "This grip finally held through catch play.")
 
         XCTAssertThrowsError(try NewDiscussionPost.validated(
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             displayName: "Austin",
             body: "   ",
             parentID: nil
@@ -570,7 +570,7 @@ final class PitchAtlasTests: XCTestCase {
             XCTAssertEqual(error as? CommunityServiceError, .invalidDiscussionPost("Add a post before submitting."))
         }
         XCTAssertThrowsError(try NewDiscussionPost.validated(
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             displayName: "Austin",
             body: String(repeating: "x", count: 4001),
             parentID: nil
@@ -595,7 +595,7 @@ final class PitchAtlasTests: XCTestCase {
 
         let postGrant: Set<String> = ["topic_key", "display_name", "body", "parent_id"]
         let post = try NewDiscussionPost.validated(
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             displayName: "Austin",
             body: "Grant-shape guard.",
             parentID: "parent-1"
@@ -608,7 +608,7 @@ final class PitchAtlasTests: XCTestCase {
         ]
         let media = NewDiscussionMedia(
             postID: "post-1",
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             storagePath: "user/file.jpg",
             mimeType: "image/jpeg",
             kind: "image",
@@ -694,7 +694,7 @@ final class PitchAtlasTests: XCTestCase {
         let posts = [
             DiscussionPost(
                 id: "post-1",
-                topicKey: "pitch:four-seam",
+                topicKey: "four-seam",
                 authorID: "author-visible",
                 displayName: "Visible",
                 parentID: nil,
@@ -703,7 +703,7 @@ final class PitchAtlasTests: XCTestCase {
             ),
             DiscussionPost(
                 id: "post-2",
-                topicKey: "pitch:four-seam",
+                topicKey: "four-seam",
                 authorID: "author-blocked",
                 displayName: "Blocked",
                 parentID: nil,
@@ -891,9 +891,10 @@ final class PitchAtlasTests: XCTestCase {
             code: 0,
             userInfo: [NSLocalizedDescriptionKey: "rate_limit: too many posts in a short time"]
         )
+        // The trigger's own sentence after the tag, as the web shows it.
         XCTAssertEqual(
             CommunityService.userMessage(for: rateLimit),
-            "Too many community actions in a short time. Wait a bit and try again."
+            "Too many posts in a short time."
         )
 
         let permanentAccount = NSError(

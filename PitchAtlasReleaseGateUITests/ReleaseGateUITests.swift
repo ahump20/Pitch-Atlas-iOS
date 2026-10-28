@@ -51,7 +51,7 @@ final class ReleaseGateUITests: XCTestCase {
         )
         discussionTab.tap()
 
-        let field = app.textFields["Ask, answer, or tell the story from the mound"]
+        let field = app.textFields["File a grip cue, breakdown, image, or clip. Keep it about the pitch."]
         if !(field.exists && field.isHittable) {
             scrollUpOnePage()
         }
@@ -61,17 +61,17 @@ final class ReleaseGateUITests: XCTestCase {
             "Release gate for build 11: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
         )
 
-        let submit = app.buttons["Submit post"]
-        XCTAssertTrue(submit.waitForExistence(timeout: 5), "Submit post button not found")
+        let submit = app.buttons["File post"]
+        XCTAssertTrue(submit.waitForExistence(timeout: 5), "File post button not found")
         if !submit.isHittable {
             scrollUpOnePage()
         }
         submit.tap()
 
-        // "Post submitted." is the success toast; the failure path writes a
-        // different message, so this is the real server-accepted signal.
+        // "Filed ✓" is the success line; the failure path writes a different
+        // message, so this is the real server-accepted signal.
         XCTAssertTrue(
-            app.staticTexts["Post submitted."].waitForExistence(timeout: 20),
+            app.staticTexts["Filed ✓"].waitForExistence(timeout: 20),
             "The post was not accepted by the server within 20s"
         )
     }
