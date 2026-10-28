@@ -153,6 +153,7 @@ struct GripSourceBadge: View {
                         Text(source.label)
                             .underline(true, color: PitchAtlasTheme.bone.opacity(0.3))
                             .lineLimit(2)
+                            .multilineTextAlignment(.leading)
                             .padding(.vertical, 16)
                             .contentShape(Rectangle())
                             .padding(.vertical, -16)

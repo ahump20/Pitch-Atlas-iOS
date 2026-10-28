@@ -280,6 +280,7 @@ struct KnowledgeWingView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
+            .multilineTextAlignment(.leading)
             // A link the app sends to the web says so with its arrow.
             Text(web ? "↗\u{FE0E}" : "→")
                 .font(MonoLabel.font)

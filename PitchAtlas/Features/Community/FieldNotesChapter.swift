@@ -918,6 +918,7 @@ private struct NoteCard: View {
                         Text("\(note.evidenceLabel.flatMap { $0.isEmpty ? nil : $0 } ?? "Evidence") ↗\u{FE0E}")
                             .font(PitchAtlasType.font(.martian400, size: 12, relativeTo: .caption))
                             .foregroundStyle(PitchAtlasTheme.seamBright)
+                            .multilineTextAlignment(.leading)
                             .padding(.vertical, 14)
                             .contentShape(Rectangle())
                             .padding(.vertical, -14)

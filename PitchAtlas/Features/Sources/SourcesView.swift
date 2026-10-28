@@ -169,6 +169,7 @@ private struct RegistryEntry: View {
         let label = credential
             .cssLineHeight(1.625, face: .martian400, size: 12, relativeTo: .caption)
             .fixedSize(horizontal: false, vertical: true)
+            .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 17)
             .contentShape(Rectangle())

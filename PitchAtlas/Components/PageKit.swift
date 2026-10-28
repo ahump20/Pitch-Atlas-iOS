@@ -205,6 +205,7 @@ struct ExternalMonoLink: View {
                     .tracking(em: 0.1, size: 10)
                     .foregroundStyle(PitchAtlasTheme.seamBright)
                     .cssLineHeight(1.5, face: .martian400, size: 10, relativeTo: .caption2)
+                    .multilineTextAlignment(.leading)
                     .frame(minHeight: 44)
                     .contentShape(Rectangle())
             }

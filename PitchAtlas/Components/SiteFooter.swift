@@ -157,7 +157,9 @@ struct RotatingQuote: View {
         let words = quote.context.map { "\(quote.attribution) · \($0)" } ?? quote.attribution
         return Group {
             if let source = quote.claim.source, let url = URL(string: source.url) {
-                Link(destination: url) { Text(words.uppercased()).underline(color: PitchAtlasTheme.bone2.opacity(0.3)) }
+                Link(destination: url) {
+                    Text(words.uppercased()).underline(color: PitchAtlasTheme.bone2.opacity(0.3)).multilineTextAlignment(.leading)
+                }
                     .accessibilityHint("Opens the source in Safari")
             } else {
                 Text(words.uppercased())
