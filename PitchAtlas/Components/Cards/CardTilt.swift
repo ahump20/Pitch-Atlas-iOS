@@ -8,6 +8,12 @@ import SwiftUI
 // leans with the phone, ±10°. On the bench the card is grabbed on both axes to
 // ±28° and glides home on a softer spring. The light follows the tilt. Reduce
 // Motion holds every card at rest.
+//
+// The hand's tilt is a UIKit pan that only begins on a mostly sideways stroke.
+// A SwiftUI DragGesture on a card, even a simultaneous one, kept a vertical
+// stroke that started on the card from ever scrolling the page (diag/home-scroll,
+// run 40668248341: the home moved only with the tilt switched off). iOS 17 has
+// no representable gesture, so there a page card leans with the phone only.
 // =============================================================================
 
 enum CardTiltMode: Equatable {
@@ -73,19 +79,37 @@ private struct CardTiltModifier: ViewModifier {
         return mode == .hero ? .gyro(roll: motion.roll, pitch: motion.pitch) : .rest
     }
 
+    private func tilt(for translation: CGSize) -> CardTiltState? {
+        mode == .inspector
+            ? CardTiltState.grab(translation: translation, size: size)
+            : CardTiltState.drag(translation: translation, width: size.width)
+    }
+
     private var gesture: some Gesture {
         DragGesture(minimumDistance: CardTiltState.threshold)
-            .onChanged { v in
-                drag = mode == .inspector
-                    ? CardTiltState.grab(translation: v.translation, size: size)
-                    : CardTiltState.drag(translation: v.translation, width: size.width)
-            }
+            .onChanged { v in drag = tilt(for: v.translation) }
             .onEnded { _ in drag = nil }
+    }
+
+    @ViewBuilder
+    private func handTilt<V: View>(_ view: V) -> some View {
+        if reduceMotion {
+            view
+        } else if #available(iOS 18.0, *) {
+            view.gesture(TiltPan(sidewaysOnly: mode != .inspector,
+                                 changed: { drag = tilt(for: $0) },
+                                 ended: { drag = nil }))
+        } else if mode == .inspector {
+            // the bench stands outside any scroll view, so the drag can't take one over
+            view.simultaneousGesture(gesture)
+        } else {
+            view
+        }
     }
 
     func body(content: Content) -> some View {
         let s = state
-        content
+        handTilt(content
             .rotation3DEffect(.degrees(s.rx), axis: (x: 0, y: 1, z: 0), perspective: 0.4)
             .rotation3DEffect(.degrees(s.ry), axis: (x: 1, y: 0, z: 0), perspective: 0.4)
             .overlay {
@@ -97,10 +121,55 @@ private struct CardTiltModifier: ViewModifier {
                         .allowsHitTesting(false)
                         .accessibilityHidden(true)
                 }
-            }
-            .simultaneousGesture(reduceMotion ? nil : gesture)
+            })
             .animation(PitchAtlasMotion.animation(mode.spring, reduceMotion: reduceMotion), value: s)
             .onChange(of: s) { _, new in light = new.light }
+    }
+}
+
+/// The hand's tilt as a system pan. On a page it begins only when the stroke is
+/// more sideways than vertical, so a vertical stroke that starts on a card stays
+/// the page's scroll; on the bench any stroke grabs the card.
+@available(iOS 18.0, *)
+private struct TiltPan: UIGestureRecognizerRepresentable {
+    let sidewaysOnly: Bool
+    let changed: (CGSize) -> Void
+    let ended: () -> Void
+
+    func makeCoordinator(converter: CoordinateSpaceConverter) -> Coordinator { Coordinator() }
+
+    func makeUIGestureRecognizer(context: Context) -> UIPanGestureRecognizer {
+        let pan = UIPanGestureRecognizer()
+        pan.delegate = context.coordinator
+        context.coordinator.sidewaysOnly = sidewaysOnly
+        return pan
+    }
+
+    func updateUIGestureRecognizer(_ recognizer: UIPanGestureRecognizer, context: Context) {
+        context.coordinator.sidewaysOnly = sidewaysOnly
+    }
+
+    func handleUIGestureRecognizerAction(_ recognizer: UIPanGestureRecognizer, context: Context) {
+        switch recognizer.state {
+        case .began, .changed:
+            let t = recognizer.translation(in: recognizer.view)
+            changed(CGSize(width: t.x, height: t.y))
+        default:
+            ended()
+        }
+    }
+
+    final class Coordinator: NSObject, UIGestureRecognizerDelegate {
+        var sidewaysOnly = true
+
+        func gestureRecognizerShouldBegin(_ recognizer: UIGestureRecognizer) -> Bool {
+            guard sidewaysOnly, let pan = recognizer as? UIPanGestureRecognizer else { return true }
+            let velocity = pan.velocity(in: pan.view)
+            return abs(velocity.x) > abs(velocity.y)
+        }
+
+        func gestureRecognizer(_ recognizer: UIGestureRecognizer,
+                               shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer) -> Bool { true }
     }
 }
 
