@@ -59,6 +59,12 @@ enum ComponentInk {
     // Wall mount and compare — .v2-mount (index.css 3302-3332), compare.css 2-8, archive.css 174
     static let mountTop = Color(hex: 0x141210)
     static let mountBottom = Color(hex: 0x0A0908)
+    /// The ember cell — color-mix(#bf5700 40%, rgba(0,0,0,.4)), its 20% inner ring, its 0 0 40px glow.
+    static let chaseMountBorder = Color(hex: 0x773600, opacity: 0.64)
+    static let chaseMountRing = Color(hex: 0xBF5700, opacity: 0.2)
+    static let chaseMountGlow = Color(hex: 0xBF5700, opacity: 0.55)
+    /// The 1-of-1's arrival sweep — #BF5700 at 55%.
+    static let chaseSweep = Color(hex: 0xBF5700, opacity: 0.55)
     static let selectedOutline = Color(hex: 0xC8A35C)
     static let compareFill = Color(hex: 0x171511)
     static let compareInk = Color(hex: 0xD9CCB3)
@@ -77,6 +83,8 @@ enum ComponentInk {
     // Binder — .binder-sheet, .pocket*, .pocket-slip (index.css 2395-2632)
     static let sheetTop = Color(hex: 0x33210F)
     static let sheetBottom = Color(hex: 0x221507)
+    /// The sheet's stitched edge — outline 1px dashed rgba(244,238,224,.22).
+    static let sheetStitch = Color(hex: 0xF4EEE0, opacity: 0.22)
     static let holeCenter = Color(hex: 0x0A0805)
     static let pocketInnerTop = Color(hex: 0x14110D)
     static let pocketInnerBottom = Color(hex: 0x0E0B08)
@@ -85,6 +93,8 @@ enum ComponentInk {
     static let pocketStatus = Color(hex: 0x8A8576)
     static let pocketStatusEdge = Color(hex: 0xFF6B77)
     static let slipPaper = Color(hex: 0xEDE3CC)
+    /// The slip's top light — radial rgba(255,252,242,.55).
+    static let slipShine = Color(hex: 0xFFFCF2, opacity: 0.55)
     static let slipInk = Color(hex: 0x211D17)
     static let slipEdgeStatus = Color(hex: 0xA8232F)
     static let slipEdgeRing = Color(hex: 0xC8102E, opacity: 0.55)

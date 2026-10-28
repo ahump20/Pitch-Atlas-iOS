@@ -252,6 +252,8 @@ struct FlippableSpecimen: View {
 
     private var flipped: Bool { FlipFace.visible(angle: angle) == .back }
     private var isChase: Bool { entry.display.specimenNo == "00" }
+    /// On the study table: the card wears the gold outline (`.v2-mount.is-selected .v2-flip`).
+    private var isSelected: Bool { comparison.slugs.contains(entry.slug) }
 
     /// The web's flip: `.72s cubic-bezier(.2,.8,.2,1)`.
     static let turn = Animation.timingCurve(0.2, 0.8, 0.2, 1, duration: 0.72)
@@ -272,6 +274,8 @@ struct FlippableSpecimen: View {
                          front: front(content, metrics).cardTilt(.rest, size: size, light: $light),
                          back: SpecimenCardBack(entry: entry, metrics: metrics, isChase: isChase)
                             .cardTilt(.rest, size: size, light: $backLight, rake: false))
+                    .overlay { if isSelected { SelectedOutline() } }
+                    .shadow(color: .black.opacity(isSelected ? 0.53 : 0), radius: 16, y: 18)
                     .rotationEffect(.degrees(CardLean.rest(index: index)))
             }
             actions(content)
@@ -344,6 +348,17 @@ private struct FlipTurn<Front: View, Back: View>: View, Animatable {
                 .accessibilityHidden(face != .back)
         }
         .rotation3DEffect(.degrees(angle), axis: (x: 0, y: 1, z: 0), perspective: 0.35)
+    }
+}
+
+/// `outline: 1px solid #c8a35c; outline-offset: 5px; border-radius: 12px`.
+private struct SelectedOutline: View {
+    var body: some View {
+        RoundedRectangle(cornerRadius: 12, style: .continuous)
+            .strokeBorder(ComponentInk.selectedOutline, lineWidth: 1)
+            .padding(-6)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
     }
 }
 
