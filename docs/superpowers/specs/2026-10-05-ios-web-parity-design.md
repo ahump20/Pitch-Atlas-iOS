@@ -118,3 +118,20 @@ Copy rule: app and store copy come from the live site's own lines and the owner'
 14. Xu (2022). *Health Communication*. https://doi.org/10.1080/10410236.2022.2137750
 15. Bourdillon et al. (2026). *Otology & Neurotology*. https://doi.org/10.1097/mao.0000000000004948
 16. Lee, Brennan & Wyllie (2022). *International Journal of Consumer Studies*. https://doi.org/10.1111/ijcs.12770
+
+## Addendum — 2026-10-27: the site moved; re-baselined on web `main` `47e21e6`
+
+Between `3f518f6` (Oct 1) and `47e21e6` (Oct 27) the website shipped 136 commits. The live site wins, so these calls are now part of this design:
+
+| What the web shipped | 1.2.0 call |
+|---|---|
+| Data: grip-clip `focus` crop points, new sources, Strider's distinction re-sourced to theScore, Flight Lab rulebooks / example lobs / measured batter, `familyOverline` | **Ship** — regenerated from web main; the crop point drives the card window's media framing |
+| Shape map drawn from the pitcher's view (the mound, a right-hander's arm and glove sides), not the catcher's | **Ship** — copy and mirror follow the web |
+| Master-file notes (a trimmed quote says it was trimmed), field-notes outage copy | **Ship** |
+| The bench (`SpecimenInspector`): one specimen four ways — Card, Grip, Release, Flight — or two side by side | **Ship** as a native full-screen bench from any specimen: Card (large, grabbed on both axes to ±28°, ω 11 ζ 0.62, flips to its sources), Grip (finger-by-finger contact rows), Release (how the hold becomes the release), Flight (an illustrative flight drawn from the mound, beside the sourced shape words, labelled Illustrative, no number). A second pitch takes turns with the first on a phone, as on the web |
+| Inspector Finish panel (material presets, coverage masks, per-face knobs) and Export (PNG / WebM loop) | **Fast-follow** — material tuning and video export are their own release |
+| Card material layer (`MaterialLayer`, ambient driver on the hero), back as its own tilting card | Folded into the card tasks: drag tilt stays ±14° (ω 20, ζ 0.7, unchanged); the hero card's ambient turn runs only on screen and stops under Reduce Motion and Low Power Mode; the back tilts on its own |
+| Flight Lab (slow-pitch flight + batter model, 3D stage, flat schematic) | **Ship the flat schematic** on a Swift port of `src/lib/slowpitch` with its tests; the 3D stage is a fast-follow |
+| The 3D grip as a real rigged hand | **Fast-follow** — the grip keeps first-party photos, loops and the seam-informed schematic |
+
+App and store copy: Austin invoked `pitch-junky` on 2026-10-27 for this copy, superseding the Oct 5 handoff rule against voice skills. Copy still comes from the live site's own lines and Austin's own words; nothing invented.
