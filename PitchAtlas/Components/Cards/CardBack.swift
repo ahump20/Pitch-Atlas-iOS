@@ -132,7 +132,7 @@ struct SpecimenCardBack: View {
         VStack(alignment: .leading, spacing: 0) {
             ForEach(file.sourceLinks, id: \.label) { link in
                 Button { openURL(link.url) } label: {
-                    (Text(link.label.uppercased()) + Text(" ↗"))
+                    (Text(link.label.uppercased()) + Text(" ↗\u{FE0E}"))
                         .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2)).tracking(em: 0.1, size: 10)
                         .underline(color: PitchAtlasTheme.bone2.opacity(0.4))
                         .foregroundStyle(PitchAtlasTheme.bone2).lineLimit(fitsContent ? nil : 1).truncationMode(.tail)

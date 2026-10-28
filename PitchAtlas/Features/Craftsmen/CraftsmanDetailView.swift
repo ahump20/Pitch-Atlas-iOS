@@ -116,7 +116,7 @@ struct CraftsmanDetailView: View {
             signatureChip.padding(.top, 28)
             if let pitch {
                 NavigationLink { PitchDetailView(entry: pitch, opensAt: .grip) } label: {
-                    ArchiveLinkLabel(title: CraftsmanFileReads.inspectLink(pitch), arrow: "↗", ink: PitchAtlasTheme.bone)
+                    ArchiveLinkLabel(title: CraftsmanFileReads.inspectLink(pitch), arrow: "↗\u{FE0E}", ink: PitchAtlasTheme.bone)
                 }
                 .buttonStyle(.plain)
                 .accessibilityHint("Opens the \(pitch.canonical.name.lowercased()) file at its grip bench")

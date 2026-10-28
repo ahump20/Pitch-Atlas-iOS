@@ -190,7 +190,7 @@ struct DeliveryPlate: View {
                         .lineSpacing(3)
                     if let url = URL(string: plate.source.url) {
                         Link(destination: url) {
-                            Text("Source ↗")
+                            Text("Source ↗\u{FE0E}")
                                 .font(PitchAtlasTheme.hanken(12, relativeTo: .footnote))
                                 .underline()
                                 .foregroundStyle(ArchiveInk.plateLink)

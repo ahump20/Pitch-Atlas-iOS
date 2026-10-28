@@ -94,7 +94,7 @@ struct HomeDiscovery: View {
                 .frame(maxWidth: .infinity)
                 .padding(.top, 16)
             NavigationLink(value: pitch) {
-                ArchiveLinkLabel(title: "Inspect the \(pitch.display.shortName.lowercased()) grip", arrow: "↗",
+                ArchiveLinkLabel(title: "Inspect the \(pitch.display.shortName.lowercased()) grip", arrow: "↗\u{FE0E}",
                                  ink: ArchiveInk.specimenText, size: 13)
             }
             .buttonStyle(.plain)
@@ -160,7 +160,7 @@ struct HomeDiscovery: View {
                         .multilineTextAlignment(.leading)
                         .fixedSize(horizontal: false, vertical: true)
                     Spacer(minLength: 0)
-                    Text("↗").foregroundStyle(ArchiveInk.discoveryText).accessibilityHidden(true)
+                    Text("↗\u{FE0E}").foregroundStyle(ArchiveInk.discoveryText).accessibilityHidden(true)
                 }
                 .padding(.vertical, 7)
                 .frame(minHeight: 44)

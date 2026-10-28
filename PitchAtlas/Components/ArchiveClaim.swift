@@ -96,7 +96,7 @@ struct SourceBadge: View {
             if let season = source.season {
                 Text("/ \(season)".uppercased()).opacity(0.7)
             }
-            Text("↗").accessibilityHidden(true)
+            Text("↗\u{FE0E}").accessibilityHidden(true)
         }
         .font(MonoLabel.font)
         .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)

@@ -149,7 +149,7 @@ private struct MediaCard: View {
             }
             if let original = URL(string: item.canonicalUrl) {
                 Link(destination: original) {
-                    Text("Original post ↗")
+                    Text("Original post ↗\u{FE0E}")
                         .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
                         .textCase(.uppercase)
                         .tracking(10 * 0.11)
@@ -219,7 +219,7 @@ private struct MediaCard: View {
                     .accessibilityLabel("Load \(item.title) from \(provider)")
                     .accessibilityHint("Plays the post in \(provider)'s player")
             } else if !removed, let original = URL(string: item.canonicalUrl) {
-                Link(destination: original) { placeholder("Open on \(provider) ↗") }
+                Link(destination: original) { placeholder("Open on \(provider) ↗\u{FE0E}") }
                     .accessibilityLabel("Open \(item.title) on \(provider)")
                     .accessibilityHint("Opens outside the app")
             } else {

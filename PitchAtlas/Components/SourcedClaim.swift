@@ -50,7 +50,7 @@ struct RefractorSourceLink: View {
             if let season = source.season {
                 Text("/ \(season)").underline(true, color: ink.opacity(0.4))
             }
-            Text("↗").accessibilityHidden(true)
+            Text("↗\u{FE0E}").accessibilityHidden(true)
         }
         .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
         .tracking(em: 0.06, size: 10)
