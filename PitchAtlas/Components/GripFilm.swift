@@ -92,19 +92,45 @@ struct GripFilmCard: View {
 /// The clip (or, still, its poster) at its own aspect with no chrome, so the card
 /// window's FocusFill can crop it to the film's crop point. Under Reduce Motion,
 /// or wherever it should not play, the poster stands in — same frame, same moment.
+/// Off screen the poster stands in too, so a loop that scrolls away stops
+/// decoding (AutoplayVideo.tsx: play on enter, pause on leave).
 struct GripLoopFace: View {
     let film: GripFilm
     var plays = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var onScreen = false
+
+    /// AutoplayVideo.tsx's observer (rootMargin 0 0 10% 0): any of the clip inside
+    /// the screen, or inside the tenth of a screen just below it, plays it.
+    static func isOnScreen(_ frame: CGRect, in screen: CGRect) -> Bool {
+        let root = CGRect(x: screen.minX, y: screen.minY, width: screen.width, height: screen.height * 1.1)
+        return !frame.intersection(root).isEmpty
+    }
 
     var body: some View {
-        if plays, !reduceMotion, let url = GripFilmCard.bundledURL(for: film.clip.src) {
-            LoopingClipView(url: url, poster: BundledImage.load(film.poster), start: film.start)
-                .accessibilityHidden(true)
-        } else {
-            BundledImage(src: film.poster, alt: film.clip.alt, contentMode: .fit)
-                .accessibilityHidden(true)
+        Group {
+            if plays, !reduceMotion, onScreen, let url = GripFilmCard.bundledURL(for: film.clip.src) {
+                LoopingClipView(url: url, poster: BundledImage.load(film.poster), start: film.start)
+                    .accessibilityHidden(true)
+            } else {
+                BundledImage(src: film.poster, alt: film.clip.alt, contentMode: .fit)
+                    .accessibilityHidden(true)
+            }
         }
+        .background {
+            GeometryReader { geo in
+                Color.clear
+                    .onAppear { track(geo.frame(in: .global)) }
+                    .onChange(of: geo.frame(in: .global)) { _, frame in track(frame) }
+            }
+        }
+        // a lazy stack can drop a row without a last frame change
+        .onDisappear { onScreen = false }
+    }
+
+    private func track(_ frame: CGRect) {
+        let next = Self.isOnScreen(frame, in: UIScreen.main.bounds)
+        if next != onScreen { onScreen = next }
     }
 }
 

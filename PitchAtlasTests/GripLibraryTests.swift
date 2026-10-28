@@ -57,4 +57,18 @@ final class GripLibraryTests: XCTestCase {
         XCTAssertFalse(GripLibraryReads.loops([try entry("split-finger")], reduceMotion: false))
         XCTAssertFalse(GripLibraryReads.loops([], reduceMotion: false))
     }
+
+    /// A film moves only while some of it is on screen, the way AutoplayVideo.tsx's
+    /// observer reads the page: it starts a tenth of a screen early from below and
+    /// stops once it has scrolled fully away.
+    func testAFilmPlaysOnlyWhileOnScreen() {
+        let screen = CGRect(x: 0, y: 0, width: 440, height: 956)
+        let film = { (y: CGFloat) in CGRect(x: 20, y: y, width: 400, height: 700) }
+        XCTAssertTrue(GripLoopFace.isOnScreen(film(100), in: screen))
+        XCTAssertTrue(GripLoopFace.isOnScreen(film(-690), in: screen), "a sliver left at the top still plays")
+        XCTAssertFalse(GripLoopFace.isOnScreen(film(-710), in: screen), "scrolled away above, it stops")
+        XCTAssertTrue(GripLoopFace.isOnScreen(film(1000), in: screen), "it starts a tenth of a screen before it shows")
+        XCTAssertFalse(GripLoopFace.isOnScreen(film(1060), in: screen))
+        XCTAssertFalse(GripLoopFace.isOnScreen(.zero, in: screen), "a film with no size never plays")
+    }
 }
