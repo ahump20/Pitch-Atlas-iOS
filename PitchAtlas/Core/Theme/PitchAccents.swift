@@ -53,3 +53,20 @@ enum PitchAccents {
         return (lift((rgb >> 16) & 0xFF) << 16) | (lift((rgb >> 8) & 0xFF) << 8) | lift(rgb & 0xFF)
     }
 }
+
+extension Color {
+    /// sRGB interpolation, as CSS `color-mix(in srgb, self, other amount)`:
+    /// `self` weighted 1 − amount, `other` weighted amount.
+    func mix(_ other: Color, _ amount: Double) -> Color {
+        let t = CGFloat(min(1, max(0, amount)))
+        var (r1, g1, b1, a1): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        var (r2, g2, b2, a2): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        UIColor(self).getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
+        UIColor(other).getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
+        return Color(.sRGB,
+                     red: Double(r1 + (r2 - r1) * t),
+                     green: Double(g1 + (g2 - g1) * t),
+                     blue: Double(b1 + (b2 - b1) * t),
+                     opacity: Double(a1 + (a2 - a1) * t))
+    }
+}

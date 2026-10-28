@@ -87,6 +87,27 @@ struct GripFilmCard: View {
     }
 }
 
+// MARK: - The bare loop for a card window
+
+/// The clip (or, still, its poster) at its own aspect with no chrome, so the card
+/// window's FocusFill can crop it to the film's crop point. Under Reduce Motion,
+/// or wherever it should not play, the poster stands in — same frame, same moment.
+struct GripLoopFace: View {
+    let film: GripFilm
+    var plays = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        if plays, !reduceMotion, let url = GripFilmCard.bundledURL(for: film.clip.src) {
+            LoopingClipView(url: url, poster: BundledImage.load(film.poster), start: film.start)
+                .accessibilityHidden(true)
+        } else {
+            BundledImage(src: film.poster, alt: film.clip.alt, contentMode: .fit)
+                .accessibilityHidden(true)
+        }
+    }
+}
+
 // MARK: - Real photo as the specimen face
 
 /// A real grip photo in the film card's chrome — the face wherever photography
@@ -163,10 +184,12 @@ private struct GripMediaCredit: View {
 private struct LoopingClipView: UIViewRepresentable {
     let url: URL
     let poster: UIImage?
+    /// The second the loop opens on (the web's GripClip.start), so a window opens on the grip.
+    var start: Double? = nil
 
     func makeUIView(context: Context) -> LoopingPlayerUIView {
         let view = LoopingPlayerUIView()
-        view.load(url: url, poster: poster)
+        view.load(url: url, poster: poster, start: start)
         return view
     }
 
@@ -204,7 +227,7 @@ final class LoopingPlayerUIView: UIView {
     @available(*, unavailable)
     required init?(coder: NSCoder) { nil }
 
-    func load(url: URL, poster: UIImage?) {
+    func load(url: URL, poster: UIImage?, start: Double? = nil) {
         posterView.image = poster
         posterView.isHidden = false
         // Muted ambient playback: never interrupts or ducks the user's audio.
@@ -228,6 +251,9 @@ final class LoopingPlayerUIView: UIView {
         }
         currentItemObservation = player.observe(\.currentItem, options: [.initial, .new]) { [weak self] _, _ in
             DispatchQueue.main.async { self?.observeCurrentItem() }
+        }
+        if let start, start > 0 {
+            player.seek(to: CMTime(seconds: start, preferredTimescale: 600), toleranceBefore: .zero, toleranceAfter: .zero)
         }
         player.play()
 

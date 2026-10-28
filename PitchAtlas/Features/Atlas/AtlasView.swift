@@ -164,7 +164,6 @@ struct AtlasView: View {
                     ForEach(store.pitches) { entry in
                         NavigationLink(value: entry) {
                             PitchSpecimenCard(entry: entry, style: .rail)
-                                .frame(width: 156, alignment: .leading)
                         }
                         .buttonStyle(.plain)
                         .accessibilityElement(children: .ignore)
