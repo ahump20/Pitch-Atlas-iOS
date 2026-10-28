@@ -111,7 +111,16 @@ final class SpecimenCardModelTests: XCTestCase {
         let image = try XCTUnwrap(r.cgImage)
         let probe = try XCTUnwrap(Self.pixel(image, x: 165, y: Int(metrics.stockPadding) + 8))
         let luminance = 0.2126 * probe.r + 0.7152 * probe.g + 0.0722 * probe.b
-        XCTAssertLessThan(luminance, 0.25, "the head band shows the field, not the foil: \(probe)")
+        // What the render holds down the probe's column and across its row, so a
+        // failure says what the face actually shows.
+        let column = stride(from: 0, to: 64, by: 4).map { y in "y\(y)=\(Self.pixel(image, x: 165, y: y).map(Self.hex) ?? "-")" }
+        let row = stride(from: 0, to: image.width, by: 25).map { x in "x\(x)=\(Self.pixel(image, x: x, y: Int(metrics.stockPadding) + 8).map(Self.hex) ?? "-")" }
+        XCTAssertLessThan(luminance, 0.25, "the head band shows the field, not the foil: \(probe); "
+                          + "image \(image.width)x\(image.height); column \(column.joined(separator: " ")); row \(row.joined(separator: " "))")
+    }
+
+    private static func hex(_ p: (r: Double, g: Double, b: Double)) -> String {
+        String(format: "%02X%02X%02X", Int(p.r * 255), Int(p.g * 255), Int(p.b * 255))
     }
 
     private static func pixel(_ image: CGImage, x: Int, y: Int) -> (r: Double, g: Double, b: Double)? {
