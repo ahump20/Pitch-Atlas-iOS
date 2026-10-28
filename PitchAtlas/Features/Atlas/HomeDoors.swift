@@ -78,9 +78,9 @@ struct HomeDoors: View {
         .multilineTextAlignment(.leading)
         .padding(28)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: 3).fill(ArchiveInk.doorFill))
+        // the drop rides the door's own panel, so its type casts none
+        .background(RoundedRectangle(cornerRadius: 3).fill(ArchiveInk.doorFill).shadow(color: .black.opacity(0.8), radius: 8, y: 10))
         .overlay(RoundedRectangle(cornerRadius: 3).strokeBorder(PitchAtlasTheme.bone.opacity(0.12), lineWidth: 1))
-        .shadow(color: .black.opacity(0.8), radius: 8, y: 10)
         .contentShape(Rectangle())
         .accessibilityElement(children: .combine)
     }

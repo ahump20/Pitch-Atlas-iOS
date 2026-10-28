@@ -347,9 +347,9 @@ struct SeamBall: View {
             .font(PitchAtlasTheme.martian(max(8, size * 0.042)))
             .foregroundStyle(lit ? PitchAtlasTheme.void : PitchAtlasTheme.cyan)
             .frame(width: dot, height: dot)
-            .background(Circle().fill(lit ? PitchAtlasTheme.cyan : PitchAtlasTheme.void.opacity(0.82)))
+            .background(Circle().fill(lit ? PitchAtlasTheme.cyan : PitchAtlasTheme.void.opacity(0.82))
+                .shadow(color: lit ? PitchAtlasTheme.cyan.opacity(0.7) : PitchAtlasTheme.void.opacity(0.6), radius: lit ? 6 : 2))
             .overlay(Circle().strokeBorder(PitchAtlasTheme.cyan, lineWidth: 1.5))
-            .shadow(color: lit ? PitchAtlasTheme.cyan.opacity(0.7) : PitchAtlasTheme.void.opacity(0.6), radius: lit ? 6 : 2)
     }
 
     private var accessibilityText: String {

@@ -61,10 +61,10 @@ struct HomeDiscovery: View {
             specimenLeaf(pitch)
             storyLeaf(craftsman: craftsman, history: history)
         }
-        .background(ArchiveInk.folioFill)
+        // the drop rides the folio's sheet, so its leaves cast none
+        .background { Rectangle().fill(ArchiveInk.folioFill).shadow(color: .black, radius: 32, y: 32) }
         .overlay { Rectangle().strokeBorder(ArchiveInk.folioBorder, lineWidth: 1) }
         .overlay(alignment: .top) { Rectangle().fill(ArchiveInk.folioTopLight).frame(height: 1) }
-        .shadow(color: .black, radius: 32, y: 32)
         // `::before`: the sheet tucked under the folio, turned a hair off square.
         .background {
             Rectangle()

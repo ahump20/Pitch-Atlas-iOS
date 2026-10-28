@@ -284,6 +284,8 @@ struct CompareView: View {
                                                  showMovement: false,
                                                  referenceContacts: selection.slugs.first.flatMap { store.pitch(slug: $0)?.canonical.fingerPlacement })
                                             .dynamicTypeSize(.large)
+                                            // one drop for the whole ball, not one per seam stitch
+                                            .compositingGroup()
                                             .shadow(color: .black.opacity(0.45), radius: 9, x: 0, y: 8)
                                             .accessibilityLabel("Specimen \(index == 0 ? "A" : "B"), \(entry.canonical.name), \(selection.hand.rawValue) hand, \(selection.orientation.rawValue) seam-informed schematic")
                                     }

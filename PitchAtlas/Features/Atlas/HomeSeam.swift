@@ -149,7 +149,10 @@ struct HomeSeam: View {
             let side = geo.size.width
             let well = side - 20
             ZStack {
+                // the stage's drop is cast by its bezel, not by the seam drawn on it
                 RoundedRectangle(cornerRadius: 8).fill(ArchiveInk.stageBezel)
+                    .shadow(color: ArchiveInk.stageDrop, radius: 0, x: 0, y: 3)
+                    .shadow(color: .black, radius: 20, x: 10, y: 28)
                 RoundedRectangle(cornerRadius: 2).fill(ArchiveInk.stageFill).padding(10)
                 Rectangle()
                     .strokeBorder(ArchiveInk.stageRegistration, lineWidth: 1)
@@ -175,8 +178,6 @@ struct HomeSeam: View {
                     .padding(-4)
                     .accessibilityHidden(true)
             }
-            .shadow(color: ArchiveInk.stageDrop, radius: 0, x: 0, y: 3)
-            .shadow(color: .black, radius: 20, x: 10, y: 28)
             .frame(width: side, height: side)
         }
         .aspectRatio(1, contentMode: .fit)

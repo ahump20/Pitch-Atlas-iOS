@@ -210,6 +210,7 @@ struct BackStock: View {
             shape.fill(RadialGradient(stops: [.init(color: isChase ? ComponentInk.chaseBackTop : ComponentInk.backTop, location: 0),
                                               .init(color: ComponentInk.backBottom, location: isChase ? 0.62 : 1)],
                                       center: .top, startRadius: 0, endRadius: reach))
+                .shadow(color: isChase ? ComponentInk.chaseGlow : .clear, radius: 8)
                 .overlay {
                     shape.fill(LinearGradient(stops: [.init(color: .clear, location: 0.14),
                                                       .init(color: isChase ? ComponentInk.chaseWash : PitchAtlasTheme.bone.opacity(0.06), location: isChase ? 0.40 : 0.38),
@@ -227,7 +228,6 @@ struct BackStock: View {
                     if isChase { shape.inset(by: 1).strokeBorder(ComponentInk.chaseWash, lineWidth: 1) }
                 }
         }
-        .shadow(color: isChase ? ComponentInk.chaseGlow : .clear, radius: 8)
         .accessibilityHidden(true)
         .allowsHitTesting(false)
     }
@@ -298,12 +298,11 @@ struct FlippableSpecimen: View {
                     .font(PitchAtlasType.font(.martian400, size: 9, relativeTo: .caption2)).tracking(em: 0.12, size: 9)
                     .foregroundStyle(PitchAtlasTheme.bone)
                     .padding(.horizontal, 10).padding(.vertical, 7)
-                    .background(Capsule().fill(ComponentInk.flipFill))
+                    .background(Capsule().fill(ComponentInk.flipFill).shadow(color: .black.opacity(0.9), radius: 6, y: 8))
                     .overlay(Capsule().strokeBorder(Color(rgb: content.triad.c3).mix(PitchAtlasTheme.bone, 0.3).opacity(0.6), lineWidth: 1))
                     .overlay(alignment: .top) {
                         Capsule().strokeBorder(Color.white.opacity(0.12), lineWidth: 1).mask(alignment: .top) { Rectangle().frame(height: 1.5) }
                     }
-                    .shadow(color: .black.opacity(0.9), radius: 6, y: 8)
                     .frame(minWidth: 44, minHeight: 44).contentShape(Rectangle())
             }
             .buttonStyle(PressScale())

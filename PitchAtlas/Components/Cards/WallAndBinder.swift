@@ -48,14 +48,15 @@ struct WallMount<Content: View>: View {
             .padding(10)
             .frame(maxWidth: .infinity)
             .background {
+                // the shadows ride the mount's fill, so its strokes cast none of their own
                 shape.fill(LinearGradient(colors: [ComponentInk.mountTop, ComponentInk.mountBottom], startPoint: .top, endPoint: .bottom))
+                    .shadow(color: .black.opacity(0.85), radius: 4, y: 10)
+                    .shadow(color: isChase ? ComponentInk.chaseMountGlow : .clear, radius: 9)
                     .overlay(alignment: .bottom) {
                         shape.strokeBorder(Color.white.opacity(isChase ? 0.06 : 0.05), lineWidth: 1).mask(alignment: .bottom) { Rectangle().frame(height: 1.5) }
                     }
                     .overlay { shape.strokeBorder(isChase ? ComponentInk.chaseMountBorder : Color.black.opacity(0.4), lineWidth: 1) }
                     .overlay { if isChase { shape.inset(by: 1).strokeBorder(ComponentInk.chaseMountRing, lineWidth: 1) } }
-                    .shadow(color: .black.opacity(0.85), radius: 4, y: 10)
-                    .shadow(color: isChase ? ComponentInk.chaseMountGlow : .clear, radius: 9)
                     .accessibilityHidden(true)
             }
     }
@@ -189,6 +190,7 @@ struct BinderSheet<Content: View>: View {
             let shape = RoundedRectangle(cornerRadius: 14, style: .continuous)
             shape.fill(LinearGradient(stops: [.init(color: ComponentInk.sheetTop, location: 0), .init(color: ComponentInk.sheetBottom, location: 0.7)],
                                       startPoint: UnitPoint(x: 0.37, y: 0), endPoint: UnitPoint(x: 0.63, y: 1)))
+                .shadow(color: .black.opacity(0.55), radius: 11, y: 26)
                 .overlay { shape.strokeBorder(Color.black.opacity(0.6), lineWidth: 1) }
                 .overlay(alignment: .top) {
                     shape.strokeBorder(PitchAtlasTheme.bone.opacity(0.09), lineWidth: 1).mask(alignment: .top) { Rectangle().frame(height: 1.5) }
@@ -199,7 +201,6 @@ struct BinderSheet<Content: View>: View {
                         .padding(8)
                 }
                 .overlay(alignment: .leading) { RingHoles().padding(.leading, 11) }
-                .shadow(color: .black.opacity(0.55), radius: 11, y: 26)
                 .accessibilityHidden(true)
         }
         .accessibilityElement(children: .contain)
@@ -340,8 +341,13 @@ struct PocketCard: View {
                 .accessibilityHidden(true)
         }
         .aspectRatio(5.0 / 7.0, contentMode: .fit)
+        // cast by the pocket's outline, not by its name and picture
+        .background {
+            RoundedRectangle(cornerRadius: PitchAtlasRadius.card, style: .continuous).fill(Color.black)
+                .shadow(color: .black.opacity(0.8), radius: 5, y: 8)
+                .accessibilityHidden(true)
+        }
         .rotationEffect(.degrees(BinderLayout.rotation(index: index)))
-        .shadow(color: .black.opacity(0.8), radius: 5, y: 8)
     }
 
     @ViewBuilder private var faceView: some View {
@@ -404,6 +410,7 @@ struct PocketSlip: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background {
             shape.fill(ComponentInk.slipPaper)
+                .shadow(color: .black.opacity(0.7), radius: 3, y: 8)
                 .overlay {
                     shape.fill(RadialGradient(stops: [.init(color: ComponentInk.slipShine, location: 0), .init(color: .clear, location: 0.55)],
                                               center: .top, startRadius: 0, endRadius: 160))
@@ -416,7 +423,6 @@ struct PocketSlip: View {
                     }
                 }
                 .overlay { shape.strokeBorder(edge ? ComponentInk.slipEdgeRing : ComponentInk.slipInk.opacity(0.28), lineWidth: 1) }
-                .shadow(color: .black.opacity(0.7), radius: 3, y: 8)
                 .accessibilityHidden(true)
         }
         .aspectRatio(5.0 / 7.0, contentMode: .fit)

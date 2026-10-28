@@ -111,6 +111,9 @@ private struct ChromeFace: View {
     var body: some View {
         Capsule()
             .fill(LinearGradient(colors: [ComponentInk.chromeFaceTop, ComponentInk.chromeFaceBottom], startPoint: .top, endPoint: .bottom))
+            // the drop and halo ride the face, so the band and the rim cast none
+            .shadow(color: .black.opacity(0.9), radius: 11, y: 8)
+            .shadow(color: PitchAtlasTheme.cyan.opacity(0.35), radius: 12)
             .overlay {
                 Capsule().fill(LinearGradient(stops: [
                     .init(color: .clear, location: 0.10),
@@ -122,8 +125,6 @@ private struct ChromeFace: View {
                 Capsule().fill(Color.white.opacity(0.16)).frame(height: 1).padding(.horizontal, 14).padding(.top, 1)
             }
             .overlay { Capsule().strokeBorder(PitchAtlasMaterials.foil(aspect: 4), lineWidth: 1) }
-            .shadow(color: .black.opacity(0.9), radius: 11, y: 8)
-            .shadow(color: PitchAtlasTheme.cyan.opacity(0.35), radius: 12)
             .accessibilityHidden(true)
     }
 }

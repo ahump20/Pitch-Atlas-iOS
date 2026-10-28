@@ -97,8 +97,10 @@ final class SpecimenCardModelTests: XCTestCase {
         XCTAssertEqual(PitchAccents.mixRGB(0x0B0805, 0x125B63, 0), 0x0B0805)
     }
 
-    /// The face is the warm-black field, never the foil stock showing through it:
-    /// a standard card's head band reads dark, as the site's does.
+    /// The face is the warm-black field, never the foil stock showing through it
+    /// and never gray copies of the card's own strokes: a standard card's head band
+    /// reads dark and keeps its pitch's tint, as the site's does. (The edge stack
+    /// cast from every layer once laid a 42464B band across exactly this line.)
     @MainActor
     func testTheFaceOfAStandardCardReadsDark() throws {
         let store = PitchStore()
@@ -117,6 +119,7 @@ final class SpecimenCardModelTests: XCTestCase {
         let row = stride(from: 0, to: image.width, by: 25).map { x in "x\(x)=\(Self.pixel(image, x: x, y: Int(metrics.stockPadding) + 8).map(Self.hex) ?? "-")" }
         XCTAssertLessThan(luminance, 0.25, "the head band shows the field, not the foil: \(probe); "
                           + "image \(image.width)x\(image.height); column \(column.joined(separator: " ")); row \(row.joined(separator: " "))")
+        XCTAssertGreaterThan(probe.r, probe.g + 0.05, "the slider's field keeps its red under the head: \(probe)")
     }
 
     private static func hex(_ p: (r: Double, g: Double, b: Double)) -> String {

@@ -151,8 +151,8 @@ struct ChapterHero: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 12)
                 .frame(minHeight: 44)
-                .background(RoundedRectangle(cornerRadius: 6).fill(Color(rgb: button.background)))
-                .shadow(color: accent.opacity(0.55), radius: 10, x: 0, y: 6)
+                .background(RoundedRectangle(cornerRadius: 6).fill(Color(rgb: button.background))
+                    .shadow(color: accent.opacity(0.55), radius: 10, x: 0, y: 6))
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -212,9 +212,11 @@ private struct HeroStage: View {
             .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
             .overlay { RoundedRectangle(cornerRadius: 24, style: .continuous).strokeBorder(accent.opacity(0.3), lineWidth: 1) }
             .background {
+                // the drop is cast by the stage's outline alone, not by the ball and type on it
+                RoundedRectangle(cornerRadius: 24, style: .continuous).fill(Color.black)
+                    .shadow(color: .black.opacity(0.8), radius: 22, x: 0, y: 26)
                 RoundedRectangle(cornerRadius: 27, style: .continuous).fill(accent.opacity(0.18)).padding(-3)
             }
-            .shadow(color: .black.opacity(0.8), radius: 22, x: 0, y: 26)
         }
         .aspectRatio(1, contentMode: .fit)
         .accessibilityElement(children: .contain)

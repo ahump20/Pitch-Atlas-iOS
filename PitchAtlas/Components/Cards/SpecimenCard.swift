@@ -391,19 +391,26 @@ private struct SchematicFace: View {
 }
 
 /// The card's edge: a black ring, the stacked card-stock edges, the drop shadow;
-/// the ember 1/1 swaps in its burnt ring and glow.
+/// the ember 1/1 swaps in its burnt ring and glow. The site's box-shadow belongs
+/// to the card's outline alone, so the stack is cast by the bare silhouette under
+/// the card: a .shadow on the card itself is cast by every layer inside it too,
+/// and laid gray copies of each stroke and line of type across the face.
 private struct EdgeStack: ViewModifier {
     let ember: Bool
     func body(content: Content) -> some View {
         let stack = ComponentInk.edgeStack
         let layer = { (i: Int) in stack.isEmpty ? Color.black : stack[min(i, stack.count - 1)] }
-        content
-            .shadow(color: ComponentInk.edgeRing, radius: 0, x: 0, y: 1)
-            .shadow(color: ember ? ComponentInk.emberRing : layer(0), radius: 0, x: 0, y: 3)
-            .shadow(color: layer(1), radius: 0, x: 0, y: 5)
-            .shadow(color: layer(2), radius: 0, x: 0, y: 7)
-            .shadow(color: layer(3), radius: 0, x: 0, y: 9)
-            .shadow(color: .black.opacity(0.55), radius: 14, x: 0, y: 16)
-            .shadow(color: ember ? Color(rgb: WebTokens.Accent.burnt).opacity(0.3) : .clear, radius: 12)
+        content.background {
+            RoundedRectangle(cornerRadius: PitchAtlasRadius.card, style: .continuous)
+                .fill(ComponentInk.edgeRing)
+                .shadow(color: ComponentInk.edgeRing, radius: 0, x: 0, y: 1)
+                .shadow(color: ember ? ComponentInk.emberRing : layer(0), radius: 0, x: 0, y: 3)
+                .shadow(color: layer(1), radius: 0, x: 0, y: 5)
+                .shadow(color: layer(2), radius: 0, x: 0, y: 7)
+                .shadow(color: layer(3), radius: 0, x: 0, y: 9)
+                .shadow(color: .black.opacity(0.55), radius: 14, x: 0, y: 16)
+                .shadow(color: ember ? Color(rgb: WebTokens.Accent.burnt).opacity(0.3) : .clear, radius: 12)
+                .accessibilityHidden(true)
+        }
     }
 }
