@@ -229,6 +229,15 @@ struct MotionCueOverlay: View {
     }
 }
 
+extension PitchMotion {
+    /// The web schematic's default (lib/seam SPIN_AXIS, the four-seam's near-horizontal
+    /// backspin), with no movement claim: the plain cover a basic file draws.
+    static let schematicReference = PitchMotion(
+        spinAxis: Vec3(x: SeamMath.spinAxis.x, y: SeamMath.spinAxis.y, z: SeamMath.spinAxis.z),
+        forceLabel: "", gyro: nil, verticalShape: nil, horizontalDir: .none,
+        breakView: .movement, indeterminateBreak: nil)
+}
+
 struct SeamBall: View {
     let motion: PitchMotion
     var size: CGFloat = 220

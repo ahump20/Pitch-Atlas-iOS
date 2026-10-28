@@ -127,6 +127,11 @@ final class PitchStore {
     func gripEntry(id: String) -> GripEntry? { grips.entries.first { $0.id == id } }
     /// The grip-library entry filed against a specimen (the card's face and short cue).
     func gripEntry(forSpecimen slug: String) -> GripEntry? { grips.entries.first { $0.specimenSlug == slug } }
+    /// gripEntryFor (web data/grips): the library entry by any of its keys — its
+    /// own id, the specimen it is filed against, or the basic file it belongs to.
+    func gripEntry(forKey key: String) -> GripEntry? {
+        grips.entries.first { $0.id == key || $0.specimenSlug == key || $0.repertoireId == key }
+    }
 
     /// The teaching clip filed against a specimen slug, if any. One clip may serve
     /// several slugs (Ryan → four-seam + two-seam), mirroring the web's lookup.

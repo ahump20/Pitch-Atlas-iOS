@@ -139,4 +139,13 @@ enum ArchiveInk {
     static let lostCalloutFloor = Color(hex: 0x16120D)
     static let tealGlow = Color(web: WebTokens.Palette.tealGlow)
     static let lostCalloutRim = tealGlow.opacity(0.34)
+
+    // MARK: The basic file and the coal scene (index.css)
+    /// .scene-coal's warm crown, radial-gradient(50% 40% at 50% -6%, #17130D 0%, transparent 60%)
+    static let coalCrown = Color(hex: 0x17130D)
+    /// .scene-coal's bone wash at 12% 16%, rgba(216,207,184,.055)
+    static let coalWash = Color(hex: 0xD8CFB8, opacity: 0.055)
+    /// .overlay-frost-coal: #16120D at 78% over the panel, solid #1A140D without blur
+    static let frostCoal = Color(hex: 0x16120D, opacity: 0.78)
+    static let frostCoalSolid = Color(hex: 0x1A140D)
 }

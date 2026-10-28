@@ -47,9 +47,8 @@ struct PitchDetailView: View {
                                 GripBench(entry: entry, grip: grip, accentRGB: accentRGB)
                                     .chapterAnchor(SpecimenChapter.grip.chapter.id, space: Self.scrollSpace)
                                 if let grip {
-                                    SpecimenGripEvidence(grip: grip, accentRGB: accentRGB) {
-                                        scroll(proxy, to: SpecimenChapter.grip)
-                                    }
+                                    SpecimenGripEvidence(grip: grip, accentRGB: accentRGB,
+                                                         showBench: { scroll(proxy, to: SpecimenChapter.grip) })
                                 }
                                 ReleaseRoom(entry: entry, accentRGB: accentRGB)
                                 MovementRead(entry: entry, accentRGB: accentRGB)
@@ -82,8 +81,13 @@ struct PitchDetailView: View {
                 }
             }
         }
+        // The site's header carries the brand on every page; the title still names
+        // the back button on the pages this one opens.
         .navigationTitle(entry.display.shortName)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+        }
     }
 
     /// The lessons filed from the conversation: two credited posts tagged to the

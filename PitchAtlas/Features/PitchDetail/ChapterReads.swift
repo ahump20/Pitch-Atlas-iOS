@@ -11,18 +11,24 @@ import SwiftUI
 // =============================================================================
 
 /// The rule and rhythm every section here shares: a bone hairline at 8%, and
-/// clamp(34px, 5vw, 64px) above and below, which is 34 on a phone.
+/// clamp(34px, 5vw, 64px) above and below, which is 34 on a phone. A flush
+/// section (border-t-0 pt-0) keeps only the space below.
 private struct ChapterSection: ViewModifier {
+    var flush = false
+
     func body(content: Content) -> some View {
         content
-            .padding(.vertical, 34)
+            .padding(.top, flush ? 0 : 34)
+            .padding(.bottom, 34)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1) }
+            .overlay(alignment: .top) {
+                if !flush { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1) }
+            }
     }
 }
 
 private extension View {
-    func chapterSection() -> some View { modifier(ChapterSection()) }
+    func chapterSection(flush: Bool = false) -> some View { modifier(ChapterSection(flush: flush)) }
 }
 
 /// `.rfx-panel`: a press panel with a white 10% rim.
@@ -69,15 +75,20 @@ private func athletic(_ text: String, size: CGFloat, leading: CGFloat, ink: Colo
 
 // MARK: - Grip evidence
 
-/// SpecimenGrips with its photos left at the bench: the clip if there is one,
-/// else a way back up to the photographs, else an honest empty gallery; then the
-/// three evidence lanes, the proof limit, and the way to the Grip Library.
+/// SpecimenGrips: the clip and Austin's photographs (on the specimen page the
+/// photos stay at the bench and a button points back up to them), else an honest
+/// empty gallery; then the three evidence lanes, the proof limit, and the way to
+/// the Grip Library. `pauseControl` offers the page's Pause beside a clip;
+/// `flush` drops the top rule and padding where the section opens its own band.
 struct SpecimenGripEvidence: View {
     let grip: GripEntry
     let accentRGB: UInt32
-    let showBench: () -> Void
+    var includePhotos = false
+    var pauseControl = false
+    var flush = false
+    var showBench: (() -> Void)? = nil
 
-    @AppStorage(MotionPreference.pausedKey) private var paused = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     private var accent: Color { Color(rgb: accentRGB) }
     private var ink: Color { PitchAccents.accentInk(accentRGB) }
 
@@ -89,6 +100,9 @@ struct SpecimenGripEvidence: View {
         VStack(alignment: .leading, spacing: 0) {
             ChapterSectionHead(kicker: "Grip Evidence", title: "The photo can say this much", accent: accentRGB,
                                lede: "This is the visual grip-reference layer for \(grip.label). It names visible placement and Austin's own feel notes, then stops before making measured claims.")
+            if pauseControl, grip.film != nil, !reduceMotion {
+                PauseMotionButton().padding(.top, 16)
+            }
             media.padding(.top, 28)
             VStack(spacing: 14) {
                 lane("Photo-supported grip cue") { relaxed(grip.visibleCue, size: 13.5, ink: PitchAtlasTheme.bone2) }
@@ -126,23 +140,18 @@ struct SpecimenGripEvidence: View {
             .tracking(em: 0.1, size: 10)
             .padding(.top, 16)
         }
-        .chapterSection()
+        .chapterSection(flush: flush)
     }
 
     @ViewBuilder
     private var media: some View {
-        if let film = grip.film {
-            FocusFill(aspect: BundledImage.load(film.poster).map { $0.size.width / max($0.size.height, 1) } ?? 9.0 / 16.0,
-                      focus: FocusCrop.unitPoint(film.focus)) {
-                GripLoopFace(film: film, plays: !paused)
+        let photos = includePhotos ? grip.photos : []
+        if grip.film != nil || !photos.isEmpty {
+            VStack(spacing: 16) {
+                if let film = grip.film { GripMotionFigure(film: film) }
+                ForEach(photos, id: \.src) { GripPhotoFigure(photo: $0) }
             }
-            .aspectRatio(4.0 / 3.0, contentMode: .fit)
-            .background(ChapterInk.plateGround)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
-            .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(PitchAtlasTheme.cyan.opacity(0.25), lineWidth: 1))
-            .accessibilityElement()
-            .accessibilityLabel(film.clip.alt)
-        } else if !grip.photos.isEmpty {
+        } else if !includePhotos, !grip.photos.isEmpty, let showBench {
             Button("Inspect the photographs at the grip bench ↑", action: showBench)
                 .buttonStyle(StudyButtonStyle())
                 .foregroundStyle(PitchAtlasTheme.bone)

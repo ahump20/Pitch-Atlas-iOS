@@ -51,19 +51,24 @@ struct CommunityPanel: View {
     let safetyNote: String?
     /// A chapter-navigation request only; it never performs a community write.
     var openDiscussionRequest = 0
+    /// Off inside a drawer that already frames and names the thread
+    /// (DiscussionDrawer): no press panel, no "Community" header.
+    var chrome = true
 
     init(
         topic: CommunityTopic,
         topicName: String,
         provenanceNote: String? = nil,
         safetyNote: String? = nil,
-        openDiscussionRequest: Int = 0
+        openDiscussionRequest: Int = 0,
+        chrome: Bool = true
     ) {
         self.topic = topic
         self.topicName = topicName
         self.provenanceNote = provenanceNote
         self.safetyNote = safetyNote
         self.openDiscussionRequest = openDiscussionRequest
+        self.chrome = chrome
         _mode = State(initialValue: topic.allowsFieldNotes ? .notes : .discussion)
     }
 
@@ -132,7 +137,7 @@ struct CommunityPanel: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-            header
+            if chrome { header }
             if topic.allowsFieldNotes {
                 Picker("Community section", selection: $mode) {
                     ForEach(Mode.allCases) { mode in
@@ -155,7 +160,7 @@ struct CommunityPanel: View {
                 discussionList
             }
         }
-        .leatherPress()
+        .modifier(CommunityChrome(on: chrome))
         .task(id: reloadKey) { await reload() }
         .onChange(of: openDiscussionRequest) { _, _ in mode = .discussion }
         // Switching between Field Notes and Discussion clears a stale status line
@@ -1373,5 +1378,18 @@ private struct MotionSpecimenPlayer: View {
             }
         }
         .onDisappear { player?.pause() }
+    }
+}
+
+/// The panel's own press frame, dropped where a drawer frames the thread.
+private struct CommunityChrome: ViewModifier {
+    let on: Bool
+
+    func body(content: Content) -> some View {
+        if on {
+            content.leatherPress()
+        } else {
+            content.frame(maxWidth: .infinity, alignment: .leading)
+        }
     }
 }

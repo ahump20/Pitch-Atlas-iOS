@@ -35,8 +35,8 @@ struct RefractorSourceLink: View {
     let source: Source
     var ground: ClaimGround = .void
 
-    /// max-w-[28ch] at Martian Mono 10 (its zero is 0.62em wide).
-    @ScaledMetric(relativeTo: .caption2) private var labelWidth: CGFloat = 28 * 6.2
+    /// max-w-[28ch] at Martian Mono 10 (its zero is 0.7em wide, measured from the bundled face).
+    @ScaledMetric(relativeTo: .caption2) private var labelWidth: CGFloat = 28 * 7
 
     var body: some View {
         let ink = ground.mutedInk
