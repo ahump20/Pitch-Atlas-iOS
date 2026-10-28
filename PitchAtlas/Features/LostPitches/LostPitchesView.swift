@@ -30,7 +30,7 @@ struct LostPitchesView: View {
         }
         .navigationTitle("Lost Pitches")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(for: LostPitch.self) { LostPitchDetailView(pitch: $0) }
+        // Its pitches open through the Atlas stack's root destination (AtlasView).
     }
 
     // MARK: - Masthead

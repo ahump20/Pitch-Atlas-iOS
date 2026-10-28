@@ -1,0 +1,103 @@
+name: Screenshots
+
+# The screenshot tour: photographs every app screen on the 6.9-inch iPhone so
+# each one can be checked against the same page on pitch-atlas.com, and so the
+# App Store set comes from the real build. Runs when a branch named
+# shots/<set>/<anything> is pushed. <set> is "all" or stop names joined by
+# commas (atlas,index,specimen; see ScreenshotTourUITests.tour). Add "-full"
+# to the set ("all-full") to keep full-size PNGs. A second job photographs the
+# same stops on pitch-atlas.com (scripts/capture-web.mjs). Not part of the CI
+# gate.
+on:
+  push:
+    branches: ["shots/**"]
+
+jobs:
+  tour:
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate project
+        run: xcodegen generate
+
+      - name: Boot the 6.9-inch iPhone at 9:41
+        run: |
+          uuid='[0-9A-F]{8}-([0-9A-F]{4}-){3}[0-9A-F]{12}'
+          UDID="$(xcrun simctl list devices available | grep -E 'iPhone 17 Pro Max \(' | head -1 | grep -oE "$uuid" || true)"
+          if [ -z "$UDID" ]; then
+            UDID="$(xcrun simctl list devices available | grep -E 'Pro Max \(' | tail -1 | grep -oE "$uuid" || true)"
+          fi
+          if [ -z "$UDID" ]; then xcrun simctl list devices available; exit 1; fi
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_override "$UDID" --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 \
+            --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100
+          xcrun simctl list devices | grep "$UDID"
+          echo "UDID=$UDID" >> "$GITHUB_ENV"
+
+      - name: Run the tour
+        run: |
+          SET="${GITHUB_REF_NAME#shots/}"; SET="${SET%%/*}"
+          STOPS="${SET%-full}"
+          echo "Tour stops: $STOPS"
+          set -o pipefail
+          TEST_RUNNER_PA_SHOTS="$STOPS" xcodebuild test \
+            -scheme PitchAtlasScreenshots \
+            -destination "platform=iOS Simulator,id=$UDID" \
+            -derivedDataPath .build/DerivedData \
+            -resultBundlePath shots.xcresult \
+            2>&1 | tee xcodebuild.log | grep -E "error:|failed|Test Case|\*\* TEST" | tail -80
+
+      - name: Export the screenshots
+        if: always()
+        run: |
+          SET="${GITHUB_REF_NAME#shots/}"; SET="${SET%%/*}"
+          FLAG=""; case "$SET" in *-full) FLAG="--full";; esac
+          xcrun xcresulttool export attachments --path shots.xcresult --output-path raw
+          python3 scripts/export-shots.py raw shots $FLAG
+          ls shots | head -200
+
+      - name: Upload the screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shots
+          path: shots
+          retention-days: 7
+
+  # The same stops on pitch-atlas.com at 440pt, the width of the 6.9-inch iPhone.
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install a headless Chromium
+        run: |
+          npm install --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+
+      - name: Photograph the site
+        run: |
+          SET="${GITHUB_REF_NAME#shots/}"; SET="${SET%%/*}"
+          PA_SHOTS="${SET%-full}" node scripts/capture-web.mjs web
+
+      - name: Upload the site screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: web
+          retention-days: 7

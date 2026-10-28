@@ -115,7 +115,29 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
 
+  # The screenshot tour (PitchAtlasScreenshots scheme). Read-only: opens each
+  # screen by its pitchatlas:// link and photographs it, for the web-parity
+  # pairs and the App Store set. Run by .github/workflows/screenshots.yml.
+  PitchAtlasScreenshotUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: PitchAtlasScreenshotUITests
+    dependencies:
+      - target: PitchAtlas
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
 schemes:
+  PitchAtlasScreenshots:
+    build:
+      targets:
+        PitchAtlas: all
+        PitchAtlasScreenshotUITests: [test]
+    test:
+      targets:
+        - PitchAtlasScreenshotUITests
   PitchAtlasReleaseGate:
     build:
       targets:

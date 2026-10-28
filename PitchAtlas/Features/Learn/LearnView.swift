@@ -29,9 +29,7 @@ struct LearnView: View {
         }
         .navigationTitle("Learn")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(for: KnowledgeWing.self) { wing in
-            KnowledgeWingView(wing: wing)
-        }
+        // Its wings open through the Atlas stack's root destination (AtlasView).
     }
 
     // MARK: - Masthead

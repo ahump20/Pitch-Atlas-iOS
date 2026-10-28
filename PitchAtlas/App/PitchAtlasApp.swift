@@ -174,6 +174,11 @@ struct RootView: View {
             router.selection = .craftsmen
             router.craftsmenPath.append(craftsman)
         }
+        // PA_ROUTE takes a link path ("learn/spin", "compare?a=slider&b=sweeper")
+        // and opens it exactly as the link would.
+        if let route = env["PA_ROUTE"], let url = URL(string: "pitchatlas://\(route)") {
+            if !comparison.handle(url, store: store) { router.handle(url, store: store) }
+        }
         #endif
     }
 }

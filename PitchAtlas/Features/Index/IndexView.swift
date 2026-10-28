@@ -126,6 +126,9 @@ struct IndexView: View {
                 if entry == nil { scrollRestoration.navigationDidEnd() }
             }
         )) { RepertoireDetailView(entry: $0) }
+        // A pitchatlas://repertoire/<id> link pushes by value (DeepLinkRouter);
+        // a row tap keeps the item binding above so the scroll anchor holds.
+        .navigationDestination(for: RepertoireEntry.self) { RepertoireDetailView(entry: $0) }
     }
 
     // MARK: - Masthead

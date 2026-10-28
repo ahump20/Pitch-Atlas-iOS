@@ -11,10 +11,9 @@ import SwiftUI
 
 // Atlas wings share the value-based stack used by their filed records. Mixing
 // direct destinations here with value links inside a wing can replay the wing
-// instead of advancing to the selected record.
-private enum AtlasWing: Hashable {
-    case craftsmen, lessons, lostPitches, about, account
-}
+// instead of advancing to the selected record. The wing records (a Learn wing, a
+// lost pitch) are registered here at the stack's root, so a link that stacks
+// wing and record in one step (DeepLinkRouter) resolves both.
 
 struct AtlasView: View {
     @Environment(PitchStore.self) private var store
@@ -33,9 +32,9 @@ struct AtlasView: View {
                     StudyTray()
                     VStack(alignment: .leading, spacing: 12) {
                         SectionLabel(text: "WAYS INTO THE ARCHIVE")
-                        NavigationLink(value: AtlasWing.craftsmen) { Label("Start with a practitioner", systemImage: "person.crop.rectangle") }.frame(minHeight: 44)
-                        NavigationLink(value: AtlasWing.lessons) { Label("Follow a lesson", systemImage: "book") }.frame(minHeight: 44)
-                        NavigationLink(value: AtlasWing.lostPitches) { Label("Explore the lost-pitches wing", systemImage: "clock.arrow.circlepath") }.frame(minHeight: 44)
+                        NavigationLink(value: AtlasRoute.craftsmen) { Label("Start with a practitioner", systemImage: "person.crop.rectangle") }.frame(minHeight: 44)
+                        NavigationLink(value: AtlasRoute.learn) { Label("Follow a lesson", systemImage: "book") }.frame(minHeight: 44)
+                        NavigationLink(value: AtlasRoute.lostPitches) { Label("Explore the lost-pitches wing", systemImage: "clock.arrow.circlepath") }.frame(minHeight: 44)
                     }
 
                     if case .failed(let msg) = store.status {
@@ -56,16 +55,18 @@ struct AtlasView: View {
         }
         .navigationTitle("Atlas")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(for: AtlasWing.self) { wing in
-            switch wing {
+        .navigationDestination(for: AtlasRoute.self) { route in
+            switch route {
             case .craftsmen: CraftsmenView()
-            case .lessons: LearnView()
+            case .learn: LearnView()
             case .lostPitches: LostPitchesView()
             case .about: AboutView()
             case .account: AccountView()
             }
         }
         .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }
+        .navigationDestination(for: KnowledgeWing.self) { KnowledgeWingView(wing: $0) }
+        .navigationDestination(for: LostPitch.self) { LostPitchDetailView(pitch: $0) }
     }
 
     // MARK: Masthead
@@ -182,16 +183,16 @@ struct AtlasView: View {
     private var wings: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "WAYS IN")
-            NavigationLink(value: AtlasWing.lessons) {
+            NavigationLink(value: AtlasRoute.learn) {
                 wingRow(title: "One Pitch at a Time", sub: "Lower half, line to the plate, finish low. Then get back to the target.", tone: PitchAtlasTheme.cyan)
             }.buttonStyle(.plain)
-            NavigationLink(value: AtlasWing.lostPitches) {
+            NavigationLink(value: AtlasRoute.lostPitches) {
                 wingRow(title: "Lost Pitches", sub: "Craft that survived as story, source, and gap", tone: PitchAtlasTheme.lostEdge)
             }.buttonStyle(.plain)
-            NavigationLink(value: AtlasWing.about) {
+            NavigationLink(value: AtlasRoute.about) {
                 wingRow(title: "About the Atlas", sub: "Why this is not another analytics wrapper", tone: PitchAtlasTheme.ink3)
             }.buttonStyle(.plain)
-            NavigationLink(value: AtlasWing.account) {
+            NavigationLink(value: AtlasRoute.account) {
                 wingRow(title: "Account and Safety", sub: "Sign in, report, block, support, and delete account", tone: PitchAtlasTheme.kicker)
             }.buttonStyle(.plain)
         }
