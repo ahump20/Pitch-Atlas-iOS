@@ -187,4 +187,17 @@ struct TightLinesLayout: Layout {
         }
         subviews.last?.place(at: bounds.origin, proposal: .unspecified)
     }
+
+    /// The first and last lines' baselines, so a title sits on a row's baseline
+    /// the way its CSS line box does (`items-baseline`). Left to the default,
+    /// the measured space, placed at the top, would answer instead.
+    func explicitAlignment(of guide: VerticalAlignment, in bounds: CGRect, proposal: ProposedViewSize,
+                           subviews: Subviews, cache: inout ()) -> CGFloat? {
+        guard guide == .firstTextBaseline || guide == .lastTextBaseline, subviews.count > 1 else { return nil }
+        let m = measure(subviews)
+        let lines = Self.lines(widths: m.widths, spaceAfter: spaceAfter, space: m.space, maxWidth: bounds.width)
+        let row = guide == .firstTextBaseline ? 0 : max(lines.count - 1, 0)
+        let baseline = subviews[0].dimensions(in: .unspecified)[VerticalAlignment.firstTextBaseline]
+        return bounds.minY + Self.lineTop(index: row, pitch: pitch, natural: m.natural) + baseline
+    }
 }

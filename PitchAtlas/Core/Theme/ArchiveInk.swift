@@ -175,4 +175,26 @@ enum ArchiveInk {
     // MARK: A Learn wing (KnowledgePage.tsx)
     /// The "Keep reading" plates' accent, `--gc: #B9D4E5`.
     static let keepReadingPlate = Color(hex: 0xB9D4E5)
+
+    // MARK: The grip library (archive.css .archive-library-search, -entry)
+    /// .archive-library-search background
+    static let librarySearchField = Color(hex: 0x1C1914)
+    /// .archive-library-search's border and each grip's top rule (#b8a17b55)
+    static let libraryRule = Color(hex: 0xB8A17B, opacity: 0x55 / 255.0)
+    /// .archive-library-search label
+    static let librarySearchLabel = Color(hex: 0xEFE4D0)
+    /// .archive-library-search input: its well, its rim (#b8a17b70), its words
+    static let librarySearchWell = Color(hex: 0x0E0D0B)
+    static let librarySearchWellRim = Color(hex: 0xB8A17B, opacity: 0x70 / 255.0)
+    static let librarySearchInk = Color(hex: 0xF2E9DB)
+    /// .archive-library-search p, the count
+    static let librarySearchCount = Color(hex: 0xC1B298)
+
+    /// --color-orange (index.css): the attack plan's step numbers
+    static let orange = Color(hex: 0xBF5700)
+
+    // MARK: The cream action (compare.css .archive-action)
+    static let actionFill = Color(hex: 0xE9DDC2)
+    static let actionInk = Color(hex: 0x211C16)
+    static let actionRim = Color(hex: 0xA38A5E)
 }

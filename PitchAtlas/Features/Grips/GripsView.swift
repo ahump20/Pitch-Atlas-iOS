@@ -3,30 +3,53 @@ import SwiftUI
 // =============================================================================
 // Pitch Atlas — The Grip Library
 // =============================================================================
-// First-party grip photography plus the owner's own first-person account of how
-// he grips and throws each pitch. This is the one surface in the app built from
-// the owner's hand, not from a measured source — so every record wears the
-// "not tracked data" tag and its own proof limit. Nothing here is fabricated:
-// the screen renders only what the bundled GripsFile carries, and omits any
-// optional field that is absent rather than inventing a stand-in.
+// Web: pages/GripsPage.tsx and sections/GripLibrary.tsx, in their order. The
+// section header; then, in the dark room a grip is read in, the jump row, the
+// library (the through-line and the arsenal, "Find a grip", then each grip in
+// Austin's own words with its film and photographs), the credited lessons filed
+// beside it, how he put the grips to work, and the way into the comparison; the
+// site's footer. Every photograph and clip is Austin's own hand, owned outright;
+// the circle change, which he never photographed, shows its labeled gap instead
+// of a borrowed picture. Four-state aware: a decode failure shows the error, an
+// empty bundle says why.
 // =============================================================================
 
 struct GripsView: View {
     @Environment(PitchStore.self) private var store
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var query = ""
 
-    private var filteredEntries: [GripEntry] {
-        store.grips.entries.filter { $0.matchesStudySearch(query) }
-    }
+    /// Verbatim, GripsPage.tsx's SectionHero sub.
+    static let heroSub = "The grip is the one thing a hitter never gets to see. These are the real ones, photographed in one pitcher’s hand, on his own ball, owned outright and captioned in his own words. Not the textbook’s idea of correct; one arm’s actual hold."
 
     var body: some View {
         ZStack {
             FieldBackdrop()
 
-            content
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        SectionHero(eyebrow: "Grip library",
+                                    title: Text("Grips, from the hand."),
+                                    sub: Text(Self.heroSub),
+                                    trail: [Crumb(label: "The Atlas", path: "home"), Crumb(label: "Grip Library")])
+                        content(proxy)
+                        SiteFooter(path: "/grips")
+                    }
+                    .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+                    .emitsScrollProgress()
+                }
+                .scrollDismissesKeyboard(.interactively)
+            }
         }
+        // The site's header carries the brand on every page; the title still names
+        // the back button on the pages this one opens.
         .navigationTitle("Grips")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+        }
         .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }
         .navigationDestination(for: RepertoireEntry.self) { RepertoireDetailView(entry: $0) }
     }
@@ -34,339 +57,593 @@ struct GripsView: View {
     // MARK: - Four states
 
     @ViewBuilder
-    private var content: some View {
+    private func content(_ proxy: ScrollViewProxy) -> some View {
         if case .failed(let msg) = store.status {
-            ScrollView {
-                ErrorStateView(reason: msg)
-                    .padding(PitchAtlasSpacing.lg)
-            }
+            ErrorStateView(reason: msg).padding(20)
         } else if store.grips.entries.isEmpty {
-            ScrollView {
-                VStack(spacing: PitchAtlasSpacing.lg) {
-                    masthead
-                    EmptyStateView(message: "The grip library couldn't load.")
-                }
-                .padding(PitchAtlasSpacing.lg)
-            }
+            EmptyStateView(message: "The grip library couldn't load.").padding(20)
         } else {
-            populated
-        }
-    }
-
-    // MARK: - Populated
-
-    private var populated: some View {
-        ScrollView {
-            // LazyVStack so the heavy grip entries — each can carry a looping
-            // AVPlayer film card and several decoded webp photos — instantiate only
-            // as they scroll into view, instead of all ~dozen building (and spinning
-            // up players) at once on first paint.
-            LazyVStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                masthead
-                searchField
-                StudyTray()
-                DisclosureGroup("Read Austin’s field notes") {
-                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-                        Text(store.grips.intro).font(PitchAtlasTheme.newsreader(18))
-                        honestyBanner
-                        arsenalCard
-                        commandCard
-                        attackPlanCard
-                    }.padding(.top, PitchAtlasSpacing.sm)
-                }
-                Text("\(filteredEntries.count) of \(store.grips.entries.count) grip records")
-                    .font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
-                if filteredEntries.isEmpty {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("No grips match “\(query)”.")
-                        Button("Clear search") { query = "" }.buttonStyle(.bordered).controlSize(.large)
-                    }.leatherPress()
-                }
-                ForEach(filteredEntries) { entry in
-                    gripEntrySection(entry)
-                }
+            // .scene-coal: the theater, footage and film read in the dark
+            VStack(alignment: .leading, spacing: 0) {
+                GripJumpRow(entries: store.grips.entries) { jump(proxy, to: $0) }
+                library
+                MediaRail(eyebrow: "Grip lessons in motion",
+                          title: "More hands in the conversation.",
+                          intro: "First-party photographs remain the evidence in this library. These official, credited embeds add outside teaching and history without becoming the canonical grip.",
+                          items: MediaShelf.query(store.externalMedia.items, placement: .grips, limit: 4))
+                AttackPlanSection(file: store.grips)
+                GripCompareEntry()
             }
-            .padding(PitchAtlasSpacing.lg)
-            .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-            .emitsScrollProgress()
+            .background { CoalScene() }
         }
     }
 
-    // MARK: - Masthead
+    /// A chip's jump. The grips below build as they scroll in, so a far jump
+    /// lands on an estimate; the second pass, once the grip has built, settles it
+    /// on the grip's top rule.
+    private func jump(_ proxy: ScrollViewProxy, to id: String) {
+        withAnimation((reduceMotion || dynamicTypeSize.isAccessibilitySize) ? nil : .easeOut(duration: 0.25)) {
+            proxy.scrollTo(id, anchor: .top)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { proxy.scrollTo(id, anchor: .top) }
+    }
 
-    private var masthead: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "The Grip Library", color: PitchAtlasTheme.kicker)
+    // MARK: - The library
 
-            Text("GRIPS")
-                .font(PitchAtlasTheme.anton(56))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .antonSkew()
-                .padding(.vertical, PitchAtlasSpacing.xs)
-
-                Text("Find a grip. Follow it into the archive.")
-                    .font(PitchAtlasTheme.newsreader(18))
+    private var library: some View {
+        let file = store.grips
+        let shown = GripLibraryReads.matches(file.entries, query: query)
+        return VStack(alignment: .leading, spacing: 48) {
+            VStack(alignment: .leading, spacing: 16) {
+                Text(file.intro)
+                    .font(PitchAtlasType.font(.hanken400, size: 16, relativeTo: .body))
                     .foregroundStyle(PitchAtlasTheme.bone2)
-                    .lineSpacing(2)
+                    .cssLineHeight(1.625, face: .hanken400, size: 16, relativeTo: .body)
                     .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("The Grip Library. Find a grip. Follow it into the archive.")
-    }
-
-    private var searchField: some View {
-        PitchSearchField(text: $query, prompt: "Search grips, families or cues")
-    }
-
-    // MARK: - Honesty banner (proof limit, shown once near the top)
-
-    @ViewBuilder
-    private var honestyBanner: some View {
-        if !store.grips.proofLimit.isEmpty {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.text3)
-                Text(store.grips.proofLimit)
-                    .font(PitchAtlasTheme.hanken(14))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text(file.arsenal)
+                    .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
                     .foregroundStyle(PitchAtlasTheme.bone2)
+                    .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
                     .fixedSize(horizontal: false, vertical: true)
+                    // px-5 py-4 inside the 1pt border
+                    .padding(.horizontal, 21)
+                    .padding(.vertical, 17)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(PitchAtlasTheme.press.opacity(0.6)))
+                    .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(PitchAtlasTheme.bone.opacity(0.10), lineWidth: 1))
             }
-            .leatherPress()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Not tracked data. \(store.grips.proofLimit)")
-        }
-    }
-
-    // MARK: - Arsenal
-
-    @ViewBuilder
-    private var arsenalCard: some View {
-        if !store.grips.arsenal.isEmpty {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "The Arsenal")
-                Text(store.grips.arsenal)
-                    .font(PitchAtlasTheme.hanken(15))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .leatherPress()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("The Arsenal. \(store.grips.arsenal)")
-        }
-    }
-
-    // MARK: - Command
-
-    @ViewBuilder
-    private var commandCard: some View {
-        if !store.grips.commandNote.isEmpty {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-                SectionLabel(text: "Command")
-                Text(store.grips.commandNote)
-                    .font(PitchAtlasTheme.hanken(15))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .leatherPress()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Command. \(store.grips.commandNote)")
-        }
-    }
-
-    // MARK: - Attack plan
-
-    private var attackPlanCard: some View {
-        let plan = store.grips.attackPlan
-        return VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: plan.sequenceTitle)
-
-            if !plan.intro.isEmpty {
-                Text(plan.intro)
-                    .font(PitchAtlasTheme.hanken(15))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            if !plan.sequenceNote.isEmpty {
-                Text(plan.sequenceNote)
-                    .font(PitchAtlasTheme.newsreaderItalic(15))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            if !plan.sequence.isEmpty {
-                HairlineDivider()
-                    .padding(.vertical, PitchAtlasSpacing.xs2)
-
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                    ForEach(Array(plan.sequence.enumerated()), id: \.offset) { index, step in
-                        attackStepRow(number: index + 1, step: step)
+            GripLibrarySearch(query: $query, shown: shown.count, total: file.entries.count,
+                              loops: GripLibraryReads.loops(shown, reduceMotion: reduceMotion))
+            if !shown.isEmpty {
+                // Lazy, so a grip's film and photographs build only as it scrolls in,
+                // and a film that scrolls away stops.
+                LazyVStack(alignment: .leading, spacing: 48) {
+                    ForEach(shown) { entry in
+                        GripArticle(entry: entry, gap: GripLibraryReads.gap(for: entry, in: file))
                     }
                 }
             }
         }
-        .leatherPress()
+        .padding(.horizontal, 20)
+        .padding(.vertical, 56)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+// MARK: - Small type
+
+/// A mono line in capitals at the site's size and tracking.
+private struct MonoCaps: View {
+    let text: String
+    var size: CGFloat = 10
+    var trackingEm: CGFloat = 0.1
+    var ink: Color = PitchAtlasTheme.ink3
+
+    var body: some View {
+        Text(text.uppercased())
+            .font(PitchAtlasType.font(.martian400, size: size, relativeTo: .caption2))
+            .tracking(em: trackingEm, size: size)
+            .foregroundStyle(ink)
+            .cssLineHeight(1.5, face: .martian400, size: size, relativeTo: .caption2)
+            .fixedSize(horizontal: false, vertical: true)
+            .accessibilityLabel(text)
+    }
+}
+
+/// `.rfx-skew`: skewX(−7°) about the box's center, as CSS transforms it — the
+/// lean without the wordmark's stroke shadow.
+private struct SkewX: GeometryEffect {
+    var degrees: Double = -7
+
+    func effectValue(size: CGSize) -> ProjectionTransform {
+        let t = CGFloat(tan(degrees * .pi / 180))
+        return ProjectionTransform(CGAffineTransform(a: 1, b: 0, c: t, d: 1, tx: -t * size.height / 2, ty: 0))
+    }
+}
+
+// MARK: - Jump to a grip
+
+/// GripLibraryIndex: "Jump to a grip" and a chip per grip; a chip scrolls the
+/// library to that grip.
+private struct GripJumpRow: View {
+    let entries: [GripEntry]
+    let jump: (String) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            MonoCaps(text: "Jump to a grip", trackingEm: 0.14, ink: PitchAtlasTheme.cyan)
+                .accessibilityAddTraits(.isHeader)
+            FlowRow(spacing: 8, lineSpacing: 8) {
+                ForEach(entries) { entry in
+                    Button { jump(entry.id) } label: {
+                        Text(entry.label.uppercased())
+                            .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                            .tracking(em: 0.1, size: 10)
+                            .foregroundStyle(PitchAtlasTheme.bone2)
+                            .padding(.horizontal, 13)
+                            .frame(minHeight: 44)
+                            .background(Capsule().fill(Color.black.opacity(0.2)))
+                            .overlay(Capsule().strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
+                            .contentShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(entry.label)
+                    .accessibilityHint("Scrolls to the grip")
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 32)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .bottom) {
+            Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1).accessibilityHidden(true)
+        }
+    }
+}
+
+// MARK: - Find a grip
+
+/// `.archive-library-search`: the label set large, the field, the count, a way
+/// out of an empty search, and Pause while a grip on show moves.
+private struct GripLibrarySearch: View {
+    @Binding var query: String
+    let shown: Int
+    let total: Int
+    let loops: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Find a grip")
+                .font(PitchAtlasType.font(.newsreader400, size: 30, relativeTo: .title))
+                .foregroundStyle(ArchiveInk.librarySearchLabel)
+                .cssLineHeight(1.1, face: .newsreader400, size: 30, relativeTo: .title)
+                .accessibilityHidden(true)
+            TextField("", text: $query,
+                      prompt: Text("Pitch name or grip cue").foregroundStyle(PitchAtlasTheme.placeholder))
+                .font(PitchAtlasType.font(.hanken400, size: 16, relativeTo: .body))
+                .foregroundStyle(ArchiveInk.librarySearchInk)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .submitLabel(.search)
+                // 12pt in from the 1pt rim; the site's field renders 50 tall
+                .padding(.horizontal, 13)
+                .padding(.vertical, 12)
+                .frame(minHeight: 50)
+                .background(ArchiveInk.librarySearchWell)
+                .overlay(Rectangle().strokeBorder(ArchiveInk.librarySearchWellRim, lineWidth: 1))
+                .accessibilityLabel("Find a grip")
+                .padding(.top, 12)
+            Text(GripLibraryReads.countLine(shown: shown, of: total))
+                .font(PitchAtlasType.font(.martian400, size: 11, relativeTo: .caption2))
+                .foregroundStyle(ArchiveInk.librarySearchCount)
+                .cssLineHeight(1.5, face: .martian400, size: 11, relativeTo: .caption2)
+                .padding(.top, 12)
+            if shown == 0 {
+                Button("Clear search") { query = "" }
+                    .buttonStyle(StudyButtonStyle())
+                    .foregroundStyle(PitchAtlasTheme.bone)
+            }
+            if loops {
+                PauseMotionButton().padding(.top, 12)
+            }
+        }
+        // 24pt inside the 1pt border
+        .padding(25)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(ArchiveInk.librarySearchField)
+        .overlay(Rectangle().strokeBorder(ArchiveInk.libraryRule, lineWidth: 1))
+        // role="status": the count speaks when it changes
+        .onChange(of: shown) { _, count in
+            AccessibilityNotification.Announcement(GripLibraryReads.countLine(shown: count, of: total)).post()
+        }
+    }
+}
+
+// MARK: - One grip
+
+/// An `.archive-library-entry`: the name, its Compare and its link; Austin's
+/// words; how it moved; then the theater — the film at its own portrait, the
+/// photographs large beneath it — or, for the circle change, the labeled gap.
+private struct GripArticle: View {
+    let entry: GripEntry
+    let gap: GripDistinction?
+    @Environment(PitchStore.self) private var store
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            header
+            quote.padding(.top, 16)
+            MonoCaps(text: "Austin H. · in his own words")
+                .padding(.leading, 16)
+                .padding(.top, 8)
+            if let movement = entry.movement, !movement.isEmpty {
+                movementBox(movement).padding(.top, 20)
+            }
+            if entry.film != nil || !entry.photos.isEmpty {
+                theater.padding(.top, 28)
+            } else if let gap {
+                gapBox(gap).padding(.top, 28)
+            }
+        }
+        .padding(.top, 36)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .top) {
+            Rectangle().fill(ArchiveInk.libraryRule).frame(height: 1).accessibilityHidden(true)
+        }
     }
 
-    private func attackStepRow(number: Int, step: GripAttackStep) -> some View {
-        HStack(alignment: .top, spacing: PitchAtlasSpacing.sm) {
-            Text("\(number)")
-                .font(PitchAtlasTheme.martian(12))
-                .foregroundStyle(PitchAtlasTheme.cyan)
-                .frame(width: 20, alignment: .leading)
-                .padding(.top, 1)
+    // MARK: The name, Compare, the link
 
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                Text(step.label)
-                    .font(PitchAtlasTheme.hankenMedium(15))
+    /// `flex flex-wrap items-baseline justify-between`: the name and Compare at
+    /// the ends of the first line, the link beneath when the line runs out.
+    private var header: some View {
+        GripHeaderRow(columnGap: 16, rowGap: 8) {
+            TightLines(entry.label.uppercased(), face: .anton400, size: 24, lineHeight: 0.98,
+                       relativeTo: .title2, balanced: true)
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .accessibilityAddTraits(.isHeader)
+            if let slug = entry.specimenSlug { CompareButton(slug: slug) }
+            if let link = GripLibraryReads.link(entry) { linkView(link) }
+        }
+    }
+
+    @ViewBuilder
+    private func linkView(_ link: GripLibraryReads.Link) -> some View {
+        switch link {
+        case .specimen(let slug):
+            if let pitch = store.pitch(slug: slug) {
+                NavigationLink(value: pitch) { linkLabel(link) }.buttonStyle(.plain)
+            }
+        case .file(let id):
+            if let file = store.repertoireEntry(id: id) {
+                NavigationLink(value: file) { linkLabel(link) }.buttonStyle(.plain)
+            }
+        }
+    }
+
+    private func linkLabel(_ link: GripLibraryReads.Link) -> some View {
+        Text("\(link.label.uppercased()) →")
+            .font(PitchAtlasType.font(.martian400, size: 11, relativeTo: .caption2))
+            .tracking(em: 0.1, size: 11)
+            .foregroundStyle(PitchAtlasTheme.cyan)
+            .cssLineHeight(1.5, face: .martian400, size: 11, relativeTo: .caption2)
+            // the site's touch rule: a 44pt target that keeps the line's height
+            .padding(.vertical, 14)
+            .contentShape(Rectangle())
+            .padding(.vertical, -14)
+            .accessibilityLabel(link.label)
+    }
+
+    // MARK: His words
+
+    private var quote: some View {
+        Text(entry.note)
+            .font(PitchAtlasType.font(.hanken400, size: 15.5, relativeTo: .body))
+            .foregroundStyle(PitchAtlasTheme.bone)
+            .cssLineHeight(1.625, face: .hanken400, size: 15.5, relativeTo: .body)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            // pl-4 inside the 2pt cyan rule
+            .padding(.leading, 18)
+            .overlay(alignment: .leading) {
+                Rectangle().fill(PitchAtlasTheme.cyan.opacity(0.4)).frame(width: 2).accessibilityHidden(true)
+            }
+    }
+
+    private func movementBox(_ movement: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            MonoCaps(text: "How it moved", trackingEm: 0.12)
+            Text(movement)
+                .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        // px-4 py-3.5 inside the 1pt border
+        .padding(.horizontal, 17)
+        .padding(.vertical, 15)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 12).fill(PitchAtlasTheme.press.opacity(0.5)))
+        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(PitchAtlasTheme.bone.opacity(0.12), lineWidth: 1))
+        .accessibilityElement(children: .combine)
+    }
+
+    // MARK: The theater
+
+    /// One column on a phone: the film, capped at 360 and centered so it is never
+    /// a full-width, very tall portrait, then each photograph.
+    private var theater: some View {
+        VStack(spacing: 20) {
+            if let film = entry.film {
+                GripMotionFigure(film: film, large: true)
+                    .frame(maxWidth: 360)
+                    .frame(maxWidth: .infinity)
+            }
+            ForEach(entry.photos, id: \.src) { GripPhotoFigure(photo: $0) }
+        }
+    }
+
+    /// No film and no photograph: the labeled gap, never a borrowed picture
+    /// implying Austin's hand.
+    private func gapBox(_ gap: GripDistinction) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            MonoCaps(text: gap.marker, trackingEm: 0.14)
+            Text(gap.reason)
+                .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        // px-5 py-6 inside the 1pt dashed border
+        .padding(.horizontal, 21)
+        .padding(.vertical, 25)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(RoundedRectangle(cornerRadius: 16)
+            .strokeBorder(PitchAtlasTheme.bone.opacity(0.2), style: StrokeStyle(lineWidth: 1, dash: [3, 3])))
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// The grip's header line, as CSS lays `flex flex-wrap items-baseline
+/// justify-between gap-x-4 gap-y-2`: items left to right at their own widths,
+/// wrapping when the line runs out; a line's first and last at its two ends;
+/// the items on a line sharing one baseline.
+private struct GripHeaderRow: Layout {
+    var columnGap: CGFloat
+    var rowGap: CGFloat
+
+    private struct Line { var items: [Int] = []; var width: CGFloat = 0 }
+
+    /// An item at its own width, or wrapped to the line's when it runs wider.
+    private static func size(of subview: LayoutSubview, within width: CGFloat) -> CGSize {
+        let ideal = subview.sizeThatFits(.unspecified)
+        guard width.isFinite, ideal.width > width else { return ideal }
+        return subview.sizeThatFits(ProposedViewSize(width: width, height: nil))
+    }
+
+    private static func baseline(of subview: LayoutSubview, size: CGSize) -> CGFloat {
+        subview.dimensions(in: ProposedViewSize(size))[VerticalAlignment.firstTextBaseline]
+    }
+
+    private func lines(_ subviews: Subviews, width: CGFloat) -> [Line] {
+        var lines: [Line] = []
+        var line = Line()
+        for index in subviews.indices {
+            let w = Self.size(of: subviews[index], within: width).width
+            if !line.items.isEmpty, line.width + columnGap + w > width {
+                lines.append(line)
+                line = Line()
+            }
+            line.width = line.items.isEmpty ? w : line.width + columnGap + w
+            line.items.append(index)
+        }
+        if !line.items.isEmpty { lines.append(line) }
+        return lines
+    }
+
+    /// A line's height above its shared baseline, and below it.
+    private func extent(_ line: Line, _ subviews: Subviews, width: CGFloat) -> (above: CGFloat, below: CGFloat) {
+        line.items.reduce((0, 0)) { acc, index in
+            let size = Self.size(of: subviews[index], within: width)
+            let base = Self.baseline(of: subviews[index], size: size)
+            return (max(acc.0, base), max(acc.1, size.height - base))
+        }
+    }
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let width = proposal.width ?? .infinity
+        let all = lines(subviews, width: width)
+        let height = all.reduce(0) { sum, line in
+            let e = extent(line, subviews, width: width)
+            return sum + e.above + e.below
+        } + rowGap * CGFloat(max(0, all.count - 1))
+        return CGSize(width: proposal.width ?? (all.map(\.width).max() ?? 0), height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var y = bounds.minY
+        for line in lines(subviews, width: bounds.width) {
+            let e = extent(line, subviews, width: bounds.width)
+            let free = max(0, bounds.width - line.width)
+            let between = line.items.count > 1 ? columnGap + free / CGFloat(line.items.count - 1) : 0
+            var x = bounds.minX
+            for index in line.items {
+                let size = Self.size(of: subviews[index], within: bounds.width)
+                let base = Self.baseline(of: subviews[index], size: size)
+                subviews[index].place(at: CGPoint(x: x, y: y + e.above - base), proposal: ProposedViewSize(size))
+                x += size.width + between
+            }
+            y += e.above + e.below + rowGap
+        }
+    }
+}
+
+// MARK: - How he attacked hitters
+
+/// AttackPlan: the arsenal put to work as a sequenced at-bat, the putaway
+/// marked; then command and the arm slot, in his words, never tracked data.
+private struct AttackPlanSection: View {
+    let file: GripsFile
+
+    var body: some View {
+        let plan = file.attackPlan
+        VStack(alignment: .leading, spacing: 0) {
+            KickerLabel(text: "How he attacked hitters")
+            TightLines("The grips, put to work".uppercased(), face: .anton400, size: 26, lineHeight: 0.98,
+                       relativeTo: .title2, balanced: true)
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .padding(.top, 12)
+                .accessibilityAddTraits(.isHeader)
+            Text(plan.intro)
+                .font(PitchAtlasType.font(.hanken400, size: 15.5, relativeTo: .body))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .cssLineHeight(1.625, face: .hanken400, size: 15.5, relativeTo: .body)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 16)
+            panel(plan).padding(.top, 36)
+            VStack(alignment: .leading, spacing: 8) {
+                MonoCaps(text: "On command and the arm slot", trackingEm: 0.12, ink: PitchAtlasTheme.cyan)
+                Text(file.commandNote)
+                    .font(PitchAtlasType.font(.hanken400, size: 15, relativeTo: .body))
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+                    .cssLineHeight(1.625, face: .hanken400, size: 15, relativeTo: .body)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.top, 24)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .overlay(alignment: .top) {
+                Rectangle().fill(PitchAtlasTheme.bone.opacity(0.10)).frame(height: 1).accessibilityHidden(true)
+            }
+            .padding(.top, 32)
+            MonoCaps(text: "Austin H. · a pitcher’s own account, not tracked data")
+                .padding(.top, 16)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 56)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .top) {
+            Rectangle().fill(PitchAtlasTheme.bone.opacity(0.15)).frame(height: 1).accessibilityHidden(true)
+        }
+    }
+
+    private func panel(_ plan: GripAttackPlan) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text(plan.sequenceTitle.uppercased())
+                .font(PitchAtlasType.font(.anton400, size: 24, relativeTo: .title2))
+                .tracking(em: 0.01, size: 24)
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .cssLineHeight(32.0 / 24.0, face: .anton400, size: 24, relativeTo: .title2)
+                .fixedSize(horizontal: false, vertical: true)
+                .modifier(SkewX())
+                .accessibilityLabel(plan.sequenceTitle)
+                .accessibilityAddTraits(.isHeader)
+            Text(plan.sequenceNote)
+                .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 8)
+            VStack(spacing: 12) {
+                ForEach(Array(plan.sequence.enumerated()), id: \.offset) { index, step in
+                    stepRow(index, step, last: index == plan.sequence.count - 1)
+                }
+            }
+            .padding(.top, 24)
+        }
+        // p-[clamp(20px,3vw,30px)] inside the 1pt border
+        .padding(21)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 16).fill(PitchAtlasTheme.press.opacity(0.6)))
+        .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(PitchAtlasTheme.bone.opacity(0.12), lineWidth: 1))
+    }
+
+    private func stepRow(_ index: Int, _ step: GripAttackStep, last: Bool) -> some View {
+        HStack(alignment: .top, spacing: 16) {
+            Text(String(format: "%02d", index + 1))
+                .font(PitchAtlasType.font(.anton400, size: 24, relativeTo: .title2))
+                .tracking(em: 0.01, size: 24)
+                .foregroundStyle(last ? PitchAtlasTheme.cyan : ArchiveInk.orange)
+                .cssLineHeight(1, face: .anton400, size: 24, relativeTo: .title2)
+                .modifier(SkewX())
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 4) {
+                (Text(step.label)
+                    .font(PitchAtlasType.font(.hanken600, size: 15, relativeTo: .body))
                     .foregroundStyle(PitchAtlasTheme.bone)
+                 + (last ? Text("\u{2002}PUTAWAY")
+                    .font(PitchAtlasType.font(.martian400, size: 9, relativeTo: .caption2))
+                    .tracking(0.12 * 9)
+                    .foregroundStyle(PitchAtlasTheme.cyan) : Text("")))
+                    .cssLineHeight(1.5, face: .hanken600, size: 15, relativeTo: .body)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(step.detail)
-                    .font(PitchAtlasTheme.hanken(14))
+                    .font(PitchAtlasType.font(.hanken400, size: 13.5, relativeTo: .footnote))
                     .foregroundStyle(PitchAtlasTheme.bone2)
+                    .cssLineHeight(1.625, face: .hanken400, size: 13.5, relativeTo: .footnote)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
+        // px-4 py-3.5 inside the 1pt border
+        .padding(.horizontal, 17)
+        .padding(.vertical, 15)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: 12).fill(PitchAtlasTheme.press)
+                .overlay(RoundedRectangle(cornerRadius: 12).fill(PitchAtlasTheme.cyan.opacity(last ? 0.12 : 0)))
+        }
+        .overlay(RoundedRectangle(cornerRadius: 12)
+            .strokeBorder(last ? PitchAtlasTheme.cyan.opacity(0.45) : PitchAtlasTheme.bone.opacity(0.10), lineWidth: 1))
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Step \(number). \(step.label). \(step.detail)")
+        .accessibilityLabel("Step \(index + 1)\(last ? ", the putaway" : ""). \(step.label). \(step.detail)")
     }
+}
 
-    // MARK: - Grip entry section
+// MARK: - Same release, different grip
 
-    private func gripEntrySection(_ entry: GripEntry) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            // Heading: family dot + label in Anton.
-            HStack(alignment: .center, spacing: PitchAtlasSpacing.sm) {
-                FamilyDot(color: entry.family.accent, size: 9)
-                Text(entry.label.uppercased())
-                    .font(PitchAtlasTheme.anton(24))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .antonSkew()
+/// The comparison's doorway (GripsPage.tsx #grip-compare and GripCompare.tsx
+/// with the workspace in reach): two grips under one arm slot, and the way in.
+private struct GripCompareEntry: View {
+    @Environment(\.compareSelection) private var comparison
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // A hidden note on the site; the plain kicker until the notes are filed.
+            KickerLabel(text: "Same release, different grip")
+            TightLines("Two grips, one arm slot".uppercased(), face: .anton400, size: 26, lineHeight: 0.98,
+                       relativeTo: .title2, balanced: true)
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .padding(.top, 12)
+                .accessibilityAddTraits(.isHeader)
+            // Verbatim, GripsPage.tsx.
+            Text("A hitter reads the delivery, not the hand. Put two grips side by side under one shared arm slot and the trick becomes obvious: the part they can see is identical, and the part that decides the pitch is the part they can’t. These balls are our own seam geometry, oriented to the grip (schematic, not a hand), and with no WebGL they fall back to the 2D seam diagram, so the grip still reads.")
+                .font(PitchAtlasType.font(.hanken400, size: 15, relativeTo: .body))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .cssLineHeight(1.625, face: .hanken400, size: 15, relativeTo: .body)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 14)
+            // Verbatim, GripCompare.tsx.
+            Text("Keep two pitches together as you move between grips, sourced cues, and schematic movement.")
+                .font(PitchAtlasType.font(.hanken400, size: 16, relativeTo: .body))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .cssLineHeight(1.625, face: .hanken400, size: 16, relativeTo: .body)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 36)
+            Button("Open the comparison workspace") {
+                comparison.presented = true
+                Haptics.selection()
             }
-            .padding(.bottom, PitchAtlasSpacing.xs2)
-
-            if let specimen = entry.filedSpecimen(in: store) {
-                ViewThatFits(in: .horizontal) {
-                    HStack {
-                        NavigationLink(value: specimen) { Label("Study this grip", systemImage: "hand.raised.fingers.spread") }
-                        CompareButton(slug: specimen.slug)
-                    }
-                    VStack(alignment: .leading) {
-                        NavigationLink(value: specimen) { Label("Study this grip", systemImage: "hand.raised.fingers.spread") }
-                        CompareButton(slug: specimen.slug)
-                    }
-                }.buttonStyle(.bordered).controlSize(.large)
-                    .foregroundStyle(PitchAtlasTheme.bone)
-            } else if let id = entry.repertoireId, let basic = store.repertoireEntry(id: id) {
-                NavigationLink(value: basic) { Label("Read the pitch file", systemImage: "book") }
-                    .buttonStyle(.bordered).controlSize(.large)
-                    .foregroundStyle(PitchAtlasTheme.bone)
-            } else {
-                Text("A fuller specimen is not filed for this grip.")
-                    .font(.subheadline).foregroundStyle(PitchAtlasTheme.bone2)
-            }
-
-            // The owner's cues.
-            if !entry.shortCue.isEmpty {
-                Text(entry.shortCue)
-                    .font(PitchAtlasTheme.newsreaderItalic(16))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            if !entry.visibleCue.isEmpty {
-                Text(entry.visibleCue)
-                    .font(PitchAtlasTheme.hanken(15))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            if !entry.note.isEmpty {
-                Text(entry.note)
-                    .font(PitchAtlasTheme.hanken(14))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            if let movement = entry.movement, !movement.isEmpty {
-                HStack(alignment: .top, spacing: PitchAtlasSpacing.xs) {
-                    SectionLabel(text: "Movement", color: entry.family.accent, size: 9)
-                    Text(movement)
-                        .font(PitchAtlasTheme.hanken(14))
-                        .foregroundStyle(PitchAtlasTheme.bone)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .padding(.top, PitchAtlasSpacing.xs2)
-            }
-
-            // The film leads when one is on file — the owner's hand in motion.
-            if let film = entry.film {
-                GripFilmCard(film: film, height: 360)
-                    .specimenCardFrame(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.card, foilIntensity: 0.72)
-                    .padding(.top, PitchAtlasSpacing.xs)
-            }
-
-            // Photos — or an honest "no photos on file" line, never a gray box.
-            if entry.photos.isEmpty {
-                Text("Photos: \(entry.photoStatus ?? "none on file")")
-                    .font(PitchAtlasTheme.hanken(13))
-                    .foregroundStyle(PitchAtlasTheme.text3)
-                    .padding(.top, PitchAtlasSpacing.xs2)
-            } else {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.md) {
-                    ForEach(Array(entry.photos.enumerated()), id: \.offset) { _, photo in
-                        GripPhotoTile(photo: photo)
-                    }
-                }
-                .padding(.top, PitchAtlasSpacing.xs)
-            }
-
-            HairlineDivider()
-                .padding(.vertical, PitchAtlasSpacing.xs)
-
-            // Footer: proof limit + the claim tier in its tier color.
-            if !entry.proofLimit.isEmpty {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                    SectionLabel(text: "Proof limit")
-                    Text(entry.proofLimit)
-                        .font(PitchAtlasTheme.hanken(13))
-                        .foregroundStyle(PitchAtlasTheme.text3)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                ProvenanceDot(confidence: entry.claimTier)
-                TierWords(confidence: entry.claimTier, size: 9, tracking: 2)
-            }
-            .padding(.top, PitchAtlasSpacing.xs2)
+            .buttonStyle(ArchiveActionStyle())
+            .padding(.top, 20)
         }
-        .leatherPress()
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(entry.label)
-    }
-
-    // MARK: - Accessibility
-
-    private func entryAccessibilityLabel(_ entry: GripEntry) -> String {
-        var parts: [String] = [entry.label]
-        if !entry.shortCue.isEmpty { parts.append(entry.shortCue) }
-        if !entry.visibleCue.isEmpty { parts.append(entry.visibleCue) }
-        if !entry.note.isEmpty { parts.append(entry.note) }
-        if let movement = entry.movement, !movement.isEmpty {
-            parts.append("Movement. \(movement)")
+        .padding(.horizontal, 20)
+        .padding(.vertical, 56)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(PitchAtlasTheme.press)
+        .overlay(alignment: .top) {
+            Rectangle().fill(PitchAtlasTheme.bone.opacity(0.15)).frame(height: 1).accessibilityHidden(true)
         }
-        if entry.film != nil {
-            parts.append("Grip film on file")
-        }
-        if entry.photos.isEmpty {
-            parts.append("Photos: \(entry.photoStatus ?? "none on file")")
-        } else {
-            parts.append("\(entry.photos.count) grip \(entry.photos.count == 1 ? "photo" : "photos")")
-        }
-        if !entry.proofLimit.isEmpty { parts.append("Proof limit. \(entry.proofLimit)") }
-        parts.append(entry.claimTier.label)
-        return parts.joined(separator: ". ")
     }
 }
 

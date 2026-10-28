@@ -120,18 +120,20 @@ struct GripPhotoFigure: View {
 
 /// GripMotion: the looping clip of Austin's hand, cropped 4:3 to its focus, the
 /// MOTION chip, the clip's words and the credit. Held on its poster while motion
-/// is paused or reduced.
+/// is paused or reduced. `large` is the library's theater: the clip at its own
+/// 9:16 portrait, filled from the middle as the site's `object-cover` does.
 struct GripMotionFigure: View {
     let film: GripFilm
+    var large = false
     @AppStorage(MotionPreference.pausedKey) private var paused = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Color.clear
-                .aspectRatio(4.0 / 3.0, contentMode: .fit)
+                .aspectRatio(large ? 9.0 / 16.0 : 4.0 / 3.0, contentMode: .fit)
                 .overlay {
                     FocusFill(aspect: BundledImage.load(film.poster).map { $0.size.width / max($0.size.height, 1) } ?? 9.0 / 16.0,
-                              focus: FocusCrop.unitPoint(film.focus)) {
+                              focus: large ? .center : FocusCrop.unitPoint(film.focus)) {
                         GripLoopFace(film: film, plays: !paused)
                     }
                 }

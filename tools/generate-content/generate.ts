@@ -200,6 +200,8 @@ const bundles: Record<string, unknown> = {
     commandNote: grips.GRIP_LIBRARY_COMMAND_NOTE,
     attackPlan: grips.ATTACK_PLAN,
     proofLimit: grips.GRIP_PHOTO_PROOF_LIMIT,
+    // The labeled gap the library shows where the circle change's photos would be.
+    circleChangeDistinction: grips.CIRCLE_CHANGE_DISTINCTION,
     entries: gripEntries,
   },
   'sources.json': sources.allSources(),

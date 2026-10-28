@@ -183,3 +183,23 @@ private struct RosinPuffView: View {
         .accessibilityHidden(true)
     }
 }
+
+/// `.archive-action` (compare.css): the cream action — Hanken 600 13 in ink on
+/// cream behind a brass rim, 6pt corners, never under 44pt. The way into the
+/// comparison workspace and back out to the index.
+struct ArchiveActionStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(PitchAtlasType.font(.hanken600, size: 13, relativeTo: .subheadline))
+            .foregroundStyle(ArchiveInk.actionInk)
+            .multilineTextAlignment(.center)
+            // .65rem 1rem inside the 1pt rim
+            .padding(.horizontal, 17)
+            .padding(.vertical, 11.4)
+            .frame(minHeight: 44)
+            .background(RoundedRectangle(cornerRadius: 6).fill(ArchiveInk.actionFill))
+            .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(ArchiveInk.actionRim, lineWidth: 1))
+            .opacity(configuration.isPressed ? 0.85 : 1)
+            .contentShape(Rectangle())
+    }
+}

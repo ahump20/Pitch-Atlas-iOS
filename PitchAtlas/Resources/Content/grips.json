@@ -30,6 +30,10 @@
     ]
   },
   "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
+  "circleChangeDistinction": {
+    "marker": "Circle Changeup · Filed from external sources · No Austin grip photo",
+    "reason": "Austin's personal grip library excludes the circle change because his hand size could not form it cleanly."
+  },
   "entries": [
     {
       "id": "four-seam",

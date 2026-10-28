@@ -68,7 +68,7 @@ final class PitchStore {
                           fallback: GripsFile(intro: "", arsenal: "", commandNote: "",
                                               attackPlan: GripAttackPlan(intro: "", sequenceTitle: "",
                                                                          sequenceNote: "", sequence: []),
-                                              proofLimit: "", entries: []))
+                                              proofLimit: "", circleChangeDistinction: nil, entries: []))
         self.sources = load("sources", [Source].self, fallback: [])
         self.archiveImages = load("archive-images", [ArchiveImage].self, fallback: [])
         self.teachingClips = load("teaching-clips", [TeachingClip].self, fallback: [])

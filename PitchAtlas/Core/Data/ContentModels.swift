@@ -868,12 +868,20 @@ struct GripEntry: Codable, Hashable, Identifiable {
     let photoStatus: String?
 }
 
+/// Where a grip has no photograph of Austin's hand, the library says why
+/// (web CIRCLE_CHANGE_DISTINCTION): a marker line and the reason.
+struct GripDistinction: Codable, Hashable {
+    let marker: String
+    let reason: String
+}
+
 struct GripsFile: Codable, Hashable {
     let intro: String
     let arsenal: String
     let commandNote: String
     let attackPlan: GripAttackPlan
     let proofLimit: String
+    let circleChangeDistinction: GripDistinction?
     let entries: [GripEntry]
 }
 
