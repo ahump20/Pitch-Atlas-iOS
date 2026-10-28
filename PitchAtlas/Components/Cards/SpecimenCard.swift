@@ -30,8 +30,8 @@ struct SpecimenCardFront: View {
             field.padding(m.stockPadding)
         }
         .frame(width: m.width, height: m.height)
-        .clipShape(RoundedRectangle(cornerRadius: PitchAtlasRadius.card, style: .continuous))
-        .modifier(EdgeStack(ember: ember))
+        .clipShape(RoundedRectangle(cornerRadius: DiagHero.has("noclip") ? 0 : PitchAtlasRadius.card, style: .continuous))
+        .modifier(EdgeStack(ember: ember, off: DiagHero.has("noedge")))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(content.accessibilityLabel)
     }
@@ -120,9 +120,13 @@ struct SpecimenCardFront: View {
     @ViewBuilder private var faceView: some View {
         switch content.face {
         case .film(let film):
-            FocusFill(aspect: BundledImage.load(film.poster).map { $0.size.width / max($0.size.height, 1) } ?? 9.0 / 16.0,
-                      focus: FocusCrop.unitPoint(film.focus)) {
+            if DiagHero.has("nofocus") {
                 GripLoopFace(film: film, plays: playsFilm)
+            } else {
+                FocusFill(aspect: BundledImage.load(film.poster).map { $0.size.width / max($0.size.height, 1) } ?? 9.0 / 16.0,
+                          focus: FocusCrop.unitPoint(film.focus)) {
+                    GripLoopFace(film: film, plays: playsFilm)
+                }
             }
         case .photo(let photo):
             FocusFill(aspect: BundledImage.load(photo.src).map { $0.size.width / max($0.size.height, 1) } ?? 3.0 / 4.0,
@@ -246,14 +250,20 @@ struct PitchSpecimenCard: View {
         let content = SpecimenCardContent.make(entry: entry, grip: store.gripEntry(forSpecimen: entry.slug))
         let metrics = SpecimenCardMetrics(width: Self.width(for: style), frame: content.frame)
         VStack(alignment: .leading, spacing: 12) {
-            SpecimenCardFront(content: content, metrics: metrics, playsFilm: isHero && !motionPaused, light: light)
-                .cardTilt(isHero ? .hero : .rest, size: CGSize(width: metrics.width, height: metrics.height), light: $light)
-                .rotationEffect(.degrees(isHero && content.frame == .ember ? CardLean.hero : CardLean.rest(index: 0)))
+            Group {
+                if DiagHero.has("notilt") {
+                    SpecimenCardFront(content: content, metrics: metrics, playsFilm: isHero && !motionPaused, light: light)
+                } else {
+                    SpecimenCardFront(content: content, metrics: metrics, playsFilm: isHero && !motionPaused, light: light)
+                        .cardTilt(isHero ? .hero : .rest, size: CGSize(width: metrics.width, height: metrics.height), light: $light)
+                }
+            }
+            .rotationEffect(.degrees(DiagHero.has("nolean") ? 0 : (isHero && content.frame == .ember ? CardLean.hero : CardLean.rest(index: 0))))
             if dynamicTypeSize.isAccessibilitySize {
                 CardWords(content: content).frame(width: metrics.width, alignment: .leading)
             }
         }
-        .contextMenu { Button("Compare this pitch") { comparison.add(entry.slug); Haptics.selection() } }
+        .contextMenu(DiagHero.has("nocontext") ? nil : ContextMenu { Button("Compare this pitch") { comparison.add(entry.slug); Haptics.selection() } })
         .accessibilityAction(named: "Compare this pitch") { comparison.add(entry.slug) }
     }
 }
@@ -383,7 +393,11 @@ private struct SchematicFace: View {
 /// the ember 1/1 swaps in its burnt ring and glow.
 private struct EdgeStack: ViewModifier {
     let ember: Bool
+    var off = false
     func body(content: Content) -> some View {
+        if off { content } else { stacked(content) }
+    }
+    private func stacked(_ content: Content) -> some View {
         let stack = ComponentInk.edgeStack
         let layer = { (i: Int) in stack.isEmpty ? Color.black : stack[min(i, stack.count - 1)] }
         content
@@ -395,4 +409,10 @@ private struct EdgeStack: ViewModifier {
             .shadow(color: .black.opacity(0.55), radius: 14, x: 0, y: 16)
             .shadow(color: ember ? Color(rgb: WebTokens.Accent.burnt).opacity(0.3) : .clear, radius: 12)
     }
+}
+
+/// DIAGNOSTIC ONLY (diag/home-scroll, never merged): switch one piece of the hero card off.
+enum DiagHero {
+    static let flags = Set((ProcessInfo.processInfo.environment["PA_DIAG_HERO"] ?? "").split(separator: ",").map(String.init))
+    static func has(_ flag: String) -> Bool { flags.contains(flag) }
 }

@@ -13,22 +13,15 @@ final class HomeScrollDiagnosticsUITests: XCTestCase {
 
     @MainActor
     func testHomeScrollStrokes() {
-        let strokes: [(String, (XCUIApplication) -> Void)] = [
-            ("a-right-edge-tour", { app in Self.drag(app, x: 0.94, hold: true) }),
-            ("b-app-swipeup", { app in app.swipeUp() }),
-            ("c-left-edge", { app in Self.drag(app, x: 0.06, hold: true) }),
-            ("d-paused-right-edge", { app in
-                let pause = app.buttons["Pause the grip film"].firstMatch
-                if pause.waitForExistence(timeout: 3) { pause.tap() }
-                Thread.sleep(forTimeInterval: 1)
-                Self.drag(app, x: 0.94, hold: true)
-            }),
-            ("e-scrollview-swipeup", { app in app.scrollViews.firstMatch.swipeUp() }),
-            ("f-fast-no-hold", { app in Self.drag(app, x: 0.94, hold: false) }),
-        ]
+        // Round 2: every case strokes the right edge as the tour does; each switches
+        // one piece of the hero card off (PA_DIAG_HERO) while the film plays.
+        let flags = ["baseline", "notilt", "nolean", "noclip", "noedge", "nofocus", "nocontext", "notilt,nolean,noclip,noedge,nofocus,nocontext"]
+        let strokes: [(String, (XCUIApplication) -> Void)] = flags.map { flag in
+            (flag, { app in Self.drag(app, x: 0.94, hold: true) })
+        }
         for (name, stroke) in strokes {
             let app = XCUIApplication()
-            app.launchEnvironment = ["PA_TAB": "atlas"]
+            app.launchEnvironment = ["PA_TAB": "atlas", "PA_DIAG_HERO": name]
             app.launch()
             _ = app.tabBars.firstMatch.waitForExistence(timeout: 30)
             Thread.sleep(forTimeInterval: 3)
@@ -41,7 +34,7 @@ final class HomeScrollDiagnosticsUITests: XCTestCase {
             let y2 = Self.y(lede)
             let shot = XCUIScreen.main.screenshot()
             let attachment = XCTAttachment(screenshot: shot)
-            attachment.name = "diag-\(name)-sv\(scrolls)-y0_\(y0)-y1_\(y1)-y2_\(y2)"
+            attachment.name = "diag2-\(name.replacingOccurrences(of: ",", with: "+"))-sv\(scrolls)-y0_\(y0)-y1_\(y1)-y2_\(y2)"
             attachment.lifetime = .keepAlways
             add(attachment)
             app.terminate()
