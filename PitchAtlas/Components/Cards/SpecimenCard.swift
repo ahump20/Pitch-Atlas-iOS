@@ -228,6 +228,7 @@ struct PitchSpecimenCard: View {
     @Environment(PitchStore.self) private var store
     @Environment(\.compareSelection) private var comparison
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var light = CardTiltState.rest.light
 
     static func width(for style: Style) -> CGFloat {
         switch style {
@@ -243,7 +244,8 @@ struct PitchSpecimenCard: View {
         let content = SpecimenCardContent.make(entry: entry, grip: store.gripEntry(forSpecimen: entry.slug))
         let metrics = SpecimenCardMetrics(width: Self.width(for: style), frame: content.frame)
         VStack(alignment: .leading, spacing: 12) {
-            SpecimenCardFront(content: content, metrics: metrics, playsFilm: isHero)
+            SpecimenCardFront(content: content, metrics: metrics, playsFilm: isHero, light: light)
+                .cardTilt(isHero ? .hero : .rest, size: CGSize(width: metrics.width, height: metrics.height), light: $light)
                 .rotationEffect(.degrees(isHero && content.frame == .ember ? CardLean.hero : CardLean.rest(index: 0)))
             if dynamicTypeSize.isAccessibilitySize {
                 CardWords(content: content).frame(width: metrics.width, alignment: .leading)

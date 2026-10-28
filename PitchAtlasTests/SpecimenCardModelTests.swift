@@ -128,4 +128,44 @@ final class SpecimenCardModelTests: XCTestCase {
         XCTAssertEqual(store.pitches.filter { CardFrame.of(slug: $0.slug, grade: $0.specimenGrade.key) == .ember }.map(\.slug), ["four-seam"],
                        "the four-seam is the only 1 of 1")
     }
+
+    // MARK: Task 10 — tilt, light, rim rake
+
+    func testDragTiltFollowsTheWebFormulaAndClamps() throws {
+        let t = try XCTUnwrap(CardTiltState.drag(translation: CGSize(width: 50, height: 0), width: 300))
+        XCTAssertEqual(t.rx, 50.0 / 300 * 14 * 2.4, accuracy: 1e-9)       // 5.6°
+        XCTAssertEqual(t.ry, t.rx * -0.22, accuracy: 1e-9)
+        XCTAssertEqual(t.mx, 50 + t.rx / 14 * 42, accuracy: 1e-9)
+        XCTAssertEqual(t.my, 32 + t.ry / 14 * 30, accuracy: 1e-9)
+        XCTAssertEqual(CardTiltState.drag(translation: CGSize(width: 900, height: 0), width: 300)!.rx, 14)
+    }
+
+    func testVerticalDragDoesNotTilt() {
+        XCTAssertNil(CardTiltState.drag(translation: CGSize(width: 6, height: 40), width: 300), "a scroll that starts on the card scrolls the page")
+        XCTAssertNil(CardTiltState.drag(translation: CGSize(width: 5, height: 0), width: 300), "under the 8pt threshold nothing moves")
+    }
+
+    func testGyroTiltClampsAtTen() {
+        let t = CardTiltState.gyro(roll: 1, pitch: -1)
+        XCTAssertEqual(t.rx, 10); XCTAssertEqual(t.ry, 10)
+        XCTAssertEqual(CardTiltState.gyro(roll: 0, pitch: 0), .rest)
+    }
+
+    func testRestLightSitsWhereTheWebRests() {
+        XCTAssertEqual(CardTiltState.rest.light, UnitPoint(x: 0.5, y: 0.32))
+    }
+
+    /// The bench grabs the card on both axes to ±28° (web inspector mode); up is
+    /// a positive tilt toward the viewer, as -dy on the web.
+    func testBenchGrabTiltsBothAxesToTwentyEight() throws {
+        let size = CGSize(width: 300, height: 420)
+        let t = try XCTUnwrap(CardTiltState.grab(translation: CGSize(width: 0, height: -60), size: size))
+        XCTAssertEqual(t.rx, 0, accuracy: 1e-9)
+        XCTAssertEqual(t.ry, 60.0 / 420 * 28 * 2.4, accuracy: 1e-9)
+        let far = try XCTUnwrap(CardTiltState.grab(translation: CGSize(width: 2000, height: 2000), size: size))
+        XCTAssertEqual(far.rx, 28); XCTAssertEqual(far.ry, -28)
+        XCTAssertNil(CardTiltState.grab(translation: CGSize(width: 3, height: 4), size: size))
+        XCTAssertEqual(CardTiltMode.inspector.dragMax, 28)
+        XCTAssertEqual(CardTiltMode.hero.dragMax, 14)
+    }
 }
