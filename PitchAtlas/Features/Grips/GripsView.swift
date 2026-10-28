@@ -79,7 +79,7 @@ struct GripsView: View {
                 if filteredEntries.isEmpty {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("No grips match “\(query)”.")
-                        Button("Clear search") { query = "" }.buttonStyle(.bordered)
+                        Button("Clear search") { query = "" }.buttonStyle(.bordered).controlSize(.large)
                     }.leatherPress()
                 }
                 ForEach(filteredEntries) { entry in

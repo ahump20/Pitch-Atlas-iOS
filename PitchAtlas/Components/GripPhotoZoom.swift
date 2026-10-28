@@ -106,17 +106,17 @@ struct GripPhotoZoomViewer: View {
 
     private var zoomOut: some View {
         Button("Zoom out") { setZoom(scale - 0.5) }
-            .frame(minHeight: 44).buttonStyle(.bordered).disabled(scale <= 1)
+            .buttonStyle(.bordered).controlSize(.large).disabled(scale <= 1)
     }
 
     private var zoomIn: some View {
         Button("Zoom in") { setZoom(scale + 0.5) }
-            .frame(minHeight: 44).buttonStyle(.bordered).disabled(scale >= maxScale)
+            .buttonStyle(.bordered).controlSize(.large).disabled(scale >= maxScale)
     }
 
     private var resetZoom: some View {
         Button("Reset") { setZoom(1) }
-            .frame(minHeight: 44).buttonStyle(.bordered)
+            .buttonStyle(.bordered).controlSize(.large)
             .accessibilityLabel("Reset photo zoom and position")
     }
 

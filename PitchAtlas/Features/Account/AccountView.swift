@@ -115,6 +115,7 @@ struct AccountView: View {
                     Label("Sign out", systemImage: "rectangle.portrait.and.arrow.right")
                 }
                 .buttonStyle(.bordered)
+                .controlSize(.large)
 
                 Button(role: .destructive) {
                     deleteRequested = true
@@ -122,6 +123,7 @@ struct AccountView: View {
                     Label("Delete account", systemImage: "trash")
                 }
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
             }
         }
         .leatherPress()
@@ -170,6 +172,7 @@ struct AccountView: View {
                 Label(auth.isWorking ? "Sending…" : "Claim with email", systemImage: "envelope")
             }
             .buttonStyle(.borderedProminent)
+            .controlSize(.large)
             .disabled(claimEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking)
             .opacity((claimEmail.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking) ? 0.55 : 1)
 
@@ -196,6 +199,7 @@ struct AccountView: View {
                     Label("Sign out", systemImage: "rectangle.portrait.and.arrow.right")
                 }
                 .buttonStyle(.bordered)
+                .controlSize(.large)
 
                 Button(role: .destructive) {
                     deleteRequested = true
@@ -203,6 +207,7 @@ struct AccountView: View {
                     Label("Delete account", systemImage: "trash")
                 }
                 .buttonStyle(.borderedProminent)
+                .controlSize(.large)
             }
         }
         .leatherPress()
@@ -255,6 +260,7 @@ struct AccountView: View {
                                 Label("Unblock", systemImage: "person.crop.circle.badge.minus")
                             }
                             .buttonStyle(.bordered)
+                            .controlSize(.large)
                             .accessibilityLabel("Unblock \(contributor.displayName)")
                         }
                         .padding(PitchAtlasSpacing.sm)
@@ -286,6 +292,7 @@ struct AccountView: View {
             }
         }
         .buttonStyle(.bordered)
+        .controlSize(.large)
         .leatherPress()
     }
 
@@ -353,6 +360,7 @@ struct SignInPanel: View {
                 Label(auth.isWorking ? "Sending…" : "Send magic link", systemImage: "envelope")
             }
             .buttonStyle(.borderedProminent)
+            .controlSize(.large)
             .disabled(email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking)
             .opacity((email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || auth.isWorking) ? 0.55 : 1)
 

@@ -217,7 +217,7 @@ struct CommunityPanel: View {
                     }
                     .font(PitchAtlasTheme.hankenMedium(13))
                     .buttonStyle(.bordered)
-                    .frame(minHeight: 44)
+                    .controlSize(.large)
                     .accessibilityLabel("Unblock \(undoBlock.displayName)")
                 }
             }
@@ -532,9 +532,9 @@ struct CommunityPanel: View {
 
                     PhotosPicker(selection: $selectedPhoto, matching: .images) {
                         Label(preparedImage == nil ? "Attach image" : "Replace image", systemImage: "photo")
-                            .frame(minHeight: 44)
                     }
                     .buttonStyle(.bordered)
+                    .controlSize(.large)
                     .disabled(!mediaTermsAccepted)
                     .onChange(of: selectedPhoto) { _, item in
                         Task { await preparePhoto(item) }
@@ -549,9 +549,9 @@ struct CommunityPanel: View {
                             Task { await retryPendingMedia() }
                         } label: {
                             Label("Retry image upload", systemImage: "arrow.clockwise")
-                                .frame(minHeight: 44)
                         }
                         .buttonStyle(.bordered)
+                        .controlSize(.large)
                         .disabled(isSubmitting || !mediaTermsAccepted)
                         .opacity((isSubmitting || !mediaTermsAccepted) ? 0.55 : 1)
                     }
@@ -762,9 +762,9 @@ struct CommunityPanel: View {
                         Task { await submitReply(to: post) }
                     } label: {
                         Label(filingReplyTo == post.id ? "Filing…" : "Reply", systemImage: "arrowshape.turn.up.left")
-                            .frame(minHeight: 44)
                     }
                     .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
                     .disabled(replySubmitDisabled)
                     .opacity(replySubmitDisabled ? 0.55 : 1)
                 }
@@ -773,9 +773,10 @@ struct CommunityPanel: View {
                     replyBody = ""
                     replyError = nil
                 } label: {
-                    Text("Cancel").frame(minHeight: 44)
+                    Text("Cancel")
                 }
                 .buttonStyle(.bordered)
+                .controlSize(.large)
             }
         }
         .padding(.leading, PitchAtlasSpacing.sm)

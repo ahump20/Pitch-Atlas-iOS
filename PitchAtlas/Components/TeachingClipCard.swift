@@ -153,6 +153,8 @@ struct TeachingClipCard: View {
                     .padding(.vertical, 9)
                     .padding(.horizontal, 16)
                     .overlay { Capsule().strokeBorder(accent.opacity(0.5), lineWidth: 1) }
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
                 }
                 .accessibilityLabel("Watch on TikTok. Opens the original post.")
             }

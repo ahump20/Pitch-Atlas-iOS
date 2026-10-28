@@ -124,9 +124,11 @@ struct CompareView: View {
                         VStack(alignment: .leading, spacing: 12) {
                             Text("Replace a pitch with \(store.pitch(slug: pending)?.canonical.name ?? pending)?").font(.headline)
                             ForEach(Array(selection.slugs.enumerated()), id: \.offset) { index, slug in
-                                Button("Replace \(store.pitch(slug: slug)?.canonical.name ?? slug)") { selection.replace(index); Haptics.selection() }.buttonStyle(.bordered)
+                                Button("Replace \(store.pitch(slug: slug)?.canonical.name ?? slug)") { selection.replace(index); Haptics.selection() }
+                                    .buttonStyle(.bordered).controlSize(.large)
                             }
                             Button("Keep current pair") { selection.pending = nil }
+                                .buttonStyle(.bordered).controlSize(.large)
                         }.leatherPress()
                     }
                     studySurface
@@ -305,8 +307,8 @@ struct CompareView: View {
                     if let entry = store.pitch(slug: slug) {
                         Button { selection.inspect(slug, store: store); Haptics.selection() } label: {
                             Label("Open \(entry.display.shortName)", systemImage: "hand.raised.fingers.spread")
-                                .frame(maxWidth: .infinity, minHeight: 44)
-                        }.buttonStyle(.bordered)
+                                .frame(maxWidth: .infinity)
+                        }.buttonStyle(.bordered).controlSize(.large)
                             .accessibilityLabel("Open \(entry.canonical.name) specimen")
                     }
                 }
@@ -425,7 +427,7 @@ struct StudyBall: View {
                 .scaleEffect(zoom).frame(maxWidth: .infinity).frame(height: 280).clipped()
                 .accessibilityLabel("\(entry.canonical.name), \(hand.rawValue) hand, \(orientation.rawValue) seam-informed schematic")
             Slider(value: $zoom, in: 1...1.7) { Text("Inspection zoom") }
-            Button("Reset inspection") { zoom = 1; Haptics.selection() }.buttonStyle(.bordered)
+            Button("Reset inspection") { zoom = 1; Haptics.selection() }.buttonStyle(.bordered).controlSize(.large)
             Text("Seam-informed schematic · mirrored for left hand · orientation is a model view, not measured grip geometry.").font(.caption)
         }
     }

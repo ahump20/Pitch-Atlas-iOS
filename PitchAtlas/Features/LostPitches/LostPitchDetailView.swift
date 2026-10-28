@@ -144,7 +144,7 @@ struct LostPitchDetailView: View {
                         Text(source.label)
                             .font(PitchAtlasTheme.martian(9))
                             .foregroundStyle(PitchAtlasTheme.text3)
-                            .lineLimit(2)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
 
@@ -185,7 +185,7 @@ struct LostPitchDetailView: View {
                     Text(source.label)
                         .font(PitchAtlasTheme.martian(9))
                         .foregroundStyle(PitchAtlasTheme.text3)
-                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
 
@@ -202,7 +202,8 @@ struct LostPitchDetailView: View {
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 12)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .contentShape(Rectangle())
                 .overlay(
                     RoundedRectangle(cornerRadius: 4, style: .continuous)
                         .stroke(PitchAtlasTheme.bone.opacity(0.22))

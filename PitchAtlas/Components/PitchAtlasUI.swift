@@ -270,9 +270,9 @@ struct ErrorStateView: View {
                 Button(action: retry) {
                     Label("Try again", systemImage: "arrow.clockwise")
                         .font(PitchAtlasTheme.hankenMedium(13))
-                        .frame(minHeight: 44)
                 }
                 .buttonStyle(.bordered)
+                .controlSize(.large)
             }
         }
         .frame(maxWidth: .infinity)

@@ -81,10 +81,26 @@ enum PitchAtlasTheme {
     static let cardbackBurgundy = seamBright
 
     // MARK: - Hairlines / texture
-    /// The 1px machined hairline — web --color-machined.
-    static let machined = Color(web: WebTokens.Palette.machined)
-    /// Subtle dividers — web --color-navy-line.
-    static let navyLine = Color(web: WebTokens.Palette.navyLine)
+    /// The 1px machined hairline — web --color-machined. Increase Contrast
+    /// lifts it so frame edges and dividers stay visible.
+    static let machinedUIColor = contrastAware(WebTokens.Palette.machined)
+    static let machined = Color(uiColor: machinedUIColor)
+    /// Subtle dividers — web --color-navy-line; lifted the same way.
+    static let navyLineUIColor = contrastAware(WebTokens.Palette.navyLine)
+    static let navyLine = Color(uiColor: navyLineUIColor)
+
+    /// A hairline at the web's alpha, raised under Increase Contrast: the same
+    /// ink, at least .45 and up to 2.5× as opaque.
+    static func contrastLifted(_ color: WebColor) -> WebColor {
+        WebColor(rgb: color.rgb, alpha: min(1, max(color.alpha * 2.5, 0.45)))
+    }
+
+    private static func contrastAware(_ color: WebColor) -> UIColor {
+        let lifted = contrastLifted(color)
+        return UIColor { traits in
+            UIColor(web: traits.accessibilityContrast == .high ? lifted : color)
+        }
+    }
 
     // MARK: - Gradients
     // The web's foil, foil-type and ember are PitchAtlasMaterials (generated stops).

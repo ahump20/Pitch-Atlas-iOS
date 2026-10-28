@@ -119,6 +119,9 @@ struct SpecimenStage: View {
                         lineWidth: 1
                     )
                 )
+                // The capsule stays small; the tap area is a full 44pt.
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Spin axis overlay")

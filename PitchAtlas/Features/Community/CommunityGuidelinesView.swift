@@ -90,6 +90,7 @@ struct CommunityGuidelinesView: View {
                 Label("Support", systemImage: "lifepreserver")
             }
             .buttonStyle(.bordered)
+            .controlSize(.large)
         }
         .leatherPress()
     }
