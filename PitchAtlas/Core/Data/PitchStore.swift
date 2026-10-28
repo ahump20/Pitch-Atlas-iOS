@@ -160,18 +160,25 @@ extension PitchStore {
     func practitioners(for entry: PitchAtlasEntry) -> [Craftsman] {
         craftsmen.filter { $0.signaturePitchSlug == entry.slug }
     }
-    /// Web craftsmenForPitch: the masters (never the legend) who own the pitch,
-    /// oldest era first, an unreadable era last. A pitch with no filed master
-    /// returns none, so the specimen names an arm only when the hall has one.
-    func masters(forPitch slug: String) -> [Craftsman] {
-        craftsmen.enumerated()
-            .filter { $0.element.kind == .craftsman && $0.element.signaturePitchSlug == slug }
+    /// Web CRAFTSMEN_BY_ERA: the masters oldest era first (an unreadable era
+    /// last, the record's own order breaking a tie, as the site's stable sort
+    /// does), then the legend. The hall files by it and a file walks it.
+    var craftsmenByEra: [Craftsman] {
+        let masters = craftsmen.enumerated()
+            .filter { $0.element.kind == .craftsman }
             .sorted {
                 let a = EraSpan.parse($0.element.era)?.start ?? Int.max
                 let b = EraSpan.parse($1.element.era)?.start ?? Int.max
                 return a != b ? a < b : $0.offset < $1.offset
             }
             .map(\.element)
+        return masters + craftsmen.filter { $0.kind == .legend }
+    }
+    /// Web craftsmenForPitch: the masters (never the legend) who own the pitch,
+    /// in the hall's order. A pitch with no filed master returns none, so the
+    /// specimen names an arm only when the hall has one.
+    func masters(forPitch slug: String) -> [Craftsman] {
+        craftsmenByEra.filter { $0.kind == .craftsman && $0.signaturePitchSlug == slug }
     }
     /// Web craftsmanForVariant: a master file names its arm only when both the
     /// person and the signature pitch match. A familiar name alone does not.

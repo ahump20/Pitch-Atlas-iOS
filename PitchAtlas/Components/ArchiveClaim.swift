@@ -8,7 +8,8 @@ import SwiftUI
 // ClaimNote, and index.css's .scene-coal. A room opens on a mono index, its name
 // and a machined hairline; a prose claim prints its words, then its tier as a
 // glyph and a label, then its source as a link out, then its caveat. The tier is
-// told by the glyph and the words, never by color alone.
+// told by the glyph and the words, never by color alone. On the bound paper of a
+// craftsman's file (`.inkContext(.paper)`) the kit takes the paper's inks.
 // =============================================================================
 
 /// `.mono-label`: Martian 11, upper case, tracked .18em, line-height 1.
@@ -23,19 +24,20 @@ enum MonoLabel {
 struct StageTierMarker: View {
     let index: String
     let label: String
+    @Environment(\.inkContext) private var context
 
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
             Text(index)
                 .font(PitchAtlasType.font(.martian500, size: 14, relativeTo: .footnote))
                 .monospacedDigit()
-                .foregroundStyle(PitchAtlasTheme.bone)
+                .foregroundStyle(Color(rgb: context.inkRGB))
                 .padding(.top, 1)
                 .accessibilityHidden(true)
             Text(label.uppercased())
                 .font(MonoLabel.font)
                 .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
-                .foregroundStyle(PitchAtlasTheme.ink2)
+                .foregroundStyle(Color(rgb: context.labelRGB))
                 .cssLineHeight(1.375, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
                 .fixedSize(horizontal: false, vertical: true)
                 .layoutPriority(1)
@@ -50,6 +52,7 @@ struct StageTierMarker: View {
 /// one tier that alarms in the seam; official data reads in full bone.
 struct ConfidenceLabel: View {
     let confidence: ClaimConfidence
+    @Environment(\.inkContext) private var context
 
     var body: some View {
         HStack(spacing: 6) {
@@ -67,8 +70,8 @@ struct ConfidenceLabel: View {
     private var ink: Color {
         switch confidence {
         case .unverified: PitchAtlasTheme.seamBright
-        case .officialData: PitchAtlasTheme.bone
-        default: PitchAtlasTheme.ink2
+        case .officialData: Color(rgb: context.inkRGB)
+        default: Color(rgb: context.labelRGB)
         }
     }
 }
@@ -78,6 +81,7 @@ struct ConfidenceLabel: View {
 /// target that keeps the line's own height.
 struct SourceBadge: View {
     let source: Source
+    @Environment(\.inkContext) private var context
 
     /// max-w-[26ch] at the mono label's 11pt (Martian's zero is 0.7em wide).
     @ScaledMetric(relativeTo: .caption2) private var labelWidth: CGFloat = 26 * 0.7 * MonoLabel.size
@@ -96,8 +100,8 @@ struct SourceBadge: View {
         }
         .font(MonoLabel.font)
         .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
-        .foregroundStyle(PitchAtlasTheme.ink2)
-        .underline(true, color: PitchAtlasTheme.ink3.opacity(0.4))
+        .foregroundStyle(Color(rgb: context.linkRGB))
+        .underline(true, color: Color(rgb: context.underlineRGB).opacity(0.4))
         .padding(.vertical, 17)
         .contentShape(Rectangle())
         .padding(.vertical, -17)
@@ -115,11 +119,12 @@ struct SourceBadge: View {
 /// ClaimNote: a claim's caveat in small print beneath it.
 struct ClaimNote: View {
     let text: String
+    @Environment(\.inkContext) private var context
 
     var body: some View {
         Text(text)
             .font(PitchAtlasType.font(.hanken400, size: 13, relativeTo: .footnote))
-            .foregroundStyle(PitchAtlasTheme.ink2.opacity(0.85))
+            .foregroundStyle(Color(rgb: context.labelRGB).opacity(0.85))
             .cssLineHeight(1.375, face: .hanken400, size: 13, relativeTo: .footnote)
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: 62 * 0.56 * 13, alignment: .leading)
@@ -147,7 +152,7 @@ struct ClaimProse: View {
                 if let source = claim.source {
                     Text("/")
                         .font(PitchAtlasType.body())
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .accessibilityHidden(true)
                     SourceBadge(source: source)
                 }

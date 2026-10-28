@@ -13,11 +13,15 @@ import SwiftUI
 
 struct PitchDetailView: View {
     let entry: PitchAtlasEntry
+    /// A link into the file's chapter (the site's `/pitch/<slug>#grip-lab`)
+    /// opens it there, once; coming back to the page keeps the reader's place.
+    var opensAt: SpecimenChapter? = nil
 
     @Environment(PitchStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var currentChapter: String?
+    @State private var openedAtChapter = false
 
     private static let scrollSpace = "specimen-scroll"
 
@@ -69,6 +73,12 @@ struct PitchDetailView: View {
                         .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
                     }
                     .coordinateSpace(.named(Self.scrollSpace))
+                    .onAppear {
+                        guard let opensAt, !openedAtChapter else { return }
+                        openedAtChapter = true
+                        // after the first layout, so the chapter's anchor exists
+                        DispatchQueue.main.async { proxy.scrollTo(opensAt.chapter.id, anchor: .top) }
+                    }
                     .onPreferenceChange(ChapterFramesKey.self) { frames in
                         if let place = ChapterBoxes.activeChapter(frames: frames, viewportHeight: viewport.size.height),
                            place != currentChapter {

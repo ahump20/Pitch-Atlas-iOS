@@ -116,9 +116,12 @@ struct Crumb: Hashable {
 }
 
 /// Breadcrumb.tsx: mono 11, upper case, tracked .14em; each crumb but the last
-/// opens its page, the last is the page you are on, in bone.
+/// opens its page, the last is the page you are on, in bone. A craftsman's
+/// stage sets its own inks (bone-2 at 80%, the page in bone-2).
 struct Breadcrumb: View {
     let trail: [Crumb]
+    var linkInk: Color = PitchAtlasTheme.ink2
+    var currentInk: Color = PitchAtlasTheme.bone
 
     static let font = PitchAtlasType.font(.martian400, size: 11, relativeTo: .caption)
     static let tracking: CGFloat = 11 * 0.14
@@ -131,7 +134,7 @@ struct Breadcrumb: View {
                     if let path = crumb.path, !last {
                         RouteButton(path: path) {
                             Text(crumb.label.uppercased())
-                                .foregroundStyle(PitchAtlasTheme.ink2)
+                                .foregroundStyle(linkInk)
                                 // the site's touch rule: a 44pt target that keeps the line's height
                                 .padding(.vertical, 14)
                                 .contentShape(Rectangle())
@@ -141,11 +144,11 @@ struct Breadcrumb: View {
                         .accessibilityHint("Opens \(crumb.label)")
                     } else {
                         Text(crumb.label.uppercased())
-                            .foregroundStyle(last ? PitchAtlasTheme.bone : PitchAtlasTheme.ink2)
+                            .foregroundStyle(last ? currentInk : linkInk)
                             .accessibilityAddTraits(last ? .isSelected : [])
                     }
                     if !last {
-                        Text("/").foregroundStyle(PitchAtlasTheme.ink2).accessibilityHidden(true)
+                        Text("/").foregroundStyle(linkInk).accessibilityHidden(true)
                     }
                 }
             }
@@ -311,6 +314,48 @@ struct ScorebookRules: View {
             context.fill(path, with: .color(PitchAtlasTheme.bone.opacity(0.07)))
         }
         .accessibilityHidden(true)
+    }
+}
+
+// MARK: - The bound paper
+
+/// A CSS `linear-gradient(<angle>)` line as unit points on a box: through its
+/// center, at the angle (0° up, 90° right), long enough that the far corners
+/// fall on 0% and 100%.
+enum CSSGradientLine {
+    static func points(degrees: Double, size: CGSize) -> (start: UnitPoint, end: UnitPoint) {
+        let radians = degrees * .pi / 180
+        let dx = sin(radians), dy = -cos(radians)
+        let w = max(size.width, 1), h = max(size.height, 1)
+        let half = (abs(w * dx) + abs(h * dy)) / 2
+        return (UnitPoint(x: 0.5 - dx * half / w, y: 0.5 - dy * half / h),
+                UnitPoint(x: 0.5 + dx * half / w, y: 0.5 + dy * half / h))
+    }
+}
+
+/// `.archive-paper`'s stock: linear-gradient(120deg, #222327, #17171a).
+struct PaperStock: View {
+    var body: some View {
+        GeometryReader { geo in
+            let line = CSSGradientLine.points(degrees: 120, size: geo.size)
+            LinearGradient(colors: [ArchiveInk.paperStockTop, ArchiveInk.paperStockBottom],
+                           startPoint: line.start, endPoint: line.end)
+        }
+        .accessibilityHidden(true)
+    }
+}
+
+extension View {
+    /// `.archive-paper`: a bound reading section on charcoal stock between two
+    /// hairlines (its border-block), the claim kit inside re-inked for it.
+    func archivePaper() -> some View {
+        self
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 1)
+            .background { PaperStock() }
+            .overlay(alignment: .top) { Rectangle().fill(ArchiveInk.paperEdge).frame(height: 1).accessibilityHidden(true) }
+            .overlay(alignment: .bottom) { Rectangle().fill(ArchiveInk.paperEdge).frame(height: 1).accessibilityHidden(true) }
+            .inkContext(.paper)
     }
 }
 

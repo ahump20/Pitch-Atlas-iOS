@@ -14,6 +14,8 @@ struct ChapterBoxes: View {
     let chapters: [ArchiveChapter]
     /// The chapter whose section is in the reading band, if any yet.
     let current: String?
+    /// ChapterSections' `label`: what VoiceOver calls the row.
+    var label = "In this pitch"
     let go: (String) -> Void
 
     /// The site observes each section with rootMargin -15% 0 -55% 0: a section
@@ -40,7 +42,7 @@ struct ChapterBoxes: View {
         .overlay(alignment: .bottom) { Rectangle().fill(ChapterInk.chapterRule).frame(height: 1) }
         .padding(.bottom, 14)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("In this pitch")
+        .accessibilityLabel(label)
     }
 
     private func box(_ chapter: ArchiveChapter, number: Int) -> some View {

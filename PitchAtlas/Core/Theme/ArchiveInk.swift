@@ -148,4 +148,19 @@ enum ArchiveInk {
     /// .overlay-frost-coal: #16120D at 78% over the panel, solid #1A140D without blur
     static let frostCoal = Color(hex: 0x16120D, opacity: 0.78)
     static let frostCoalSolid = Color(hex: 0x1A140D)
+
+    // MARK: The bound paper (archive.css .archive-paper), a craftsman's file
+    /// `linear-gradient(120deg, #222327, #17171a)`: charcoal ink stock.
+    static let paperStockTop = Color(hex: 0x222327)
+    static let paperStockBottom = Color(hex: 0x17171A)
+    /// `border-block: 1px solid #a0a9b02e`
+    static let paperEdge = Color(hex: 0xA0A9B0, opacity: 0x2E / 255.0)
+    /// The paper's ivory ink (`--color-ink`, `.text-ink`); its rules are this at 15%.
+    static let paperInk = Color(rgb: InkContext.paper.inkRGB)
+
+    // MARK: A craftsman's stage (CraftsmanChapter.tsx)
+    /// The stage's faint powder light, rgba(108,172,228,.15) under the 10% layer.
+    static let craftsmanStageLight = Color(hex: 0x6CACE4, opacity: 0.15)
+    /// The film shelf's frame (CraftsmanMedia.tsx `bg-[#070605]`).
+    static let filmFrame = Color(hex: 0x070605)
 }
