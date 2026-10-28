@@ -1,3 +1,4 @@
+import SwiftUI
 import XCTest
 @testable import PitchAtlas
 
@@ -77,5 +78,35 @@ final class BasicFileTests: XCTestCase {
         XCTAssertEqual(store.gripEntry(forKey: "straight-three-finger-changeup")?.id, "three-finger-change")
         XCTAssertEqual(store.gripEntry(forKey: "four-seam")?.id, "four-seam")
         XCTAssertNil(store.gripEntry(forKey: "one-seam-sinker"))
+    }
+
+    /// CSS paints a background inside its own box. The coal band's crown is
+    /// centered above the band's top edge, so unclipped it washed brown over the
+    /// schematic ball and its caption above the band.
+    @MainActor
+    func testTheCoalBandPaintsOnlyInsideItsOwnBox() throws {
+        let view = VStack(spacing: 0) {
+            Color.white.frame(width: 120, height: 120)
+            CoalScene().frame(width: 120, height: 600)
+        }
+        let renderer = ImageRenderer(content: view)
+        renderer.scale = 1
+        let image = try XCTUnwrap(renderer.cgImage)
+        let above = try XCTUnwrap(Self.rgb(image, x: 60, y: 110))
+        XCTAssertGreaterThan(above.r, 250, "the band's crown spilled above the band")
+        XCTAssertGreaterThan(above.b, 250, "the band's crown spilled above the band")
+    }
+
+    /// One pixel, read with a top-left origin.
+    private static func rgb(_ image: CGImage, x: Int, y: Int) -> (r: Int, g: Int, b: Int)? {
+        var bytes = [UInt8](repeating: 0, count: 4)
+        let drawn: Bool = bytes.withUnsafeMutableBytes { buffer in
+            guard let context = CGContext(data: buffer.baseAddress, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                                          space: CGColorSpaceCreateDeviceRGB(),
+                                          bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return false }
+            context.draw(image, in: CGRect(x: -x, y: -(image.height - 1 - y), width: image.width, height: image.height))
+            return true
+        }
+        return drawn ? (Int(bytes[0]), Int(bytes[1]), Int(bytes[2])) : nil
     }
 }

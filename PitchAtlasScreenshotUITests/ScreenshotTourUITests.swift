@@ -22,7 +22,7 @@ final class ScreenshotTourUITests: XCTestCase {
         Stop(name: "craftsmen", env: ["PA_TAB": "craftsmen"], pages: 10),
         Stop(name: "sources", env: ["PA_TAB": "sources"], pages: 10),
         Stop(name: "specimen", env: ["PA_ROUTE": "pitch/four-seam"], pages: 60),
-        Stop(name: "basic", env: ["PA_ROUTE": "repertoire/split-finger-fastball"], pages: 12),
+        Stop(name: "basic", env: ["PA_ROUTE": "repertoire/split-finger-fastball"], pages: 18),
         Stop(name: "craftsman", env: ["PA_ROUTE": "craftsmen/greg-maddux"], pages: 12),
         Stop(name: "learn", env: ["PA_ROUTE": "learn"], pages: 8),
         Stop(name: "wing", env: ["PA_ROUTE": "learn/spin"], pages: 12),

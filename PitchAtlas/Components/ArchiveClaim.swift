@@ -180,6 +180,9 @@ struct CoalScene: View {
                 }
             }
         }
+        // a CSS background paints inside its box: the crown's center sits above
+        // the top edge, and unclipped it washed over whatever came before
+        .clipped()
         .accessibilityHidden(true)
     }
 }
