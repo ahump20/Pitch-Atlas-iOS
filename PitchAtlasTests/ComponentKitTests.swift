@@ -107,4 +107,19 @@ final class ComponentKitTests: XCTestCase {
         XCTAssertEqual(PitchSearchField.height, 44)
         XCTAssertEqual(PitchSearchField.radius, 14)
     }
+
+    func testConfidenceDotAlwaysSaysItsWords() {
+        for c in ClaimConfidence.allCases {
+            let text = ConfidenceDot.accessibilityText(for: c, approximate: false)
+            XCTAssertTrue(text.contains(c.label), "\(c) must speak its label")
+        }
+        XCTAssertTrue(ConfidenceDot.accessibilityText(for: .unverified, approximate: true).hasSuffix("approximate"))
+    }
+
+    func testScoutRowsTintEvenRowsOnly() {
+        XCTAssertFalse(ScoutRows<EmptyView>.isTinted(index: 0))
+        XCTAssertTrue(ScoutRows<EmptyView>.isTinted(index: 1))
+        XCTAssertEqual(ScoutRows<EmptyView>.tintOpacity, 0.14)
+        XCTAssertEqual(ScoutRow.keyWidth, 56)
+    }
 }
