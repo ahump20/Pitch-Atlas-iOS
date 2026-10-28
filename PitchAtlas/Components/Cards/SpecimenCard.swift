@@ -121,12 +121,12 @@ struct SpecimenCardFront: View {
         switch content.face {
         case .film(let film):
             FocusFill(aspect: BundledImage.load(film.poster).map { $0.size.width / max($0.size.height, 1) } ?? 9.0 / 16.0,
-                      focus: FocusFill.unitPoint(film.focus)) {
+                      focus: FocusCrop.unitPoint(film.focus)) {
                 GripLoopFace(film: film, plays: playsFilm)
             }
         case .photo(let photo):
             FocusFill(aspect: BundledImage.load(photo.src).map { $0.size.width / max($0.size.height, 1) } ?? 3.0 / 4.0,
-                      focus: FocusFill.unitPoint(nil)) {
+                      focus: FocusCrop.unitPoint(nil)) {
                 BundledImage(src: photo.src, alt: photo.alt, contentMode: .fit)
             }
         case .schematic:
@@ -256,15 +256,8 @@ struct PitchSpecimenCard: View {
 
 // MARK: - Media framing
 
-/// Fills its box with media of a known aspect the way CSS `object-fit: cover`
-/// with `object-position` does: the media covers the box, and the point at
-/// `focus` of the media lines up with the same point of the box. The web crops
-/// each grip loop this way so the fingertips stay on the seam (GripClip.focus).
-struct FocusFill<Content: View>: View {
-    let aspect: CGFloat
-    let focus: UnitPoint
-    @ViewBuilder var content: Content
-
+/// CSS `object-fit: cover` + `object-position`, as plain geometry.
+enum FocusCrop {
     static func unitPoint(_ f: FilmFocus?) -> UnitPoint {
         guard let f else { return .center }
         return UnitPoint(x: f.x / 100, y: f.y / 100)
@@ -280,10 +273,20 @@ struct FocusFill<Content: View>: View {
                       y: (box.height - media.height) * focus.y,
                       width: media.width, height: media.height)
     }
+}
+
+/// Fills its box with media of a known aspect the way CSS `object-fit: cover`
+/// with `object-position` does: the media covers the box, and the point at
+/// `focus` of the media lines up with the same point of the box. The web crops
+/// each grip loop this way so the fingertips stay on the seam (GripClip.focus).
+struct FocusFill<Content: View>: View {
+    let aspect: CGFloat
+    let focus: UnitPoint
+    @ViewBuilder var content: Content
 
     var body: some View {
         GeometryReader { geo in
-            let r = Self.layout(box: geo.size, aspect: aspect, focus: focus)
+            let r = FocusCrop.layout(box: geo.size, aspect: aspect, focus: focus)
             content.frame(width: r.width, height: r.height).offset(x: r.minX, y: r.minY)
         }
         .clipped()

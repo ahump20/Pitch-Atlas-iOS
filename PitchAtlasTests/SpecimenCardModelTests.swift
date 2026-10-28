@@ -104,18 +104,18 @@ final class SpecimenCardModelTests: XCTestCase {
     /// focus point lines up with the box's same point (GripClip.focus on the web).
     func testFocusFillMatchesCSSObjectPosition() {
         // a tall 9:16 loop in a 10:9 window, focus 50% 44%
-        let r = FocusFill<EmptyView>.layout(box: CGSize(width: 300, height: 270), aspect: 9.0 / 16.0,
+        let r = FocusCrop.layout(box: CGSize(width: 300, height: 270), aspect: 9.0 / 16.0,
                                             focus: UnitPoint(x: 0.5, y: 0.44))
         XCTAssertEqual(r.width, 300, accuracy: 1e-9)
         XCTAssertEqual(r.height, 300 * 16 / 9, accuracy: 1e-9)
         XCTAssertEqual(r.minX, 0, accuracy: 1e-9)
         XCTAssertEqual(r.minY, (270 - 300 * 16 / 9) * 0.44, accuracy: 1e-9)
         // a wide frame in a tall box fills by height and crops the sides
-        let w = FocusFill<EmptyView>.layout(box: CGSize(width: 100, height: 200), aspect: 2, focus: .center)
+        let w = FocusCrop.layout(box: CGSize(width: 100, height: 200), aspect: 2, focus: .center)
         XCTAssertEqual(w.height, 200, accuracy: 1e-9)
         XCTAssertEqual(w.minX, (100 - 400) * 0.5, accuracy: 1e-9)
-        XCTAssertEqual(FocusFill<EmptyView>.unitPoint(FilmFocus(x: 50, y: 44)), UnitPoint(x: 0.5, y: 0.44))
-        XCTAssertEqual(FocusFill<EmptyView>.unitPoint(nil), .center)
+        XCTAssertEqual(FocusCrop.unitPoint(FilmFocus(x: 50, y: 44)), UnitPoint(x: 0.5, y: 0.44))
+        XCTAssertEqual(FocusCrop.unitPoint(nil), .center)
     }
 
     func testCardsForEveryFiledPitchResolveAFaceAndACue() {
