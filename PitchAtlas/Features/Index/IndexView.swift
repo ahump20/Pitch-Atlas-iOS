@@ -7,7 +7,8 @@ import SwiftUI
 // the site's order: where you are, the title and its lede, the search with the
 // filter-and-sort pill and the rows/binder toggle, the count, then every pitch
 // by family — a filed pitch opens its specimen, any other its basic file. Then
-// the Lost Pitches wing, the conversation shelf and the archive's back cover.
+// the Lost Pitches wing, the conversation shelf, the whole-repertoire map and
+// the archive's back cover.
 // Four-state aware: a decode failure, an empty bundle and an empty search each
 // read differently, never as a blank field.
 // =============================================================================
@@ -48,6 +49,9 @@ struct IndexView: View {
                                   title: "Voices beside the taxonomy.",
                                   intro: "The index names the families. These credited lessons show how pitchers and teachers keep testing, describing, and handing the craft forward.",
                                   items: MediaShelf.query(store.externalMedia.items, placement: .repertoire, limit: 2))
+                        // web: LineageMap, the whole accepted catalog as one map
+                        LineageMap(groups: LineageMapOrder.groups(in: store),
+                                   restorationSpace: Self.scrollCoordinateSpace) { open($0) }
                         SiteFooter(path: "/repertoire")
                     }
                     .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
@@ -66,8 +70,13 @@ struct IndexView: View {
                 .onChange(of: query.layout) { applyFilterChange(.layout, using: proxy) }
             }
         }
+        // The site's header carries the brand on every page; the title still names
+        // the back button on the pages the Index opens.
         .navigationTitle("The Pitch Index")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) { BrandLockup(markSize: 26, wordSize: 20) }
+        }
         .navigationDestination(item: Binding(
             get: { selectedEntry },
             set: { entry in
@@ -467,9 +476,9 @@ struct IndexView: View {
     }
 }
 
-/// Marks a row as a place the Index can return to: its scroll id, and its frame
-/// in the scroll view for IndexScrollRestoration to read.
-private struct RestorationAnchor: ViewModifier {
+/// Marks a row (or a family on the map) as a place the Index can return to: its
+/// scroll id, and its frame in the scroll view for IndexScrollRestoration to read.
+struct RestorationAnchor: ViewModifier {
     let target: String
     let space: String
 

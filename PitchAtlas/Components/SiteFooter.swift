@@ -18,12 +18,15 @@ struct SiteFooter: View {
     @Environment(DeepLinkRouter.self) private var router
     @Environment(PitchStore.self) private var store
 
+    /// layout/SiteFooter.tsx LINKS in the site's order. Softball joins with the
+    /// softball wing; Privacy opens the site's own page in Safari.
     private static let links: [(label: String, path: String)] = [
         ("The Pitch Index", "repertoire"),
         ("The Craftsmen", "craftsmen"),
         ("Lost Pitches", "lost-pitches"),
         ("Sources", "sources"),
         ("About", "about"),
+        ("Privacy", "https://pitch-atlas.com/privacy"),
         ("Support", "account"),
     ]
 
@@ -62,14 +65,15 @@ struct SiteFooter: View {
                     label("The pitch, in your hand.")
                     label("Preserving & Progressing the Art of the Pitch").opacity(0.75)
                 }
-                FlowRow(spacing: 24, lineSpacing: 0) {
+                FlowRow(spacing: 24, lineSpacing: 8) {
                     ForEach(Self.links, id: \.path) { link in
-                        RouteButton(path: link.path) { touchLabel(link.label) }
-                            .buttonStyle(.plain)
-                    }
-                    if let privacy = URL(string: "https://pitch-atlas.com/privacy") {
-                        Link(destination: privacy) { touchLabel("Privacy") }
-                            .accessibilityHint("Opens in Safari")
+                        if let site = URL(string: link.path), site.scheme == "https" {
+                            Link(destination: site) { touchLabel(link.label) }
+                                .accessibilityHint("Opens in Safari")
+                        } else {
+                            RouteButton(path: link.path) { touchLabel(link.label) }
+                                .buttonStyle(.plain)
+                        }
                     }
                 }
                 VStack(alignment: .leading, spacing: 12) {
@@ -112,9 +116,10 @@ struct SiteFooter: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 
-    /// `.touch-link`: the label at a full 44pt.
+    /// `.touch-link`: the label at a full 44pt, padded 6 either side.
     private func touchLabel(_ text: String) -> some View {
         label(text)
+            .padding(.horizontal, 6)
             .frame(minHeight: 44)
             .contentShape(Rectangle())
     }
@@ -214,7 +219,7 @@ struct FlowRow: Layout {
         for row in arrange(subviews, width: bounds.width) {
             var x = bounds.minX
             for index in row.items {
-                let size = subviews[index].sizeThatFits(.unspecified)
+                let size = Self.size(of: subviews[index], within: bounds.width)
                 subviews[index].place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
                 x += size.width + spacing
             }
@@ -224,11 +229,19 @@ struct FlowRow: Layout {
 
     private struct Row { var items: [Int] = []; var width: CGFloat = 0; var height: CGFloat = 0 }
 
+    /// An item at its own width, or wrapped to the row's when it runs wider (a
+    /// long name at the largest Dynamic Type sizes), never past the edge.
+    private static func size(of subview: LayoutSubview, within width: CGFloat) -> CGSize {
+        let ideal = subview.sizeThatFits(.unspecified)
+        guard width.isFinite, ideal.width > width else { return ideal }
+        return subview.sizeThatFits(ProposedViewSize(width: width, height: nil))
+    }
+
     private func arrange(_ subviews: Subviews, width: CGFloat) -> [Row] {
         var rows: [Row] = []
         var row = Row()
         for index in subviews.indices {
-            let size = subviews[index].sizeThatFits(.unspecified)
+            let size = Self.size(of: subviews[index], within: width)
             let needed = row.items.isEmpty ? size.width : row.width + spacing + size.width
             if !row.items.isEmpty, needed > width {
                 rows.append(row)

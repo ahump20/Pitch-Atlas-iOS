@@ -82,6 +82,42 @@ final class IndexQueryTests: XCTestCase {
                        "\(store.repertoire.entries.count) pitches across \(store.repertoire.families.count) families")
     }
 
+    // MARK: - The whole-repertoire map (LineageMap.tsx)
+
+    func testTheMapsReadOrderIsTheSitesRank() {
+        XCTAssertEqual(LineageMapOrder.rank, [.standard, .niche, .rare, .nearExtinct, .alias, .illusion, .notAPitch, .banned])
+    }
+
+    func testTheMapHoldsEveryEntryUnderItsFamilyInTheBundlesFamilyOrder() {
+        let groups = LineageMapOrder.groups(in: store)
+        XCTAssertEqual(groups.reduce(0) { $0 + $1.entries.count }, store.repertoire.entries.count)
+        let present = store.repertoire.families.filter { info in store.repertoire.entries.contains { $0.family == info.family } }
+        XCTAssertEqual(groups.map(\.info.family), present.map(\.family))
+        XCTAssertTrue(groups.allSatisfy { group in group.entries.allSatisfy { $0.family == group.info.family } })
+    }
+
+    func testEachFamilyReadsWorkhorsesFirstAndEdgesLastKeepingTheBundlesOrderWithinAStatus() throws {
+        for group in LineageMapOrder.groups(in: store) {
+            let ranks = try group.entries.map { try XCTUnwrap(LineageMapOrder.rank.firstIndex(of: $0.status)) }
+            XCTAssertEqual(ranks, ranks.sorted(), "\(group.info.label) is out of read order")
+            let bundle = store.repertoire.entries.filter { $0.family == group.info.family }
+            for status in LineageMapOrder.rank {
+                XCTAssertEqual(group.entries.filter { $0.status == status }.map(\.id),
+                               bundle.filter { $0.status == status }.map(\.id),
+                               "\(group.info.label): \(status) reordered")
+            }
+        }
+    }
+
+    func testANodeSaysItsNameItsStatusAndWhatOpens() throws {
+        let filed = try XCTUnwrap(store.repertoire.entries.first { $0.filedSlug != nil })
+        XCTAssertEqual(LineageMapOrder.accessibilityLabel(for: filed),
+                       "\(filed.name), \(filed.status.displayLabel), filed specimen")
+        let basic = try XCTUnwrap(store.repertoire.entries.first { $0.filedSlug == nil })
+        XCTAssertEqual(LineageMapOrder.accessibilityLabel(for: basic),
+                       "\(basic.name), \(basic.status.displayLabel), basic file")
+    }
+
     func testTheRepertoireShelfTakesFeaturedOrFamilyTaggedPostsNewestFirst() {
         let items = store.externalMedia.items
         let shelf = MediaShelf.query(items, placement: .repertoire, limit: 2)

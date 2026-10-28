@@ -49,8 +49,14 @@ for (const [name, path] of Object.entries(stops)) {
       await page.evaluate((top) => window.scrollTo(0, top), y)
       await page.waitForTimeout(800)
       await page.screenshot({ path: `${out}/${name}-${String(n).padStart(2, '0')}.jpg`, type: 'jpeg', quality: 82 })
-      const height = await page.evaluate(() => document.documentElement.scrollHeight)
-      if (y + H >= height) break
+      // a page still settling can measure short once; look again before stopping
+      const measure = () => page.evaluate(() => Math.max(document.documentElement.scrollHeight, document.body.scrollHeight))
+      let height = await measure()
+      if (y + H >= height) {
+        await page.waitForTimeout(1500)
+        height = await measure()
+        if (y + H >= height) break
+      }
       y += H / 2
     }
     console.log(`${name}: ${base}${path}`)

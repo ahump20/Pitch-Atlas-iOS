@@ -92,9 +92,54 @@ enum PitchAtlasType {
     }
 }
 
+extension PitchAtlasType.Face {
+    /// The face's own line box per point of size (ascent + descent + leading in
+    /// the bundled file): what SwiftUI sets one line in before any spacing.
+    var naturalLineHeight: CGFloat {
+        switch self {
+        case .newsreader400, .newsreader400i, .newsreader500, .newsreader600, .newsreader600i: 1.0
+        case .hanken400, .hanken400i, .hanken500, .hanken600, .hanken700: 1.303
+        case .martian400, .martian500, .martian600: 1.2
+        case .anton400: 1.505
+        }
+    }
+}
+
+extension PitchAtlasType {
+    /// The leading CSS `line-height: <multiple>` adds over the face's own line box
+    /// at a size. Negative when the web sets the face tighter than its file does.
+    static func extraLeading(_ multiple: CGFloat, face: Face, size: CGFloat) -> CGFloat {
+        (multiple - face.naturalLineHeight) * size
+    }
+}
+
 extension View {
     /// CSS `letter-spacing: <em>em` at a given font size.
     func tracking(em: CGFloat, size: CGFloat) -> some View {
         tracking(em * size)
+    }
+
+    /// CSS `line-height: <multiple>`: the extra leading between lines, and half of
+    /// it above the first line and below the last, as the web's line box sets it.
+    /// It scales with Dynamic Type beside the font (`style` is the font's own
+    /// `relativeTo:`). SwiftUI cannot pull lines closer than the face's own box,
+    /// so a tighter setting trims only the box's top and bottom.
+    func cssLineHeight(_ multiple: CGFloat, face: PitchAtlasType.Face, size: CGFloat,
+                       relativeTo style: Font.TextStyle = .body) -> some View {
+        modifier(CSSLineHeight(extra: PitchAtlasType.extraLeading(multiple, face: face, size: size), style: style))
+    }
+}
+
+private struct CSSLineHeight: ViewModifier {
+    @ScaledMetric private var extra: CGFloat
+
+    init(extra: CGFloat, style: Font.TextStyle) {
+        _extra = ScaledMetric(wrappedValue: extra, relativeTo: style)
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .lineSpacing(max(0, extra))
+            .padding(.vertical, extra / 2)
     }
 }

@@ -185,3 +185,30 @@ enum IndexSort: String, CaseIterable, Identifiable {
         }
     }
 }
+
+/// The whole-repertoire map (web components/repertoire/LineageMap.tsx): every
+/// family in the bundle's order, each read workhorses first and honest edges
+/// last, the bundle's order kept within a status.
+enum LineageMapOrder {
+    /// The site's RANK.
+    static let rank: [RepertoireStatus] = [.standard, .niche, .rare, .nearExtinct, .alias, .illusion, .notAPitch, .banned]
+
+    static func groups(in store: PitchStore) -> [IndexGroup] {
+        store.repertoire.families.compactMap { info in
+            let entries = store.repertoire.entries.enumerated()
+                .filter { $0.element.family == info.family }
+                .sorted { lhs, rhs in
+                    let left = rank.firstIndex(of: lhs.element.status) ?? rank.count
+                    let right = rank.firstIndex(of: rhs.element.status) ?? rank.count
+                    return left == right ? lhs.offset < rhs.offset : left < right
+                }
+                .map(\.element)
+            return entries.isEmpty ? nil : IndexGroup(info: info, entries: entries)
+        }
+    }
+
+    /// The node's aria-label: "{name}, {status}, filed specimen|basic file".
+    static func accessibilityLabel(for entry: RepertoireEntry) -> String {
+        "\(entry.name), \(entry.status.displayLabel), \(entry.filedSlug == nil ? "basic file" : "filed specimen")"
+    }
+}

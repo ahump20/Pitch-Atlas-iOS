@@ -220,7 +220,7 @@ struct IndexRow: View {
                     Text(aka.joined(separator: ", "))
                         .font(PitchAtlasType.font(.hanken400, size: 11.5, relativeTo: .caption))
                         .foregroundStyle(PitchAtlasTheme.text3)
-                        .lineSpacing(1.5)
+                        .cssLineHeight(1.375, face: .hanken400, size: 11.5, relativeTo: .caption)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.top, 4)
                 }
@@ -228,7 +228,7 @@ struct IndexRow: View {
                     Text(grip.shortCue)
                         .font(PitchAtlasType.font(.hanken400i, size: 13, relativeTo: .subheadline))
                         .foregroundStyle(PitchAtlasTheme.bone2)
-                        .lineSpacing(1.5)
+                        .cssLineHeight(1.375, face: .hanken400i, size: 13, relativeTo: .subheadline)
                         .lineLimit(2)
                         .padding(.top, 6)
                 }
@@ -238,7 +238,6 @@ struct IndexRow: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 15)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .overlay(alignment: .topTrailing) { StatusOutline(status: entry.status).padding(14) }
         .background { IndexRowField(accent: entry.family.accent, filed: filed) }
         .inkContext(.object)
         .contentShape(Rectangle())
@@ -248,22 +247,31 @@ struct IndexRow: View {
     }
 
     /// Name and the Filed tag on one line when they fit, the tag beneath when they
-    /// don't (the web's flex-wrap), clear of the status badge (pr-20).
+    /// don't (the web's flex-wrap, gap 8). The status badge holds the top-right
+    /// corner and the name keeps clear of it: the site's pr-20 at least, more when
+    /// the badge runs wider than 72 — on the site a long name runs under "Not a pitch".
     private func nameLine(filed: Bool) -> some View {
         let name = Text(entry.name)
             .font(PitchAtlasType.font(.hanken700, size: 15, relativeTo: .headline))
             .foregroundStyle(PitchAtlasTheme.bone)
-        return ViewThatFits(in: .horizontal) {
-            HStack(spacing: 8) {
-                name.fixedSize()
-                if filed { FiledTag() }
+            .cssLineHeight(1.5, face: .hanken700, size: 15, relativeTo: .headline)
+        return HStack(alignment: .top, spacing: 8) {
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 8) {
+                    name.fixedSize()
+                    if filed { FiledTag() }
+                }
+                VStack(alignment: .leading, spacing: 8) {
+                    name.fixedSize(horizontal: false, vertical: true)
+                    if filed { FiledTag() }
+                }
             }
-            VStack(alignment: .leading, spacing: 6) {
-                name.fixedSize(horizontal: false, vertical: true)
-                if filed { FiledTag() }
-            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            StatusOutline(status: entry.status)
+                .frame(minWidth: 72, alignment: .trailing)
+                // the row pads 16 and 15; the site pins the badge 14 in from both
+                .offset(x: 2, y: -1)
         }
-        .padding(.trailing, 80)
     }
 }
 
