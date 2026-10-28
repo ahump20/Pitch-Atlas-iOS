@@ -55,6 +55,21 @@ jobs:
             -resultBundlePath shots.xcresult \
             2>&1 | tee xcodebuild.log | grep -E "error:|failed|Test Case|TOUR |\*\* TEST" | tail -400
 
+      - name: Dump the diagnosis log
+        if: always()
+        run: |
+          mkdir -p diag
+          xcrun simctl spawn "$UDID" log show --style compact --info --predicate 'subsystem == "com.pitchatlas.diag"' --last 90m > diag/scroll.log 2>&1 || true
+          wc -l diag/scroll.log; grep -c SCROLL diag/scroll.log || true
+          cp xcodebuild.log diag/ || true
+
+      - name: Upload the diagnosis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diag
+          path: diag
+
       - name: Export the screenshots
         if: always()
         run: |

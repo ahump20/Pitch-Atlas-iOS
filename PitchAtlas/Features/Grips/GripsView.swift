@@ -1,4 +1,5 @@
 import SwiftUI
+import os
 
 // =============================================================================
 // Pitch Atlas — The Grip Library
@@ -44,9 +45,11 @@ struct GripsView: View {
                                     sub: Text(Self.heroSub),
                                     trail: [Crumb(label: "The Atlas", path: "home"), Crumb(label: "Grip Library")])
                             .background { CoalRoomEdges.mark("top", edge: \.maxY, in: Self.pageSpace) }
+                            .background { DiagRow(name: "hero") }
                         rows(proxy)
                         SiteFooter(path: "/grips")
                             .background { CoalRoomEdges.mark("bottom", edge: \.minY, in: Self.pageSpace) }
+                            .background { DiagRow(name: "footer") }
                     }
                     .coordinateSpace(name: Self.pageSpace)
                     .onPreferenceChange(CoalRoomEdges.Key.self) { room.take($0) }
@@ -54,6 +57,7 @@ struct GripsView: View {
                     .emitsScrollProgress()
                 }
                 .scrollDismissesKeyboard(.interactively)
+                .modifier(DiagScroll())
             }
         }
         // The site's header carries the brand on every page; the title still names
@@ -82,11 +86,14 @@ struct GripsView: View {
             let shown = GripLibraryReads.matches(file.entries, query: query)
             Group {
                 GripJumpRow(entries: file.entries) { jump(proxy, to: $0) }
+                    .background { DiagRow(name: "jump") }
                 libraryHead(file, shown: shown)
+                    .background { DiagRow(name: "head") }
                 ForEach(shown) { entry in
                     GripArticle(entry: entry, gap: GripLibraryReads.gap(for: entry, in: file))
                         .padding(.horizontal, 20)
                         .padding(.top, 48)
+                        .background { DiagRow(name: entry.id) }
                 }
                 // the library's foot (py-14)
                 Color.clear.frame(height: 56)
@@ -94,8 +101,11 @@ struct GripsView: View {
                           title: "More hands in the conversation.",
                           intro: "First-party photographs remain the evidence in this library. These official, credited embeds add outside teaching and history without becoming the canonical grip.",
                           items: MediaShelf.query(store.externalMedia.items, placement: .grips, limit: 4))
+                    .background { DiagRow(name: "rail") }
                 AttackPlanSection(file: file)
+                    .background { DiagRow(name: "plan") }
                 GripCompareEntry()
+                    .background { DiagRow(name: "doorway") }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .background { CoalRoomSlice(roomTop: room.top, roomHeight: room.height, space: Self.pageSpace) }
@@ -655,6 +665,43 @@ private struct GripCompareEntry: View {
         .background(PitchAtlasTheme.press)
         .overlay(alignment: .top) {
             Rectangle().fill(PitchAtlasTheme.bone.opacity(0.15)).frame(height: 1).accessibilityHidden(true)
+        }
+    }
+}
+
+// MARK: - Diagnosis only (diag/grips-jump; never merged)
+
+enum DiagLog {
+    static let log = Logger(subsystem: "com.pitchatlas.diag", category: "grips")
+    static func row(_ name: String, _ f: CGRect, _ what: String) {
+        log.notice("ROW \(name, privacy: .public) \(what, privacy: .public) y=\(Int(f.minY)) h=\(Int(f.height))")
+    }
+}
+
+struct DiagRow: View {
+    let name: String
+    var body: some View {
+        GeometryReader { geo in
+            let f = geo.frame(in: .named(GripsView.pageSpace))
+            Color.clear
+                .onAppear { DiagLog.row(name, f, "appear") }
+                .onChange(of: f.minY.rounded()) { _, _ in DiagLog.row(name, geo.frame(in: .named(GripsView.pageSpace)), "move") }
+                .onChange(of: f.height.rounded()) { _, _ in DiagLog.row(name, geo.frame(in: .named(GripsView.pageSpace)), "size") }
+                .onDisappear { DiagLog.row(name, f, "gone") }
+        }
+    }
+}
+
+struct DiagScroll: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *) {
+            content.onScrollGeometryChange(for: [CGFloat].self, of: { [$0.contentOffset.y.rounded(), $0.contentSize.height.rounded()] }) { old, new in
+                if abs(new[0] - old[0]) > 120 || new[1] != old[1] {
+                    DiagLog.log.notice("SCROLL y \(Int(old[0]))->\(Int(new[0])) content \(Int(old[1]))->\(Int(new[1]))")
+                }
+            }
+        } else {
+            content
         }
     }
 }
