@@ -29,6 +29,9 @@ if os.path.exists(manifest_path):
             name = attachment.get("suggestedHumanReadableName") or exported
             match = re.match(r"^(.*?)_\d+_[0-9A-Fa-f-]{36}\.\w+$", name)
             pairs.append((exported, match.group(1) if match else os.path.splitext(name)[0]))
+    # The result bundle also carries text attachments (an issue description, a
+    # log); only the screenshots are photographs.
+    pairs = [(e, b) for e, b in pairs if e.lower().endswith((".png", ".jpg", ".jpeg"))]
 else:
     pairs = [(f, os.path.splitext(f)[0]) for f in sorted(os.listdir(src)) if f.lower().endswith((".png", ".jpg", ".jpeg"))]
 

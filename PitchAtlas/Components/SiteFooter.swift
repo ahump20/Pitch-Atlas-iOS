@@ -1,0 +1,270 @@
+import SwiftUI
+
+// =============================================================================
+// SiteFooter — the archive's back cover
+// =============================================================================
+// Web: layout/SiteFooter.tsx and RotatingQuote.tsx. One closing line and the way
+// back to the front door, the page's own rotating quote with its source, the
+// brand lockup with the tagline and the brand line, the footer links, and the
+// address. The site's no-JavaScript line has no meaning in the app and is left
+// out; the hidden-notes counter joins when the hidden notes ship.
+// =============================================================================
+
+struct SiteFooter: View {
+    /// The web path of the page this footer closes ("/", "/repertoire"): it picks
+    /// the page's own quote, as the site does.
+    let path: String
+
+    @Environment(DeepLinkRouter.self) private var router
+    @Environment(PitchStore.self) private var store
+
+    private static let links: [(label: String, path: String)] = [
+        ("The Pitch Index", "repertoire"),
+        ("The Craftsmen", "craftsmen"),
+        ("Lost Pitches", "lost-pitches"),
+        ("Sources", "sources"),
+        ("About", "about"),
+        ("Support", "account"),
+    ]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                StitchOrbit()
+                    .padding(.bottom, 16)
+                Text("The archive stays open.")
+                    .font(PitchAtlasTheme.anton(20, relativeTo: .title3))
+                    .textCase(.uppercase)
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .accessibilityAddTraits(.isHeader)
+                Text(frontDoorLine)
+                    .font(Self.labelFont)
+                    .tracking(Self.labelTracking)
+                    .lineSpacing(6)
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 10)
+                    .environment(\.openURL, OpenURLAction { url in
+                        guard url.scheme == "pitchatlas" else { return .systemAction }
+                        router.handle(url, store: store)
+                        return .handled
+                    })
+                RotatingQuote(path: path)
+                    .padding(.top, 20)
+                    .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1) }
+                    .padding(.top, 24)
+            }
+            .padding(.top, 48)
+
+            VStack(alignment: .leading, spacing: 32) {
+                VStack(alignment: .leading, spacing: 12) {
+                    BrandLockup()
+                    label("The pitch, in your hand.")
+                    label("Preserving & Progressing the Art of the Pitch").opacity(0.75)
+                }
+                FlowRow(spacing: 24, lineSpacing: 0) {
+                    ForEach(Self.links, id: \.path) { link in
+                        RouteButton(path: link.path) { touchLabel(link.label) }
+                            .buttonStyle(.plain)
+                    }
+                    if let privacy = URL(string: "https://pitch-atlas.com/privacy") {
+                        Link(destination: privacy) { touchLabel("Privacy") }
+                            .accessibilityHint("Opens in Safari")
+                    }
+                }
+                VStack(alignment: .leading, spacing: 12) {
+                    if let site = URL(string: "https://pitch-atlas.com") {
+                        Link(destination: site) { touchLabel("pitch-atlas.com") }
+                            .accessibilityHint("Opens in Safari")
+                    }
+                    label("Heritage · history · craft · conversation").opacity(0.75)
+                }
+            }
+            .padding(.vertical, 48)
+        }
+        .padding(.horizontal, 20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.cyan.opacity(0.12)).frame(height: 1) }
+    }
+
+    /// "…start at the front door: the Pitch Index." with the index underlined and live.
+    private var frontDoorLine: AttributedString {
+        var line = AttributedString("Everything above wears its source. When you want the set again, start at the front door: ".uppercased())
+        var door = AttributedString("the Pitch Index".uppercased())
+        door.link = URL(string: "pitchatlas://repertoire")
+        door.underlineStyle = .single
+        door.foregroundColor = PitchAtlasTheme.bone
+        line.append(door)
+        line.append(AttributedString("."))
+        return line
+    }
+
+    // `.mono-label-stage`: 11pt mono, upper case, tracked .18em, bone-2.
+    static let labelFont = PitchAtlasType.font(.martian400, size: 11, relativeTo: .caption)
+    static let labelTracking: CGFloat = 11 * 0.18
+
+    private func label(_ text: String) -> some View {
+        Text(text.uppercased())
+            .font(Self.labelFont)
+            .tracking(Self.labelTracking)
+            .lineSpacing(4)
+            .foregroundStyle(PitchAtlasTheme.bone2)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    /// `.touch-link`: the label at a full 44pt.
+    private func touchLabel(_ text: String) -> some View {
+        label(text)
+            .frame(minHeight: 44)
+            .contentShape(Rectangle())
+    }
+}
+
+/// RotatingQuote: the page's line from the quote pool (craft and the philosophy
+/// of the game, each sourced), stepping on the site's slow tick. Reduce Motion
+/// holds the page's own line.
+struct RotatingQuote: View {
+    let path: String
+
+    @Environment(PitchStore.self) private var store
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var tick = 0
+
+    var body: some View {
+        if let quote = QuotePick.quote(forPath: path, tick: tick, in: store) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("“\(quote.claim.value)”")
+                    .font(PitchAtlasTheme.newsreaderItalic(15, relativeTo: .callout))
+                    .lineSpacing(5)
+                    .foregroundStyle(PitchAtlasTheme.bone2.opacity(0.85))
+                    .fixedSize(horizontal: false, vertical: true)
+                attribution(quote)
+            }
+            .id(quote.id)
+            .transition(.opacity)
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.5), value: quote.id)
+            .accessibilityElement(children: .combine)
+            .task(id: reduceMotion) { await advance() }
+        }
+    }
+
+    private func attribution(_ quote: AtlasQuote) -> some View {
+        let words = quote.context.map { "\(quote.attribution) · \($0)" } ?? quote.attribution
+        return Group {
+            if let source = quote.claim.source, let url = URL(string: source.url) {
+                Link(destination: url) { Text(words.uppercased()).underline(color: PitchAtlasTheme.bone2.opacity(0.3)) }
+                    .accessibilityHint("Opens the source in Safari")
+            } else {
+                Text(words.uppercased())
+            }
+        }
+        .font(SiteFooter.labelFont)
+        .tracking(SiteFooter.labelTracking)
+        .lineSpacing(4)
+        .foregroundStyle(PitchAtlasTheme.bone2.opacity(0.65))
+        .frame(minHeight: 44, alignment: .topLeading)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    @MainActor
+    private func advance() async {
+        guard !reduceMotion, store.quotes.count > 1 else { return }
+        while !Task.isCancelled {
+            try? await Task.sleep(nanoseconds: UInt64(QuotePick.interval * 1_000_000_000))
+            if Task.isCancelled { return }
+            withAnimation(.easeInOut(duration: 0.5)) { tick += 1 }
+        }
+    }
+}
+
+/// BrandMark at `md`: the seal and the skewed wordmark, ATLAS in foil.
+struct BrandLockup: View {
+    var markSize: CGFloat = 44
+    var wordSize: CGFloat = 30
+
+    var body: some View {
+        HStack(spacing: 12) {
+            BrandSealMark(size: markSize, shadow: false)
+            (Text("Pitch ") + Text("Atlas").foregroundStyle(PitchAtlasMaterials.foilType()))
+                .font(PitchAtlasTheme.anton(wordSize, relativeTo: .title))
+                .textCase(.uppercase)
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .antonSkew()
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Pitch Atlas")
+    }
+}
+
+/// SeamGuide "orbit": a short run of stitches along the curve of a seam,
+/// alternating in, like the thread over the top of a ball. Decorative.
+struct StitchOrbit: View {
+    var body: some View {
+        Canvas { context, size in
+            let center = CGPoint(x: size.width / 2, y: size.height + 6)
+            let radius = size.height
+            let count = 6
+            for i in 0..<count {
+                let angle = Double.pi * (1.12 + 0.76 * Double(i) / Double(count - 1))
+                let point = CGPoint(x: center.x + radius * cos(angle), y: center.y + radius * sin(angle))
+                let along = angle + .pi / 2
+                let lean = (i % 2 == 0 ? 1.0 : -1.0) * 0.55
+                let dx = cos(along + lean) * 4.5, dy = sin(along + lean) * 4.5
+                var tick = Path()
+                tick.move(to: CGPoint(x: point.x - dx, y: point.y - dy))
+                tick.addLine(to: CGPoint(x: point.x + dx, y: point.y + dy))
+                context.stroke(tick, with: .color(PitchAtlasTheme.seamBright.opacity(0.8)),
+                               style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
+            }
+        }
+        .frame(width: 92, height: 38)
+        .accessibilityHidden(true)
+    }
+}
+
+/// `flex-wrap` for a row of links: items left to right, wrapping to a new line.
+struct FlowRow: Layout {
+    var spacing: CGFloat
+    var lineSpacing: CGFloat
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let width = proposal.width ?? .infinity
+        let rows = arrange(subviews, width: width)
+        let height = rows.map(\.height).reduce(0, +) + lineSpacing * CGFloat(max(0, rows.count - 1))
+        let used = rows.map(\.width).max() ?? 0
+        return CGSize(width: proposal.width ?? used, height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var y = bounds.minY
+        for row in arrange(subviews, width: bounds.width) {
+            var x = bounds.minX
+            for index in row.items {
+                let size = subviews[index].sizeThatFits(.unspecified)
+                subviews[index].place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+                x += size.width + spacing
+            }
+            y += row.height + lineSpacing
+        }
+    }
+
+    private struct Row { var items: [Int] = []; var width: CGFloat = 0; var height: CGFloat = 0 }
+
+    private func arrange(_ subviews: Subviews, width: CGFloat) -> [Row] {
+        var rows: [Row] = []
+        var row = Row()
+        for index in subviews.indices {
+            let size = subviews[index].sizeThatFits(.unspecified)
+            let needed = row.items.isEmpty ? size.width : row.width + spacing + size.width
+            if !row.items.isEmpty, needed > width {
+                rows.append(row)
+                row = Row()
+            }
+            row.width = row.items.isEmpty ? size.width : row.width + spacing + size.width
+            row.height = max(row.height, size.height)
+            row.items.append(index)
+        }
+        if !row.items.isEmpty { rows.append(row) }
+        return rows
+    }
+}

@@ -146,6 +146,7 @@ struct RootView: View {
                 .tag(AppTab.sources)
         }
         .environment(\.compareSelection, comparison)
+        .environment(router)
         .toastHost()
         .environment(toasts)
         .sheet(isPresented: $comparison.presented) { CompareView().environment(\.compareSelection, comparison) }

@@ -224,6 +224,8 @@ struct PitchSpecimenCard: View {
 
     let entry: PitchAtlasEntry
     var style: Style = .hero
+    /// The home's "Pause motion": the hero's film holds on its poster frame.
+    var motionPaused = false
 
     @Environment(PitchStore.self) private var store
     @Environment(\.compareSelection) private var comparison
@@ -244,7 +246,7 @@ struct PitchSpecimenCard: View {
         let content = SpecimenCardContent.make(entry: entry, grip: store.gripEntry(forSpecimen: entry.slug))
         let metrics = SpecimenCardMetrics(width: Self.width(for: style), frame: content.frame)
         VStack(alignment: .leading, spacing: 12) {
-            SpecimenCardFront(content: content, metrics: metrics, playsFilm: isHero, light: light)
+            SpecimenCardFront(content: content, metrics: metrics, playsFilm: isHero && !motionPaused, light: light)
                 .cardTilt(isHero ? .hero : .rest, size: CGSize(width: metrics.width, height: metrics.height), light: $light)
                 .rotationEffect(.degrees(isHero && content.frame == .ember ? CardLean.hero : CardLean.rest(index: 0)))
             if dynamicTypeSize.isAccessibilitySize {
