@@ -108,7 +108,7 @@ struct AboutView: View {
         let checked = store.sourcesLastChecked
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "How it stays honest")
-            Text("The reference layer is bundled, sourced, and readable offline. The community layer is live only when real people show up: field notes, discussion, reporting, and blocking use the Pitch Atlas Supabase backend and work anonymously — an account exists only once you contribute, and you can claim it to keep your record across devices.")
+            Text(Self.honestyLine)
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .fixedSize(horizontal: false, vertical: true)
@@ -134,12 +134,15 @@ struct AboutView: View {
         }
         .leatherPress()
         .accessibilityElement(children: .combine)
+        // VoiceOver hears the same sentence the screen shows.
         .accessibilityLabel(
             checked.isEmpty
-                ? "How it stays honest. The reference layer is bundled, sourced, and readable offline. Community actions use the live Pitch Atlas Supabase backend and require sign-in. Sources last checked, not recorded in this build. Checked, not auto-refreshed."
-                : "How it stays honest. The reference layer is bundled, sourced, and readable offline. Community actions use the live Pitch Atlas Supabase backend and require sign-in. Sources last checked \(checked). Checked, not auto-refreshed."
+                ? "How it stays honest. \(Self.honestyLine) Sources last checked, not recorded in this build. Checked, not auto-refreshed."
+                : "How it stays honest. \(Self.honestyLine) Sources last checked \(checked). Checked, not auto-refreshed."
         )
     }
+
+    static let honestyLine = "The reference layer is bundled, sourced, and readable offline. The community layer is live only when real people show up: field notes, discussion, reporting, and blocking use the Pitch Atlas Supabase backend and work anonymously — an account exists only once you contribute, and you can claim it to keep your record across devices."
 
     // MARK: - Footer
 
