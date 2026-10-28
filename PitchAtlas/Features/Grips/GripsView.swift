@@ -34,11 +34,13 @@ struct GripsView: View {
 
             ScrollViewReader { proxy in
                 ScrollView {
-                    // One lazy column as the scroll's own content, as 1.1.0 shipped it.
-                    // A lazy stack nested inside an eager one handed SwiftUI's prefetch
-                    // a size that kept moving, and past the sixth grip the page spun the
-                    // main thread at full use without ever settling.
-                    LazyVStack(alignment: .leading, spacing: 0) {
+                    // One eager column. A lazy stack forgets the height of a grip it has
+                    // dropped and guesses it from the grips still built, so the page
+                    // jumped back a screen or two past a film; nested inside an eager
+                    // stack, its prefetch spun the main thread past the sixth grip. The
+                    // photographs and posters draw only near the reader (NearScreen), so
+                    // building every grip at once never decodes the whole library.
+                    VStack(alignment: .leading, spacing: 0) {
                         SectionHero(eyebrow: "Grip library",
                                     title: Text("Grips, from the hand."),
                                     sub: Text(Self.heroSub),
@@ -102,14 +104,11 @@ struct GripsView: View {
         }
     }
 
-    /// A chip's jump. The grips below build as they scroll in, so a far jump
-    /// lands on an estimate; the second pass, once the grip has built, settles it
-    /// on the grip's top rule.
+    /// A chip's jump: every grip is built, so the jump lands on the grip's top rule.
     private func jump(_ proxy: ScrollViewProxy, to id: String) {
         withAnimation((reduceMotion || dynamicTypeSize.isAccessibilitySize) ? nil : .easeOut(duration: 0.25)) {
             proxy.scrollTo(id, anchor: .top)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { proxy.scrollTo(id, anchor: .top) }
     }
 
     // MARK: - The library
@@ -146,7 +145,7 @@ struct GripsView: View {
 }
 
 /// The coal room's two edges in the page's space, read off the rows that bound
-/// it as they lay out. A row a lazy page has dropped keeps its last reading.
+/// it as they lay out.
 struct CoalRoomEdges: Equatable {
     var top: CGFloat = 0
     var bottom: CGFloat?

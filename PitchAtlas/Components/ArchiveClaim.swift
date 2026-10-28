@@ -192,9 +192,9 @@ struct CoalScene: View {
     }
 }
 
-/// `.scene-coal` painted row by row on a lazy page. Each row of the room draws its
+/// `.scene-coal` painted row by row on a long page. Each row of the room draws its
 /// own slice of one room's washes, placed by where the row sits in the room, so
-/// rows that are built and dropped as they scroll still read as one dark room.
+/// the rows read as one dark room and no wash is ever drawn as tall as the page.
 struct CoalRoomSlice: View {
     /// The room's top and height in the page's own coordinate space.
     let roomTop: CGFloat

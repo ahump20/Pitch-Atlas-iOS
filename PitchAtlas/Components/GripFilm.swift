@@ -99,6 +99,8 @@ struct GripLoopFace: View {
     var plays = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var onScreen = false
+    /// The poster draws only within a screen of the reader (ScreenReach).
+    @State private var near = false
 
     /// AutoplayVideo.tsx's observer (rootMargin 0 0 10% 0): any of the clip inside
     /// the screen, or inside the tenth of a screen just below it, plays it.
@@ -112,9 +114,11 @@ struct GripLoopFace: View {
             if plays, !reduceMotion, onScreen, let url = GripFilmCard.bundledURL(for: film.clip.src) {
                 LoopingClipView(url: url, poster: BundledImage.load(film.poster), start: film.start)
                     .accessibilityHidden(true)
-            } else {
+            } else if near {
                 BundledImage(src: film.poster, alt: film.clip.alt, contentMode: .fit)
                     .accessibilityHidden(true)
+            } else {
+                Color.clear
             }
         }
         .background {
@@ -125,12 +129,15 @@ struct GripLoopFace: View {
             }
         }
         // a lazy stack can drop a row without a last frame change
-        .onDisappear { onScreen = false }
+        .onDisappear { onScreen = false; near = false }
     }
 
     private func track(_ frame: CGRect) {
-        let next = Self.isOnScreen(frame, in: UIScreen.main.bounds)
+        let screen = UIScreen.main.bounds
+        let next = Self.isOnScreen(frame, in: screen)
         if next != onScreen { onScreen = next }
+        let close = ScreenReach.isNear(frame, in: screen)
+        if close != near { near = close }
     }
 }
 

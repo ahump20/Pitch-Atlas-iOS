@@ -72,6 +72,20 @@ final class GripLibraryTests: XCTestCase {
         XCTAssertFalse(GripLoopFace.isOnScreen(.zero, in: screen), "a film with no size never plays")
     }
 
+    /// The library builds every grip at once, so a photograph draws only within a
+    /// screen of the reader: one screen above or below the visible one, and never
+    /// a picture with no size.
+    func testAPhotographDrawsOnlyWithinAScreenOfTheReader() {
+        let screen = CGRect(x: 0, y: 0, width: 440, height: 956)
+        let photo = { (y: CGFloat) in CGRect(x: 20, y: y, width: 400, height: 300) }
+        XCTAssertTrue(ScreenReach.isNear(photo(100), in: screen))
+        XCTAssertTrue(ScreenReach.isNear(photo(1900), in: screen), "a screen below still draws")
+        XCTAssertFalse(ScreenReach.isNear(photo(1920), in: screen))
+        XCTAssertTrue(ScreenReach.isNear(photo(-1250), in: screen), "a screen above still draws")
+        XCTAssertFalse(ScreenReach.isNear(photo(-1260), in: screen))
+        XCTAssertFalse(ScreenReach.isNear(.zero, in: screen))
+    }
+
     /// The coal room is painted row by row on the lazy page: each row draws its
     /// slice of one room, so the crown (50% 40% at 50% −6%) and the bone wash
     /// (40% 36% at 12% 16%) sit at the same room point whatever row draws them.

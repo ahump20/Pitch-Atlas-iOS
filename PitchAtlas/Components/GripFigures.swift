@@ -96,7 +96,7 @@ struct GripPhotoFigure: View {
         VStack(alignment: .leading, spacing: 0) {
             Color.clear
                 .aspectRatio(4.0 / 3.0, contentMode: .fit)
-                .overlay { BundledImage(src: photo.src, alt: photo.alt, contentMode: .fill) }
+                .overlay { NearScreen { BundledImage(src: photo.src, alt: photo.alt, contentMode: .fill) } }
                 .clipped()
                 .overlay(alignment: .topLeading) {
                     if let view = photo.view { FigureChip(text: view.photoLabel) }

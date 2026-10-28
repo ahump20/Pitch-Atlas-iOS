@@ -18,7 +18,7 @@ final class ScreenshotTourUITests: XCTestCase {
     static let tour: [Stop] = [
         Stop(name: "atlas", env: ["PA_TAB": "atlas"], pages: 28),
         Stop(name: "index", env: ["PA_TAB": "index"], pages: 30),
-        Stop(name: "grips", env: ["PA_TAB": "grips"], pages: 44),
+        Stop(name: "grips", env: ["PA_TAB": "grips"], pages: 64),
         Stop(name: "craftsmen", env: ["PA_TAB": "craftsmen"], pages: 16),
         Stop(name: "sources", env: ["PA_TAB": "sources"], pages: 40),
         Stop(name: "specimen", env: ["PA_ROUTE": "pitch/four-seam"], pages: 60),
