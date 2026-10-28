@@ -35,6 +35,8 @@ enum PitchAtlasRadius {
     static let card: CGFloat = 9
     /// The specimen card's inner field — .rfx-card__field.
     static let cardField: CGFloat = 4
+    /// The matte card back — .v2-back's --radius-md (calc(--radius × .8), 8px live).
+    static let cardBack: CGFloat = 8
     /// Tier B plates — .pi-plate.
     static let plate: CGFloat = 13
     /// Tier C index rows — .pi-row.

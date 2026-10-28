@@ -62,6 +62,7 @@ private struct CardTiltModifier: ViewModifier {
     let mode: CardTiltMode
     let size: CGSize
     @Binding var light: UnitPoint
+    var rake = true
     @Environment(MotionProvider.self) private var motion
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var drag: CardTiltState?
@@ -89,11 +90,13 @@ private struct CardTiltModifier: ViewModifier {
             .rotation3DEffect(.degrees(s.ry), axis: (x: 1, y: 0, z: 0), perspective: 0.4)
             .overlay {
                 // the rim rake: a bone glint at the light, on the frame ring only
-                RadialGradient(colors: [.white.opacity(0.5), .clear], center: s.light, startRadius: 0, endRadius: 190)
-                    .blendMode(.screen).opacity(0.46)
-                    .mask(RoundedRectangle(cornerRadius: PitchAtlasRadius.card, style: .continuous).strokeBorder(lineWidth: 13))
-                    .allowsHitTesting(false)
-                    .accessibilityHidden(true)
+                if rake {
+                    RadialGradient(colors: [.white.opacity(0.5), .clear], center: s.light, startRadius: 0, endRadius: 190)
+                        .blendMode(.screen).opacity(0.46)
+                        .mask(RoundedRectangle(cornerRadius: PitchAtlasRadius.card, style: .continuous).strokeBorder(lineWidth: 13))
+                        .allowsHitTesting(false)
+                        .accessibilityHidden(true)
+                }
             }
             .simultaneousGesture(reduceMotion ? nil : gesture)
             .animation(PitchAtlasMotion.animation(mode.spring, reduceMotion: reduceMotion), value: s)
@@ -103,8 +106,9 @@ private struct CardTiltModifier: ViewModifier {
 
 extension View {
     /// Tilt a card by the hand (and, on the hero, by the phone). The motion
-    /// provider's lifecycle belongs to the app; this only reads it.
-    func cardTilt(_ mode: CardTiltMode, size: CGSize, light: Binding<UnitPoint>) -> some View {
-        modifier(CardTiltModifier(mode: mode, size: size, light: light))
+    /// provider's lifecycle belongs to the app; this only reads it. The matte
+    /// back has no frame ring, so it turns without the rim rake.
+    func cardTilt(_ mode: CardTiltMode, size: CGSize, light: Binding<UnitPoint>, rake: Bool = true) -> some View {
+        modifier(CardTiltModifier(mode: mode, size: size, light: light, rake: rake))
     }
 }

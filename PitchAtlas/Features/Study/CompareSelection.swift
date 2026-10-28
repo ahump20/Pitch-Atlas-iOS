@@ -103,7 +103,7 @@ struct StudyTray: View {
                     .font(.subheadline)
             }.frame(maxWidth: .infinity, alignment: .leading).padding(20)
                 .foregroundStyle(PitchAtlasTheme.cardbackInk)
-                .background { ArchiveCoverSurface(radius: 12) }
+                .background { PanelSurface(radius: 12) }
         }.buttonStyle(.plain)
     }
 }
@@ -314,7 +314,7 @@ struct CompareView: View {
         }
         .padding(16)
         .tint(PitchAtlasTheme.bone)
-        .background { ArchiveCoverSurface(radius: 18) }
+        .background { PanelSurface(radius: 18) }
 
     }
 

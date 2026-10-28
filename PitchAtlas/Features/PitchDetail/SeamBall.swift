@@ -240,6 +240,11 @@ struct SeamBall: View {
     var hand: Handedness = .right
     var showMovement = true
     var referenceContacts: [SeamAnchoredPoint]? = nil
+    /// Numbered pips on the study ball; plain marks on a thumbnail too small for
+    /// numbers (the card back's grip twin), as the web hides its labels there.
+    var contactMarks: ContactMarks = .numbered
+
+    enum ContactMarks { case numbered, dots }
 
     private var facing: simd_quatd? {
         guard referenceContacts != nil || !contacts.isEmpty else { return nil }
@@ -296,7 +301,10 @@ struct SeamBall: View {
             // Finger contacts, numbered, sitting on the seam where the hand grips.
             ForEach(contacts, id: \.self) { contact in
                 if studyProjection(SeamMath.seamPoint(contact.seamT * 2 * .pi), orientation: orientation, facing: facing).z >= 0 {
-                    contactMarker(contact).position(seamPoint(at: contact.seamT))
+                    Group {
+                        if contactMarks == .dots { contactDot } else { contactMarker(contact) }
+                    }
+                    .position(seamPoint(at: contact.seamT))
                 }
             }
         }
@@ -307,6 +315,14 @@ struct SeamBall: View {
 
     /// A numbered finger pip: a dark disc so the seam reads under it, a gold ring,
     /// and the finger's number/letter. Scaled to the ball so it works at 110 or 240.
+    /// Where a finger meets the leather, unnumbered: a cyan mark ringed in void.
+    private var contactDot: some View {
+        let dot = max(4, size * 0.11)
+        return Circle().fill(PitchAtlasTheme.cyan)
+            .frame(width: dot, height: dot)
+            .overlay(Circle().strokeBorder(PitchAtlasTheme.void.opacity(0.85), lineWidth: max(0.75, size * 0.02)))
+    }
+
     private func contactMarker(_ contact: SeamAnchoredPoint) -> some View {
         let dot = max(14, size * 0.085)
         return Text(contact.finger.pipLabel)

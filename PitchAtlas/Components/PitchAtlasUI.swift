@@ -109,62 +109,6 @@ struct SectionLabel: View {
 
 // MARK: - Leather-press card
 
-/// The content surface: solid press fill + 1px bone hairline. Never glass.
-/// Neutral archive stock; the signature collectible alone opts into worn orange.
-/// Texture is deterministic and decorative.
-struct ArchiveCoverSurface: View {
-    var radius: CGFloat = 18
-    var signature = false
-
-    private var stock: [Color] {
-        signature
-            ? PitchAtlasTheme.signatureStock
-            : PitchAtlasTheme.archiveStock
-    }
-    private var edge: [Color] {
-        signature
-            ? PitchAtlasTheme.signatureEdge
-            : [PitchAtlasTheme.bone.opacity(0.28), .black.opacity(0.65), PitchAtlasTheme.bone.opacity(0.13)]
-    }
-    var body: some View {
-        RoundedRectangle(cornerRadius: radius, style: .continuous)
-            .fill(LinearGradient(colors: stock,
-                                 startPoint: .topLeading, endPoint: .bottomTrailing))
-            .overlay {
-                Canvas { context, size in
-                    for i in 0..<180 {
-                        let x = CGFloat((Double(i) * 0.754877666).truncatingRemainder(dividingBy: 1)) * size.width
-                        let y = CGFloat((Double(i) * 0.569840296).truncatingRemainder(dividingBy: 1)) * size.height
-                        var stroke = Path()
-                        stroke.move(to: CGPoint(x: x, y: y))
-                        stroke.addLine(to: CGPoint(x: x + CGFloat(2 + i % 8), y: y + 0.7))
-                        context.stroke(stroke, with: .color(.black.opacity(0.11)), lineWidth: 0.5)
-                    }
-                    for i in 0..<35 {
-                        let x = CGFloat((i * 47) % 997) / 997 * size.width
-                        let y: CGFloat = i.isMultiple(of: 2) ? 2.5 : size.height - 3
-                        var wear = Path()
-                        wear.move(to: CGPoint(x: x, y: y)); wear.addLine(to: CGPoint(x: x + CGFloat(2 + i % 5), y: y))
-                        context.stroke(wear, with: .color(signature ? PitchAtlasTheme.signatureWear : PitchAtlasTheme.bone.opacity(0.055)), lineWidth: 1)
-                    }
-                }.clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .strokeBorder(LinearGradient(colors: edge,
-                                                 startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: max(2, radius - 5), style: .continuous)
-                    .inset(by: 5).strokeBorder(.black.opacity(0.25), lineWidth: 1)
-                    .shadow(color: signature ? PitchAtlasTheme.signatureBevel : PitchAtlasTheme.bone.opacity(0.08), radius: 0, y: 1)
-            }
-            .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 3)
-            .shadow(color: .black.opacity(0.35), radius: 12, x: 0, y: 12)
-            .accessibilityHidden(true).allowsHitTesting(false)
-    }
-}
-
 struct LeatherPress: ViewModifier {
     var padding: CGFloat
     var radius: CGFloat

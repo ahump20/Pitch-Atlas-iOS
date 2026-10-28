@@ -71,26 +71,14 @@ enum PitchAtlasTheme {
     // MARK: - Lost-pitch sand (web --color-sand-bright)
     static let sandBright = Color(web: WebTokens.Palette.sandBright)
 
-    // MARK: - Dark archive reading stock (the signature collectible owns orange)
+    // MARK: - Card-back inks (light inks on the matte .v2-back stock — never the cream cb-* inks)
     static let cardbackPaper = Color(hex: 0x24221F)
-    static let cardbackInk = Color(hex: 0xFFF1DE)
-    static let cardbackInk2 = Color(hex: 0xF3D4B8)
-    static let cardbackInk3 = Color(hex: 0xE8D8C7)
-    static let cardbackLine = Color(hex: 0xFFF1DE, opacity: 0.22)
-    static let cardbackNavy = Color(hex: 0xBADAF1)
-    static let cardbackBurgundy = Color(hex: 0xFFD1C5)
-
-    // MARK: - Archive stock (ArchiveCoverSurface)
-    /// Neutral archive stock: lifted press → press → deep press.
-    static let archiveStock: [Color] = [Color(hex: 0x24201C), press, Color(hex: 0x141312)]
-    /// The signature collectible's worn-orange stock, edge, wear and bevel —
-    /// replaced by the ember 1 of 1 card in Plan 2.
-    static let signatureStock: [Color] = [Color(hex: 0x93411F), Color(hex: 0x6D2E18), Color(hex: 0x3D1D13)]
-    static let signatureEdge: [Color] = [Color(hex: 0xE09A65).opacity(0.75), Color(hex: 0x37170F), Color(hex: 0xB76B3E).opacity(0.65)]
-    static let signatureWear = Color(hex: 0xD49868).opacity(0.32)
-    static let signatureBevel = Color(hex: 0xEDAB78).opacity(0.22)
-    /// The "reference" grade's brushed-steel edge.
-    static let referenceEdge: [Color] = [Color(hex: 0x9EA6AB), Color(hex: 0x454B50), Color(hex: 0xC3CACD)]
+    static let cardbackInk = bone
+    static let cardbackInk2 = bone2
+    static let cardbackInk3 = bone3
+    static let cardbackLine = bone.opacity(0.10)
+    static let cardbackNavy = kicker
+    static let cardbackBurgundy = seamBright
 
     // MARK: - Hairlines / texture
     /// The 1px machined hairline — web --color-machined.

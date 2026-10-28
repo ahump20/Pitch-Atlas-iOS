@@ -51,6 +51,10 @@ enum ComponentInk {
     static let backBottom = Color(hex: 0x0A0908)
     static let chaseBackTop = Color(hex: 0x1A100A)
     static let chaseBackBorder = Color(hex: 0x823D05)
+    /// The 1-of-1 back's ember sweep and inset ring — #bf5700 at 28%.
+    static let chaseWash = Color(hex: 0xBF5700, opacity: 0.28)
+    /// The 1-of-1 back's glow — 0 0 34px -18px rgba(191,87,0,.5).
+    static let chaseGlow = Color(hex: 0xBF5700, opacity: 0.5)
     static let flipFill = Color(hex: 0x0A0908, opacity: 0.82)
     // Wall mount and compare — .v2-mount (index.css 3302-3332), compare.css 2-8, archive.css 174
     static let mountTop = Color(hex: 0x141210)
