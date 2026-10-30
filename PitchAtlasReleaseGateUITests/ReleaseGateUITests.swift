@@ -78,7 +78,7 @@ final class ReleaseGateUITests: XCTestCase {
         XCTAssertTrue(field.waitForExistence(timeout: 5), "Discussion composer field not found")
         field.tap()
         field.typeText(
-            "Release gate for build 12: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
+            "Release gate for build 13: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
         )
 
         let handle = app.textFields["Your name"]
