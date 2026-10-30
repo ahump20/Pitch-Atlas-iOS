@@ -20,6 +20,7 @@ import Observation
 //     ://support                          -> Atlas, that page
 //   pitchatlas://grips, ://sources        -> that tab
 //   pitchatlas://movement-map             -> Atlas, the Shape map
+//   pitchatlas://softball[/fastpitch|/slowpitch|/pitch/<slug>|/craftsmen/<slug>] -> Atlas, the softball wing (a miss lands on the hub)
 //   pitchatlas://sandbox[?tilt=&pitch=]   -> Atlas, Shape Lab (a bad tilt is 12:00,
 //                                            an unknown pitch no reference)
 // pitchatlas://compare belongs to CompareSelection. A link replaces the stack on
@@ -33,6 +34,10 @@ enum AtlasRoute: Hashable {
     /// Shape Lab, carrying the link's tilt and reference (the site's ?tilt=&pitch=).
     case shapeLab(tilt: Int, pitch: String?)
     case shapeMap
+    /// The softball wing: the hub, its two pages, a pitch and a craftsman by slug.
+    case softball, fastpitch, slowpitch
+    case softballPitch(slug: String)
+    case softballCraftsman(slug: String)
 }
 
 /// One screen a link stacks onto a tab, carrying the value its destination reads.
@@ -126,6 +131,18 @@ final class DeepLinkRouter {
             func value(_ key: String) -> String? { items.first { $0.name == key }?.value }
             let reference = ShapeLab.reference(value("pitch"), store: store)?.slug
             return land(.atlas, [.atlas(.shapeLab(tilt: ShapeLab.parseTilt(value("tilt")), pitch: reference))])
+        case "softball":
+            let parts = Array(url.pathComponents.dropFirst())
+            let hub: [DeepLinkStep] = [.atlas(.softball)]
+            switch (parts.first, parts.dropFirst().first) {
+            case ("fastpitch", _): return land(.atlas, hub + [.atlas(.fastpitch)])
+            case ("slowpitch", _): return land(.atlas, hub + [.atlas(.slowpitch)])
+            case ("pitch", let slug?) where store.softballPitch(slug: slug) != nil:
+                return land(.atlas, hub + [.atlas(.softballPitch(slug: slug))])
+            case ("craftsmen", let slug?) where store.softballCraftsman(slug: slug) != nil:
+                return land(.atlas, hub + [.atlas(.softballCraftsman(slug: slug))])
+            default: return land(.atlas, hub)
+            }
         case "movement-map":
             return land(.atlas, [.atlas(.shapeMap)])
         case "grips":

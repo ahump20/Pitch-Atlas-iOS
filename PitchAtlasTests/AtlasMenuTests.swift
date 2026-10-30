@@ -10,7 +10,7 @@ final class AtlasMenuTests: XCTestCase {
     func testTheMenuIsTheSitesInTheSitesOrder() {
         XCTAssertEqual(AtlasMenu.groups.map(\.title), [nil, "The rest of the atlas", "Tools"])
         XCTAssertEqual(AtlasMenu.groups.map { $0.items.map(\.label) }, [
-            ["Learn"],
+            ["Softball", "Learn"],
             ["Craftsmen", "Lost Pitches", "Sources", "About"],
             ["Shape Lab", "Shape map", "Compare two pitches", "Compare two grips"],
         ])

@@ -38,6 +38,11 @@ final class ScreenshotTourUITests: XCTestCase {
         Stop(name: "movement", env: ["PA_ROUTE": "movement-map"], pages: 8),
         Stop(name: "note", env: ["PA_ROUTE": "sandbox", "PA_NOTE": "stitches"], pages: 2),
         Stop(name: "notes", env: ["PA_NOTE": "index"], pages: 3),
+        Stop(name: "softball", env: ["PA_ROUTE": "softball"], pages: 16),
+        Stop(name: "fastpitch", env: ["PA_ROUTE": "softball/fastpitch"], pages: 12),
+        Stop(name: "slowpitch", env: ["PA_ROUTE": "softball/slowpitch"], pages: 10),
+        Stop(name: "sbpitch", env: ["PA_ROUTE": "softball/pitch/riseball"], pages: 16),
+        Stop(name: "sbcraftsman", env: ["PA_ROUTE": "softball/craftsmen/cat-osterman"], pages: 12),
         Stop(name: "inspect", env: ["PA_INSPECT": "four-seam"], pages: 6),
         Stop(name: "inspectpair", env: ["PA_INSPECT": "four-seam", "PA_INSPECT_WITH": "slider"], pages: 8),
     ]

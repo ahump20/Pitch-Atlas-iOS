@@ -18,10 +18,11 @@ struct SiteFooter: View {
     @Environment(DeepLinkRouter.self) private var router
     @Environment(PitchStore.self) private var store
 
-    /// layout/SiteFooter.tsx LINKS in the site's order. Softball joins with the
-    /// softball wing; Privacy opens the site's own page in Safari.
+    /// layout/SiteFooter.tsx LINKS in the site's order; Privacy opens the site's
+    /// own page in Safari.
     private static let links: [(label: String, path: String)] = [
         ("The Pitch Index", "repertoire"),
+        ("Softball", "softball"),
         ("The Craftsmen", "craftsmen"),
         ("Lost Pitches", "lost-pitches"),
         ("Sources", "sources"),

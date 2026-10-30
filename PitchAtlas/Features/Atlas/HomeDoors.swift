@@ -4,8 +4,8 @@ import SwiftUI
 // HomeDoors — chapter 04, the other doors
 // =============================================================================
 // Web: v2/WingsNav.tsx. Two large doors (the craftsmen's hall, the lost pitches
-// of the Negro Leagues) and the rail of smaller ones beneath. The softball door
-// joins the rail when the softball wing ships in this build.
+// of the Negro Leagues) and the rail of smaller ones beneath (WingsNav.tsx RAIL:
+// Softball, the Grip Library, Why it exists).
 // =============================================================================
 
 struct HomeDoors: View {
@@ -37,6 +37,10 @@ struct HomeDoors: View {
             }
             .padding(.top, 40)
             VStack(spacing: 16) {
+                NavigationLink(value: AtlasRoute.softball) {
+                    railDoor(title: "Softball", note: "The fastpitch & slowpitch wing")
+                }
+                .buttonStyle(.plain)
                 RouteButton(path: "grips") {
                     railDoor(title: "The Grip Library", note: "Every grip, in the hand")
                 }

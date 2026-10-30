@@ -81,6 +81,13 @@ struct AtlasView: View {
             case .support: SupportView()
             case .shapeLab(let tilt, let pitch): ShapeLabView(tilt: tilt, pitch: pitch)
             case .shapeMap: ShapeMapView()
+            case .softball: SoftballHubView()
+            case .fastpitch: SoftballFastpitchView()
+            case .slowpitch: SoftballSlowpitchView()
+            case .softballPitch(let slug):
+                if let pitch = store.softballPitch(slug: slug) { SoftballPitchView(pitch: pitch) } else { SoftballHubView() }
+            case .softballCraftsman(let slug):
+                if let craftsman = store.softballCraftsman(slug: slug) { SoftballCraftsmanView(craftsman: craftsman) } else { SoftballHubView() }
             }
         }
         .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }

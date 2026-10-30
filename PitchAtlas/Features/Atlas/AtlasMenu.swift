@@ -5,8 +5,7 @@ import SwiftUI
 // =============================================================================
 // Web: layout/Masthead.tsx, the phone menu (#mobile-nav): NAV, then "The rest of
 // the atlas" (MORE_CONTENT), then "Tools" (TOOLS), each a mono capital line over
-// a hairline. Pitch Index and Grips are tabs here, already one tap away; Softball
-// joins with the softball wing. A sheet from
+// a hairline. Pitch Index and Grips are tabs here, already one tap away. A sheet from
 // the leading ☰ in the Atlas toolbar; a choice closes it and follows the link.
 // =============================================================================
 
@@ -23,7 +22,7 @@ enum AtlasMenu {
     }
 
     static let groups = [
-        Group(title: nil, items: [Item(label: "Learn", route: "learn")]),
+        Group(title: nil, items: [Item(label: "Softball", route: "softball"), Item(label: "Learn", route: "learn")]),
         Group(title: "The rest of the atlas", items: [
             Item(label: "Craftsmen", route: "craftsmen"),
             Item(label: "Lost Pitches", route: "lost-pitches"),

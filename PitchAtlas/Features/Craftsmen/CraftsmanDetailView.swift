@@ -301,7 +301,7 @@ struct CraftsmanDetailView: View {
 
 /// RecordLinks: the record-keepers' line under an ivory hairline, then each
 /// keeper as a source link.
-private struct RecordLinksRow: View {
+struct RecordLinksRow: View {
     let links: [RecordLink]
 
     var body: some View {
