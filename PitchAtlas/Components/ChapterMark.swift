@@ -99,6 +99,7 @@ struct ChapterMark: View {
     var numberInk: Color = PitchAtlasTheme.bone2.opacity(0.7)
     var nameInk: Color = PitchAtlasTheme.bone2
     var ruleInk: Color = PitchAtlasTheme.bone.opacity(0.25)
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// A mark outside the home's numbered delivery: the square tick in the
     /// section's tint, or a pitcher frame range when the page passes one.
@@ -144,8 +145,10 @@ struct ChapterMark: View {
                 .accessibilityHidden(true)
             Text(name.uppercased())
                 .foregroundStyle(nameInk)
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                // one line at reading sizes; the accessibility sizes wrap rather than clip
+                .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 1)
+                .minimumScaleFactor(dynamicTypeSize.isAccessibilitySize ? 1 : 0.8)
+                .fixedSize(horizontal: false, vertical: dynamicTypeSize.isAccessibilitySize)
         }
         .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
         .tracking(2)

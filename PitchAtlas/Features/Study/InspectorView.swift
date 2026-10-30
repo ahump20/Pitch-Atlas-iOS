@@ -147,6 +147,7 @@ struct InspectorView: View {
     @Environment(\.compareSelection) private var compare
     @Environment(PitchStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var studying: PitchAtlasEntry?
 
     private var partner: PitchAtlasEntry? { bench.partner.flatMap(store.pitch(slug:)) }
@@ -250,13 +251,17 @@ struct InspectorView: View {
 
     /// `.bench-with`: the mono key, then the select across the rest of the row.
     private var partnerPicker: some View {
-        HStack(spacing: 12) {
+        // the key above the select at the accessibility sizes, so the row never
+        // runs wider than the bench
+        let layout = dynamicTypeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+                                                         : AnyLayout(HStackLayout(spacing: 12))
+        return layout {
             Text(SpecimenBench.withLabel)
                 .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
                 .tracking(em: 0.13, size: 10)
                 .textCase(.uppercase)
                 .foregroundStyle(CompareInk.key)
-                .fixedSize()
+                .fixedSize(horizontal: !dynamicTypeSize.isAccessibilitySize, vertical: true)
                 .accessibilityHidden(true)
             Menu {
                 Button(SpecimenBench.noPartner) { choose(nil) }
@@ -275,7 +280,7 @@ struct InspectorView: View {
                         .font(PitchAtlasType.font(.martian400, size: 12, relativeTo: .footnote))
                         .tracking(em: 0.02, size: 12)
                         .foregroundStyle(CompareInk.withInk)
-                        .lineLimit(1)
+                        .lineLimit(dynamicTypeSize.isAccessibilitySize ? 2 : 1)
                     Spacer(minLength: 8)
                     Image(systemName: "chevron.down")
                         .font(.system(size: 11, weight: .semibold))

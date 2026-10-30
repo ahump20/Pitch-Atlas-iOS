@@ -216,6 +216,7 @@ enum IndexRowStyle {
 struct IndexRow: View {
     let entry: RepertoireEntry
     @Environment(PitchStore.self) private var store
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         let filed = entry.filedSlug != nil
@@ -224,14 +225,30 @@ struct IndexRow: View {
         let still = grip?.photos.first?.src ?? grip?.film?.poster
         let rest = restFor(entry.id)
         let tint = IndexRowStyle.markTint(for: entry)
-        HStack(alignment: .top, spacing: 13) {
+        // At the accessibility sizes the badge rides beside the mark and the
+        // name takes the row's full width, so neither one breaks mid-word.
+        let stacked = dynamicTypeSize.isAccessibilitySize
+        let mark = Group {
             if let still {
                 GripThumb(src: still, tint: tint, rest: rest)
             } else {
                 IndexSeamMark(tint: tint, turn: rest * 48)
             }
+        }
+        let layout = stacked ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10))
+                             : AnyLayout(HStackLayout(alignment: .top, spacing: 13))
+        layout {
+            if stacked {
+                HStack(alignment: .top, spacing: 8) {
+                    mark
+                    Spacer(minLength: 8)
+                    StatusOutline(status: entry.status, shrinks: true)
+                }
+            } else {
+                mark
+            }
             VStack(alignment: .leading, spacing: 0) {
-                nameLine(filed: filed)
+                nameLine(filed: filed, badge: !stacked)
                 if let aka = entry.aka, !aka.isEmpty {
                     Text(aka.joined(separator: ", "))
                         .font(PitchAtlasType.font(.hanken400, size: 11.5, relativeTo: .caption))
@@ -266,7 +283,7 @@ struct IndexRow: View {
     /// don't (the web's flex-wrap, gap 8). The status badge holds the top-right
     /// corner and the name keeps clear of it: the site's pr-20 at least, more when
     /// the badge runs wider than 72 — on the site a long name runs under "Not a pitch".
-    private func nameLine(filed: Bool) -> some View {
+    private func nameLine(filed: Bool, badge: Bool) -> some View {
         let name = Text(entry.name)
             .font(PitchAtlasType.font(.hanken700, size: 15, relativeTo: .headline))
             .foregroundStyle(PitchAtlasTheme.bone)
@@ -283,10 +300,12 @@ struct IndexRow: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            StatusOutline(status: entry.status)
-                .frame(minWidth: 72, alignment: .trailing)
-                // the row pads 16 and 15; the site pins the badge 14 in from both
-                .offset(x: 2, y: -1)
+            if badge {
+                StatusOutline(status: entry.status)
+                    .frame(minWidth: 72, alignment: .trailing)
+                    // the row pads 16 and 15; the site pins the badge 14 in from both
+                    .offset(x: 2, y: -1)
+            }
         }
     }
 }
@@ -309,6 +328,9 @@ private struct FiledTag: View {
 /// The status, outlined in its own ink: a 20pt pill, mono 9.5 at 0.08em.
 private struct StatusOutline: View {
     let status: RepertoireStatus
+    /// Shrink to the space offered rather than hold the label's own width: at
+    /// the accessibility sizes "NEAR-EXTINCT" is wider than the phone.
+    var shrinks = false
     var body: some View {
         let ink = IndexRowStyle.statusInk(status)
         Text(status.displayLabel)
@@ -319,8 +341,9 @@ private struct StatusOutline: View {
             .lineLimit(1)
             .padding(.horizontal, 8)
             .frame(minHeight: 20)
+            .minimumScaleFactor(shrinks ? 0.4 : 1)
             .overlay(Capsule().strokeBorder(ink, lineWidth: 1))
-            .fixedSize()
+            .fixedSize(horizontal: !shrinks, vertical: true)
     }
 }
 
@@ -725,9 +748,12 @@ private struct PlateFoot: View {
                         }
                     }
                 }
+                // the last resort wraps, so the largest text sizes never clip
                 VStack(alignment: .leading, spacing: 8) {
-                    open
-                    ForEach(notes.indices, id: \.self) { i in note(i) }
+                    PlateMono("Open the file →", ink: PitchAtlasTheme.cyan).fixedSize(horizontal: false, vertical: true)
+                    ForEach(notes.indices, id: \.self) { i in
+                        PlateMono(notes[i].text, ink: notes[i].ink).fixedSize(horizontal: false, vertical: true)
+                    }
                 }
             }
         }

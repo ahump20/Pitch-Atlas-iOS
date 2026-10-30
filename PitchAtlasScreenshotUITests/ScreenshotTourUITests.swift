@@ -52,6 +52,12 @@ final class ScreenshotTourUITests: XCTestCase {
         continueAfterFailure = true
     }
 
+    /// PA_TYPE=ax5 photographs the tour at the largest accessibility text size.
+    static var typeSizeArguments: [String] {
+        guard ProcessInfo.processInfo.environment["PA_TYPE"] == "ax5" else { return [] }
+        return ["-UIPreferredContentSizeCategoryName", "UICTContentSizeCategoryAccessibilityXXXL"]
+    }
+
     @MainActor
     func testTour() throws {
         let raw = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? "all"
@@ -88,10 +94,114 @@ final class ScreenshotTourUITests: XCTestCase {
         app.terminate()
     }
 
+    /// The App Review path in docs/APP-REVIEW-NOTES.md, walked as a reviewer
+    /// would from a cold launch: Atlas → Study this grip → the four-seam page →
+    /// Write a note, then the Discussion drawer. It turns the two contribution
+    /// gates on (stored on the device only) and proves both composers and their
+    /// submit buttons are there. It never taps a submit button. Runs only when
+    /// PA_SHOTS names "reviewpath".
+    @MainActor
+    func testReviewerPath() throws {
+        let raw = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? "all"
+        try XCTSkipUnless(raw.split(separator: ",").contains("reviewpath"), "PA_SHOTS does not name reviewpath")
+        let app = XCUIApplication()
+        app.launch()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+        Thread.sleep(forTimeInterval: 3)
+        func snap(_ name: String) {
+            let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+            attachment.name = "reviewpath-\(name)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+        func reach(_ element: XCUIElement, strokes: Int = 60) -> Bool {
+            for _ in 0..<strokes where !(element.exists && element.isHittable) { scrollOnePage(app) }
+            return element.exists && element.isHittable
+        }
+        let study = app.buttons["Study this grip →"]
+        XCTAssertTrue(study.waitForExistence(timeout: 10), "Study this grip → is not on Atlas")
+        study.tap()
+        Thread.sleep(forTimeInterval: 2)
+        snap("01-specimen")
+
+        let write = app.buttons["Write a note"]
+        XCTAssertTrue(reach(write), "Write a note never came into reach on the four-seam page")
+        snap("02-field-notes")
+        write.tap()
+        Thread.sleep(forTimeInterval: 1)
+        for gate in ["I accept the community guidelines", "I confirm I am 17 or older"] {
+            let toggle = app.switches.matching(NSPredicate(format: "label BEGINSWITH %@", gate)).firstMatch
+            XCTAssertTrue(reach(toggle, strokes: 6), "Gate not found: \(gate)")
+            if toggle.value as? String != "1" {
+                toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
+            }
+            XCTAssertEqual(toggle.value as? String, "1", "Gate did not turn on: \(gate)")
+        }
+        let fileNote = app.buttons["File field note"]
+        XCTAssertTrue(reach(fileNote, strokes: 8), "File field note is not in the composer")
+        snap("03-field-note-composer")
+
+        let drawer = app.buttons["discussion-drawer"]
+        XCTAssertTrue(reach(drawer), "The Discussion drawer never came into reach")
+        drawer.tap()
+        Thread.sleep(forTimeInterval: 1)
+        let name = app.textFields["Your name"]
+        XCTAssertTrue(reach(name, strokes: 6), "Your name is not in the discussion composer")
+        let filePost = app.buttons["File post"]
+        XCTAssertTrue(reach(filePost, strokes: 6), "File post is not in the discussion composer")
+        snap("04-discussion-composer")
+        app.terminate()
+    }
+
+    /// The compare tray never covers the tab bar, and the list scrolls its last
+    /// row clear of the tray. Picks one pitch on the Index (a local choice, no
+    /// network) and photographs the top and the end. Runs only when PA_SHOTS
+    /// names "tray"; PA_TYPE=ax5 runs it at the largest text size.
+    @MainActor
+    func testTrayClearsTheTabBar() throws {
+        let raw = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? "all"
+        try XCTSkipUnless(raw.split(separator: ",").contains("tray"), "PA_SHOTS does not name tray")
+        let app = XCUIApplication()
+        app.launchEnvironment = ["PA_TAB": "index"]
+        app.launchArguments += Self.typeSizeArguments
+        app.launch()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+        Thread.sleep(forTimeInterval: 3)
+        let compare = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Compare ")).firstMatch
+        for _ in 0..<12 where !(compare.exists && compare.isHittable) { scrollOnePage(app) }
+        XCTAssertTrue(compare.isHittable, "No Compare button came into reach on the Index")
+        compare.tap()
+        Thread.sleep(forTimeInterval: 1)
+        let tray = app.otherElements["Selected pitches"]
+        XCTAssertTrue(tray.waitForExistence(timeout: 5), "The tray did not show after choosing a pitch")
+        let bar = app.tabBars.firstMatch
+        XCTAssertLessThanOrEqual(tray.frame.maxY, bar.frame.minY + 1, "The tray runs over the tab bar")
+        func snap(_ name: String) {
+            let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+            attachment.name = "tray-\(name)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+        snap("01-chosen")
+        var previous: Data?
+        for _ in 0..<80 {
+            let png = XCUIScreen.main.screenshot().pngRepresentation
+            if png == previous { break }
+            previous = png
+            // above the tray: at the largest sizes it fills the lower quarter
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: 0.55))
+                .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: 0.12)))
+        }
+        snap("02-end")
+        XCTAssertLessThanOrEqual(tray.frame.maxY, bar.frame.minY + 1, "The tray runs over the tab bar at the end")
+        app.terminate()
+    }
+
     @MainActor
     private func capture(_ stop: Stop) {
         let app = XCUIApplication()
         app.launchEnvironment = stop.env
+        app.launchArguments += Self.typeSizeArguments
         app.launch()
         XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30), "\(stop.name): the app never showed its tab bar")
         // The launch gate fades after ~1.1s; give the push and first paint room too.

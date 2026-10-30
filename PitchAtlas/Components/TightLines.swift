@@ -87,7 +87,9 @@ struct TightLines: View {
             .font(PitchAtlasType.font(face, size: size, relativeTo: relativeTo))
             .tracking(trackingEm * scaled)
             .lineLimit(1)
-            .fixedSize()
+            // a word wider than the line (one long word at the accessibility
+            // sizes) shrinks to fit rather than running off the edge
+            .minimumScaleFactor(0.5)
     }
 }
 
@@ -181,7 +183,8 @@ struct TightLinesLayout: Layout {
             let y = bounds.minY + Self.lineTop(index: row, pitch: pitch, natural: m.natural)
             for i in line {
                 if i > line.lowerBound, spaceAfter[i - 1] { x += m.space }
-                subviews[i].place(at: CGPoint(x: x, y: y), proposal: .unspecified)
+                subviews[i].place(at: CGPoint(x: x, y: y),
+                                  proposal: ProposedViewSize(width: min(m.widths[i], bounds.width), height: nil))
                 x += m.widths[i]
             }
         }

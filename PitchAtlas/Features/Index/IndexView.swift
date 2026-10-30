@@ -25,6 +25,7 @@ struct IndexView: View {
     @State private var selectedEntry: RepertoireEntry?
     @State private var selectedPitch: PitchAtlasEntry?
     @Environment(DeepLinkRouter.self) private var router
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         ZStack {
@@ -119,6 +120,8 @@ struct IndexView: View {
                 .tracking(40 * 0.01)
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
+                // display size already: capped so "INDEX" never runs off the phone
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
                 // .rfx-athletic sets the line at .9: Anton's own line is 1.5
                 .padding(.vertical, -12)
                 .padding(.top, 12)
@@ -345,7 +348,11 @@ struct IndexView: View {
     private func familySection(_ group: IndexGroup) -> some View {
         let accent = group.info.family.accent
         return VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .firstTextBaseline, spacing: 14) {
+            // the count drops under the family name at the accessibility sizes
+            let head = dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10))
+                : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: 14))
+            head {
                 Text(group.info.label.uppercased())
                     .font(PitchAtlasTheme.anton(24, relativeTo: .title2))
                     .tracking(24 * 0.01)

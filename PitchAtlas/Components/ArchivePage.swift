@@ -240,6 +240,9 @@ struct SectionHero<Badge: View, Extra: View>: View {
                     .lineSpacing(0.02 * size)
                     .foregroundStyle(PitchAtlasTheme.bone)
                     .fixedSize(horizontal: false, vertical: true)
+                    // already display size: inside the accessibility sizes a single
+                    // word ("underneath") outgrows the balanced measure and splits
+                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             }
             .frame(maxWidth: 18 * 0.5665 * size, alignment: .leading)
             .padding(.top, 20)

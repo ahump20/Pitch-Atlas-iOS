@@ -818,9 +818,14 @@ struct BenchSeg<Value: Hashable>: View {
     let options: [(value: Value, title: String)]
     let selected: Value
     let choose: (Value) -> Void
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        HStack(spacing: 0) {
+        // side by side at reading sizes; stacked at the accessibility sizes, where
+        // the row would otherwise cut each title short
+        let stacked = dynamicTypeSize.isAccessibilitySize
+        let layout = stacked ? AnyLayout(VStackLayout(spacing: 0)) : AnyLayout(HStackLayout(spacing: 0))
+        layout {
             ForEach(options.indices, id: \.self) { index in
                 let option = options[index]
                 let on = option.value == selected
@@ -828,10 +833,12 @@ struct BenchSeg<Value: Hashable>: View {
                     Text(option.title)
                         .font(PitchAtlasType.font(.hanken600, size: 12, relativeTo: .caption))
                         .foregroundStyle(on ? CompareInk.segOnInk : CompareInk.segInk)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
+                        .lineLimit(stacked ? nil : 1)
+                        .minimumScaleFactor(stacked ? 1 : 0.8)
+                        .fixedSize(horizontal: false, vertical: stacked)
                         .padding(.horizontal, 14)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(.vertical, stacked ? 8 : 0)
+                        .frame(maxWidth: .infinity, minHeight: stacked ? 44 : nil, maxHeight: stacked ? nil : .infinity)
                         .background(RoundedRectangle(cornerRadius: 5).fill(on ? CompareInk.segOnFill : CompareInk.segWash))
                         .overlay { if on { RoundedRectangle(cornerRadius: 5).strokeBorder(CompareInk.segOnRing, lineWidth: 1) } }
                         .contentShape(Rectangle())

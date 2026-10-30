@@ -288,7 +288,8 @@ private struct GripViewerPanel: View {
                 .tracking(em: 0.12, size: 10)
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .accessibilityHidden(true)
-            HStack(spacing: 8) { chips() }
+            // chips wrap at the largest text sizes instead of pushing the bench wide
+            FlowRow(spacing: 8, lineSpacing: 8) { chips() }
                 .accessibilityElement(children: .contain)
                 .accessibilityLabel(label == "View" ? "Grip view" : "Handedness")
         }
@@ -388,6 +389,7 @@ private struct StudyReading: View {
     @Binding var masterName: String
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -425,7 +427,11 @@ private struct StudyReading: View {
 
     /// `.study-steps`: four equal tabs on a rule; the open one takes the burnt foot.
     private var stepTabs: some View {
-        HStack(spacing: 0) {
+        // four across at reading sizes; one per row at the accessibility sizes,
+        // where four columns would break each label mid-word
+        let layout = dynamicTypeSize.isAccessibilitySize ? AnyLayout(VStackLayout(spacing: 0))
+                                                         : AnyLayout(HStackLayout(spacing: 0))
+        return layout {
             ForEach(Array(SpecimenReads.studySteps.enumerated()), id: \.offset) { index, label in
                 let on = step == index
                 Button { go(index) } label: {
