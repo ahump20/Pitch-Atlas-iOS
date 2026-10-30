@@ -49,7 +49,10 @@ over it and commit, or Xcode Cloud builds against the old pin. (Run 38 on
 
 - **Build numbers are monotonic.** Xcode Cloud increments the build number above
   whatever is in `project.yml`'s `CURRENT_PROJECT_VERSION` at archive time; never
-  hand-set a number below the last TestFlight build.
+  hand-set a number below the last TestFlight build. Builds reach App Store
+  Connect only from a local signed archive (Xcode Cloud's workflow has no
+  TestFlight audience), and a local archive keeps `CURRENT_PROJECT_VERSION` as
+  written, so set it to the exact build number you are about to upload.
 - **`action_required` means a compile error**, not a manual approval gate. Read
   the build log's error count and fix the code.
 - **Same-day merge-back:** a release branch merges back to `main` the day it
