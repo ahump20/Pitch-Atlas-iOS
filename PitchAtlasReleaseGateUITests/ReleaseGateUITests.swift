@@ -84,6 +84,11 @@ final class ReleaseGateUITests: XCTestCase {
             "Release gate for build 12: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
         )
 
+        // The keyboard covers "File post" and the tap lands on the keys, so put
+        // it away first by tapping the composer's plain caption.
+        app.staticTexts["A handle is enough. No real name required."].tap()
+        XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 3), "The keyboard never went away")
+
         let submit = app.buttons["File post"]
         XCTAssertTrue(submit.waitForExistence(timeout: 5), "File post button not found")
         if !submit.isHittable {
