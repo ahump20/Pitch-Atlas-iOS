@@ -140,9 +140,29 @@ Archive and upload from `PitchAtlas.xcodeproj` in the main `Pitch-Atlas-iOS` rep
 
 ## Promotional Text
 
-`An offline field manual for how pitches are gripped, shaped, sourced, and understood.`
+`The pitch, in your hand: grips, seams and sources, now with a softball wing and a slow-pitch Flight Lab that puts the zone at your height.`
 
-85 characters.
+138 characters (1.2.0).
+
+## What's New — 1.2.0
+
+Submitted 2026-10-30, 941 characters, read back from App Store Connect. No spin, speed or break figures.
+
+```text
+1.2.0 brings the app level with pitch-atlas.com.
+
+Softball gets its own wing: fastpitch and slow-pitch rooms, the pitches, and the pitchers who made them.
+
+The slow-pitch Flight Lab puts the zone at your height. Pick a rulebook (USSSA, USA Softball or USA Senior), set where you stand, and watch each lob drop through it: where it crosses the plate, where your barrel meets it, and where to look for it to land. It is a drawing, not a radar gun. No spin or speed figures.
+
+Pick two pitches and lay them side by side. Open one on the grip bench to study the hold, the release and the flight in one place.
+
+The pitch index is rebuilt: rows or a binder, with filters. Ten hidden notes are tucked around the archive.
+
+Discussion posts now file under a handle you type, never your email. You can also suggest a public pitching post; a person checks it before anything shows.
+
+And the screens hold together at the largest accessibility text sizes.
+```
 
 ## What's New — 1.1.0
 
@@ -210,6 +230,10 @@ Expected posture: answer the questionnaire honestly and let App Store Connect co
   confirmation. Image uploads require a claimed account.
 - Reporting, blocking, guidelines, image terms, and in-app account deletion are present.
 - No gambling, unrestricted web access, camera capture, video upload, or medical treatment advice.
+- Questions added by Apple in 2026 (answered 2026-10-30): Social Media no
+  (per-pitch threads, no feed), Social Media Disabled for Users Under 13 no
+  (no social feature, no Declared Age Range API call), Messaging and Chat no,
+  Advertising no. Calculated rating 9+, no override.
 
 ## Export Compliance
 
@@ -217,7 +241,7 @@ Answer: uses only exempt encryption through standard HTTPS/ATS. `ITSAppUsesNonEx
 
 ## App Review Notes
 
-Paste from `docs/APP-REVIEW-NOTES.md` after the `1.1.0` App Store version slot exists. It includes the final build, simulator test, TestFlight, Supabase, and App Store Connect proof for `1.1.0 (11)`.
+Paste from `docs/APP-REVIEW-NOTES.md` into the version's review details. For `1.2.0 (12)` it was written by API on 2026-10-30 (2689 characters).
 
 If reviewer credentials are required, provide a Supabase test account in the App Store Connect reviewer credentials fields only.
 
@@ -244,6 +268,13 @@ For every final screenshot report, verify the rendered state first, then include
 - Internal TestFlight has build `11` in `Pitch Atlas Internal`; `Pitch Atlas Internal Testers` and the external public-link group were not changed.
 - The new screenshots were uploaded to the `1.1.0` App Store version's
   `APP_IPHONE_67` set on 2026-07-03.
+- `1.2.0 (12)`: Xcode Cloud run 39 on `ac72447` succeeded; build `12` `VALID`;
+  ten 1320 × 2868 screenshots and the first app preview on the `1.2.0` version;
+  review submission `5fe9bf01-253c-40c9-986e-28aa98d445a1` `WAITING_FOR_REVIEW`
+  since 2026-10-30. Record: `docs/review-evidence/2026-10-30-build-12-submitted.md`.
+- The app preview is re-filmed with `PA_SHOTS=preview` and
+  `AppPreviewUITests.testPreviewTour` under `simctl io recordVideo`; previews and
+  screenshots are per version, so each release re-checks them.
 
 ## Internal Brand Guardrail
 

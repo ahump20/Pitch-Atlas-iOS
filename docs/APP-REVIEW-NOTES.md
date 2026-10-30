@@ -81,8 +81,6 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 ## Final Build Proof
 
-Build `1.1.0 (11)` was verified on the MacBook with the 6.9-inch Pitch Atlas screenshot simulator on 2026-07-03: 65 tests passed, 0 failed. App Store Connect reports build `11` as `VALID`, `APP_STORE_ELIGIBLE`, uploaded `2026-07-03T09:05:52-07:00`, with min OS `17.0` and `ITSAppUsesNonExemptEncryption=false`.
+Build `1.2.0 (12)` was archived from `release/1.2.0` (`ac72447`) on 2026-10-30 after the full suite passed (522 tests, 0 failed) and `testReviewerPath` walked the path above from a fresh install. App Store Connect reports build `12` as `VALID`, `APP_STORE_ELIGIBLE`, uploaded `2026-10-30T08:57:03-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`. It was submitted as review submission `5fe9bf01-253c-40c9-986e-28aa98d445a1` at `2026-10-30T16:28:48.708Z` (`WAITING_FOR_REVIEW`). Record: `docs/review-evidence/2026-10-30-build-12-submitted.md`.
 
-Build `11` supersedes builds `6` through `10` for the next public update. App Store Connect readback on 2026-07-03 showed build `11` in the internal TestFlight group `Pitch Atlas Internal`. After the older approved `1.0.1 (10)` release was manually released to unlock the slot, `1.1.0 (11)` was created, attached to build `11`, and submitted for App Review as review submission `7f3ac406-4831-42b9-b7be-b284a494a781` at `2026-07-03T22:50:48.918Z`. On 2026-07-07, App Store Connect reported that submission as `UNRESOLVED_ISSUES` / `REJECTED` for Guideline 2.3 because Apple could not locate Community posting. The review notes above now give the exact checked path to the feature.
-
-Screenshot proof for build `11` is in `docs/review-evidence/2026-07-03-build-11-screens/`.
+History: `1.1.0 (11)` was submitted 2026-07-03, rejected 2026-07-07 under Guideline 2.3 because Apple could not find Community posting, and approved after these notes gave the exact path; its proof is in `docs/review-evidence/2026-07-03-build-11-screens/`.
