@@ -14,6 +14,7 @@ import SwiftUI
 struct SoftballPitchView: View {
     let pitch: SoftballPitch
     @Environment(PitchStore.self) private var store
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var step: SoftballStudy.Step = .hold
     @State private var fullRecord = false
 
@@ -78,7 +79,7 @@ struct SoftballPitchView: View {
     }
 
     private func scroll(_ proxy: ScrollViewProxy, _ anchor: Anchor) {
-        withAnimation(.easeOut(duration: 0.3)) { proxy.scrollTo(anchor, anchor: .top) }
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.3)) { proxy.scrollTo(anchor, anchor: .top) }
     }
 
     // MARK: The stage
