@@ -11,9 +11,8 @@ import XCTest
 /// It proves the anonymous write path end to end — mint-on-write, the
 /// column-scoped insert, RETURNING id — by filing one honest, clearly
 /// labeled gate post. The post and its throwaway anonymous account are
-/// removed right afterward by the in-app account deletion step of the gate
-/// (Atlas → Account & Safety → Delete account), which doubles as the
-/// 5.1.1(v) proof.
+/// removed by the test's own teardown, through the in-app account deletion
+/// (Account & Safety → Delete account), which doubles as the 5.1.1(v) proof.
 final class ReleaseGateUITests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -52,6 +51,29 @@ final class ReleaseGateUITests: XCTestCase {
         )
         discussionTab.tap()
 
+        // The composer only shows once both contribution gates are on: the
+        // community guidelines and the 17+ confirmation (hidden once accepted).
+        for gate in ["I accept the community guidelines", "I confirm I am 17 or older"] {
+            let toggle = app.switches.matching(NSPredicate(format: "label BEGINSWITH %@", gate)).firstMatch
+            // shown until accepted once on this device
+            guard toggle.waitForExistence(timeout: 3) else { continue }
+            if !toggle.isHittable { scrollUpOnePage() }
+            if toggle.value as? String != "1" {
+                toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
+            }
+            XCTAssertEqual(toggle.value as? String, "1", "Gate did not turn on: \(gate)")
+        }
+
+        // Whatever happens below, delete the throwaway anonymous account (and
+        // its post with it) through the app's own Account & Safety screen.
+        addTeardownBlock { @MainActor in Self.deleteGateAccount() }
+
+        let handle = app.textFields["Your name"]
+        XCTAssertTrue(handle.waitForExistence(timeout: 5), "Your name field not found")
+        if !handle.isHittable { scrollUpOnePage() }
+        handle.tap()
+        handle.typeText("Release gate")
+
         let field = app.textFields["File a grip cue, breakdown, image, or clip. Keep it about the pitch."]
         if !(field.exists && field.isHittable) {
             scrollUpOnePage()
@@ -59,7 +81,7 @@ final class ReleaseGateUITests: XCTestCase {
         XCTAssertTrue(field.waitForExistence(timeout: 5), "Discussion composer field not found")
         field.tap()
         field.typeText(
-            "Release gate for build 11: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
+            "Release gate for build 12: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
         )
 
         let submit = app.buttons["File post"]
@@ -75,5 +97,28 @@ final class ReleaseGateUITests: XCTestCase {
             app.staticTexts["Filed ✓"].waitForExistence(timeout: 20),
             "The post was not accepted by the server within 20s"
         )
+    }
+
+    /// Relaunches onto Account & Safety (the anonymous session survives the
+    /// relaunch in the keychain) and deletes the account. If no account was
+    /// ever minted there is nothing to delete.
+    @MainActor
+    static func deleteGateAccount() {
+        let app = XCUIApplication()
+        app.terminate()
+        app.launchEnvironment = ["PA_ROUTE": "account"]
+        app.launch()
+        let delete = app.buttons["Delete account"]
+        guard delete.waitForExistence(timeout: 15) else { return }
+        for _ in 0..<6 where !delete.isHittable {
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+                .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3)))
+        }
+        delete.tap()
+        let confirm = app.alerts["Delete this account?"].buttons["Delete"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 5), "The delete confirmation never showed")
+        confirm.tap()
+        XCTAssertTrue(app.alerts["Account deleted"].waitForExistence(timeout: 20),
+                      "The gate account was not deleted; remove it by hand before release")
     }
 }
