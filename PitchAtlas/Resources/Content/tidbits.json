@@ -1,0 +1,152 @@
+[
+  {
+    "id": "stitches",
+    "title": "108 stitches, sewn by hand",
+    "claim": {
+      "value": "Every regulation baseball is closed by hand with 108 double stitches - 216 individual passes - of waxed red thread roughly 88 inches long. The standard was fixed in 1934, and the balls are still stitched by hand today.",
+      "source": {
+        "id": "wiki-baseball-ball",
+        "label": "Wikipedia, Baseball (ball)",
+        "url": "https://en.wikipedia.org/wiki/Baseball_(ball)",
+        "retrievedAt": "2026-06-04"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "The Shape Lab"
+  },
+  {
+    "id": "doubleday",
+    "title": "Doubleday did not invent baseball",
+    "claim": {
+      "value": "The story that Abner Doubleday invented baseball in Cooperstown in 1839 was manufactured by a commission in the 1900s working from one questionable letter. Doubleday was a West Point cadet that year, never claimed the game, and never once mentioned baseball in his own diaries.",
+      "source": {
+        "id": "wiki-doubleday-myth",
+        "label": "Wikipedia, Doubleday myth",
+        "url": "https://en.wikipedia.org/wiki/Doubleday_myth",
+        "retrievedAt": "2026-06-27"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "The footer vow"
+  },
+  {
+    "id": "sixty-six",
+    "title": "Why 60 feet, 6 inches",
+    "claim": {
+      "value": "The pitching rubber sits 60 feet 6 inches from home plate because in 1893 the distance was deliberately pushed back to cool off overpowering pitchers - not, as the legend goes, because a surveyor misread a blueprint that said \"60 feet 0 inches.\"",
+      "source": {
+        "id": "mlb-mound-distance",
+        "label": "MLB.com, Why is the mound 60 feet, 6 inches away?",
+        "url": "https://www.mlb.com/news/why-is-the-mound-60-ft-6-inches-away",
+        "retrievedAt": "2026-06-27"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "The Learn wing"
+  },
+  {
+    "id": "the-k",
+    "title": "Why K means strikeout",
+    "claim": {
+      "value": "The box score and the \"K\" for a strikeout both come from one 19th-century writer, Henry Chadwick. He used K because it is the last letter of \"struck\" - he had already given the letter S to the sacrifice.",
+      "source": {
+        "id": "britannica-k-strikeout",
+        "label": "Britannica, Why Does “K” Stand for a Strikeout in Baseball?",
+        "url": "https://www.britannica.com/story/why-does-k-stand-for-a-strikeout-in-baseball",
+        "retrievedAt": "2026-06-27"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "The colophon"
+  },
+  {
+    "id": "spitball-ban",
+    "title": "The 17 grandfathered spitballers",
+    "claim": {
+      "value": "When the spitball was outlawed in February 1920, seventeen pitchers were granted lifetime exemptions to keep throwing it. Burleigh Grimes threw the last legal spitball in 1934; three of the seventeen later reached the Hall of Fame.",
+      "source": {
+        "id": "sabr-spitball-deadball",
+        "label": "SABR, The Spitball and the End of the Deadball Era",
+        "url": "https://sabr.org/journal/article/the-spitball-and-the-end-of-the-deadball-era/",
+        "retrievedAt": "2026-06-27"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "A lost-pitch plate"
+  },
+  {
+    "id": "eephus",
+    "title": "The pitch you could watch sail",
+    "claim": {
+      "value": "Rip Sewell’s eephus floated as high as 25 feet before dropping over the plate, and in years of throwing it only Ted Williams ever homered off it, at the 1946 All-Star Game at Fenway Park. A teammate named it: \"Eephus ain’t nothing, and that’s what that ball is.\"",
+      "source": {
+        "id": "tht-eephus-sewell",
+        "label": "The Hardball Times, Rip Sewell, the eephus and the All-Star Game",
+        "url": "https://tht.fangraphs.com/rip-sewell-the-eephus-and-the-all-star-game/",
+        "retrievedAt": "2026-06-27"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "The Pitch Index search"
+  },
+  {
+    "id": "rubbing-mud",
+    "title": "The secret mud on every ball",
+    "claim": {
+      "value": "Before every major-league game, every new ball is rubbed with mud from a single secret spot on a Delaware River tributary - Lena Blackburne’s rubbing mud - to kill the factory shine and give pitchers grip. The exact location has been a family secret for generations.",
+      "source": {
+        "id": "hof-rubbing-mud",
+        "label": "Baseball Hall of Fame, Lena Blackburne rubbing mud a secret of the game",
+        "url": "https://baseballhall.org/discover/lena-blackburne-rubbing-mud-a-secret-of-the-game",
+        "retrievedAt": "2026-06-27"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "The Grip Library"
+  },
+  {
+    "id": "knuckleball",
+    "title": "A pitch that barely spins",
+    "claim": {
+      "value": "A knuckleball is thrown to spin as little as possible - ideally no more than about half a turn on the entire trip to the plate. That near-absence of spin is the whole trick: the seams steer the air, and the ball wanders unpredictably.",
+      "source": {
+        "id": "wiki-knuckleball",
+        "label": "Wikipedia, Knuckleball",
+        "url": "https://en.wikipedia.org/wiki/Knuckleball",
+        "retrievedAt": "2026-06-06"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "The Craftsmen hall"
+  },
+  {
+    "id": "first-night-game",
+    "title": "The night the lights came on",
+    "claim": {
+      "value": "The first big-league night game was May 24, 1935, at Cincinnati’s Crosley Field. President Franklin Roosevelt switched the lights on from the White House, pressing a gold telegraph key 500 miles away.",
+      "source": {
+        "id": "sabr-first-night-game",
+        "label": "SABR, May 24, 1935: Reds fans see the lights in first night game in MLB history",
+        "url": "https://sabr.org/gamesproj/game/may-24-1935-reds-fans-see-the-lights-in-first-night-game-in-mlb-history/",
+        "retrievedAt": "2026-06-27"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "The Lost Pitches hall"
+  },
+  {
+    "id": "curveball-claim",
+    "title": "Who really threw the first curveball",
+    "claim": {
+      "value": "Candy Cummings is credited with the curveball - he said he got the idea watching seashells curve through the air, first broke one off against Harvard in 1867, and entered the Hall of Fame for it in 1939. But the claim is disputed: Fred Goldsmith and Phonney Martin each said they threw it too.",
+      "source": {
+        "id": "wiki-candy-cummings",
+        "label": "Wikipedia, Candy Cummings",
+        "url": "https://en.wikipedia.org/wiki/Candy_Cummings",
+        "retrievedAt": "2026-06-27"
+      },
+      "confidence": "reputable-analysis"
+    },
+    "eggLocation": "A craftsman file"
+  }
+]

@@ -136,7 +136,7 @@ struct TeachingClipCard: View {
 
             Text("\u{201C}\(clip.caption)\u{201D}")
                 .font(PitchAtlasTheme.newsreaderItalic(13))
-                .foregroundStyle(PitchAtlasTheme.ink3)
+                .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
 
             if let post = clip.postURL {
@@ -153,6 +153,8 @@ struct TeachingClipCard: View {
                     .padding(.vertical, 9)
                     .padding(.horizontal, 16)
                     .overlay { Capsule().strokeBorder(accent.opacity(0.5), lineWidth: 1) }
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
                 }
                 .accessibilityLabel("Watch on TikTok. Opens the original post.")
             }

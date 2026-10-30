@@ -108,4 +108,11 @@ final class IndexScrollRestorationTests: XCTestCase {
         XCTAssertEqual(state.position, .row("two-seam"))
         return state
     }
+
+    func testTypingKeepsThePlaceWhileFiltersReturnToTop() {
+        XCTAssertFalse(IndexFilterChange.query.resetsToTop)
+        XCTAssertTrue(IndexFilterChange.family.resetsToTop)
+        XCTAssertTrue(IndexFilterChange.status.resetsToTop)
+        XCTAssertTrue(IndexFilterChange.sort.resetsToTop)
+    }
 }

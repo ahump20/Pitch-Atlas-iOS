@@ -87,6 +87,60 @@ struct GripFilmCard: View {
     }
 }
 
+// MARK: - The bare loop for a card window
+
+/// The clip (or, still, its poster) at its own aspect with no chrome, so the card
+/// window's FocusFill can crop it to the film's crop point. Under Reduce Motion,
+/// or wherever it should not play, the poster stands in — same frame, same moment.
+/// Off screen the poster stands in too, so a loop that scrolls away stops
+/// decoding (AutoplayVideo.tsx: play on enter, pause on leave).
+struct GripLoopFace: View {
+    let film: GripFilm
+    var plays = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var onScreen = false
+    /// The poster draws only within a screen of the reader (ScreenReach).
+    @State private var near = false
+
+    /// AutoplayVideo.tsx's observer (rootMargin 0 0 10% 0): any of the clip inside
+    /// the screen, or inside the tenth of a screen just below it, plays it.
+    static func isOnScreen(_ frame: CGRect, in screen: CGRect) -> Bool {
+        let root = CGRect(x: screen.minX, y: screen.minY, width: screen.width, height: screen.height * 1.1)
+        return !frame.intersection(root).isEmpty
+    }
+
+    var body: some View {
+        Group {
+            if plays, !reduceMotion, onScreen, let url = GripFilmCard.bundledURL(for: film.clip.src) {
+                LoopingClipView(url: url, poster: BundledImage.load(film.poster), start: film.start)
+                    .accessibilityHidden(true)
+            } else if near {
+                BundledImage(src: film.poster, alt: film.clip.alt, contentMode: .fit)
+                    .accessibilityHidden(true)
+            } else {
+                Color.clear
+            }
+        }
+        .background {
+            GeometryReader { geo in
+                Color.clear
+                    .onAppear { track(geo.frame(in: .global)) }
+                    .onChange(of: geo.frame(in: .global)) { _, frame in track(frame) }
+            }
+        }
+        // a lazy stack can drop a row without a last frame change
+        .onDisappear { onScreen = false; near = false }
+    }
+
+    private func track(_ frame: CGRect) {
+        let screen = UIScreen.main.bounds
+        let next = Self.isOnScreen(frame, in: screen)
+        if next != onScreen { onScreen = next }
+        let close = ScreenReach.isNear(frame, in: screen)
+        if close != near { near = close }
+    }
+}
+
 // MARK: - Real photo as the specimen face
 
 /// A real grip photo in the film card's chrome — the face wherever photography
@@ -151,9 +205,9 @@ private struct GripMediaCredit: View {
     @ViewBuilder
     private var labels: some View {
         SectionLabel(text: "From the hand", color: PitchAtlasTheme.cardbackInk3, size: 8)
-        SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.ink3, size: 8)
+        SectionLabel(text: "Not tracked data", color: PitchAtlasTheme.text3, size: 8)
         if let attribution {
-            SectionLabel(text: attribution, color: PitchAtlasTheme.ink3, size: 8)
+            SectionLabel(text: attribution, color: PitchAtlasTheme.text3, size: 8)
         }
     }
 }
@@ -163,10 +217,12 @@ private struct GripMediaCredit: View {
 private struct LoopingClipView: UIViewRepresentable {
     let url: URL
     let poster: UIImage?
+    /// The second the loop opens on (the web's GripClip.start), so a window opens on the grip.
+    var start: Double? = nil
 
     func makeUIView(context: Context) -> LoopingPlayerUIView {
         let view = LoopingPlayerUIView()
-        view.load(url: url, poster: poster)
+        view.load(url: url, poster: poster, start: start)
         return view
     }
 
@@ -204,7 +260,7 @@ final class LoopingPlayerUIView: UIView {
     @available(*, unavailable)
     required init?(coder: NSCoder) { nil }
 
-    func load(url: URL, poster: UIImage?) {
+    func load(url: URL, poster: UIImage?, start: Double? = nil) {
         posterView.image = poster
         posterView.isHidden = false
         // Muted ambient playback: never interrupts or ducks the user's audio.
@@ -228,6 +284,9 @@ final class LoopingPlayerUIView: UIView {
         }
         currentItemObservation = player.observe(\.currentItem, options: [.initial, .new]) { [weak self] _, _ in
             DispatchQueue.main.async { self?.observeCurrentItem() }
+        }
+        if let start, start > 0 {
+            player.seek(to: CMTime(seconds: start, preferredTimescale: 600), toleranceBefore: .zero, toleranceAfter: .zero)
         }
         player.play()
 

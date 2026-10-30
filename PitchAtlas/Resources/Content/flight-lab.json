@@ -1,0 +1,363 @@
+{
+  "rulebooks": [
+    {
+      "key": "usssa",
+      "name": "USSSA",
+      "short": "USSSA",
+      "arc": {
+        "arcMin": 3,
+        "arcMax": 10,
+        "arcMinFromRelease": true,
+        "strike": "zone"
+      },
+      "arcText": {
+        "value": "It must arc at least 3 ft after leaving the hand, and rise no higher than 10 ft above the ground.",
+        "source": {
+          "id": "sb-usssa-slowpitch-rulebook-2026",
+          "label": "USSSA — 2026 Slow Pitch Rule Book (PDF): Rule 6 Sec. 6 arc, the strike-zone definition, Rule 2 Sec. 2 official bat",
+          "url": "https://cms.usssa.net/wp-content/uploads/sites/2/2025/12/usssa-slowpitch-2026-rulebook-final.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Rule 6, Sec. 6 B–C. The lab reads the 3 ft as a rise above the release point."
+      },
+      "zoneText": {
+        "value": "Over any part of the plate, between the batter’s highest shoulder and the bottom of the front knee.",
+        "source": {
+          "id": "sb-usssa-slowpitch-rulebook-2026",
+          "label": "USSSA — 2026 Slow Pitch Rule Book (PDF): Rule 6 Sec. 6 arc, the strike-zone definition, Rule 2 Sec. 2 official bat",
+          "url": "https://cms.usssa.net/wp-content/uploads/sites/2/2025/12/usssa-slowpitch-2026-rulebook-final.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Definitions, Strike Zone; Rule 7, Sec. 4."
+      },
+      "illegalText": {
+        "value": "Take it and it’s a ball. Swing and it counts like any pitch.",
+        "source": {
+          "id": "sb-usssa-slowpitch-rulebook-2026",
+          "label": "USSSA — 2026 Slow Pitch Rule Book (PDF): Rule 6 Sec. 6 arc, the strike-zone definition, Rule 2 Sec. 2 official bat",
+          "url": "https://cms.usssa.net/wp-content/uploads/sites/2/2025/12/usssa-slowpitch-2026-rulebook-final.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Rule 6, Sec. 10: an unfairly delivered pitch is a ball, unless the batter swings."
+      }
+    },
+    {
+      "key": "usa",
+      "name": "USA Softball",
+      "short": "USA",
+      "arc": {
+        "arcMin": 6,
+        "arcMax": 10,
+        "arcMinFromRelease": false,
+        "strike": "zone"
+      },
+      "arcText": {
+        "value": "Peak between 6 and 10 ft above the ground.",
+        "source": {
+          "id": "sb-usa-softball-rulebook-2026",
+          "label": "USA Softball — 2026 Official Rules of Softball (PDF): Rule 6C slow-pitch arc, Senior strike mat, slow-pitch strike zone",
+          "url": "https://www.usasoftball.com/wp-content/uploads/sites/120/2026/01/1-12-2026-Rule-Book.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Rule 6C, Sec. 3 H. The 12 ft ceiling in the same rule is the Senior exception; the original lab read 6–12 ft for adult play from a secondary source."
+      },
+      "zoneText": {
+        "value": "Over any part of the plate, between the back shoulder and the front knee.",
+        "source": {
+          "id": "sb-usa-softball-rulebook-2026",
+          "label": "USA Softball — 2026 Official Rules of Softball (PDF): Rule 6C slow-pitch arc, Senior strike mat, slow-pitch strike zone",
+          "url": "https://www.usasoftball.com/wp-content/uploads/sites/120/2026/01/1-12-2026-Rule-Book.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Definitions, Strike Zone B (slow pitch)."
+      },
+      "illegalText": {
+        "value": "Illegal pitch, called by the umpire.",
+        "source": {
+          "id": "sb-usa-softball-rulebook-2026",
+          "label": "USA Softball — 2026 Official Rules of Softball (PDF): Rule 6C slow-pitch arc, Senior strike mat, slow-pitch strike zone",
+          "url": "https://www.usasoftball.com/wp-content/uploads/sites/120/2026/01/1-12-2026-Rule-Book.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Rule 6C, Sec. 3, Effect."
+      }
+    },
+    {
+      "key": "senior",
+      "name": "USA Senior",
+      "short": "Senior",
+      "arc": {
+        "arcMin": 6,
+        "arcMax": 12,
+        "arcMinFromRelease": false,
+        "strike": "mat"
+      },
+      "arcText": {
+        "value": "Peak between 6 and 12 ft above the ground.",
+        "source": {
+          "id": "sb-usa-softball-rulebook-2026",
+          "label": "USA Softball — 2026 Official Rules of Softball (PDF): Rule 6C slow-pitch arc, Senior strike mat, slow-pitch strike zone",
+          "url": "https://www.usasoftball.com/wp-content/uploads/sites/120/2026/01/1-12-2026-Rule-Book.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Rule 6C, Sec. 3 H, Senior Slow Pitch exception."
+      },
+      "zoneText": {
+        "value": "A strike lands on the plate or on the mat behind it.",
+        "source": {
+          "id": "sb-usa-softball-rulebook-2026",
+          "label": "USA Softball — 2026 Official Rules of Softball (PDF): Rule 6C slow-pitch arc, Senior strike mat, slow-pitch strike zone",
+          "url": "https://www.usasoftball.com/wp-content/uploads/sites/120/2026/01/1-12-2026-Rule-Book.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Definitions, Strike Zone C: a 17 in by 32.5 in mat; the shoulder-to-knee zone is eliminated."
+      },
+      "illegalText": {
+        "value": "Illegal pitch, called by the umpire.",
+        "source": {
+          "id": "sb-usa-softball-rulebook-2026",
+          "label": "USA Softball — 2026 Official Rules of Softball (PDF): Rule 6C slow-pitch arc, Senior strike mat, slow-pitch strike zone",
+          "url": "https://www.usasoftball.com/wp-content/uploads/sites/120/2026/01/1-12-2026-Rule-Book.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Rule 6C, Sec. 3, Effect."
+      }
+    }
+  ],
+  "lobs": [
+    {
+      "key": "belt",
+      "name": "Belt-high lob",
+      "color": "#bf5700",
+      "params": {
+        "value": {
+          "apex": 9,
+          "land": 36,
+          "side": 0,
+          "rpm": 110,
+          "push": 0
+        },
+        "confidence": "unverified",
+        "note": "Example arc, set by hand."
+      }
+    },
+    {
+      "key": "low",
+      "name": "Low strike",
+      "color": "#cdba8e",
+      "params": {
+        "value": {
+          "apex": 6.5,
+          "land": 31,
+          "side": 0,
+          "rpm": 150,
+          "push": 0
+        },
+        "confidence": "unverified",
+        "note": "Example arc, set by hand."
+      }
+    },
+    {
+      "key": "deep",
+      "name": "Deep strike",
+      "color": "#7fc6ff",
+      "params": {
+        "value": {
+          "apex": 9,
+          "land": 85,
+          "side": 0,
+          "rpm": 110,
+          "push": 0
+        },
+        "confidence": "unverified",
+        "note": "Example arc, set by hand."
+      }
+    },
+    {
+      "key": "inside",
+      "name": "Inside lob",
+      "color": "#ff2d44",
+      "params": {
+        "value": {
+          "apex": 9,
+          "land": 36,
+          "side": -8,
+          "rpm": 110,
+          "push": 0
+        },
+        "confidence": "unverified",
+        "note": "Example arc, set by hand."
+      }
+    },
+    {
+      "key": "flat",
+      "name": "Flat lob",
+      "color": "#34e27e",
+      "params": {
+        "value": {
+          "apex": 6.5,
+          "land": 66,
+          "side": 0,
+          "rpm": 150,
+          "push": 0
+        },
+        "confidence": "unverified",
+        "note": "Example arc, set by hand."
+      }
+    },
+    {
+      "key": "rainbow",
+      "name": "Rainbow",
+      "color": "#6f8cb0",
+      "params": {
+        "value": {
+          "apex": 11.6,
+          "land": 26,
+          "side": 0,
+          "rpm": 80,
+          "push": 0
+        },
+        "confidence": "unverified",
+        "note": "Example arc, set by hand."
+      }
+    }
+  ],
+  "measuredBatter": {
+    "stance": {
+      "value": {
+        "heightIn": 62,
+        "toesIn": 22,
+        "box": "middle",
+        "batIn": 34
+      },
+      "source": {
+        "id": "sb-flight-lab-measured-swing",
+        "label": "Pitch Atlas — one batter’s measured swing (their own video, calibrated off home plate)",
+        "url": "https://pitch-atlas.com/softball/flight-lab",
+        "retrievedAt": "2026-10-24"
+      },
+      "confidence": "community-firsthand",
+      "note": "One batter’s measured swing, calibrated off home plate in their own video."
+    },
+    "swing": {
+      "value": {
+        "landmarks": {
+          "knee": 0.242,
+          "belt": 0.503,
+          "chest": 0.661,
+          "shoulder": 0.79
+        },
+        "stanceDepthPerHeight": 0.089,
+        "stridePerHeight": 0.16,
+        "armReachPerHeight": 0.3432,
+        "handsFromKnobIn": 3
+      },
+      "source": {
+        "id": "sb-flight-lab-measured-swing",
+        "label": "Pitch Atlas — one batter’s measured swing (their own video, calibrated off home plate)",
+        "url": "https://pitch-atlas.com/softball/flight-lab",
+        "retrievedAt": "2026-10-24"
+      },
+      "confidence": "community-firsthand",
+      "note": "One batter’s measured swing, calibrated off home plate in their own video. Scaled to other heights by these ratios, which is a model assumption."
+    },
+    "bat": {
+      "value": {
+        "lengthIn": 34,
+        "diameterIn": 2.25
+      },
+      "source": {
+        "id": "sb-flight-lab-measured-swing",
+        "label": "Pitch Atlas — one batter’s measured swing (their own video, calibrated off home plate)",
+        "url": "https://pitch-atlas.com/softball/flight-lab",
+        "retrievedAt": "2026-10-24"
+      },
+      "confidence": "community-firsthand",
+      "note": "One batter’s measured swing, calibrated off home plate in their own video."
+    },
+    "barrelAngleDeg": {
+      "value": 10,
+      "confidence": "unverified",
+      "note": "One swing. The barrel angle at contact, read from a single swing."
+    }
+  },
+  "notes": [
+    {
+      "label": "Bat: 34 in max",
+      "claim": {
+        "value": "The official bat is no more than 34 in long and 2¼ in across at its widest.",
+        "source": {
+          "id": "sb-usssa-slowpitch-rulebook-2026",
+          "label": "USSSA — 2026 Slow Pitch Rule Book (PDF): Rule 6 Sec. 6 arc, the strike-zone definition, Rule 2 Sec. 2 official bat",
+          "url": "https://cms.usssa.net/wp-content/uploads/sites/2/2025/12/usssa-slowpitch-2026-rulebook-final.pdf",
+          "retrievedAt": "2026-10-24",
+          "season": "2026"
+        },
+        "confidence": "official-data",
+        "note": "Rule 2, Sec. 2."
+      }
+    },
+    {
+      "label": "Slow-pitch bats are made at 34 in",
+      "claim": {
+        "value": "Slow-pitch bats are sold at 34 in, so a batter coming from a shorter baseball bat gains reach they may not account for.",
+        "source": {
+          "id": "sb-baseballmonkey-slowpitch-bats",
+          "label": "Baseball Monkey — Slowpitch Softball Bat Guide (all slowpitch bats are 34 in)",
+          "url": "https://www.baseballmonkey.com/learn/slowpitch-softball-bat-guide",
+          "retrievedAt": "2026-10-24"
+        },
+        "confidence": "secondhand-attributed",
+        "note": "Relayed by a bat retailer’s buying guide, not a manufacturer spec sheet."
+      }
+    },
+    {
+      "label": "Sweet spot: about 6 in from the end",
+      "claim": {
+        "value": "The sweet spot is a region about 5 to 7 in from the barrel end; the lab places it at 6 in.",
+        "source": {
+          "id": "sb-russell-sweetspot",
+          "label": "Daniel A. Russell, Penn State — What (and where) is the sweet spot of a baseball/softball bat?",
+          "url": "https://www.acs.psu.edu/drussell/bats/sweetspot.html",
+          "retrievedAt": "2026-10-24"
+        },
+        "confidence": "reputable-analysis",
+        "approximate": true,
+        "note": "It moves an inch or two between bats, so the lab’s 6 in is a middle value, not your bat’s."
+      }
+    },
+    {
+      "label": "Lift and drag: baseball fits",
+      "claim": {
+        "value": "The flight uses a constant drag coefficient and a spin-dependent lift fit from baseball aerodynamics, applied to a 12 in softball.",
+        "source": {
+          "id": "sb-kensrud-thesis",
+          "label": "Jeffrey R. Kensrud, Determining Aerodynamic Properties of Sports Balls in Situ (M.S. thesis, Washington State University)",
+          "url": "https://baseball.physics.illinois.edu/kensrudthesis.pdf",
+          "retrievedAt": "2026-10-24"
+        },
+        "confidence": "reputable-analysis",
+        "approximate": true,
+        "note": "Borrowed from baseball fits; on a slow-pitch softball the path is a close model, not a measurement."
+      }
+    }
+  ]
+}

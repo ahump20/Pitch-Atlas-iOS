@@ -34,7 +34,7 @@ struct CommunityGuidelinesView: View {
                         )
                         rule(
                             "Seventeen and older to contribute",
-                            "Reading the field manual needs no account. Posting, replying, and uploading require sign-in and confirmation that you are 17 or older."
+                            "Reading the field manual needs no account. Posting and replying need no sign-in either, only confirmation that you are 17 or older. Uploading an image needs a claimed account."
                         )
                         contact
                     }
@@ -90,6 +90,7 @@ struct CommunityGuidelinesView: View {
                 Label("Support", systemImage: "lifepreserver")
             }
             .buttonStyle(.bordered)
+            .controlSize(.large)
         }
         .leatherPress()
     }

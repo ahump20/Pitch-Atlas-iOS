@@ -134,7 +134,7 @@ private struct LeatherPores: View {
             let dot = max(0.45, size.width * 0.003)
             for p in Self.pores {
                 let rect = CGRect(x: p.x * size.width, y: p.y * size.height, width: dot, height: dot * 0.7)
-                context.fill(Path(ellipseIn: rect), with: .color(Color(hex: 0x746F63).opacity(0.12)))
+                context.fill(Path(ellipseIn: rect), with: .color(BallMaterial.color(BallMaterial.pore).opacity(0.12)))
                 context.fill(Path(ellipseIn: rect.offsetBy(dx: 0, dy: -0.4)), with: .color(.white.opacity(0.16)))
             }
         }.accessibilityHidden(true).allowsHitTesting(false)
@@ -229,6 +229,15 @@ struct MotionCueOverlay: View {
     }
 }
 
+extension PitchMotion {
+    /// The web schematic's default (lib/seam SPIN_AXIS, the four-seam's near-horizontal
+    /// backspin), with no movement claim: the plain cover a basic file draws.
+    static let schematicReference = PitchMotion(
+        spinAxis: Vec3(x: SeamMath.spinAxis.x, y: SeamMath.spinAxis.y, z: SeamMath.spinAxis.z),
+        forceLabel: "", gyro: nil, verticalShape: nil, horizontalDir: .none,
+        breakView: .movement, indeterminateBreak: nil)
+}
+
 struct SeamBall: View {
     let motion: PitchMotion
     var size: CGFloat = 220
@@ -240,6 +249,17 @@ struct SeamBall: View {
     var hand: Handedness = .right
     var showMovement = true
     var referenceContacts: [SeamAnchoredPoint]? = nil
+    /// Numbered pips on the study ball; plain marks on a thumbnail too small for
+    /// numbers (the card back's grip twin), as the web hides its labels there.
+    var contactMarks: ContactMarks = .numbered
+    /// The herringbone lacing; off where the web's schematic draws showStitches={false}
+    /// (the craftsman plate's 56pt actor).
+    var showsLacing = true
+    /// The finger a reader picked at the grip bench (step 02's contact buttons):
+    /// its pip fills cyan and grows, as the site's hand lights the touched pad.
+    var highlightedFinger: Finger? = nil
+
+    enum ContactMarks { case numbered, dots }
 
     private var facing: simd_quatd? {
         guard referenceContacts != nil || !contacts.isEmpty else { return nil }
@@ -265,8 +285,7 @@ struct SeamBall: View {
         ZStack {
             // Off-white, matte hide. Pores are authored surface texture, never pitch data.
             Circle()
-                .fill(RadialGradient(colors: [Color(hex: 0xFCFBF5), Color(hex: 0xF0EFE8), Color(hex: 0xD9D8D1),
-                                              Color(hex: 0x9B9C96), Color(hex: 0x575B59)],
+                .fill(RadialGradient(colors: BallMaterial.hide.map(BallMaterial.color),
                                      center: .init(x: 0.33, y: 0.25), startRadius: 0, endRadius: size * 0.70))
                 .overlay { LeatherPores().clipShape(Circle()) }
                 .overlay { Circle().strokeBorder(Color.white.opacity(0.28), lineWidth: 0.6) }
@@ -274,22 +293,24 @@ struct SeamBall: View {
 
             // Only the front hemisphere is drawn; the shared seam runs behind the hide.
             SeamShape(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0x655B51).opacity(0.7),
+                .stroke(BallMaterial.color(BallMaterial.seamGroove).opacity(0.7),
                         style: StrokeStyle(lineWidth: max(1, size * 0.010), lineCap: .round, lineJoin: .round))
             SeamShape(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0xF8F3E8).opacity(0.55),
+                .stroke(BallMaterial.color(BallMaterial.seamLip).opacity(0.55),
                         style: StrokeStyle(lineWidth: max(0.5, size * 0.0035), lineCap: .round))
                 .offset(y: max(0.45, size * 0.003))
-            SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0x573831).opacity(0.6),
-                        style: StrokeStyle(lineWidth: max(1, size * 0.0085), lineCap: .round, lineJoin: .round))
-            SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0x9E2B35),
-                        style: StrokeStyle(lineWidth: max(0.65, size * 0.0058), lineCap: .round, lineJoin: .round))
-            SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
-                .stroke(Color(hex: 0xD88269).opacity(0.6),
-                        style: StrokeStyle(lineWidth: max(0.25, size * 0.0018), lineCap: .round))
-                .offset(y: -0.3)
+            if showsLacing {
+                SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
+                    .stroke(BallMaterial.color(BallMaterial.lacingShadow).opacity(0.6),
+                            style: StrokeStyle(lineWidth: max(1, size * 0.0085), lineCap: .round, lineJoin: .round))
+                SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
+                    .stroke(BallMaterial.color(BallMaterial.stitch),
+                            style: StrokeStyle(lineWidth: max(0.65, size * 0.0058), lineCap: .round, lineJoin: .round))
+                SeamLacing(rotation: axisAngle, orientation: orientation, hand: hand, facing: facing)
+                    .stroke(BallMaterial.color(BallMaterial.stitchCrown).opacity(0.6),
+                            style: StrokeStyle(lineWidth: max(0.25, size * 0.0018), lineCap: .round))
+                    .offset(y: -0.3)
+            }
 
             // Motion overlay: gyro dot / flutter ring / break arrow.
             if showMovement { MotionCueOverlay(motion: motion, size: size) }
@@ -297,7 +318,10 @@ struct SeamBall: View {
             // Finger contacts, numbered, sitting on the seam where the hand grips.
             ForEach(contacts, id: \.self) { contact in
                 if studyProjection(SeamMath.seamPoint(contact.seamT * 2 * .pi), orientation: orientation, facing: facing).z >= 0 {
-                    contactMarker(contact).position(seamPoint(at: contact.seamT))
+                    Group {
+                        if contactMarks == .dots { contactDot } else { contactMarker(contact) }
+                    }
+                    .position(seamPoint(at: contact.seamT))
                 }
             }
         }
@@ -308,15 +332,24 @@ struct SeamBall: View {
 
     /// A numbered finger pip: a dark disc so the seam reads under it, a gold ring,
     /// and the finger's number/letter. Scaled to the ball so it works at 110 or 240.
+    /// Where a finger meets the leather, unnumbered: a cyan mark ringed in void.
+    private var contactDot: some View {
+        let dot = max(4, size * 0.11)
+        return Circle().fill(PitchAtlasTheme.cyan)
+            .frame(width: dot, height: dot)
+            .overlay(Circle().strokeBorder(PitchAtlasTheme.void.opacity(0.85), lineWidth: max(0.75, size * 0.02)))
+    }
+
     private func contactMarker(_ contact: SeamAnchoredPoint) -> some View {
-        let dot = max(14, size * 0.085)
+        let lit = contact.finger == highlightedFinger
+        let dot = max(14, size * 0.085) * (lit ? 1.3 : 1)
         return Text(contact.finger.pipLabel)
             .font(PitchAtlasTheme.martian(max(8, size * 0.042)))
-            .foregroundStyle(PitchAtlasTheme.cyan)
+            .foregroundStyle(lit ? PitchAtlasTheme.void : PitchAtlasTheme.cyan)
             .frame(width: dot, height: dot)
-            .background(Circle().fill(PitchAtlasTheme.void.opacity(0.82)))
+            .background(Circle().fill(lit ? PitchAtlasTheme.cyan : PitchAtlasTheme.void.opacity(0.82))
+                .shadow(color: lit ? PitchAtlasTheme.cyan.opacity(0.7) : PitchAtlasTheme.void.opacity(0.6), radius: lit ? 6 : 2))
             .overlay(Circle().strokeBorder(PitchAtlasTheme.cyan, lineWidth: 1.5))
-            .shadow(color: PitchAtlasTheme.void.opacity(0.6), radius: 2)
     }
 
     private var accessibilityText: String {

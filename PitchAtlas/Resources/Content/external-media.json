@@ -1,0 +1,268 @@
+{
+  "sources": [
+    {
+      "id": "pitching-ninja-x",
+      "platform": "x",
+      "name": "Pitching Ninja",
+      "handle": "@PitchingNinja",
+      "canonicalUrl": "https://x.com/PitchingNinja",
+      "trustLane": "trusted-mind",
+      "ingestMethod": "api",
+      "autoPublish": true,
+      "active": true
+    },
+    {
+      "id": "pitching-ninja-tiktok",
+      "platform": "tiktok",
+      "name": "Pitching Ninja",
+      "handle": "@pitchingninja",
+      "canonicalUrl": "https://www.tiktok.com/@pitchingninja",
+      "trustLane": "trusted-mind",
+      "ingestMethod": "official-feed",
+      "autoPublish": false,
+      "active": true
+    },
+    {
+      "id": "bsf-pitching-performance",
+      "platform": "tiktok",
+      "name": "BSF Pitching Performance",
+      "handle": "@bsf_pitchingperformance",
+      "canonicalUrl": "https://www.tiktok.com/@bsf_pitchingperformance",
+      "trustLane": "heritage",
+      "ingestMethod": "editorial",
+      "autoPublish": false,
+      "active": true
+    },
+    {
+      "id": "ncaa-baseball-tiktok",
+      "platform": "tiktok",
+      "name": "NCAA Baseball",
+      "handle": "@ncaabsb",
+      "canonicalUrl": "https://www.tiktok.com/@ncaabsb",
+      "trustLane": "trusted-mind",
+      "ingestMethod": "editorial",
+      "autoPublish": false,
+      "active": true
+    },
+    {
+      "id": "roger-clemens-x",
+      "platform": "x",
+      "name": "Roger Clemens",
+      "handle": "@rogerclemens",
+      "canonicalUrl": "https://x.com/rogerclemens",
+      "trustLane": "heritage",
+      "ingestMethod": "editorial",
+      "autoPublish": false,
+      "active": true
+    }
+  ],
+  "items": [
+    {
+      "id": "ryan-four-two-seam",
+      "platform": "tiktok",
+      "externalId": "7544907808555240735",
+      "canonicalUrl": "https://www.tiktok.com/@bsf_pitchingperformance/video/7544907808555240735",
+      "sourceId": "bsf-pitching-performance",
+      "sourceName": "BSF Pitching Performance",
+      "sourceHandle": "@bsf_pitchingperformance",
+      "sourceUrl": "https://www.tiktok.com/@bsf_pitchingperformance",
+      "title": "Nolan Ryan on his four-seam and two-seam",
+      "lede": "Ryan in his own words on the two fastballs. The four-seam stays true and rides up on the hitter; the two-seam runs in on a righty and away from a lefty. It's the exact four/two split these specimen pages are built on, taught by the man who threw it.",
+      "sourceCaption": "Nolan Ryan didn't just throw gas — he understood movement. His breakdown of why the 4-seam plays up, and why the 2-seam is deadly running in on a right-handed hitter / away from a lefty.",
+      "publishedAt": "2026-06-25",
+      "retrievedAt": "2026-06-25",
+      "tags": {
+        "pitchSlugs": [
+          "four-seam",
+          "two-seam"
+        ],
+        "craftsmanSlugs": [
+          "nolan-ryan"
+        ],
+        "families": [
+          "fastball"
+        ],
+        "topics": [
+          "grip",
+          "teaching"
+        ]
+      },
+      "trustLane": "heritage",
+      "moderationState": "published",
+      "availability": "available",
+      "embedMode": "official-embed",
+      "featured": true
+    },
+    {
+      "id": "rogers-rising-breaker",
+      "platform": "tiktok",
+      "externalId": "6958820538441600262",
+      "canonicalUrl": "https://www.tiktok.com/@pitchingninja/video/6958820538441600262",
+      "sourceId": "pitching-ninja-tiktok",
+      "sourceName": "Pitching Ninja",
+      "sourceHandle": "@pitchingninja",
+      "sourceUrl": "https://www.tiktok.com/@pitchingninja",
+      "title": "Tyler Rogers' rising breaking ball",
+      "lede": "From a submarine slot barely a foot off the ground, Rogers’ breaker drops far less than the sinker it tunnels with, so it reads as rising — though gravity pulls it down the whole way. He calls it \"a slider, but almost a curveball.\"",
+      "sourceCaption": "Tyler Rogers, Rising Curveball 🛸",
+      "publishedAt": "2026-06-25",
+      "retrievedAt": "2026-06-25",
+      "tags": {
+        "pitchSlugs": [
+          "slider"
+        ],
+        "craftsmanSlugs": [],
+        "families": [
+          "breaking"
+        ],
+        "topics": [
+          "grip",
+          "teaching"
+        ]
+      },
+      "trustLane": "trusted-mind",
+      "moderationState": "published",
+      "availability": "available",
+      "embedMode": "official-embed",
+      "featured": false
+    },
+    {
+      "id": "ncaa-ace-grips",
+      "platform": "tiktok",
+      "externalId": "7245789529104239915",
+      "canonicalUrl": "https://www.tiktok.com/@ncaabsb/video/7245789529104239915",
+      "sourceId": "ncaa-baseball-tiktok",
+      "sourceName": "NCAA Baseball",
+      "sourceHandle": "@ncaabsb",
+      "sourceUrl": "https://www.tiktok.com/@ncaabsb",
+      "title": "College aces show their grips",
+      "lede": "NCAA Baseball’s grip tour — Chase Dollander, Paul Skenes, Jac Caglianone and Rhett Lowder showing how they actually hold the ball.",
+      "sourceCaption": "Take a look at these aces' pitch grips: Chase Dollander, Paul Skenes, Jac Caglianone, and Rhett Lowder.",
+      "publishedAt": "2026-06-25",
+      "retrievedAt": "2026-06-25",
+      "tags": {
+        "pitchSlugs": [
+          "circle-change"
+        ],
+        "craftsmanSlugs": [
+          "paul-skenes"
+        ],
+        "families": [
+          "offspeed"
+        ],
+        "topics": [
+          "grip",
+          "teaching"
+        ]
+      },
+      "trustLane": "trusted-mind",
+      "moderationState": "published",
+      "availability": "available",
+      "embedMode": "official-embed",
+      "featured": true
+    },
+    {
+      "id": "rivera-cutter-teaching",
+      "platform": "x",
+      "externalId": "1061649568847269889",
+      "canonicalUrl": "https://x.com/PitchingNinja/status/1061649568847269889",
+      "sourceId": "pitching-ninja-x",
+      "sourceName": "Pitching Ninja",
+      "sourceHandle": "@PitchingNinja",
+      "sourceUrl": "https://x.com/PitchingNinja",
+      "title": "Rivera passes the cutter hand to hand",
+      "lede": "Mariano Rivera walks Roy Halladay and Scott Kazmir through the cutter grip itself: pitching knowledge preserved as a lesson, not flattened into a stat line.",
+      "publishedAt": "2018-11-11",
+      "retrievedAt": "2026-06-09",
+      "tags": {
+        "pitchSlugs": [
+          "cutter"
+        ],
+        "craftsmanSlugs": [
+          "mariano-rivera"
+        ],
+        "families": [
+          "fastball"
+        ],
+        "topics": [
+          "grip",
+          "heritage",
+          "teaching"
+        ]
+      },
+      "trustLane": "heritage",
+      "moderationState": "published",
+      "availability": "available",
+      "embedMode": "official-embed",
+      "featured": true
+    },
+    {
+      "id": "verlander-four-seam-teaching",
+      "platform": "x",
+      "externalId": "1016866886863278080",
+      "canonicalUrl": "https://x.com/PitchingNinja/status/1016866886863278080",
+      "sourceId": "pitching-ninja-x",
+      "sourceName": "Pitching Ninja",
+      "sourceHandle": "@PitchingNinja",
+      "sourceUrl": "https://x.com/PitchingNinja",
+      "title": "Verlander shows the four-seam grip and release",
+      "lede": "A credited teaching clip filed beside the four-seam specimen so the grip, release, and spin-axis conversation can stay connected.",
+      "publishedAt": "2018-07-11",
+      "retrievedAt": "2026-06-09",
+      "tags": {
+        "pitchSlugs": [
+          "four-seam"
+        ],
+        "craftsmanSlugs": [
+          "justin-verlander"
+        ],
+        "families": [
+          "fastball"
+        ],
+        "topics": [
+          "grip",
+          "release",
+          "teaching"
+        ]
+      },
+      "trustLane": "trusted-mind",
+      "moderationState": "published",
+      "availability": "available",
+      "embedMode": "official-embed"
+    },
+    {
+      "id": "pedro-cutter-grip",
+      "platform": "x",
+      "externalId": "972128267888222209",
+      "canonicalUrl": "https://x.com/PitchingNinja/status/972128267888222209",
+      "sourceId": "pitching-ninja-x",
+      "sourceName": "Pitching Ninja",
+      "sourceHandle": "@PitchingNinja",
+      "sourceUrl": "https://x.com/PitchingNinja",
+      "title": "Pedro Martínez on the cutter grip",
+      "lede": "A master explaining the hold in his own terms, kept with its original post and filed where a cutter reader can use it.",
+      "publishedAt": "2018-03-09",
+      "retrievedAt": "2026-06-09",
+      "tags": {
+        "pitchSlugs": [
+          "cutter"
+        ],
+        "craftsmanSlugs": [
+          "pedro-martinez"
+        ],
+        "families": [
+          "fastball"
+        ],
+        "topics": [
+          "grip",
+          "heritage",
+          "teaching"
+        ]
+      },
+      "trustLane": "heritage",
+      "moderationState": "published",
+      "availability": "available",
+      "embedMode": "official-embed"
+    }
+  ]
+}

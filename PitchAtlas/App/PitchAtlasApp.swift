@@ -5,14 +5,19 @@ import UIKit
 struct PitchAtlasApp: App {
     @Environment(\.scenePhase) private var scenePhase
     /// The bundled content, loaded once at launch and shared via @Environment.
-    @State private var store = PitchStore()
+    @State private var store: PitchStore
     /// The gyroscope feed for the foil rake, shared across surfaces.
     @State private var motion = MotionProvider()
     /// Supabase auth/session state for community actions.
     @State private var auth = AuthSessionStore()
+    /// The hidden archive notes found on this device (the site's localStorage set).
+    @State private var notes: HiddenNotes
 
     init() {
         AppChromeAppearance.install()
+        let store = PitchStore()
+        _store = State(initialValue: store)
+        _notes = State(initialValue: HiddenNotes(known: store.tidbits.map(\.id)))
     }
 
     var body: some Scene {
@@ -22,6 +27,7 @@ struct PitchAtlasApp: App {
                     .environment(store)
                     .environment(motion)
                     .environment(auth)
+                    .environment(\.hiddenNotes, notes)
                     .preferredColorScheme(.dark)
                     .task {
                         motion.start()
@@ -40,10 +46,10 @@ struct PitchAtlasApp: App {
 
 private enum AppChromeAppearance {
     static func install() {
-        let field = UIColor(red: 7.0 / 255.0, green: 5.0 / 255.0, blue: 9.0 / 255.0, alpha: 0.98)
-        let bone = UIColor(red: 246.0 / 255.0, green: 241.0 / 255.0, blue: 230.0 / 255.0, alpha: 1)
-        let bone2 = UIColor(red: 201.0 / 255.0, green: 194.0 / 255.0, blue: 176.0 / 255.0, alpha: 0.78)
-        let cyan = UIColor(red: 55.0 / 255.0, green: 214.0 / 255.0, blue: 255.0 / 255.0, alpha: 1)
+        let field = UIColor(web: WebTokens.Palette.void).withAlphaComponent(0.98)
+        let bone = UIColor(web: WebTokens.Palette.bone)
+        let bone2 = UIColor(web: WebTokens.Palette.bone2).withAlphaComponent(0.78)
+        let cyan = UIColor(web: WebTokens.Palette.cyan)
 
         let tab = UITabBarAppearance()
         tab.configureWithTransparentBackground()
@@ -104,6 +110,11 @@ struct RootView: View {
     @Environment(AuthSessionStore.self) private var auth
     @State private var router = DeepLinkRouter()
     @State private var comparison = CompareSelection()
+    @State private var bench = SpecimenBench()
+    @State private var toasts = ToastCenter()
+    @Environment(\.hiddenNotes) private var notes
+    /// DEBUG-only: a hidden note's reveal (or the found index) opened at launch.
+    @State private var debugNote: HiddenNoteSheet.Mode?
 
     /// DEBUG-only launch override so QA can open straight to a tab; production always starts on Atlas.
     static var initialTab: AppTab {
@@ -117,36 +128,80 @@ struct RootView: View {
 
     var body: some View {
         @Bindable var router = router
+        @Bindable var bench = bench
         TabView(selection: $router.selection) {
             NavigationStack(path: $router.atlasPath) {
                 TabScaffold(tab: .atlas) { AtlasView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.atlas.title, systemImage: AppTab.atlas.systemImage) }
                 .tag(AppTab.atlas)
             NavigationStack(path: $router.indexPath) {
                 TabScaffold(tab: .index) { IndexView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.index.title, systemImage: AppTab.index.systemImage) }
                 .tag(AppTab.index)
             NavigationStack(path: $router.gripsPath) {
                 TabScaffold(tab: .grips) { GripsView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.grips.title, systemImage: AppTab.grips.systemImage) }
                 .tag(AppTab.grips)
             NavigationStack(path: $router.craftsmenPath) {
                 TabScaffold(tab: .craftsmen) { CraftsmenView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.craftsmen.title, systemImage: AppTab.craftsmen.systemImage) }
                 .tag(AppTab.craftsmen)
             NavigationStack(path: $router.sourcesPath) {
                 TabScaffold(tab: .sources) { SourcesView() }
             }
+                .compareTray()
                 .tabItem { Label(AppTab.sources.title, systemImage: AppTab.sources.systemImage) }
                 .tag(AppTab.sources)
         }
         .environment(\.compareSelection, comparison)
-        .sheet(isPresented: $comparison.presented) { CompareView().environment(\.compareSelection, comparison) }
-        .tint(PitchAtlasTheme.powder)
+        .environment(\.specimenBench, bench)
+        .environment(router)
+        // a third pitch asks for room over any page while the table is shut
+        .overlay {
+            if let pending = comparison.pending,
+               MakeRoomHost.host(pending: true, tableOpen: comparison.presented, benchOpen: bench.opened != nil) == .root {
+                MakeRoom(pending: pending).environment(\.compareSelection, comparison)
+            }
+        }
+        // the tray's status line (role="status"), spoken once for every tab's tray
+        // a link followed from inside the table or the bench goes where it says
+        .onChange(of: router.landings) {
+            comparison.presented = false
+            bench.opened = nil
+        }
+        .onChange(of: comparison.slugs.count) { _, chosen in
+            AccessibilityNotification.Announcement(CompareTrayReads.status(chosen: chosen)).post()
+        }
+        .toastHost()
+        .environment(toasts)
+        // The cover sits outside the environment written above, so it carries its own:
+        // the specimen pages it opens post toasts, and its links leave through the router.
+        // the one-pitch bench (InspectButton), over the page like the table
+        .fullScreenCover(item: $bench.opened) { opened in
+            if let entry = store.pitch(slug: opened.slug) {
+                InspectorView(entry: entry, bench: bench)
+                    .toastHost()
+                    .environment(toasts)
+                    .environment(router)
+                    .environment(\.compareSelection, comparison)
+            }
+        }
+        .fullScreenCover(isPresented: $comparison.presented) {
+            CompareView()
+                .toastHost()
+                .environment(toasts)
+                .environment(router)
+                .environment(\.compareSelection, comparison)
+        }
+        .tint(PitchAtlasTheme.kicker)
         .toolbarBackground(PitchAtlasTheme.void, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbarBackground(.hidden, for: .tabBar)
@@ -156,6 +211,9 @@ struct RootView: View {
             if !comparison.handle(url, store: store) { router.handle(url, store: store) }
         }
         .task { applyDebugLaunch() }
+        .sheet(item: $debugNote) { mode in
+            if let notes { HiddenNoteSheet(mode: mode, notes: notes) }
+        }
     }
 
     /// DEBUG-only: push a detail straight from a launch env so QA can screenshot it
@@ -170,6 +228,27 @@ struct RootView: View {
         if let slug = env["PA_CRAFTSMAN"], let craftsman = store.craftsman(slug: slug) {
             router.selection = .craftsmen
             router.craftsmenPath.append(craftsman)
+        }
+        // PA_ROUTE takes a link path ("learn/spin", "compare?a=slider&b=sweeper")
+        // and opens it exactly as the link would.
+        if let route = env["PA_ROUTE"], let url = URL(string: "pitchatlas://\(route)") {
+            if !comparison.handle(url, store: store) { router.handle(url, store: store) }
+        }
+        // PA_INSPECT opens the one-pitch bench on a pitch; PA_INSPECT_WITH names its partner
+        if let slug = env["PA_INSPECT"] {
+            bench.open(slug, store: store)
+            if let partner = env["PA_INSPECT_WITH"] {
+                bench.choosePartner(partner, store: store, compare: comparison)
+            }
+        }
+        // PA_NOTE files a hidden note and opens its reveal; "index" opens the found index
+        if let id = env["PA_NOTE"], let notes {
+            if id == "index" {
+                debugNote = .index
+            } else {
+                notes.discover(id)
+                debugNote = .reveal(id)
+            }
         }
         #endif
     }

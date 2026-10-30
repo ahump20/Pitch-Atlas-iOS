@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 import UIKit
 import AVFoundation
 @testable import PitchAtlas
@@ -12,13 +13,13 @@ final class PitchAtlasTests: XCTestCase {
                        ["atlas", "index", "grips", "craftsmen", "sources"])
     }
 
-    /// Provenance mapping must always resolve. An unknown tier falls back to the
-    /// honest gray (unverified), never crashes and never silently upgrades.
+    /// Provenance mapping must always resolve: seven tiers share the web's three
+    /// trust colors, and an unknown tier falls back to unverified — never crashes
+    /// and never silently upgrades.
     func testConfidenceColorFallback() {
-        let known = PitchAtlasTheme.color(forConfidence: "official-data")
-        let unknown = PitchAtlasTheme.color(forConfidence: "nonsense-tier")
-        XCTAssertEqual(unknown, PitchAtlasTheme.ink3)
-        XCTAssertNotEqual(known, PitchAtlasTheme.ink3)
+        XCTAssertEqual(PitchAtlasTheme.color(forConfidence: "official-data"), Color(web: WebTokens.Tier.dot["official-data"]!))
+        XCTAssertEqual(PitchAtlasTheme.color(forConfidence: "secondhand-attributed"), Color(web: WebTokens.Tier.dot["reputable-analysis"]!))
+        XCTAssertEqual(PitchAtlasTheme.color(forConfidence: "not-a-tier"), Color(web: WebTokens.Tier.dot["unverified"]!))
     }
 
     /// Every bundled JSON decodes with zero failures across every record.
@@ -172,6 +173,34 @@ final class PitchAtlasTests: XCTestCase {
         }
     }
 
+    /// The four-seam is the one 1-of-1, and since 2026-09-23 the web calls it
+    /// Ember (the key keeps its historical `gold` name). Read straight off the
+    /// generated bundle, so a stale bundle fails here.
+    func testFourSeamWearsTheEmberOneOfOne() {
+        let store = PitchStore()
+        let chase = store.pitches.first { $0.display.specimenNo == "00" }
+        XCTAssertEqual(chase?.display.slug, "four-seam")
+        XCTAssertEqual(chase?.specimenGrade.key, .gold)
+        XCTAssertEqual(chase?.specimenGrade.label, "Ember · 1 of 1")
+    }
+
+    /// Arm-health and youth wings are boundary-only on the web: no discussion
+    /// thread. The flag (and each related link's reason line) must survive
+    /// decoding, matched against the raw bundle so nothing is hardcoded.
+    func testBoundaryOnlyWingsDecodeFromTheBundle() throws {
+        let url = try XCTUnwrap(Bundle.main.url(forResource: "knowledge", withExtension: "json"))
+        let raw = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [[String: Any]])
+        let expected = Set(raw.filter { ($0["boundaryOnly"] as? Bool) == true }.compactMap { $0["slug"] as? String })
+        XCTAssertFalse(expected.isEmpty, "the bundle should carry at least one boundary-only wing")
+        let store = PitchStore()
+        let decoded = Set(store.knowledge.filter { $0.boundaryOnly == true }.map(\.slug))
+        XCTAssertEqual(decoded, expected)
+        for wing in store.knowledge { XCTAssertEqual(wing.allowsDiscussion, !expected.contains(wing.slug)) }
+        let rawReasons = raw.flatMap { ($0["related"] as? [[String: Any]]) ?? [] }.compactMap { $0["reason"] as? String }
+        let decodedReasons = store.knowledge.flatMap { $0.related ?? [] }.compactMap(\.reason)
+        XCTAssertEqual(decodedReasons.count, rawReasons.count, "a related link's reason was dropped in decoding")
+    }
+
     /// The same-family rail reads off the filed family: every sibling shares the
     /// subject's family, the subject never lists itself, and the relationship is
     /// symmetric (if A lists B, B lists A). No baked relatedSlugs, no fabricated link.
@@ -244,6 +273,19 @@ final class PitchAtlasTests: XCTestCase {
         }
         // the feature actually shipped hooks, not an empty contract
         XCTAssertGreaterThan(hooked, 10, "expected many basic files to carry a study hook")
+    }
+
+    /// The web crops each grip loop to the point where the fingertips meet the seam
+    /// (GripClip.focus, set from each loop's own frames 2026-10-23); the card window
+    /// keeps that point in view. The point and the opening second ride in from the
+    /// web source, never re-guessed here.
+    func testGripFilmsCarryTheWebCropPointAndStart() throws {
+        let store = PitchStore()
+        let film = try XCTUnwrap(store.pitch(slug: "four-seam")?.canonical.gripFilm)
+        XCTAssertEqual(film.focus, FilmFocus(x: 50, y: 44))
+        XCTAssertEqual(try XCTUnwrap(film.start), 0.8, accuracy: 1e-9)
+        let library = store.grips.entries.compactMap(\.film)
+        XCTAssertTrue(library.allSatisfy { $0.focus != nil }, "every filmed grip names its crop point")
     }
 
     /// The owner's grip films: every film referenced by the content must resolve
@@ -350,8 +392,8 @@ final class PitchAtlasTests: XCTestCase {
     }
 
     func testAppInfoPlistUsesReleaseBuildSettings() {
-        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, "1.1.0")
-        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "11")
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, "1.2.0")
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "12")
     }
 
     /// Anonymous-first contribution: the two attestations gate the composers,
@@ -511,7 +553,7 @@ final class PitchAtlasTests: XCTestCase {
 
     func testDiscussionPostValidationTrimsAndRejectsBadBodies() throws {
         let post = try NewDiscussionPost.validated(
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             displayName: "Austin",
             body: "  This grip finally held through catch play.  ",
             parentID: nil
@@ -520,7 +562,7 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertEqual(post.body, "This grip finally held through catch play.")
 
         XCTAssertThrowsError(try NewDiscussionPost.validated(
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             displayName: "Austin",
             body: "   ",
             parentID: nil
@@ -528,7 +570,7 @@ final class PitchAtlasTests: XCTestCase {
             XCTAssertEqual(error as? CommunityServiceError, .invalidDiscussionPost("Add a post before submitting."))
         }
         XCTAssertThrowsError(try NewDiscussionPost.validated(
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             displayName: "Austin",
             body: String(repeating: "x", count: 4001),
             parentID: nil
@@ -553,7 +595,7 @@ final class PitchAtlasTests: XCTestCase {
 
         let postGrant: Set<String> = ["topic_key", "display_name", "body", "parent_id"]
         let post = try NewDiscussionPost.validated(
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             displayName: "Austin",
             body: "Grant-shape guard.",
             parentID: "parent-1"
@@ -566,7 +608,7 @@ final class PitchAtlasTests: XCTestCase {
         ]
         let media = NewDiscussionMedia(
             postID: "post-1",
-            topicKey: "pitch:four-seam",
+            topicKey: "four-seam",
             storagePath: "user/file.jpg",
             mimeType: "image/jpeg",
             kind: "image",
@@ -610,8 +652,10 @@ final class PitchAtlasTests: XCTestCase {
         XCTAssertFalse(CommunityPitchIntent.allCases.contains(.reduceStress))
         XCTAssertFalse(CommunityClaimedResultKind.allCases.contains(.reducedDiscomfort))
 
-        XCTAssertEqual(CommunityPitchIntent(rawValue: "reduce-stress")?.label, "Easier feel")
-        XCTAssertEqual(CommunityClaimedResultKind(rawValue: "reduced-discomfort")?.label, "Easier feel")
+        // Old rows stay readable under the site's closed-category label
+        // (lib/community fieldNoteIntentLabel / fieldNoteResultLabel).
+        XCTAssertEqual(CommunityPitchIntent(rawValue: "reduce-stress")?.label, "Legacy category (closed)")
+        XCTAssertEqual(CommunityClaimedResultKind(rawValue: "reduced-discomfort")?.label, "Legacy category (closed)")
     }
 
     func testDiscussionMediaDecodesPublicReadGrantShape() throws {
@@ -652,7 +696,7 @@ final class PitchAtlasTests: XCTestCase {
         let posts = [
             DiscussionPost(
                 id: "post-1",
-                topicKey: "pitch:four-seam",
+                topicKey: "four-seam",
                 authorID: "author-visible",
                 displayName: "Visible",
                 parentID: nil,
@@ -661,7 +705,7 @@ final class PitchAtlasTests: XCTestCase {
             ),
             DiscussionPost(
                 id: "post-2",
-                topicKey: "pitch:four-seam",
+                topicKey: "four-seam",
                 authorID: "author-blocked",
                 displayName: "Blocked",
                 parentID: nil,
@@ -849,9 +893,10 @@ final class PitchAtlasTests: XCTestCase {
             code: 0,
             userInfo: [NSLocalizedDescriptionKey: "rate_limit: too many posts in a short time"]
         )
+        // The trigger's own sentence after the tag, as the web shows it.
         XCTAssertEqual(
             CommunityService.userMessage(for: rateLimit),
-            "Too many community actions in a short time. Wait a bit and try again."
+            "Too many posts in a short time."
         )
 
         let permanentAccount = NSError(

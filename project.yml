@@ -11,8 +11,8 @@ settings:
     SWIFT_VERSION: "5.0"
     DEVELOPMENT_TEAM: CQNJJ423X3
     CODE_SIGN_STYLE: Automatic
-    MARKETING_VERSION: "1.1.0"
-    CURRENT_PROJECT_VERSION: "11"
+    MARKETING_VERSION: "1.2.0"
+    CURRENT_PROJECT_VERSION: "12"
     SWIFT_STRICT_CONCURRENCY: minimal
     ENABLE_USER_SCRIPT_SANDBOXING: YES
 
@@ -49,20 +49,29 @@ targets:
           - UIInterfaceOrientationPortrait
         # Export-compliance: no non-exempt encryption keeps TestFlight uploads moving.
         ITSAppUsesNonExemptEncryption: false
-        # Live device-motion (the gyro that rakes the holographic foil across the
-        # cards). Declared so the app is correct under iOS's expanding CoreMotion
-        # privacy enforcement — and so App Review on real hardware never hits a
-        # missing-usage-string termination. The feed never runs under Reduce Motion.
-        NSMotionUsageDescription: "Pitch Atlas reads device motion so the holographic foil on a card catches the light as you tilt your phone. Motion is used only for that on-screen effect and stops when Reduce Motion is on."
+        # Live device-motion (the gyro that tilts a specimen card and rakes light
+        # across it, the chrome wordmark, the specimen ball). Declared so the app is
+        # correct under iOS's expanding CoreMotion privacy enforcement — and so App
+        # Review on real hardware never hits a missing-usage-string termination.
+        # The feed never runs under Reduce Motion.
+        NSMotionUsageDescription: "Pitch Atlas reads device motion so specimen cards tilt and catch the light as you tilt your phone. Motion drives only those on-screen effects and stops when Reduce Motion is on."
         # Bundled OFL typefaces (Resources/Fonts/*.ttf). Registered here so
         # Font.custom resolves the exact PostScript names the theme references.
         UIAppFonts:
           - Anton-Regular.ttf
-          - Newsreader-Regular.ttf
-          - Newsreader-Italic.ttf
+          - Newsreader16pt16pt-Regular.ttf
+          - Newsreader16pt16pt-Italic.ttf
+          - Newsreader16pt16pt-Medium.ttf
+          - Newsreader16pt16pt-SemiBold.ttf
+          - Newsreader16pt16pt-SemiBoldItalic.ttf
           - HankenGrotesk-Regular.ttf
+          - HankenGrotesk-Italic.ttf
           - HankenGrotesk-Medium.ttf
-          - MartianMono-Regular.ttf
+          - HankenGrotesk-SemiBold.ttf
+          - HankenGrotesk-Bold.ttf
+          - MartianMonoSemiExpanded-Regular.ttf
+          - MartianMonoSemiExpanded-Medium.ttf
+          - MartianMonoSemiExpanded-SemiBold.ttf
         # Custom URL scheme for in-app deep links (pitchatlas://pitch/<slug>, etc.)
         CFBundleURLTypes:
           - CFBundleURLName: com.pitchatlas.app
@@ -106,7 +115,29 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
 
+  # The screenshot tour (PitchAtlasScreenshots scheme). Read-only: opens each
+  # screen by its pitchatlas:// link and photographs it, for the web-parity
+  # pairs and the App Store set. Run by .github/workflows/screenshots.yml.
+  PitchAtlasScreenshotUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: PitchAtlasScreenshotUITests
+    dependencies:
+      - target: PitchAtlas
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
 schemes:
+  PitchAtlasScreenshots:
+    build:
+      targets:
+        PitchAtlas: all
+        PitchAtlasScreenshotUITests: [test]
+    test:
+      targets:
+        - PitchAtlasScreenshotUITests
   PitchAtlasReleaseGate:
     build:
       targets:

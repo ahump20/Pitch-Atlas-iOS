@@ -257,7 +257,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/four-seam-grip-poster.webp"
+        "poster": "/grips/four-seam-grip-poster.webp",
+        "start": 0.8,
+        "focus": {
+          "x": 50,
+          "y": 44
+        }
       }
     },
     "motion": {
@@ -277,7 +282,7 @@
       "specimenNo": "00",
       "heroSub": "Read by feel, not by a gun.",
       "heroIntro": "Pure backspin across the horseshoe. A Magnus force against the fall. This is how the pitch rides.",
-      "foundationCaption": "It rides less than a spinless ball. It never literally rises.",
+      "foundationCaption": "It drops less than a spinless ball. It never literally rises.",
       "mastersIntro": "Three arms, one pitch, three ways to win with it. The visual is our own schematic of the four-seam reference. What sets each version apart is in the read, not a gauge."
     },
     "masterVariants": [
@@ -305,15 +310,16 @@
         "context": "The carry case. Elite ride from a flat approach, the pitch hitters swing under.",
         "verifiedPro": true,
         "distinction": {
-          "value": "Big ride from a low, flat slot. The ball stays on a flatter plane than the eye expects, so it finishes above where the swing is aimed — carry as a weapon at the top.",
+          "value": "Big ride from a low release. The ball stays on a flatter plane than the eye expects, so it finishes above where the swing is aimed — carry as a weapon at the top.",
           "source": {
-            "id": "savant-strider",
-            "label": "Baseball Savant (Statcast), Spencer Strider",
-            "url": "https://baseballsavant.mlb.com/savant-player/spencer-strider-675911",
+            "id": "thescore-strider",
+            "label": "theScore, How Spencer Strider developed a cheat-code pitch",
+            "url": "https://www.thescore.com/mlb/news/2631293",
             "retrievedAt": "2026-06-04",
             "season": "2023"
           },
-          "confidence": "official-data"
+          "confidence": "reputable-analysis",
+          "note": "Paraphrased from theScore's Statcast read of his release height, approach angle and ride."
         },
         "rights": "original"
       },
@@ -323,7 +329,7 @@
         "context": "The axis-cleanup case. He raised his slot, cut the arm-side run, and converted that lost run into ride.",
         "verifiedPro": true,
         "distinction": {
-          "value": "He raised his arm slot, traded away arm-side run, and converted it into pure ride — the same pitch, recut for carry.",
+          "value": "He raised his arm slot, traded away arm-side run, and converted it into ride — the same pitch, recut for carry.",
           "source": {
             "id": "savant-greene",
             "label": "Baseball Savant (Statcast), Hunter Greene",
@@ -364,7 +370,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -393,7 +399,7 @@
     },
     "specimenGrade": {
       "key": "gold",
-      "label": "Gold · 1 of 1"
+      "label": "Ember · 1 of 1"
     }
   },
   {
@@ -631,7 +637,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/two-seam-grip-poster.webp"
+        "poster": "/grips/two-seam-grip-poster.webp",
+        "start": 0.6,
+        "focus": {
+          "x": 50,
+          "y": 38
+        }
       }
     },
     "motion": {
@@ -738,7 +749,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -995,7 +1006,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/twelve-six-grip-poster.webp"
+        "poster": "/grips/twelve-six-grip-poster.webp",
+        "start": 2.2,
+        "focus": {
+          "x": 50,
+          "y": 46
+        }
       }
     },
     "motion": {
@@ -1164,7 +1180,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -1542,7 +1558,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -1896,7 +1912,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -2226,7 +2242,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -2559,7 +2575,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -2891,7 +2907,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -3229,7 +3245,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -3556,7 +3572,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -3869,7 +3885,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {
@@ -4128,7 +4144,7 @@
     },
     "seam": {
       "equationPlain": "x = 2 sin t + sin 3t,   y = 2 cos t - cos 3t,   z = 2√2 cos 2t",
-      "parameterization": "t from 0 to 2π, each point normalized to the ball radius, the whole curve rotated by the spin-axis quaternion.",
+      "parameterization": "t from 0 to 2π, each point normalized to the ball radius; the same curve on every specimen, never turned to a pitch's spin axis.",
       "stitchCount": {
         "value": "108 double stitches, 216 individual",
         "source": {

@@ -38,6 +38,13 @@ run and committed before tagging a release. CI does not do this per build.
 Both run `ci_post_clone.sh` automatically (Xcode Cloud convention: any executable
 in `ci_scripts/` named `ci_post_clone.sh` runs after clone).
 
+Xcode Cloud resolves Swift packages with automatic resolution off, so
+`ci_post_clone.sh` copies the pinned `ci_scripts/Package.resolved` into the
+generated project. When a package version changes locally, copy
+`PitchAtlas.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved`
+over it and commit, or Xcode Cloud builds against the old pin. (Run 38 on
+2026-10-05 failed for want of this file.)
+
 ## Release conventions
 
 - **Build numbers are monotonic.** Xcode Cloud increments the build number above

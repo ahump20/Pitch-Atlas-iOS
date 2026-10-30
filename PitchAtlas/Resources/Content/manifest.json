@@ -4,11 +4,25 @@
     "repertoire.json": 42,
     "craftsmen.json": 13,
     "lost-pitches.json": 15,
+    "lost-pitches.forces": 4,
     "knowledge.json": 10,
     "grips.json": 7,
-    "sources.json": 298,
+    "sources.json": 305,
     "archive-images.json": 15,
-    "teaching-clips.json": 3
+    "teaching-clips.json": 3,
+    "softball.pitches": 6,
+    "softball.craftsmen": 6,
+    "tidbits.json": 10,
+    "flight-lab.rulebooks": 3,
+    "flight-lab.lobs": 6,
+    "flight-lab.notes": 4,
+    "quotes.json": 19,
+    "external-media.items": 6,
+    "craftsman-media.json": 3,
+    "plate-273.frames": 10,
+    "field-notes.signals": 5,
+    "field-notes.vocabulary": 8
   },
-  "sourcesLastChecked": "2026-07-05"
+  "sourcesLastChecked": "2026-10-24",
+  "contentHash": "887c3420477968a5272f076ebb4eee715a0b5c386a11f0cfc532a8813ec59ae9"
 }

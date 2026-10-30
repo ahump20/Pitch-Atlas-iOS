@@ -31,6 +31,17 @@ final class PitchStore {
     let sources: [Source]
     let archiveImages: [ArchiveImage]
     let teachingClips: [TeachingClip]
+    let softball: SoftballBundle
+    /// The slow-pitch Flight Lab's rulebooks, example lobs, measured batter and notes (flight-lab.json).
+    let flightLab: FlightLabContent?
+    let tidbits: [Tidbit]
+    let quotes: [AtlasQuote]
+    let externalMedia: ExternalMediaBundle
+    let craftsmanMedia: [CraftsmanMediaItem]
+    let plate273: Plate273?
+    /// The pitch page's tier-03 chapter: how notes rank, the vocabulary, and the
+    /// note form's context lists (field-notes.json).
+    let fieldNotesGuide: FieldNotesGuide
     let manifest: ContentManifest
     let status: Status
 
@@ -47,22 +58,30 @@ final class PitchStore {
         }
 
         self.manifest = load("manifest", ContentManifest.self,
-                             fallback: ContentManifest(counts: [:], sourcesLastChecked: ""))
+                             fallback: ContentManifest(counts: [:], sourcesLastChecked: "", contentHash: nil))
         self.pitches = load("pitches", [PitchAtlasEntry].self, fallback: [])
         self.repertoire = load("repertoire", RepertoireRoot.self,
                                fallback: RepertoireRoot(families: [], entries: []))
         self.craftsmen = load("craftsmen", [Craftsman].self, fallback: [])
         self.lostPitches = load("lost-pitches", LostPitchesRoot.self,
-                                fallback: LostPitchesRoot(tiers: [], entries: []))
+                                fallback: LostPitchesRoot(tiers: [], entries: [], forces: []))
         self.knowledge = load("knowledge", [KnowledgeWing].self, fallback: [])
         self.grips = load("grips", GripsFile.self,
                           fallback: GripsFile(intro: "", arsenal: "", commandNote: "",
                                               attackPlan: GripAttackPlan(intro: "", sequenceTitle: "",
                                                                          sequenceNote: "", sequence: []),
-                                              proofLimit: "", entries: []))
+                                              proofLimit: "", circleChangeDistinction: nil, entries: []))
         self.sources = load("sources", [Source].self, fallback: [])
         self.archiveImages = load("archive-images", [ArchiveImage].self, fallback: [])
         self.teachingClips = load("teaching-clips", [TeachingClip].self, fallback: [])
+        self.softball = load("softball", SoftballBundle.self, fallback: .empty)
+        self.flightLab = load("flight-lab", FlightLabContent?.self, fallback: nil)
+        self.tidbits = load("tidbits", [Tidbit].self, fallback: [])
+        self.quotes = load("quotes", [AtlasQuote].self, fallback: [])
+        self.externalMedia = load("external-media", ExternalMediaBundle.self, fallback: .empty)
+        self.craftsmanMedia = load("craftsman-media", [CraftsmanMediaItem].self, fallback: [])
+        self.plate273 = load("plate-273", Plate273?.self, fallback: nil)
+        self.fieldNotesGuide = load("field-notes", FieldNotesGuide.self, fallback: .empty)
 
         self.status = problems.isEmpty ? .ready : .failed(problems.joined(separator: " | "))
     }
@@ -113,11 +132,29 @@ final class PitchStore {
     func wing(slug: String) -> KnowledgeWing? { knowledge.first { $0.slug == slug } }
     func repertoireEntry(id: String) -> RepertoireEntry? { repertoire.entries.first { $0.id == id } }
     func gripEntry(id: String) -> GripEntry? { grips.entries.first { $0.id == id } }
+    /// The grip-library entry filed against a specimen (the card's face and short cue).
+    func gripEntry(forSpecimen slug: String) -> GripEntry? { grips.entries.first { $0.specimenSlug == slug } }
+    /// gripEntryFor (web data/grips): the library entry by any of its keys — its
+    /// own id, the specimen it is filed against, or the basic file it belongs to.
+    func gripEntry(forKey key: String) -> GripEntry? {
+        grips.entries.first { $0.id == key || $0.specimenSlug == key || $0.repertoireId == key }
+    }
 
     /// The teaching clip filed against a specimen slug, if any. One clip may serve
     /// several slugs (Ryan → four-seam + two-seam), mirroring the web's lookup.
     func teachingClip(slug: String) -> TeachingClip? {
         teachingClips.first { $0.slugs.contains(slug) }
+    }
+
+    func softballPitch(slug: String) -> SoftballPitch? { softball.pitches.first { $0.slug == slug } }
+    func softballCraftsman(slug: String) -> Craftsman? { softball.craftsmen.first { $0.slug == slug } }
+    func tidbit(id: String) -> Tidbit? { tidbits.first { $0.id == id } }
+    func craftsmanMedia(forCraftsman slug: String) -> [CraftsmanMediaItem] {
+        craftsmanMedia.filter { $0.craftsmanSlug == slug }
+    }
+    /// Credited posts filed to a pitch, same gate as the web (published, not removed).
+    func externalItems(forPitch slug: String) -> [ExternalContentItem] {
+        externalMedia.items.filter { $0.isShowable && $0.tags.pitchSlugs.contains(slug) }
     }
 }
 
@@ -125,6 +162,32 @@ final class PitchStore {
 extension PitchStore {
     func practitioners(for entry: PitchAtlasEntry) -> [Craftsman] {
         craftsmen.filter { $0.signaturePitchSlug == entry.slug }
+    }
+    /// Web CRAFTSMEN_BY_ERA: the masters oldest era first (an unreadable era
+    /// last, the record's own order breaking a tie, as the site's stable sort
+    /// does), then the legend. The hall files by it and a file walks it.
+    var craftsmenByEra: [Craftsman] {
+        let masters = craftsmen.enumerated()
+            .filter { $0.element.kind == .craftsman }
+            .sorted {
+                let a = EraSpan.parse($0.element.era)?.start ?? Int.max
+                let b = EraSpan.parse($1.element.era)?.start ?? Int.max
+                return a != b ? a < b : $0.offset < $1.offset
+            }
+            .map(\.element)
+        return masters + craftsmen.filter { $0.kind == .legend }
+    }
+    /// Web craftsmenForPitch: the masters (never the legend) who own the pitch,
+    /// in the hall's order. A pitch with no filed master returns none, so the
+    /// specimen names an arm only when the hall has one.
+    func masters(forPitch slug: String) -> [Craftsman] {
+        craftsmenByEra.filter { $0.kind == .craftsman && $0.signaturePitchSlug == slug }
+    }
+    /// Web craftsmanForVariant: a master file names its arm only when both the
+    /// person and the signature pitch match. A familiar name alone does not.
+    func master(named name: String, forPitch slug: String) -> Craftsman? {
+        let identity = name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        return masters(forPitch: slug).first { $0.name.lowercased() == identity }
     }
     func lessons(for entry: PitchAtlasEntry) -> [KnowledgeWing] {
         knowledge.filter { wing in wing.related?.contains { $0.to == "/pitch/" + entry.slug } == true }

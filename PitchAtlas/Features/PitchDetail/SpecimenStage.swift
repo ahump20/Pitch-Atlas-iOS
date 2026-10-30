@@ -24,6 +24,10 @@ import Metal
 struct SpecimenStage: View {
     let entry: PitchAtlasEntry
     var size: CGFloat = 240
+    /// The study apparatus around the ball: the break cue, the axis chip, the drag
+    /// caption, and the finger marks on the 2D fallback. Off for the home's seam
+    /// stage, where the ball is only the cover and its stitching.
+    var chrome = true
 
     enum Mode: Equatable {
         case schematic
@@ -62,7 +66,7 @@ struct SpecimenStage: View {
         VStack(spacing: PitchAtlasSpacing.xs) {
             switch mode {
             case .schematic:
-                SeamBall(motion: entry.motion, size: size, contacts: entry.canonical.fingerPlacement)
+                SeamBall(motion: entry.motion, size: size, contacts: chrome ? entry.canonical.fingerPlacement : [], showMovement: chrome)
             case .dimensional:
                 dimensionalStage
             }
@@ -85,20 +89,24 @@ struct SpecimenStage: View {
                 SpecimenBallView(built: built, motion: motion, isPlaying: stagePlaying, showAxis: showAxis)
                     .frame(width: size, height: size)
                 // the same screen-space break cue the 2D schematic wears
-                MotionCueOverlay(motion: entry.motion, size: size)
-                    .allowsHitTesting(false)
+                if chrome {
+                    MotionCueOverlay(motion: entry.motion, size: size)
+                        .allowsHitTesting(false)
+                }
             }
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(dimensionalAccessibilityText)
 
-            axisChip
+            if chrome {
+                axisChip
 
-            Text("On this device the same curve is swept in three dimensions — drag to turn the specimen.")
-                .font(PitchAtlasTheme.hanken(12))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, PitchAtlasSpacing.sm)
+                Text("On this device the same curve is swept in three dimensions — drag to turn the specimen.")
+                    .font(PitchAtlasTheme.hanken(12))
+                    .foregroundStyle(PitchAtlasTheme.text3)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, PitchAtlasSpacing.sm)
+            }
         }
     }
 
@@ -119,6 +127,9 @@ struct SpecimenStage: View {
                         lineWidth: 1
                     )
                 )
+                // The capsule stays small; the tap area is a full 44pt.
+                .frame(minWidth: 44, minHeight: 44)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel("Spin axis overlay")

@@ -15,8 +15,8 @@ extension ClaimConfidence {
 
 // MARK: - Provenance dot
 
-/// The 8pt tier dot. The glow is load-bearing — it is what makes provenance read
-/// as evidence rather than a bullet point. Do not flatten it.
+/// The bare 8pt tier dot. Every caller prints `TierWords` beside it, so the dot
+/// stays mute here; `ConfidenceDot` is the dot-plus-words mark for new surfaces.
 struct ProvenanceDot: View {
     let confidence: ClaimConfidence
     var size: CGFloat = 8
@@ -27,6 +27,28 @@ struct ProvenanceDot: View {
             .frame(width: size, height: size)
             .shadow(color: confidence.tierColor.opacity(0.75), radius: size * 0.65)
             .accessibilityHidden(true)
+    }
+}
+
+// MARK: - Tier words
+
+/// A tier's glyph and label. The tier color stays on the dot; the words print in
+/// bone-2 so they read at every size, and the glyph keeps the seven tiers distinct
+/// across three colors (web provenance/ConfidenceLabel.tsx).
+struct TierWords: View {
+    let confidence: ClaimConfidence
+    var size: CGFloat = 9
+    var tracking: CGFloat = 1.2
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Text(confidence.glyph)
+                .accessibilityHidden(true)
+            Text(confidence.label.uppercased())
+        }
+        .font(PitchAtlasTheme.martian(size))
+        .tracking(tracking)
+        .foregroundStyle(PitchAtlasTheme.bone2)
     }
 }
 
@@ -44,16 +66,13 @@ struct SourceClaimLabel: View {
                 .padding(.top, 3)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(claim.confidence.label.uppercased())
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.2)
-                    .foregroundStyle(claim.confidence.tierColor)
+                TierWords(confidence: claim.confidence, size: 9, tracking: 1.2)
 
                 if let source = claim.source {
                     Text(source.label)
                         .font(PitchAtlasTheme.martian(9))
                         .tracking(0.4)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .lineLimit(2)
                 }
 
@@ -64,14 +83,14 @@ struct SourceClaimLabel: View {
                 if let note = claim.note, !note.isEmpty {
                     Text(note)
                         .font(PitchAtlasTheme.newsreaderItalic(12))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
                 if showMeaning {
                     Text(claim.confidence.meaning)
                         .font(PitchAtlasTheme.hanken(11))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -107,7 +126,7 @@ struct ClaimText: View {
                     Text("approx.")
                         .font(PitchAtlasTheme.martian(8))
                         .tracking(0.5)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
             SourceClaimLabel(claim: claim)
@@ -138,7 +157,7 @@ struct GaugeView: View {
                     Text("approx.")
                         .font(PitchAtlasTheme.martian(8))
                         .tracking(0.5)
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
             SourceClaimLabel(claim: claim)
@@ -183,7 +202,7 @@ struct SourceRow: View {
             } else {
                 Text(source.url)
                     .font(PitchAtlasTheme.martian(9))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                     .lineLimit(1)
                     .truncationMode(.middle)
             }
@@ -192,14 +211,107 @@ struct SourceRow: View {
                 Text("CHECKED \(source.retrievedAt)")
                     .font(PitchAtlasTheme.martian(8))
                     .tracking(1)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .foregroundStyle(PitchAtlasTheme.text3)
                 if let season = source.season {
                     Text("· \(season)")
                         .font(PitchAtlasTheme.martian(8))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                 }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+// MARK: - Confidence dot (the web's provenance/ConfidenceDot)
+
+/// The web ConfidenceDot: an 8pt tier dot with a 9pt glow, then the tier's words
+/// in mono 10 at .1em, bone-2. The dot never stands alone.
+struct ConfidenceDot: View {
+    let confidence: ClaimConfidence
+    var approximate = false
+    /// withLabel={false}: the dot alone, where the tier's words print beside it.
+    var withLabel = true
+    /// The words' ink when not the field's text-2: the grip bench's reading panel
+    /// retints its bone-2 to #d2bca6.
+    var labelInk: Color? = nil
+    static func accessibilityText(for c: ClaimConfidence, approximate: Bool) -> String {
+        "Source: \(c.label)" + (approximate ? ", approximate" : "")
+    }
+    var body: some View {
+        HStack(spacing: 8) {
+            Circle().fill(PitchAtlasTheme.color(forConfidence: confidence.rawValue)).frame(width: 8, height: 8)
+                .shadow(color: PitchAtlasTheme.color(forConfidence: confidence.rawValue), radius: 4.5)
+            if withLabel {
+                Text(confidence.label.uppercased()).font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                    .tracking(em: 0.1, size: 10)
+                    .foregroundStyle(labelInk.map(AnyShapeStyle.init) ?? AnyShapeStyle(PitchAtlasTheme.text2))
+            }
+            if approximate { ApproxPill() }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Self.accessibilityText(for: confidence, approximate: approximate))
+    }
+}
+
+// MARK: - Approx pill
+
+struct ApproxPill: View {
+    var body: some View {
+        Text("≈ approx").font(PitchAtlasType.font(.martian400, size: 9, relativeTo: .caption2))
+            .foregroundStyle(PitchAtlasTheme.text2)
+            .padding(.horizontal, 6).padding(.vertical, 1)
+            .overlay(Capsule().strokeBorder(PitchAtlasTheme.text3, lineWidth: 1))
+    }
+}
+
+// MARK: - Scout rows (the card's scout-file block)
+
+/// One scout-file row: a 56pt mono key and the value; a tier, when given, prints as a ConfidenceDot.
+struct ScoutRow: View {
+    static let keyWidth: CGFloat = 56
+    let label: String
+    let value: String
+    var tier: ClaimConfidence? = nil
+    var approximate = false
+    var accent: Color = PitchAtlasTheme.bone2
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 9) {
+            Text(label.uppercased()).font(PitchAtlasType.font(.martian400, size: 8, relativeTo: .caption2)).tracking(em: 0.12, size: 8)
+                .foregroundStyle(accent).frame(width: Self.keyWidth, alignment: .leading)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(value).font(PitchAtlasType.body(size: 12)).foregroundStyle(PitchAtlasTheme.bone).lineLimit(3)
+                if let tier {
+                    HStack(spacing: 6) {
+                        Circle().fill(PitchAtlasTheme.color(forConfidence: tier.rawValue)).frame(width: 6, height: 6)
+                        Text(tier.label.uppercased() + (approximate ? " · approx" : ""))
+                            .font(PitchAtlasType.font(.martian400, size: 8, relativeTo: .caption2)).tracking(em: 0.1, size: 8)
+                            .foregroundStyle(PitchAtlasTheme.bone2)
+                    }
+                }
+            }
+        }
+        .padding(.horizontal, 9).padding(.vertical, 7)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
+    }
+}
+
+struct ScoutRows<Content: View>: View {
+    static var tintOpacity: Double { 0.14 }
+    static func isTinted(index: Int) -> Bool { index % 2 == 1 }
+    let accent: Color
+    let rows: [AnyView]
+    init(accent: Color, rows: [AnyView]) where Content == EmptyView { self.accent = accent; self.rows = rows }
+    var body: some View {
+        VStack(spacing: 0) {
+            ForEach(rows.indices, id: \.self) { i in
+                rows[i]
+                    .background(Self.isTinted(index: i) ? accent.opacity(Self.tintOpacity) : .clear)
+                    .overlay(alignment: .top) { if i > 0 { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.06)).frame(height: 1) } }
+            }
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 7))
+        .overlay(RoundedRectangle(cornerRadius: 7).strokeBorder(PitchAtlasTheme.bone.opacity(0.08), lineWidth: 1))
     }
 }

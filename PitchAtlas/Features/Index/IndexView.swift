@@ -3,73 +3,15 @@ import SwiftUI
 // =============================================================================
 // Pitch Atlas — The Pitch Index
 // =============================================================================
-// The core native surface: a searchable, family-filterable, sortable index of
-// every pitch a coach, a pitcher, or the tracking taxonomy would call a pitch.
-// Honestly labeled: each row wears its status; the rows that file a fuller
-// specimen push to it. Four-state aware: a decode failure, an empty bundle, and
-// an empty search each read differently, never as a blank field.
+// Web: pages/RepertoirePage.tsx and sections/PitchIndex.tsx. The front door in
+// the site's order: where you are, the title and its lede, the search with the
+// filter-and-sort pill and the rows/binder toggle, the count, then every pitch
+// by family — a filed pitch opens its specimen, any other its basic file. Then
+// the Lost Pitches wing, the conversation shelf, the whole-repertoire map and
+// the archive's back cover.
+// Four-state aware: a decode failure, an empty bundle and an empty search each
+// read differently, never as a blank field.
 // =============================================================================
-
-enum IndexSort: String, CaseIterable, Identifiable {
-    case family, az, documentation, filed
-
-    var id: String { rawValue }
-
-    var label: String {
-        switch self {
-        case .family: return "Family"
-        case .az: return "A-Z"
-        case .documentation: return "Documentation"
-        case .filed: return "Filed first"
-        }
-    }
-
-    var accessibilityLabel: String {
-        switch self {
-        case .family: return "Sort by family order"
-        case .az: return "Sort A to Z by name"
-        case .documentation: return "Sort by documentation depth"
-        case .filed: return "Sort filed specimens first"
-        }
-    }
-
-    func ordered(_ entries: [RepertoireEntry], store: PitchStore) -> [RepertoireEntry] {
-        switch self {
-        case .family:
-            return entries
-        case .az:
-            return entries.enumerated().sorted { lhs, rhs in
-                let names = lhs.element.name.localizedStandardCompare(rhs.element.name)
-                return names == .orderedSame ? lhs.offset < rhs.offset : names == .orderedAscending
-            }.map(\.element)
-        case .documentation:
-            return entries.enumerated().sorted { lhs, rhs in
-                let left = documentationRank(lhs.element, store: store)
-                let right = documentationRank(rhs.element, store: store)
-                return left == right ? lhs.offset < rhs.offset : left < right
-            }.map(\.element)
-        case .filed:
-            return entries.enumerated().sorted { lhs, rhs in
-                let left = lhs.element.filedSlug == nil ? 1 : 0
-                let right = rhs.element.filedSlug == nil ? 1 : 0
-                return left == right ? lhs.offset < rhs.offset : left < right
-            }.map(\.element)
-        }
-    }
-
-    // Documentation depth read straight off the baked specimen grade — the same
-    // authoritative value the detail badge shows — so the sort can never drift
-    // from the grade. A row with no filed specimen ranks last.
-    func documentationRank(_ entry: RepertoireEntry, store: PitchStore) -> Int {
-        guard let slug = entry.filedSlug, let pitch = store.pitch(slug: slug) else { return 4 }
-        switch pitch.specimenGrade.key {
-        case .gold: return 0
-        case .inMotion: return 1
-        case .firstParty: return 2
-        case .reference: return 3
-        }
-    }
-}
 
 struct IndexView: View {
     @Environment(PitchStore.self) private var store
@@ -77,12 +19,13 @@ struct IndexView: View {
     private static let topScrollTarget = "index:top"
     private static let scrollCoordinateSpace = "pitch-index-scroll"
 
-    @State private var query = ""
-    @State private var family: RepertoireFamily? = nil
-    @State private var status: RepertoireStatus? = nil
-    @State private var sort: IndexSort = .family
+    @State private var query = IndexQuery()
+    @State private var filtersOpen = false
     @State private var scrollRestoration = IndexScrollRestoration()
     @State private var selectedEntry: RepertoireEntry?
+    @State private var selectedPitch: PitchAtlasEntry?
+    @Environment(DeepLinkRouter.self) private var router
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         ZStack {
@@ -90,20 +33,31 @@ struct IndexView: View {
 
             ScrollViewReader { proxy in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                        masthead
+                    VStack(alignment: .leading, spacing: 0) {
+                        header
                             .id(Self.topScrollTarget)
-                        StudyTray()
-                        searchField
-                        familyChips
-                        statusChips
-                        sortControls
-                        content
+                        VStack(alignment: .leading, spacing: 0) {
+                            controls
+                            if filtersOpen {
+                                filterPanel.padding(.top, 16)
+                            }
+                            content(query.groups(in: store))
+                            lostWing.padding(.top, 48)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 56)
+                        // web: ExternalMediaRail, placement "repertoire", two posts
+                        MediaRail(eyebrow: "Filed conversation",
+                                  title: "Voices beside the taxonomy.",
+                                  intro: "The index names the families. These credited lessons show how pitchers and teachers keep testing, describing, and handing the craft forward.",
+                                  items: MediaShelf.query(store.externalMedia.items, placement: .repertoire, limit: 2))
+                        // web: LineageMap, the whole accepted catalog as one map
+                        LineageMap(groups: LineageMapOrder.groups(in: store),
+                                   restorationSpace: Self.scrollCoordinateSpace) { open($0) }
+                        SiteFooter(path: "/repertoire")
                     }
-                    .padding(.horizontal, PitchAtlasSpacing.lg)
-                    .padding(.top, PitchAtlasSpacing.md)
                     .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-                    .emitsBlazeScrollProgress()
+                    .emitsScrollProgress()
                 }
                 .coordinateSpace(.named(Self.scrollCoordinateSpace))
                 .onPreferenceChange(IndexScrollFramesPreferenceKey.self) { frames in
@@ -111,14 +65,20 @@ struct IndexView: View {
                 }
                 .onAppear { restoreScrollPositionIfNeeded(using: proxy) }
                 .onDisappear { scrollRestoration.indexDidDisappear() }
-                .onChange(of: query) { resetScrollPosition(using: proxy) }
-                .onChange(of: family) { resetScrollPosition(using: proxy) }
-                .onChange(of: status) { resetScrollPosition(using: proxy) }
-                .onChange(of: sort) { resetScrollPosition(using: proxy) }
+                .onChange(of: query.text) { applyFilterChange(.query, using: proxy) }
+                .onChange(of: query.family) { applyFilterChange(.family, using: proxy) }
+                .onChange(of: query.status) { applyFilterChange(.status, using: proxy) }
+                .onChange(of: query.sort) { applyFilterChange(.sort, using: proxy) }
+                .onChange(of: query.layout) { applyFilterChange(.layout, using: proxy) }
             }
         }
-        .navigationTitle("Index")
+        // The site's header carries the brand on every page; the title still names
+        // the back button on the pages the Index opens.
+        .navigationTitle("The Pitch Index")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
+        }
         .navigationDestination(item: Binding(
             get: { selectedEntry },
             set: { entry in
@@ -126,231 +86,400 @@ struct IndexView: View {
                 if entry == nil { scrollRestoration.navigationDidEnd() }
             }
         )) { RepertoireDetailView(entry: $0) }
+        .navigationDestination(item: Binding(
+            get: { selectedPitch },
+            set: { pitch in
+                selectedPitch = pitch
+                if pitch == nil { scrollRestoration.navigationDidEnd() }
+            }
+        )) { PitchDetailView(entry: $0) }
+        // A pitchatlas://repertoire/<id> link pushes by value (DeepLinkRouter);
+        // a row tap keeps the item bindings above so the scroll anchor holds.
+        .navigationDestination(for: RepertoireEntry.self) { RepertoireDetailView(entry: $0) }
+        // a link that lands on the Index ("Back to every pitch", the crumb) lets go
+        // of the page a row tap pushed, which sits outside the router's path
+        .onChange(of: router.landings) {
+            guard router.selection == .index else { return }
+            selectedPitch = nil
+            selectedEntry = nil
+        }
     }
 
-    // MARK: - Masthead
+    // MARK: - Header
 
-    private var masthead: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "The Pitch Index", color: PitchAtlasTheme.powder)
-            Text("INDEX")
-                .font(PitchAtlasTheme.anton(54))
+    /// The breadcrumb, the athletic title with "Index" in gold, and the lede, its
+    /// counts read from the bundle. (The site's worn-seam photograph and its credit
+    /// stay on the site.)
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Breadcrumb(trail: [Crumb(label: "Pitch Atlas", path: "home"), Crumb(label: "The Pitch Index")])
+                .padding(.bottom, 24)
+            (Text("The Pitch ") + Text("Index").foregroundColor(ArchiveInk.indexTitleAccent))
+                .font(PitchAtlasTheme.anton(40, relativeTo: .largeTitle))
+                .textCase(.uppercase)
+                .tracking(40 * 0.01)
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
-                .padding(.vertical, 2)
-            Text("Names and families are the map. The game is still the hand, the ball, and the hitter's clock.")
-                .font(PitchAtlasTheme.newsreaderItalic(17))
+                // display size already: capped so "INDEX" never runs off the phone
+                .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+                // .rfx-athletic sets the line at .9: Anton's own line is 1.5
+                .padding(.vertical, -12)
+                .padding(.top, 12)
+                .accessibilityAddTraits(.isHeader)
+            Text("Find the pitch you know, or follow a name you have never heard. Browse \(IndexScope.shelfLabel(store)): filed specimens open into grip study; basic files preserve the account we have.")
+                .font(PitchAtlasTheme.hanken(15))
+                .lineSpacing(15 * (1.625 - 1.303))
                 .foregroundStyle(PitchAtlasTheme.bone2)
+                .frame(maxWidth: 58 * 0.56 * 15, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
-            BlazeInlineCompanionView(style: .search, mood: query.isEmpty ? .sniffing : .chasing)
+                .padding(.top, 18)
         }
+        .padding(.horizontal, 20)
+        .padding(.top, 24)
+        .padding(.bottom, 20)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("The Pitch Index. Names and families are the map. The game is still the hand, the ball, and the hitter's clock.")
+        .overlay(alignment: .bottom) {
+            Rectangle().fill(PitchAtlasTheme.bone.opacity(0.08)).frame(height: 1).accessibilityHidden(true)
+        }
     }
 
-    // MARK: - Search field
+    // MARK: - Controls
 
-    private var searchField: some View {
-        HStack(spacing: PitchAtlasSpacing.sm) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .accessibilityHidden(true)
-
-            TextField("", text: $query, prompt: searchPrompt)
-                .font(PitchAtlasTheme.hanken(16))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .tint(PitchAtlasTheme.cyan)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled(true)
-                .submitLabel(.search)
-                .accessibilityLabel("Search pitches")
-
-            if !query.isEmpty {
-                Button {
-                    query = ""
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 15))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+    /// Search, then the filter-and-sort pill, the rows/binder toggle and Reset,
+    /// then the live count.
+    private var controls: some View {
+        let total = query.groups(in: store).reduce(0) { $0 + $1.entries.count }
+        return VStack(alignment: .leading, spacing: 0) {
+            PitchSearchField(text: $query.text, prompt: "Search a pitch, an alias, a family…")
+            FlowRow(spacing: 10, lineSpacing: 10) {
+                FilterSortPill(isOpen: filtersOpen, activeCount: query.advancedCount) {
+                    Haptics.toggle()
+                    filtersOpen.toggle()
                 }
-                .accessibilityLabel("Clear search")
+                PillToggle(selection: $query.layout, options: [
+                    (value: IndexLayout.rows, label: "Rows", systemImage: "list.bullet"),
+                    (value: IndexLayout.binder, label: "Binder", systemImage: "book"),
+                ])
+                .accessibilityLabel("Index view")
+                if query.hasActiveState {
+                    Button(action: reset) {
+                        Label("Reset", systemImage: "xmark")
+                            .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                            .textCase(.uppercase)
+                            .tracking(10 * 0.1)
+                            .foregroundStyle(PitchAtlasTheme.bone2)
+                            .padding(.horizontal, 12)
+                            .frame(minWidth: 44, minHeight: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("Reset the index")
+                }
+            }
+            .padding(.top, 12)
+            Text(query.countLabel(total: total).uppercased())
+                .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                .tracking(10 * 0.1)
+                .foregroundStyle(PitchAtlasTheme.ink3)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 8)
+                .accessibilityLabel(query.countLabel(total: total))
+            if HiddenNotePlacement.showsEephus(query: query.text) {
+                EggButton(note: .eephus) {
+                    Text("A hidden note on the eephus →")
+                        .textCase(.uppercase)
+                        .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                        .tracking(10 * 0.1)
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                }
+                .padding(.top, 8)
             }
         }
-        .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.chip)
+        .padding(.top, 36)
+        .padding(.bottom, 12)
     }
 
-    private var searchPrompt: Text {
-        Text("Search pitches")
-            .font(PitchAtlasTheme.hanken(16))
-            .foregroundStyle(PitchAtlasTheme.ink3)
-    }
+    // MARK: - Filter panel
 
-    // MARK: - Family filter chips
-
-    private var familyChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                FilterChip(label: "All", dot: nil, selected: family == nil) {
-                    Haptics.toggle()
-                    family = nil
-                }
-                ForEach(store.repertoire.families) { info in
-                    FilterChip(label: info.label,
-                               dot: info.family.accent,
-                               selected: family == info.family) {
+    /// The site's filter panel: family (with "Filed specimens"), sort, the status
+    /// tiers present in the bundle, and the two notes on what the axes mean.
+    private var filterPanel: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            facetRow("Family") {
+                ForEach(IndexFamilyFilter.ordered, id: \.self) { option in
+                    PitchChip(kind: .filter, label: option.label, selected: query.family == option) {
                         Haptics.toggle()
-                        family = (family == info.family) ? nil : info.family
+                        query.family = option
                     }
                 }
             }
-            .padding(.horizontal, 1)
+            facetRow("Sort") {
+                ForEach(IndexSort.allCases) { option in
+                    PitchChip(kind: .filter, label: option.label, selected: query.sort == option) {
+                        Haptics.toggle()
+                        query.sort = option
+                    }
+                    .accessibilityLabel(option.accessibilityLabel)
+                }
+            }
+            if presentStatuses.count > 1 {
+                facetRow("Status") {
+                    PitchChip(kind: .filter, label: "All", selected: query.status == nil) {
+                        Haptics.toggle()
+                        query.status = nil
+                    }
+                    .accessibilityLabel("All statuses")
+                    ForEach(presentStatuses, id: \.self) { tier in
+                        PitchChip(kind: .filter, label: tier.displayLabel, selected: query.status == tier) {
+                            Haptics.toggle()
+                            query.status = tier
+                        }
+                    }
+                }
+            }
+            // web PitchIndex.tsx, verbatim
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Documentation depth is how richly the atlas has preserved a grip, richest first: filmed in the pitcher's own hand, then a first-party still, then a filed reference. The lone ember 1 of 1 is the four-seam, specimen 00.")
+                Text("Status is the atlas's filing label for an entry. Banned, alias, illusion, and not-a-pitch entries are honest edges, labeled for what they are, never dressed up as a chase.")
+            }
+            .font(PitchAtlasTheme.hanken(11.5, relativeTo: .footnote))
+            .lineSpacing(2)
+            .foregroundStyle(PitchAtlasTheme.bone2)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.top, 12)
+            .overlay(alignment: .top) { Rectangle().fill(Color.white.opacity(0.1)).frame(height: 1) }
+            .padding(.top, 4)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 12, style: .continuous).fill(ArchiveInk.indexPanelFill))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(Color.white.opacity(0.1), lineWidth: 1))
+    }
+
+    private func facetRow<Chips: View>(_ label: String, @ViewBuilder chips: () -> Chips) -> some View {
+        HStack(alignment: .center, spacing: 8) {
+            Text(label.uppercased())
+                .font(PitchAtlasType.font(.martian400, size: 9, relativeTo: .caption2))
+                .tracking(9 * 0.14)
+                .foregroundStyle(PitchAtlasTheme.ink3)
+                .frame(width: 56, alignment: .leading)
+                .accessibilityHidden(true)
+            FlowRow(spacing: 6, lineSpacing: 6) { chips() }
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(label)
         }
     }
 
-    // MARK: - Status filter chips
-
-    /// The field-rarity / honest-edge tiers actually present in the data, in the
-    /// legend's order. The native mate to the web status facet; only renders when
-    /// the data spans more than one tier, so there's never a lone or empty chip.
+    /// The tiers actually present in the bundle, in the legend's order.
     private var presentStatuses: [RepertoireStatus] {
         let present = Set(store.repertoire.entries.map(\.status))
-        let order: [RepertoireStatus] = [
-            .standard, .niche, .rare, .nearExtinct, .banned, .alias, .illusion, .notAPitch,
-        ]
+        let order: [RepertoireStatus] = [.standard, .niche, .rare, .nearExtinct, .banned, .alias, .illusion, .notAPitch]
         return order.filter(present.contains)
     }
 
-    @ViewBuilder
-    private var statusChips: some View {
-        if presentStatuses.count > 1 {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                Text("Status")
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.3)
-                    .foregroundStyle(PitchAtlasTheme.ink3)
-                    .textCase(.uppercase)
-                    .accessibilityHidden(true)
-
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: PitchAtlasSpacing.xs) {
-                        FilterChip(label: "All", dot: nil, selected: status == nil) {
-                            Haptics.toggle()
-                            status = nil
-                        }
-                        ForEach(presentStatuses, id: \.self) { tier in
-                            FilterChip(label: tier.displayLabel, dot: tier.tone, selected: status == tier) {
-                                Haptics.toggle()
-                                status = (status == tier) ? nil : tier
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 1)
-                }
-            }
-        }
-    }
-
-    // MARK: - Sort controls
-
-    private var sortControls: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-            Text("Sort")
-                .font(PitchAtlasTheme.martian(9))
-                .tracking(1.3)
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .textCase(.uppercase)
-                .accessibilityHidden(true)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: PitchAtlasSpacing.xs) {
-                    ForEach(IndexSort.allCases) { option in
-                        FilterChip(label: option.label, dot: nil, selected: sort == option) {
-                            Haptics.toggle()
-                            sort = option
-                        }
-                        .accessibilityLabel(option.accessibilityLabel)
-                    }
-                }
-                .padding(.horizontal, 1)
-            }
-        }
+    private func reset() {
+        Haptics.toggle()
+        query = IndexQuery()
+        UIAccessibility.post(notification: .announcement, argument: "Index reset")
     }
 
     // MARK: - Content (the four states)
 
     @ViewBuilder
-    private var content: some View {
-        if case .failed(let msg) = store.status {
-            ErrorStateView(reason: msg)
+    private func content(_ groups: [IndexGroup]) -> some View {
+        if case .failed(let reason) = store.status {
+            ErrorStateView(reason: reason).padding(.top, 36)
         } else if store.repertoire.entries.isEmpty {
-            EmptyStateView(message: "The index couldn't load.")
-        } else if filteredGroups.isEmpty {
-            EmptyStateView(message: emptyResultMessage)
+            EmptyStateView(message: "The index couldn't load.").padding(.top, 36)
+        } else if groups.isEmpty {
+            emptyResult.padding(.vertical, 48)
         } else {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl2) {
-                ForEach(filteredGroups, id: \.info.id) { group in
-                    familyGroup(group)
-                }
+            ForEach(groups, id: \.info.id) { group in
+                familySection(group).padding(.top, 36)
             }
         }
     }
 
-    private func familyGroup(_ group: FamilyGroup) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
-                HStack(spacing: PitchAtlasSpacing.xs) {
-                    FamilyDot(color: group.info.family.accent)
-                    SectionLabel(text: group.info.label, color: group.info.family.accent)
+    /// The empty search names the lever to pull: the term, or the filters.
+    private var emptyResult: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 18))
+                .foregroundStyle(Color(rgb: WebTokens.Accent.burnt))
+                .frame(width: 40, height: 40)
+                .background(Circle().fill(Color(rgb: WebTokens.Accent.burnt).opacity(0.12)))
+                .accessibilityHidden(true)
+            Text(query.emptyTitle.uppercased())
+                .font(PitchAtlasTheme.anton(30, relativeTo: .title))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .multilineTextAlignment(.center)
+                .antonSkew()
+                .accessibilityAddTraits(.isHeader)
+            Text(query.emptyDescription(indexed: store.repertoire.entries.count))
+                .font(PitchAtlasTheme.hanken(13, relativeTo: .footnote))
+                .foregroundStyle(PitchAtlasTheme.ink3)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            Button(action: reset) {
+                Label("Reset index", systemImage: "xmark")
+                    .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                    .textCase(.uppercase)
+                    .tracking(10 * 0.12)
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .padding(.horizontal, 16)
+                    .frame(minHeight: 44)
+                    .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(PitchAtlasTheme.bone.opacity(0.2), lineWidth: 1))
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .padding(.top, 4)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 56)
+        .frame(maxWidth: .infinity)
+        .background(RoundedRectangle(cornerRadius: 12).fill(ArchiveInk.indexPanelFill))
+        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Color.white.opacity(0.12), style: StrokeStyle(lineWidth: 1, dash: [4, 3])))
+    }
+
+    // MARK: - A family
+
+    /// The family header (Anton in the family's ink, "N in family", an accent rule)
+    /// over its rows or its binder sheet.
+    private func familySection(_ group: IndexGroup) -> some View {
+        let accent = group.info.family.accent
+        return VStack(alignment: .leading, spacing: 0) {
+            // the count drops under the family name at the accessibility sizes
+            let head = dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10))
+                : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: 14))
+            head {
+                Text(group.info.label.uppercased())
+                    .font(PitchAtlasTheme.anton(24, relativeTo: .title2))
+                    .tracking(24 * 0.01)
+                    .foregroundStyle(accent)
+                    .antonSkew()
+                    .padding(.vertical, -7)
+                Text("\(group.entries.count) in family".uppercased())
+                    .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                    .tracking(10 * 0.12)
+                    .foregroundStyle(PitchAtlasTheme.ink3)
+            }
+            .padding(.bottom, 10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .overlay(alignment: .bottom) { Rectangle().fill(accent.opacity(0.36)).frame(height: 1).accessibilityHidden(true) }
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(.isHeader)
+            .padding(.bottom, 16)
+
+            switch query.layout {
+            case .rows: rows(group)
+            case .binder: binder(group)
+            }
+        }
+    }
+
+    /// Each row is its own card (the web's rows grid, 11pt apart); a filed row
+    /// carries Compare beneath it, outside the row's button, under a white .067
+    /// rule (compare.css, max-width 600px).
+    private func rows(_ group: IndexGroup) -> some View {
+        VStack(spacing: 11) {
+            ForEach(group.entries) { entry in
+                VStack(alignment: .leading, spacing: 0) {
+                    Button { open(entry) } label: { IndexRow(entry: entry) }
+                        .buttonStyle(.plain)
+                    if let slug = entry.filedSlug {
+                        CompareButton(slug: slug).padding(.leading, 64)
+                    }
                 }
-                Text(group.info.blurb)
-                    .font(PitchAtlasTheme.newsreaderItalic(14))
+                .padding(.bottom, 8)
+                .overlay(alignment: .bottom) {
+                    Rectangle().fill(Color.white.opacity(17.0 / 255)).frame(height: 1).accessibilityHidden(true)
+                }
+                .modifier(RestorationAnchor(target: scrollTarget(for: entry), space: Self.scrollCoordinateSpace))
+            }
+        }
+    }
+
+    /// The binder spread: the family as a leather sheet of sleeves.
+    private func binder(_ group: IndexGroup) -> some View {
+        BinderSheet(label: "\(group.info.label) family, binder sheet") {
+            ForEach(Array(group.entries.enumerated()), id: \.element.id) { index, entry in
+                VStack(spacing: 6) {
+                    RepertoirePocket(entry: entry, index: index) { open($0) }
+                    if let slug = entry.filedSlug { CompareButton(slug: slug) }
+                }
+                .modifier(RestorationAnchor(target: scrollTarget(for: entry), space: Self.scrollCoordinateSpace))
+            }
+        }
+    }
+
+    /// A filed pitch opens its specimen, as the site links it to /pitch/<slug>;
+    /// any other opens its basic file. The reader's row is captured first.
+    private func open(_ entry: RepertoireEntry) {
+        // Capture before the push can relayout this scroll view. Button activation
+        // includes VoiceOver and Switch Control.
+        scrollRestoration.beginNavigation()
+        if let pitch = entry.filedSlug.flatMap(store.pitch(slug:)) {
+            selectedPitch = pitch
+        } else {
+            selectedEntry = entry
+        }
+    }
+
+    // MARK: - The Lost Pitches wing
+
+    /// The callout under the families: a wing of its own, its count from the bundle.
+    private var lostWing: some View {
+        RouteButton(path: "lost-pitches") {
+            VStack(alignment: .leading, spacing: 0) {
+                Text("A wing of its own".uppercased())
+                    .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                    .tracking(10 * 0.18)
+                    .foregroundStyle(ArchiveInk.tealGlow)
+                Text("Lost Pitches of the Negro Leagues".uppercased())
+                    .font(PitchAtlasTheme.anton(24, relativeTo: .title2))
+                    .tracking(24 * 0.01)
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .antonSkew()
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.vertical, -7)
+                    .padding(.top, 8)
+                Text("The statistics are being recovered; the technique mostly never will be. A box score survives; a grip does not. So every entry wears a documentation tier (Documented, Partial, or Legend) instead of faking a precision the record cannot support. The tier is the feature.")
+                    .font(PitchAtlasTheme.hanken(14))
+                    .lineSpacing(14 * (1.625 - 1.303))
                     .foregroundStyle(PitchAtlasTheme.bone2)
                     .fixedSize(horizontal: false, vertical: true)
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("\(group.info.label). \(group.info.blurb)")
-
-            VStack(spacing: 0) {
-                ForEach(Array(group.entries.enumerated()), id: \.element.id) { idx, entry in
-                    VStack(spacing: 0) {
-                        if idx > 0 { HairlineDivider() }
-                        Button {
-                            // Capture before the push can relayout this scroll view.
-                            // Button activation includes VoiceOver and Switch Control.
-                            scrollRestoration.beginNavigation()
-                            selectedEntry = entry
-                        } label: {
-                            RepertoireRow(entry: entry)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                    .id(scrollTarget(for: entry))
-                    .background {
-                        GeometryReader { geometry in
-                            Color.clear.preference(
-                                key: IndexScrollFramesPreferenceKey.self,
-                                value: [
-                                    scrollTarget(for: entry): geometry.frame(
-                                        in: .named(Self.scrollCoordinateSpace)
-                                    ),
-                                ]
-                            )
-                        }
-                    }
+                    .padding(.top, 14)
+                HStack(spacing: 8) {
+                    Text("Enter the wing".uppercased()).foregroundStyle(PitchAtlasTheme.bone)
+                    Text("→").foregroundStyle(ArchiveInk.tealGlow).accessibilityHidden(true)
+                    Text("· \(store.lostPitches.entries.count) filed".uppercased()).foregroundStyle(PitchAtlasTheme.ink3)
                 }
+                .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                .tracking(10 * 0.12)
+                .padding(.top, 16)
             }
-            .specimenCardFrame(
-                padding: PitchAtlasSpacing.xs,
-                radius: PitchAtlasRadius.card,
-                foilIntensity: 0.08,
-                foilFillOpacity: 0
-            )
+            .multilineTextAlignment(.leading)
+            .padding(24)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background {
+                ZStack {
+                    Color(web: WebTokens.Palette.press)
+                    EllipticalGradient(colors: [ArchiveInk.lostCalloutGlow, ArchiveInk.lostCalloutFloor],
+                                       center: UnitPoint(x: 0.75, y: 0.1), startRadiusFraction: 0, endRadiusFraction: 0.8)
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .accessibilityHidden(true)
+            }
+            .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(ArchiveInk.lostCalloutRim, lineWidth: 1))
+            .contentShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityHint("Opens Lost Pitches of the Negro Leagues")
     }
 
-    // MARK: - Filtering + grouping
+    // MARK: - Scroll restoration
 
     private func scrollTarget(for entry: RepertoireEntry) -> String {
         "index:entry:\(entry.id)"
@@ -366,56 +495,35 @@ struct IndexView: View {
         }
     }
 
-    private func resetScrollPosition(using proxy: ScrollViewProxy) {
+    private func applyFilterChange(_ change: IndexFilterChange, using proxy: ScrollViewProxy) {
         scrollRestoration.invalidate()
-        proxy.scrollTo(Self.topScrollTarget, anchor: .top)
+        if change.resetsToTop { proxy.scrollTo(Self.topScrollTarget, anchor: .top) }
     }
+}
 
-    /// Entries matching the live search query (name + aka), case-insensitive.
-    private var searchedEntries: [RepertoireEntry] {
-        let q = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        guard !q.isEmpty else { return store.repertoire.entries }
-        return store.repertoire.entries.filter { entry in
-            if entry.name.lowercased().contains(q) { return true }
-            if let aka = entry.aka, aka.contains(where: { $0.lowercased().contains(q) }) { return true }
-            return false
-        }
-    }
+/// Marks a row (or a family on the map) as a place the Index can return to: its
+/// scroll id, and its frame in the scroll view for IndexScrollRestoration to read.
+struct RestorationAnchor: ViewModifier {
+    let target: String
+    let space: String
 
-    /// The searched set, restricted to the selected family and/or status chips.
-    /// Family, status, and search compose (AND), the same axes the web index uses.
-    private var filteredEntries: [RepertoireEntry] {
-        var entries = searchedEntries
-        if let family { entries = entries.filter { $0.family == family } }
-        if let status { entries = entries.filter { $0.status == status } }
-        return entries
+    func body(content: Content) -> some View {
+        content
+            .id(target)
+            .background {
+                GeometryReader { geometry in
+                    Color.clear.preference(key: IndexScrollFramesPreferenceKey.self,
+                                           value: [target: geometry.frame(in: .named(space))])
+                }
+            }
     }
+}
 
-    /// Groups the filtered entries under their family info, preserving the bundle's
-    /// family order. Sort changes row order within each group, never the groups.
-    private var filteredGroups: [FamilyGroup] {
-        let entries = filteredEntries
-        return store.repertoire.families.compactMap { info in
-            let rows = sort.ordered(entries.filter { $0.family == info.family }, store: store)
-            return rows.isEmpty ? nil : FamilyGroup(info: info, entries: rows)
-        }
-    }
-
-    private var emptyResultMessage: String {
-        let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !trimmed.isEmpty {
-            return "No pitches match \(trimmed)."
-        }
-        if status != nil || family != nil {
-            return "No pitches match these filters."
-        }
-        return "No pitches in this family."
-    }
-
-    private struct FamilyGroup {
-        let info: RepertoireFamilyInfo
-        let entries: [RepertoireEntry]
-    }
+/// What changed in the Index controls. Typing narrows the list where the reader
+/// already is; a new family, status, sort or view is a new list and starts at the top.
+enum IndexFilterChange {
+    case query, family, status, sort, layout
+    var resetsToTop: Bool { self != .query }
 }
 
 private struct IndexScrollFramesPreferenceKey: PreferenceKey {
@@ -423,44 +531,5 @@ private struct IndexScrollFramesPreferenceKey: PreferenceKey {
 
     static func reduce(value: inout [String: CGRect], nextValue: () -> [String: CGRect]) {
         value.merge(nextValue(), uniquingKeysWith: { _, next in next })
-    }
-}
-
-// MARK: - Filter chip
-
-/// A selectable family filter chip. The accent dot reads the family color; the
-/// selected state fills cyan-tinted, the resting state is a hairline outline.
-private struct FilterChip: View {
-    let label: String
-    let dot: Color?
-    let selected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                if let dot { FamilyDot(color: dot, size: 6) }
-                Text(label.uppercased())
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.2)
-                    .foregroundStyle(selected ? PitchAtlasTheme.void : PitchAtlasTheme.bone2)
-            }
-            .padding(.horizontal, PitchAtlasSpacing.sm)
-            .padding(.vertical, PitchAtlasSpacing.xs)
-            .background(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .fill(selected ? PitchAtlasTheme.cyan : PitchAtlasTheme.press)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .strokeBorder(selected ? Color.clear : PitchAtlasTheme.machined, lineWidth: 1)
-            )
-            // Guarantee a 44pt hit area (Fitts) without ballooning the painted pill.
-            .frame(minHeight: 44)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(label)
-        .accessibilityAddTraits(selected ? [.isSelected, .isButton] : .isButton)
     }
 }

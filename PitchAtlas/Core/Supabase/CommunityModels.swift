@@ -8,6 +8,8 @@ enum CommunityLoadState<Value> {
     case failed(String)
 }
 
+/// PLAYER_LEVELS (data/field-notes.ts); FieldNotesChapterTests holds these words
+/// to the generated field-notes.json.
 enum CommunityPlayerLevel: String, Codable, CaseIterable, Identifiable, Hashable {
     case youth
     case highSchool = "high-school"
@@ -17,9 +19,9 @@ enum CommunityPlayerLevel: String, Codable, CaseIterable, Identifiable, Hashable
 
     var label: String {
         switch self {
-        case .youth: return "Youth"
-        case .highSchool: return "High school"
-        case .collegePlus: return "College and up"
+        case .youth: return "Developing competition"
+        case .highSchool: return "School competition"
+        case .collegePlus: return "College and adult competition"
         }
     }
 }
@@ -74,7 +76,9 @@ enum CommunityPitchIntent: String, Codable, CaseIterable, Identifiable, Hashable
         case .reducedVelocity: return "Softer feel"
         case .betterCommand: return "Better command"
         case .deception: return "More deception"
-        case .reduceStress: return "Easier feel"
+        // A retired, medical-adjacent category: old rows stay readable
+        // (lib/community fieldNoteIntentLabel) but it is never offered.
+        case .reduceStress: return "Legacy category (closed)"
         case .other: return "Something else"
         }
     }
@@ -95,9 +99,9 @@ enum CommunityClaimedResultKind: String, Codable, CaseIterable, Identifiable, Ha
             .moreMovement,
             .betterCommand,
             .velocityGain,
-            .inconsistent,
             .workedInBullpen,
             .workedInGame,
+            .inconsistent,
             .noNoticeableChange,
         ]
     }
@@ -108,8 +112,8 @@ enum CommunityClaimedResultKind: String, Codable, CaseIterable, Identifiable, Ha
         switch self {
         case .moreMovement: return "More movement"
         case .betterCommand: return "Better command"
-        case .velocityGain: return "Firmer result"
-        case .reducedDiscomfort: return "Easier feel"
+        case .velocityGain: return "Firmer feel"
+        case .reducedDiscomfort: return "Legacy category (closed)"
         case .inconsistent: return "Inconsistent so far"
         case .workedInBullpen: return "Worked in the bullpen"
         case .workedInGame: return "Worked in a game"
@@ -141,7 +145,8 @@ enum CommunitySourceTier: String, Codable, CaseIterable, Identifiable, Hashable 
 struct CommunityFieldNote: Decodable, Identifiable, Hashable {
     let id: String
     let pitchSlug: String
-    let authorID: String
+    /// nil once the author's account is gone; the row stays readable.
+    let authorID: String?
     let displayName: String
     let tweak: String
     let playerLevel: CommunityPlayerLevel
@@ -154,6 +159,9 @@ struct CommunityFieldNote: Decodable, Identifiable, Hashable {
     let evidenceLabel: String?
     let note: String?
     let sourceTier: CommunitySourceTier
+    /// The pace context, read leniently (lib/community paceFromDb): an unknown
+    /// band reads as none rather than failing the note.
+    var velocityBand: CommunityVelocityBand?
     /// Trigger-maintained on the server, read-only to clients. `var` so the
     /// optimistic toggle can adjust a local copy; the server stays authoritative.
     var adoptionCount: Int = 0
@@ -179,6 +187,7 @@ struct CommunityFieldNote: Decodable, Identifiable, Hashable {
         case evidenceLabel = "evidence_label"
         case note
         case sourceTier = "source_tier"
+        case velocityBand = "velocity_band"
         case adoptionCount = "adoption_count"
         case helpfulCount = "helpful_count"
         case baseRank = "base_rank"
@@ -195,7 +204,7 @@ extension CommunityFieldNote {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(String.self, forKey: .id)
         pitchSlug = try container.decode(String.self, forKey: .pitchSlug)
-        authorID = try container.decode(String.self, forKey: .authorID)
+        authorID = try container.decodeIfPresent(String.self, forKey: .authorID)
         displayName = try container.decode(String.self, forKey: .displayName)
         tweak = try container.decode(String.self, forKey: .tweak)
         playerLevel = try container.decode(CommunityPlayerLevel.self, forKey: .playerLevel)
@@ -208,6 +217,9 @@ extension CommunityFieldNote {
         evidenceLabel = try container.decodeIfPresent(String.self, forKey: .evidenceLabel)
         note = try container.decodeIfPresent(String.self, forKey: .note)
         sourceTier = try container.decode(CommunitySourceTier.self, forKey: .sourceTier)
+        velocityBand = (try? container.decodeIfPresent(String.self, forKey: .velocityBand))
+            .flatMap { $0 }
+            .flatMap(CommunityVelocityBand.init(stored:))
         adoptionCount = try container.decodeIfPresent(Int.self, forKey: .adoptionCount) ?? 0
         helpfulCount = try container.decodeIfPresent(Int.self, forKey: .helpfulCount) ?? 0
         baseRank = try container.decodeIfPresent(Double.self, forKey: .baseRank) ?? 0
@@ -309,12 +321,15 @@ enum CommunityEngagement {
 struct DiscussionPost: Decodable, Identifiable, Hashable {
     let id: String
     let topicKey: String
-    let authorID: String
+    /// nil once the author's account is gone; the post stays readable.
+    let authorID: String?
     let displayName: String
     let parentID: String?
     let body: String
     let createdAt: String
     var media: [DiscussionMedia] = []
+    /// One level of replies, oldest first; filled by `CommunityThread.build`.
+    var replies: [DiscussionPost] = []
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -361,6 +376,8 @@ struct NewFieldNote: Encodable {
     let evidenceLabel: String?
     let sourceTier: CommunitySourceTier
     let note: String?
+    /// Sent as the database band (paceToDb); omitted when the form left it blank.
+    var velocityBand: CommunityVelocityBand?
 
     enum CodingKeys: String, CodingKey {
         case pitchSlug = "pitch_slug"
@@ -376,11 +393,14 @@ struct NewFieldNote: Encodable {
         case evidenceLabel = "evidence_label"
         case sourceTier = "source_tier"
         case note
+        case velocityBand = "velocity_band"
     }
 }
 
 enum CommunityValidationError: LocalizedError, Equatable {
     case missingTweak
+    /// A relayed claim or a hunch with no word on where it came from.
+    case missingContext
     case invalidDisplayName
     case valueTooLong(field: String, max: Int)
     case invalidSampleSize
@@ -390,6 +410,8 @@ enum CommunityValidationError: LocalizedError, Equatable {
         switch self {
         case .missingTweak:
             return "Add the grip change or cue before filing."
+        case .missingContext:
+            return "A relayed or untested claim must say where it comes from."
         case .invalidDisplayName:
             return "Your display name must be 2 to 40 characters."
         case .valueTooLong(let field, let max):
@@ -426,7 +448,8 @@ extension NewFieldNote {
         evidenceURL: String,
         evidenceLabel: String,
         sourceTier: CommunitySourceTier,
-        note: String
+        note: String,
+        velocityBand: CommunityVelocityBand? = nil
     ) throws -> NewFieldNote {
         let cleanDisplayName = try validatedDisplayName(displayName)
         let cleanTweak = try requiredText(
@@ -452,6 +475,11 @@ extension NewFieldNote {
             max: CommunityFieldNoteLimits.note
         )
         let sampleSize = try parsedSampleSize(sampleSizeText)
+        // The server's weak_tier_requires_note: a relayed claim or a hunch says
+        // where it came from.
+        if [.secondhandAttributed, .unverified].contains(sourceTier), cleanNote == nil {
+            throw CommunityValidationError.missingContext
+        }
 
         return NewFieldNote(
             pitchSlug: pitchSlug,
@@ -466,7 +494,8 @@ extension NewFieldNote {
             evidenceURL: cleanEvidenceURL,
             evidenceLabel: cleanEvidenceLabel,
             sourceTier: sourceTier,
-            note: cleanNote
+            note: cleanNote,
+            velocityBand: velocityBand
         )
     }
 
@@ -519,17 +548,32 @@ extension NewFieldNote {
                 max: CommunityFieldNoteLimits.evidenceURL
             )
         }
+        guard webEvidenceURL(trimmed) != nil else {
+            throw CommunityValidationError.invalidEvidenceURL
+        }
+        return trimmed
+    }
+
+    /// The one rule for an evidence link, filed or read: an http or https
+    /// address with a host. Anything else (tel:, sms:, another app's scheme,
+    /// this app's own routes) is never a link.
+    static func webEvidenceURL(_ value: String) -> URL? {
+        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
         guard
             let components = URLComponents(string: trimmed),
             let scheme = components.scheme?.lowercased(),
             (scheme == "http" || scheme == "https"),
             let host = components.host,
             !host.isEmpty
-        else {
-            throw CommunityValidationError.invalidEvidenceURL
-        }
-        return trimmed
+        else { return nil }
+        return components.url
     }
+}
+
+extension CommunityFieldNote {
+    /// The evidence link a card may open. The server only bounds evidence_url's
+    /// length, so a row filed from another client is held to filing's rule here.
+    var evidenceLink: URL? { evidenceURL.flatMap(NewFieldNote.webEvidenceURL) }
 }
 
 /// The insert payload for a discussion post. The id is NOT sent: the server
@@ -551,6 +595,18 @@ struct NewDiscussionPost: Encodable {
     }
 }
 
+/// The handle a post or reply files under: the site's required "Your name" field
+/// (DiscussionForum.tsx), defaulting to the profile's handle (useDiscussion.ts:
+/// `prev || identity?.displayName || ''`). Never derived from an email address.
+enum DiscussionHandle {
+    static let label = "Your name"
+    static let caption = "A handle is enough. No real name required."
+
+    static func initial(current: String, profileName: String?) -> String {
+        current.isEmpty ? (profileName ?? "") : current
+    }
+}
+
 enum DiscussionPostLimits {
     static let displayName = 40
     static let body = 4000
@@ -564,7 +620,10 @@ extension NewDiscussionPost {
         parentID: String?
     ) throws -> NewDiscussionPost {
         let cleanDisplayName = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard (2...DiscussionPostLimits.displayName).contains(cleanDisplayName.count) else {
+        guard cleanDisplayName.count >= 2 else {
+            throw CommunityServiceError.invalidDiscussionPost("Add a name (2+ characters) so people know who is talking.")
+        }
+        guard cleanDisplayName.count <= DiscussionPostLimits.displayName else {
             throw CommunityServiceError.invalidDiscussionPost("Your display name must be 2 to 40 characters.")
         }
 
@@ -617,6 +676,14 @@ struct CommunityReport: Encodable {
     let mediaID: String?
     let reason: String?
 
+    /// The web's report reason: optional, short. An empty reason is stored as
+    /// NULL, not '', so moderation can tell "no reason given" from a blank.
+    static let reasonLimit = 300
+    static func cleanReason(_ raw: String) -> String? {
+        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : String(trimmed.prefix(reasonLimit))
+    }
+
     enum CodingKeys: String, CodingKey {
         case noteID = "note_id"
         case postID = "post_id"
@@ -661,11 +728,107 @@ enum CommunityVisibility {
     }
 
     static func visibleFieldNotes(_ notes: [CommunityFieldNote], hiddenAuthorIDs: Set<String>) -> [CommunityFieldNote] {
-        notes.filter { !hiddenAuthorIDs.contains($0.authorID) }
+        notes.filter { !isHidden($0.authorID, hiddenAuthorIDs) }
     }
 
+    /// Hides a blocked author's posts and replies. A hidden top-level post takes
+    /// its replies with it, the way an orphaned reply drops out of the web's thread.
     static func visibleDiscussionPosts(_ posts: [DiscussionPost], hiddenAuthorIDs: Set<String>) -> [DiscussionPost] {
-        posts.filter { !hiddenAuthorIDs.contains($0.authorID) }
+        posts.filter { !isHidden($0.authorID, hiddenAuthorIDs) }.map { post in
+            var post = post
+            post.replies = post.replies.filter { !isHidden($0.authorID, hiddenAuthorIDs) }
+            return post
+        }
+    }
+
+    private static func isHidden(_ authorID: String?, _ hidden: Set<String>) -> Bool {
+        authorID.map { hidden.contains($0) } ?? false
+    }
+
+    /// The web's viewerIsAuthor: true only when both ids are known and match, so a
+    /// signed-out reader never "owns" an authorless row.
+    static func viewerIsAuthor(_ authorID: String?, viewerID: String?) -> Bool {
+        guard let authorID, let viewerID else { return false }
+        return authorID == viewerID
+    }
+
+    /// The web's deletePost guard: a reply from another living contributor keeps a
+    /// post in place. A null author is an orphaned reply, not a person, so it never blocks.
+    static func canDeletePost(replyAuthorIDs: [String?], viewerID: String) -> Bool {
+        !replyAuthorIDs.contains { author in author.map { $0 != viewerID } ?? false }
+    }
+}
+
+/// The web's listThread shape (lib/discussion.ts): top-level posts newest first,
+/// each carrying its one level of replies oldest first. A reply whose parent
+/// isn't in the visible set has no context and drops out.
+enum CommunityThread {
+    /// - Parameter rows: one topic's posts, oldest first, as the read returns them.
+    static func build(_ rows: [DiscussionPost]) -> [DiscussionPost] {
+        let ids = Set(rows.map(\.id))
+        var repliesByParent: [String: [DiscussionPost]] = [:]
+        var roots: [DiscussionPost] = []
+        for row in rows {
+            if let parentID = row.parentID {
+                if ids.contains(parentID) { repliesByParent[parentID, default: []].append(row) }
+            } else {
+                roots.append(row)
+            }
+        }
+        return roots.reversed().map { root in
+            var root = root
+            root.replies = repliesByParent[root.id] ?? []
+            return root
+        }
+    }
+}
+
+/// The web's timeAgo for a post: computed from the row's own `created_at`, never
+/// invented. An unreadable timestamp shows nothing.
+enum CommunityTime {
+    static func ago(_ createdAt: String, now: Date = Date()) -> String? {
+        guard let date = parse(createdAt) else { return nil }
+        let seconds = max(0, now.timeIntervalSince(date))
+        if seconds < 60 { return "just now" }
+        if seconds < 3600 { return "\(Int(seconds / 60))m ago" }
+        if seconds < 86_400 { return "\(Int(seconds / 3600))h ago" }
+        return "\(Int(seconds / 86_400))d ago"
+    }
+
+    /// Postgres prints microseconds; the ISO parser reads at most milliseconds,
+    /// so the fraction is cut to three digits before parsing.
+    static func parse(_ raw: String) -> Date? {
+        var text = raw.trimmingCharacters(in: .whitespaces)
+        if let dot = text.firstIndex(of: "."), text[..<dot].contains("T") {
+            let digitsEnd = text[text.index(after: dot)...].firstIndex { !$0.isNumber } ?? text.endIndex
+            let digits = text[text.index(after: dot)..<digitsEnd]
+            text = String(text[..<dot]) + "." + String(digits.prefix(3)).padding(toLength: 3, withPad: "0", startingAt: 0) + String(text[digitsEnd...])
+        }
+        let withFraction = ISO8601DateFormatter()
+        withFraction.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = withFraction.date(from: text) { return date }
+        let plain = ISO8601DateFormatter()
+        plain.formatOptions = [.withInternetDateTime]
+        return plain.date(from: text)
+    }
+}
+
+/// One row of a list that decodes on its own: a row the app can't read yet (a new
+/// enum value, a column it doesn't know) drops out instead of emptying the list.
+struct LossyRow<Value: Decodable>: Decodable {
+    let value: Value?
+
+    init(from decoder: Decoder) throws {
+        value = try? Value(from: decoder)
+    }
+}
+
+/// Params for the moderated public read `list_public_field_notes(p_pitch_slug)`.
+struct FieldNotesParams: Encodable {
+    let pitchSlug: String
+
+    enum CodingKeys: String, CodingKey {
+        case pitchSlug = "p_pitch_slug"
     }
 }
 

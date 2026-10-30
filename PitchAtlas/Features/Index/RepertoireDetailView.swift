@@ -1,243 +1,390 @@
 import SwiftUI
 
 // =============================================================================
-// Pitch Atlas — Repertoire detail (the basic pitch read)
+// RepertoireDetailView — the basic file
 // =============================================================================
-// The detail behind an index row. Specimen-style header, the plain-English lede,
-// then the grip and movement as sourced claims. Aliases, illusions, and not-a-
-// pitch entries get a "what it really is" card so the honest label is the point.
-// When a fuller filed specimen exists it offers a push to it; when it doesn't, it
-// says so plainly rather than dangling a dead link.
+// Web: pages/RepertoireChapter.tsx, in its order. Every accepted pitch the atlas
+// has not filed as a full specimen still gets a real page: the header, the
+// plain-language read beside a schematic cover (the ball, not a movement claim),
+// Austin's grip evidence where he has photographed it, the grip, what it does and
+// what it really is as sourced prose, who throws it, the specimen to study first,
+// the honest "basic file" marker, the rest of its family, the discussion, the
+// previous and next files, and the site's footer. A filed pitch opens its full
+// specimen instead, as the site redirects it.
 // =============================================================================
 
 struct RepertoireDetailView: View {
-    @Environment(PitchStore.self) private var store
     let entry: RepertoireEntry
-
-    /// The filed specimen this entry points to, if one is actually bundled.
-    private var filedEntry: PitchAtlasEntry? {
-        guard let slug = entry.filedSlug else { return nil }
-        return store.pitch(slug: slug)
-    }
-
-    /// The filed specimen to study first: a basic file's bridge to the one filed
-    /// pitch that teaches its mechanic. Resolves only if that pitch is bundled.
-    private var studyTarget: PitchAtlasEntry? {
-        guard let slug = entry.studyFirstSlug else { return nil }
-        return store.pitch(slug: slug)
-    }
+    @Environment(PitchStore.self) private var store
 
     var body: some View {
+        if let slug = entry.filedSlug, let filed = store.pitch(slug: slug) {
+            PitchDetailView(entry: filed)
+        } else {
+            BasicFileView(entry: entry)
+        }
+    }
+}
+
+private struct BasicFileView: View {
+    let entry: RepertoireEntry
+    @Environment(PitchStore.self) private var store
+
+    private var edge: Bool { BasicFile.isEdge(entry.status) }
+
+    var body: some View {
+        let grip = store.gripEntry(forKey: entry.id)
+        let around = BasicFile.neighbors(of: entry, in: store.repertoire.entries)
         ZStack {
             FieldBackdrop()
-
             ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.xl) {
-                    header
-
-                    if let plain = entry.plain, !plain.isEmpty {
-                        ledeCard(plain)
+                VStack(alignment: .leading, spacing: 0) {
+                    SectionHero(eyebrow: BasicFile.eyebrow(entry.family),
+                                title: Text(entry.name),
+                                sub: BasicFile.akaLine(entry).map { Text($0) },
+                                trail: [Crumb(label: "The Atlas", path: "home"),
+                                        Crumb(label: "The Pitch Index", path: "repertoire"),
+                                        Crumb(label: entry.name)],
+                                accent: edge ? .seam : .powder) {
+                        badge
+                    } extra: {
+                        EmptyView()
                     }
-
-                    claimSection(label: "Grip", claim: entry.grip)
-                    claimSection(label: "Movement", claim: entry.movement)
-
-                    if let velocity = entry.velocity {
-                        velocitySection(velocity)
+                    lede
+                    if let grip {
+                        // grip footage is viewed in the dark — the one coal band on the basic file
+                        SpecimenGripEvidence(grip: grip, accentRGB: BasicFile.accentRGB(entry),
+                                             includePhotos: true, pauseControl: true, flush: true)
+                            .padding(.horizontal, 20)
+                            .background(CoalScene())
                     }
-
+                    room("01", "The grip", claim: entry.grip)
+                    room("02", "What it does", claim: entry.movement)
                     if let relationship = entry.relationship {
-                        relationshipCard(relationship)
+                        room("03", "What it really is", claim: relationship)
                     }
-
                     if let throwers = entry.notableThrowers, !throwers.isEmpty {
-                        thrownBySection(throwers)
+                        whoThrows(throwers)
                     }
-
-                    studyFirstLink
-
-                    filedSpecimenLink
+                    if let slug = entry.studyFirstSlug, let target = store.pitch(slug: slug) {
+                        studyFirst(target)
+                    }
+                    basicFileMarker
+                    familyRail
+                    DiscussionDrawer(topic: .repertoire(id: entry.id), topicName: entry.name)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 48)
+                    chapterNav(previous: around.previous, next: around.next)
+                    SiteFooter(path: "/repertoire/\(entry.id)")
                 }
-                .padding(.horizontal, PitchAtlasSpacing.lg)
-                .padding(.top, PitchAtlasSpacing.md)
                 .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
             }
         }
+        // The site's header carries the brand on every page; the title still names
+        // the back button on the pages this one opens.
         .navigationTitle(entry.name)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }
+        .toolbar {
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
+        }
     }
 
-    // MARK: - Header
+    // MARK: - Header badge
 
-    private var header: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                FamilyDot(color: entry.family.accent)
-                SectionLabel(text: entry.family.rawValue, color: entry.family.accent)
-            }
-
-            Text(entry.name.uppercased())
-                .font(PitchAtlasTheme.anton(44))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .antonSkew()
-                .padding(.vertical, 2)
-
-            StatusPill(text: entry.status.displayLabel, tone: entry.status.tone)
-
-            if let aka = entry.aka, !aka.isEmpty {
-                Text("also: \(aka.joined(separator: ", "))")
-                    .font(PitchAtlasTheme.newsreaderItalic(15))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 2)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(headerAccessibility)
-    }
-
-    private var headerAccessibility: String {
-        var parts = ["\(entry.name), \(entry.family.label)", entry.status.displayLabel]
-        if let aka = entry.aka, !aka.isEmpty {
-            parts.append("also known as \(aka.joined(separator: ", "))")
-        }
-        return parts.joined(separator: ". ")
+    /// HeroBadge: the status in mono caps on a hairline box — the seam for the
+    /// honest edge cases, bone for the live pitches.
+    private var badge: some View {
+        Text(entry.status.displayLabel.uppercased())
+            .font(PitchAtlasType.font(.martian400, size: 12, relativeTo: .caption))
+            .tracking(em: 0.12, size: 12)
+            .foregroundStyle(edge ? PitchAtlasTheme.seamBright : PitchAtlasTheme.bone)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .overlay(RoundedRectangle(cornerRadius: 6)
+                .strokeBorder(edge ? PitchAtlasTheme.seamBright.opacity(0.5) : PitchAtlasTheme.bone.opacity(0.3), lineWidth: 1))
+            .accessibilityLabel("Status: \(entry.status.displayLabel)")
     }
 
     // MARK: - Lede
 
-    private func ledeCard(_ plain: String) -> some View {
-        Text(plain)
-            .font(PitchAtlasTheme.hanken(16))
-            .foregroundStyle(PitchAtlasTheme.bone)
-            .fixedSize(horizontal: false, vertical: true)
-            .leatherPress()
-            .accessibilityLabel(plain)
-    }
-
-    // MARK: - Sourced claim section
-
-    private func claimSection(label: String, claim: Claim) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: label)
-            ClaimText(claim: claim)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .leatherPress()
-    }
-
-    // MARK: - Velocity
-
-    private func velocitySection(_ velocity: Claim) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "Velocity", size: 9)
-            // ClaimText carries the figure with its tier dot + source, so a
-            // velocity can never render as an unsourced number.
-            ClaimText(claim: velocity, valueFont: PitchAtlasTheme.newsreader(24))
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .leatherPress(padding: PitchAtlasSpacing.sm, radius: PitchAtlasRadius.panel)
-    }
-
-    // MARK: - Relationship (alias / illusion / not-a-pitch)
-
-    private func relationshipCard(_ relationship: Claim) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "What it really is", color: PitchAtlasTheme.amberBright)
-            ClaimText(claim: relationship)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .leatherPress()
-    }
-
-    // MARK: - Thrown by
-
-    private func thrownBySection(_ throwers: String) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "Thrown by")
-            Text(throwers)
-                .font(PitchAtlasTheme.hanken(15))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .leatherPress()
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Thrown by, \(throwers)")
-    }
-
-    // MARK: - Filed specimen link (honest about absence)
-
-    @ViewBuilder
-    private var filedSpecimenLink: some View {
-        if let filed = filedEntry {
-            NavigationLink {
-                PitchDetailView(entry: filed)
-            } label: {
-                HStack(spacing: PitchAtlasSpacing.sm) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        SectionLabel(text: "Filed specimen", color: PitchAtlasTheme.cyan, size: 9)
-                        Text("View the filed specimen")
-                            .font(PitchAtlasTheme.hankenMedium(16))
-                            .foregroundStyle(PitchAtlasTheme.cyan)
-                    }
-                    Spacer(minLength: PitchAtlasSpacing.xs)
-                    Image(systemName: "arrow.right")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(PitchAtlasTheme.cyan)
+    /// The plain-language read (or, without one, the movement claim with its
+    /// tier), then the schematic cover and its honest caption.
+    private var lede: some View {
+        VStack(alignment: .leading, spacing: 40) {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(entry.plain ?? entry.movement.value)
+                    .font(PitchAtlasType.font(.newsreader400, size: 24, relativeTo: .title2))
+                    .tracking(em: -0.012, size: 24)
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .cssLineHeight(1.375, face: .newsreader400, size: 24, relativeTo: .title2)
+                    .fixedSize(horizontal: false, vertical: true)
+                if entry.plain == nil {
+                    ConfidenceLabel(confidence: entry.movement.confidence)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .leatherPress(padding: PitchAtlasSpacing.md, radius: PitchAtlasRadius.panel)
+            }
+            VStack(alignment: .leading, spacing: 12) {
+                SchematicCover()
+                    .frame(width: 208, height: 208)
+                    .frame(maxWidth: .infinity)
+                Text("Schematic baseball cover. This pitch has no filed seam geometry yet; the grip and shape below are sourced in words, not measured here.")
+                    .font(PitchAtlasType.font(.hanken400, size: 12, relativeTo: .caption))
+                    .foregroundStyle(PitchAtlasTheme.ink3)
+                    .cssLineHeight(1.375, face: .hanken400, size: 12, relativeTo: .caption)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: 34 * 0.56 * 12)
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 56)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    // MARK: - Rooms
+
+    /// A numbered room: the tier marker, then the claim as prose at 20 on 1.625.
+    private func room(_ index: String, _ label: String, claim: Claim) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            StageTierMarker(index: index, label: label)
+            ClaimProse(claim: claim, size: 20, ink: PitchAtlasTheme.bone)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 56)
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    /// Who throws it: the mono label leading the sentence, under a hairline.
+    private func whoThrows(_ throwers: String) -> some View {
+        (Text("Who throws it".uppercased())
+            .font(MonoLabel.font)
+            .tracking(MonoLabel.trackingEm * MonoLabel.size)
+            .foregroundStyle(PitchAtlasTheme.ink3)
+         + Text("\u{2002}")
+         + Text(throwers)
+            .font(PitchAtlasType.body())
+            .foregroundStyle(PitchAtlasTheme.ink2))
+            .cssLineHeight(1.625, face: .hanken400, size: 16, relativeTo: .body)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.top, 20)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.15)).frame(height: 1) }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 16)
+    }
+
+    // MARK: - Study this first
+
+    /// The study hook: the filed specimen that teaches this pitch's mechanic, with
+    /// its sourced bridge when one is written.
+    private func studyFirst(_ target: PitchAtlasEntry) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Study this first".uppercased())
+                .font(MonoLabel.font)
+                .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
+                .foregroundStyle(PitchAtlasTheme.seamBright)
+                .padding(.bottom, 12)
+                .accessibilityAddTraits(.isHeader)
+            if let note = entry.contextNote {
+                ClaimProse(claim: note, size: 18, ink: PitchAtlasTheme.bone)
+                    .padding(.bottom, 20)
+            }
+            NavigationLink { PitchDetailView(entry: target) } label: {
+                HStack(spacing: 12) {
+                    Text("Filed specimen".uppercased())
+                        .font(MonoLabel.font)
+                        .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
+                        .foregroundStyle(PitchAtlasTheme.ink3)
+                    Text(target.canonical.name.uppercased())
+                        .font(PitchAtlasTheme.anton(18, relativeTo: .headline))
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Text("→")
+                        .font(PitchAtlasType.body())
+                        .foregroundStyle(PitchAtlasTheme.seamBright)
+                        .accessibilityHidden(true)
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .frame(minHeight: 44)
+                .background(RoundedRectangle(cornerRadius: 6).fill(PitchAtlasTheme.void))
+                .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(PitchAtlasTheme.bone.opacity(0.2), lineWidth: 1))
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("View the filed specimen for \(entry.name)")
-            .accessibilityAddTraits(.isButton)
-        } else {
-            SectionLabel(text: "Fuller breakdown coming", color: PitchAtlasTheme.ink3, size: 9)
-                .padding(.top, PitchAtlasSpacing.xs)
+            .accessibilityLabel("Filed specimen: \(target.canonical.name)")
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 6).fill(PitchAtlasTheme.paper2))
+        .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(PitchAtlasTheme.bone.opacity(0.2), lineWidth: 1))
+        .padding(.horizontal, 20)
+        .padding(.vertical, 40)
+    }
+
+    // MARK: - The honest marker
+
+    private var basicFileMarker: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Basic file".uppercased())
+                .font(MonoLabel.font)
+                .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
+                .foregroundStyle(PitchAtlasTheme.seamBright)
+            Text("This pitch has a sourced one-line grip and movement and an honest explanation, not yet a filed specimen with authored grip geometry and a full craft chapter. A fuller breakdown is coming; the source trail stays attached.")
+                .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
+                .foregroundStyle(PitchAtlasTheme.ink2)
+                .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(RoundedRectangle(cornerRadius: 6).fill(PitchAtlasTheme.paper2))
+        .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(PitchAtlasTheme.seamBright.opacity(0.3), lineWidth: 1))
+        .accessibilityElement(children: .combine)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 40)
+    }
+
+    // MARK: - The family rail
+
+    /// FamilyRail: the rest of the family as pills in two columns, each opening
+    /// its specimen or its basic file. Nothing when the family is this one pitch.
+    @ViewBuilder
+    private var familyRail: some View {
+        let siblings = BasicFile.siblings(of: entry, in: store.repertoire.entries)
+        if !siblings.isEmpty {
+            VStack(alignment: .leading, spacing: 20) {
+                Text(BasicFile.railHeading(entry.family).uppercased())
+                    .font(PitchAtlasType.font(.martian400, size: 11, relativeTo: .caption2))
+                    .tracking(em: 0.16, size: 11)
+                    .foregroundStyle(PitchAtlasTheme.ink2)
+                    .accessibilityAddTraits(.isHeader)
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
+                    ForEach(siblings) { sibling in
+                        NavigationLink { RepertoireDetailView(entry: sibling) } label: { pill(sibling) }
+                            .buttonStyle(.plain)
+                    }
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 48)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.15)).frame(height: 1) }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Others in this family")
         }
     }
 
-    // MARK: - Study this first (the basic file's bridge to a filed specimen)
+    private func pill(_ sibling: RepertoireEntry) -> some View {
+        HStack(spacing: 10) {
+            HStack(spacing: 10) {
+                Circle().fill(Color(rgb: BasicFile.accentRGB(sibling))).frame(width: 10, height: 10)
+                    .accessibilityHidden(true)
+                Text(sibling.name)
+                    .font(PitchAtlasType.font(.hanken700, size: 14, relativeTo: .subheadline))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .cssLineHeight(1.375, face: .hanken700, size: 14, relativeTo: .subheadline)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .multilineTextAlignment(.leading)
+            }
+            Spacer(minLength: 0)
+            Text("→")
+                .font(PitchAtlasType.font(.martian400, size: 11, relativeTo: .caption2))
+                .foregroundStyle(PitchAtlasTheme.ink3)
+                .accessibilityHidden(true)
+        }
+        .padding(.leading, 12)
+        .padding(.trailing, 16)
+        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity, minHeight: 44)
+        .overlay(Capsule().strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
+        .contentShape(Capsule())
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(sibling.filedSlug == nil ? "\(sibling.name), open basic file" : "\(sibling.name), open specimen")
+    }
 
-    @ViewBuilder
-    private var studyFirstLink: some View {
-        if let target = studyTarget {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                SectionLabel(text: "Study this first", color: PitchAtlasTheme.amberBright, size: 9)
+    // MARK: - Chapter nav
 
-                // The sourced one-line bridge, when one is authored. ClaimText
-                // carries its tier dot + source, so it can never read as unsourced.
-                if let note = entry.contextNote {
-                    ClaimText(claim: note)
-                }
-
-                NavigationLink {
-                    PitchDetailView(entry: target)
-                } label: {
-                    HStack(spacing: PitchAtlasSpacing.sm) {
-                        VStack(alignment: .leading, spacing: 2) {
-                            SectionLabel(text: "Filed specimen", color: PitchAtlasTheme.cyan, size: 9)
-                            Text(target.canonical.name)
-                                .font(PitchAtlasTheme.hankenMedium(16))
-                                .foregroundStyle(PitchAtlasTheme.cyan)
-                        }
-                        Spacer(minLength: PitchAtlasSpacing.xs)
-                        Image(systemName: "arrow.right")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundStyle(PitchAtlasTheme.cyan)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(Rectangle())
+    /// ChapterNav: the previous file, the way back to the Index, the next file.
+    private func chapterNav(previous: RepertoireEntry?, next: RepertoireEntry?) -> some View {
+        VStack(spacing: 16) {
+            if let previous {
+                NavigationLink { RepertoireDetailView(entry: previous) } label: {
+                    neighbor("← Previous", previous.name, alignment: .leading)
                 }
                 .buttonStyle(.plain)
-                .accessibilityLabel("Study this first: \(target.canonical.name)")
-                .accessibilityAddTraits(.isButton)
+            } else {
+                // the empty grid cell still takes its gap on the site
+                Color.clear.frame(height: 0).accessibilityHidden(true)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .leatherPress()
+            RouteButton(path: "repertoire") {
+                VStack(spacing: 4) {
+                    Text("The Pitch Index".uppercased())
+                        .font(MonoLabel.font)
+                        .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
+                        .foregroundStyle(PitchAtlasTheme.seamBright)
+                    Text("Back to every pitch →")
+                        .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
+                        .foregroundStyle(PitchAtlasTheme.ink2)
+                }
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            if let next {
+                NavigationLink { RepertoireDetailView(entry: next) } label: {
+                    neighbor("Next →", next.name, alignment: .trailing)
+                }
+                .buttonStyle(.plain)
+            }
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 48)
+        .background(PitchAtlasTheme.paper2)
+        .overlay(alignment: .top) { Rectangle().fill(PitchAtlasTheme.bone.opacity(0.15)).frame(height: 1) }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Pitch index chapters")
+    }
+
+    private func neighbor(_ label: String, _ name: String, alignment: HorizontalAlignment) -> some View {
+        VStack(alignment: alignment, spacing: 4) {
+            Text(label.uppercased())
+                .font(MonoLabel.font)
+                .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
+                .foregroundStyle(PitchAtlasTheme.ink3)
+            Text(name.uppercased())
+                .font(PitchAtlasTheme.anton(18, relativeTo: .headline))
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .multilineTextAlignment(alignment == .leading ? .leading : .trailing)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, minHeight: 44, alignment: alignment == .leading ? .leading : .trailing)
+        .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// SeamSchematic with no axis and no hand: the plain stitched cover on its floor
+/// shadow. Decorative — the caption beside it says what it is and is not.
+private struct SchematicCover: View {
+    var body: some View {
+        // the site's 240-unit drawing puts an 86-unit ball in a 208pt frame
+        let radius: CGFloat = 86.0 / 240.0 * 208.0
+        ZStack {
+            Ellipse()
+                .fill(EllipticalGradient(colors: [Color.black.opacity(0.7), .clear], center: .center,
+                                         startRadiusFraction: 0, endRadiusFraction: 0.5))
+                .frame(width: radius * 0.94 * 2, height: radius * 0.16 * 2)
+                .offset(x: radius * 0.08, y: radius * 1.1)
+            SeamBall(motion: .schematicReference, size: radius * 2 / 0.92, showMovement: false)
+        }
+        .accessibilityHidden(true)
     }
 }

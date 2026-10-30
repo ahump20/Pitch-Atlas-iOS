@@ -30,6 +30,10 @@
     ]
   },
   "proofLimit": "Grip photo only; does not prove tracked speed, spin, shape, command, injury risk, or outcome.",
+  "circleChangeDistinction": {
+    "marker": "Circle Changeup · Filed from external sources · No Austin grip photo",
+    "reason": "Austin's personal grip library excludes the circle change because his hand size could not form it cleanly."
+  },
   "entries": [
     {
       "id": "four-seam",
@@ -84,7 +88,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/four-seam-grip-poster.webp"
+        "poster": "/grips/four-seam-grip-poster.webp",
+        "start": 0.8,
+        "focus": {
+          "x": 50,
+          "y": 44
+        }
       }
     },
     {
@@ -140,7 +149,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/two-seam-grip-poster.webp"
+        "poster": "/grips/two-seam-grip-poster.webp",
+        "start": 0.6,
+        "focus": {
+          "x": 50,
+          "y": 38
+        }
       }
     },
     {
@@ -196,7 +210,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/twelve-six-grip-poster.webp"
+        "poster": "/grips/twelve-six-grip-poster.webp",
+        "start": 2.2,
+        "focus": {
+          "x": 50,
+          "y": 46
+        }
       }
     },
     {
@@ -330,7 +349,12 @@
           "attribution": "Austin H.",
           "capturedAt": "2026-06-06"
         },
-        "poster": "/grips/three-finger-change-grip-poster.webp"
+        "poster": "/grips/three-finger-change-grip-poster.webp",
+        "start": 1.6,
+        "focus": {
+          "x": 50,
+          "y": 44
+        }
       }
     },
     {

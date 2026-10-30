@@ -26,6 +26,10 @@ final class AuthSessionStore {
     /// the claim block can confirm "check your email" the same way the magic-link
     /// panel does. Cleared when a new claim starts or once the claim confirms.
     private(set) var claimEmailSentTo: String?
+    /// Bumped whenever this reader blocks or unblocks someone, from any surface,
+    /// so every community list on screen re-reads the block list and stops
+    /// showing (or shows again) that contributor without waiting for a relaunch.
+    private(set) var communityBlockRevision = 0
     private var lastMagicLinkAt: Date?
     private let magicLinkCooldown: TimeInterval = 30
 
@@ -38,17 +42,15 @@ final class AuthSessionStore {
 
     var isSignedIn: Bool { userID != nil }
 
+    /// A block or unblock just landed on the server.
+    func noteBlockListChanged() {
+        communityBlockRevision += 1
+    }
+
     /// A permanent account: signed in AND not anonymous. Server policy restricts
     /// media uploads and media-terms acceptance to claimed accounts, so upload UI
     /// gates on this, not on `isSignedIn`.
     var isClaimed: Bool { isSignedIn && !isAnonymous }
-
-    var displayName: String {
-        if let email, let prefix = email.split(separator: "@").first {
-            return String(prefix).replacingOccurrences(of: ".", with: " ")
-        }
-        return "Pitch Atlas contributor"
-    }
 
     func start() async {
         await refreshSession()
@@ -60,8 +62,18 @@ final class AuthSessionStore {
             let session = try await client.auth.session
             apply(session: session)
         } catch {
-            apply(session: nil)
+            // Only a missing session is signed out. A refresh that fails offline or
+            // on a hiccup keeps the stored session, so the block filter still runs
+            // and an anonymous contributor is never shown the sign-in path that
+            // would orphan their record (ensureSessionForWrite draws the same line).
+            apply(session: Self.keepsStoredSession(after: error) ? client.auth.currentSession : nil)
         }
+    }
+
+    /// True for every refresh failure except a genuinely missing session.
+    nonisolated static func keepsStoredSession(after error: Error) -> Bool {
+        if case AuthError.sessionMissing = error { return false }
+        return true
     }
 
     func handle(url: URL) {
@@ -84,7 +96,7 @@ final class AuthSessionStore {
         do {
             let session = try await client.auth.session
             apply(session: session)
-            return String(describing: session.user.id)
+            return Self.idString(session.user.id)
         } catch AuthError.sessionMissing {
             // Genuinely signed out — fall through and mint on this write intent.
         } catch {
@@ -96,7 +108,7 @@ final class AuthSessionStore {
         do {
             let session = try await client.auth.signInAnonymously()
             apply(session: session)
-            return String(describing: session.user.id)
+            return Self.idString(session.user.id)
         } catch {
             throw CommunityServiceError.sessionStartFailed
         }
@@ -303,8 +315,14 @@ final class AuthSessionStore {
         }
     }
 
+    /// The user id as Postgres prints it: lowercase. `UUID.description` is
+    /// uppercase, and the server compares storage folders and author ids as
+    /// `auth.uid()::text`, so an uppercase id never matched — image uploads were
+    /// refused and "is this mine" checks never passed.
+    nonisolated static func idString(_ id: UUID) -> String { id.uuidString.lowercased() }
+
     private func apply(session: Session?) {
-        userID = session.map { String(describing: $0.user.id) }
+        userID = session.map { Self.idString($0.user.id) }
         email = session?.user.email
         accessToken = session?.accessToken
         isAnonymous = session?.user.isAnonymous ?? false

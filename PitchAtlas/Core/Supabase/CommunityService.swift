@@ -12,20 +12,17 @@ struct CommunityService {
         self.client = client
     }
 
-    /// Ranked, visible field notes for one pitch. Sorts on `base_rank` — the live
-    /// ranking a DB trigger maintains via note_base_rank() — with created_at as
-    /// the tiebreak, matching the web's listNotes. Ordering is purely SQL; the
-    /// client never re-sorts.
+    /// Approved, visible field notes for one pitch, through the server's moderated
+    /// public read (`list_public_field_notes`, the web's listNotes). The function
+    /// owns the review gate, the hidden flag, and the viewer-block gate, and sorts
+    /// on `base_rank` then `created_at`; the client never re-sorts. A held note —
+    /// including the viewer's own pending one — never comes back from it.
     func fieldNotes(pitchSlug: String) async throws -> [CommunityFieldNote] {
-        try await client
-            .from("field_notes")
-            .select("id, pitch_slug, author_id, display_name, tweak, player_level, arm_slot, intent, claimed_result_kind, claimed_result_note, sample_size, evidence_url, evidence_label, note, source_tier, adoption_count, helpful_count, base_rank, created_at")
-            .eq("pitch_slug", value: pitchSlug)
-            .order("base_rank", ascending: false)
-            .order("created_at", ascending: false)
-            .limit(25)
+        let rows: [LossyRow<CommunityFieldNote>] = try await client
+            .rpc("list_public_field_notes", params: FieldNotesParams(pitchSlug: pitchSlug))
             .execute()
             .value
+        return rows.compactMap(\.value)
     }
 
     /// The viewer's own Tried This / Helpful marks for the visible notes.
@@ -113,7 +110,7 @@ struct CommunityService {
     private func currentUserID() async throws -> String {
         do {
             let session = try await client.auth.session
-            return String(describing: session.user.id)
+            return AuthSessionStore.idString(session.user.id)
         } catch {
             throw CommunityServiceError.sessionStartFailed
         }
@@ -131,31 +128,70 @@ struct CommunityService {
         return raw.contains("23505") || raw.contains("duplicate key")
     }
 
+    /// The whole thread for one topic, the web's listThread: every visible post
+    /// oldest first, media looked up in batches, then shaped by
+    /// `CommunityThread.build` (top-level newest first, replies under their post).
+    /// RLS returns only the public set; reading never mints a session.
     func discussionPosts(topicKey: String) async throws -> [DiscussionPost] {
-        var posts: [DiscussionPost] = try await client
+        let rows: [LossyRow<DiscussionPost>] = try await client
             .from("discussion_posts")
             .select("id, topic_key, author_id, display_name, parent_id, body, created_at")
             .eq("topic_key", value: topicKey)
-            .order("created_at", ascending: false)
-            .limit(40)
+            .order("created_at", ascending: true)
             .execute()
             .value
+        var posts = rows.compactMap(\.value)
 
         let postIDs = posts.map(\.id)
-        guard !postIDs.isEmpty else { return posts }
+        guard !postIDs.isEmpty else { return [] }
 
-        let mediaRows: [DiscussionMedia] = try await client
-            .from("discussion_media")
-            .select("id, post_id, storage_path, kind, width, height")
-            .in("post_id", values: postIDs.map { $0 as any PostgrestFilterValue })
-            .execute()
-            .value
+        var mediaRows: [DiscussionMedia] = []
+        for batch in Self.batches(postIDs) {
+            let page: [DiscussionMedia] = try await client
+                .from("discussion_media")
+                .select("id, post_id, storage_path, kind, width, height")
+                .in("post_id", values: batch.map { $0 as any PostgrestFilterValue })
+                .execute()
+                .value
+            mediaRows.append(contentsOf: page)
+        }
 
         let signedMedia = try await signMedia(mediaRows)
         for index in posts.indices {
             posts[index].media = signedMedia[posts[index].id] ?? []
         }
-        return posts
+        return CommunityThread.build(posts)
+    }
+
+    /// The web's batch size for id lists and storage removes (lib/discussion.ts).
+    static let batchSize = 100
+
+    static func batches<T>(_ items: [T], size: Int = batchSize) -> [[T]] {
+        stride(from: 0, to: items.count, by: size).map { Array(items[$0..<min($0 + size, items.count)]) }
+    }
+
+    /// The viewer's contributor profile (lib/community getIdentity): the handle,
+    /// the claimed flag and the score. READ path: the caller only asks over an
+    /// existing session, so a bullpen card never mints an account.
+    func contributorIdentity(userID: String) async throws -> ContributorIdentity? {
+        let rows: [ContributorIdentity] = try await client
+            .from("profiles")
+            .select("display_name, is_claimed, contribution_score, notes_count")
+            .eq("id", value: userID)
+            .limit(1)
+            .execute()
+            .value
+        return rows.first
+    }
+
+    /// Keeps the handle a contributor files under (lib/community submitNote saves
+    /// it before the insert). The profiles UPDATE grant covers display_name only.
+    func setDisplayName(_ name: String, userID: String) async throws {
+        try await client
+            .from("profiles")
+            .update(DisplayNameUpdate(displayName: name))
+            .eq("id", value: userID)
+            .execute()
     }
 
     func submitFieldNote(_ note: NewFieldNote) async throws {
@@ -167,6 +203,16 @@ struct CommunityService {
         try await client
             .from("field_notes")
             .insert(note)
+            .execute()
+    }
+
+    /// File a reader's suggested pitching post for review (the web's
+    /// submitExternalSuggestion). The six columns only; a refusal is mapped to the
+    /// site's words by the caller.
+    func fileSuggestion(_ insert: ExternalSuggestion.Insert) async throws {
+        try await client
+            .from("external_content_suggestions")
+            .insert(insert)
             .execute()
     }
 
@@ -183,6 +229,52 @@ struct CommunityService {
             .execute()
             .value
         return inserted.id
+    }
+
+    /// Delete the viewer's own post (the web's deletePost). A reply from another
+    /// living contributor keeps it in place; the viewer's own files go best-effort
+    /// after the row — the delete is the outcome the person sees.
+    func deletePost(id postID: String, viewerID: String) async throws {
+        struct ReplyRef: Decodable {
+            let id: String
+            let authorID: String?
+            enum CodingKeys: String, CodingKey { case id, authorID = "author_id" }
+        }
+        struct MediaPathRef: Decodable {
+            let storagePath: String?
+            enum CodingKeys: String, CodingKey { case storagePath = "storage_path" }
+        }
+        let replies: [ReplyRef] = try await client
+            .from("discussion_posts")
+            .select("id, author_id")
+            .eq("parent_id", value: postID)
+            .execute()
+            .value
+        guard CommunityVisibility.canDeletePost(replyAuthorIDs: replies.map(\.authorID), viewerID: viewerID) else {
+            throw CommunityServiceError.deleteBlockedByReplies
+        }
+        let cascade = [postID] + replies.map(\.id)
+        var media: [MediaPathRef] = []
+        for batch in Self.batches(cascade) {
+            let page: [MediaPathRef] = try await client
+                .from("discussion_media")
+                .select("storage_path")
+                .in("post_id", values: batch.map { $0 as any PostgrestFilterValue })
+                .execute()
+                .value
+            media.append(contentsOf: page)
+        }
+        let ownPaths = media.compactMap(\.storagePath).filter { $0.hasPrefix("\(viewerID)/") }
+        try await client
+            .from("discussion_posts")
+            .delete()
+            .eq("id", value: postID)
+            .execute()
+        // The row delete already hid the post. Storage cleanup is best-effort and
+        // never surfaces as an error the person can't act on.
+        for batch in Self.batches(ownPaths) {
+            _ = try? await client.storage.from(Self.mediaBucket).remove(paths: batch)
+        }
     }
 
     func acceptMediaTerms() async throws {
@@ -235,17 +327,28 @@ struct CommunityService {
     }
 
     func reportFieldNote(id: String, reason: String?) async throws {
-        try await client
-            .from("note_reports")
-            .insert(CommunityReport(noteID: id, postID: nil, mediaID: nil, reason: reason))
-            .execute()
+        try await fileReport(table: "note_reports", CommunityReport(noteID: id, postID: nil, mediaID: nil, reason: reason))
     }
 
     func reportPost(id: String, reason: String?) async throws {
-        try await client
-            .from("discussion_reports")
-            .insert(CommunityReport(noteID: nil, postID: id, mediaID: nil, reason: reason))
-            .execute()
+        try await fileReport(table: "discussion_reports", CommunityReport(noteID: nil, postID: id, mediaID: nil, reason: reason))
+    }
+
+    /// The web's reportMedia: a report on one attached file, not the whole post.
+    func reportMedia(id: String, reason: String?) async throws {
+        try await fileReport(table: "discussion_reports", CommunityReport(noteID: nil, postID: nil, mediaID: id, reason: reason))
+    }
+
+    /// One report per account per item: a second report of the same thing is
+    /// already on file, which is what the person asked for (the web skips 23505 too).
+    private func fileReport(table: String, _ report: CommunityReport) async throws {
+        do {
+            try await client
+                .from(table)
+                .insert(report)
+                .execute()
+        } catch where Self.isUniqueViolation(error) {
+        }
     }
 
     func blockUser(blockedID: String) async throws {
@@ -270,9 +373,13 @@ struct CommunityService {
     private func signMedia(_ rows: [DiscussionMedia]) async throws -> [String: [DiscussionMedia]] {
         guard !rows.isEmpty else { return [:] }
 
-        let results = try await client.storage
-            .from(Self.mediaBucket)
-            .createSignedURLs(paths: rows.map(\.storagePath), expiresIn: Self.signedURLTTL)
+        var results: [SignedURLResult] = []
+        for batch in Self.batches(rows.map(\.storagePath)) {
+            let page: [SignedURLResult] = try await client.storage
+                .from(Self.mediaBucket)
+                .createSignedURLs(paths: batch, expiresIn: Self.signedURLTTL)
+            results.append(contentsOf: page)
+        }
         let urlsByPath = results.reduce(into: [String: URL]()) { urls, result in
             guard let signedURL = result.signedURL else { return }
             urls[result.path] = signedURL
@@ -285,7 +392,8 @@ struct CommunityService {
         for var row in rows {
             row.signedURL = urlsByPath[row.storagePath]
             if failedPaths.contains(row.storagePath) {
-                row.signingError = "Media unavailable."
+                // The web's wording for a file it can't show yet (DiscussionForum.tsx MediaItem).
+                row.signingError = "Specimen under review"
             }
             grouped[row.postID, default: []].append(row)
         }
@@ -319,12 +427,41 @@ struct CommunityService {
         )
     }
 
+    /// The safety triggers' tagged messages, with the web's fallback for each
+    /// (lib/discussion.ts taggedErrorMessages, lib/community.ts friendlyDbError).
+    /// The server's own sentence after the tag is what a contributor reads.
+    static let taggedMessages: [(tag: String, fallback: String)] = [
+        ("content_blocked:", "That post contains language we do not allow here."),
+        ("rate_limit:", "Too many posts in a short time - please slow down."),
+        ("media_blocked:", "That media file is not allowed here."),
+        ("too_deep:", "Replies can only go one level deep."),
+        ("invalid_parent:", "That reply target is no longer available."),
+    ]
+
+    /// The server's sentence after a tag, as a sentence: capitalized, closed.
+    static func taggedMessage(in raw: String) -> String? {
+        for entry in taggedMessages {
+            guard let range = raw.range(of: entry.tag) else { continue }
+            var tail = raw[range.upperBound...].trimmingCharacters(in: .whitespacesAndNewlines)
+            // PostgREST may wrap the message in quotes or append its own detail after a newline.
+            if let cut = tail.firstIndex(where: { $0 == "\"" || $0 == "\n" }) { tail = String(tail[..<cut]) }
+            tail = tail.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard let first = tail.first else { return entry.fallback }
+            let sentence = first.uppercased() + tail.dropFirst()
+            return sentence.hasSuffix(".") || sentence.hasSuffix("?") || sentence.hasSuffix("!") ? sentence : sentence + "."
+        }
+        return nil
+    }
+
     static func userMessage(for error: Error, fallback: String = "Could not save that just now. Try again.") -> String {
         if let validationError = error as? CommunityValidationError {
             return validationError.errorDescription ?? fallback
         }
         if let communityError = error as? CommunityServiceError {
             return communityError.errorDescription ?? fallback
+        }
+        if let tagged = taggedMessage(in: error.localizedDescription) ?? taggedMessage(in: String(describing: error)) {
+            return tagged
         }
 
         let raw = "\(error.localizedDescription) \(String(describing: error))".lowercased()
@@ -337,17 +474,11 @@ struct CommunityService {
         if raw.contains("permanent account") {
             return "Use a permanent signed-in account before uploading images."
         }
-        if raw.contains("rate_limit") {
-            return "Too many community actions in a short time. Wait a bit and try again."
-        }
-        if raw.contains("content_blocked") || raw.contains("banned") {
-            return "That text contains language Pitch Atlas does not allow."
-        }
-        if raw.contains("media_blocked") || raw.contains("mime") || raw.contains("file type") {
+        if raw.contains("mime") || raw.contains("file type") {
             return "That image could not be attached. Check the file type and upload terms."
         }
         if raw.contains("weak_tier_requires_note") {
-            return "Add a short note explaining where the claim came from."
+            return "A relayed or untested claim needs a short source note - say where it came from."
         }
         if raw.contains("blocked_interaction") {
             return "That conversation is not available after a block."
@@ -364,9 +495,6 @@ struct CommunityService {
         if raw.contains("check constraint") || raw.contains("violates") || raw.contains("value too long") {
             return "One field does not match the allowed choices. Review the form and try again."
         }
-        if raw.contains("invalid_parent") || raw.contains("too_deep") {
-            return "That reply target is not available."
-        }
         return fallback
     }
 }
@@ -379,6 +507,8 @@ enum CommunityServiceError: LocalizedError, Equatable {
     /// The lazy anonymous session could not be started or read on write intent.
     /// Same copy as the web's SESSION_START_ERROR.
     case sessionStartFailed
+    /// The web's deletePost guard: another contributor has replied.
+    case deleteBlockedByReplies
 
     var errorDescription: String? {
         switch self {
@@ -388,10 +518,18 @@ enum CommunityServiceError: LocalizedError, Equatable {
             return "That image is too large after compression. Choose a smaller file."
         case .sessionStartFailed:
             return "Could not start your community session just now. Try again."
+        case .deleteBlockedByReplies:
+            return "That post has replies from other contributors, so it cannot be deleted."
         case .invalidFieldNote(let message):
             return message
         case .invalidDiscussionPost(let message):
             return message
         }
     }
+}
+
+/// The one profile column a contributor may change (grant update (display_name)).
+struct DisplayNameUpdate: Encodable {
+    let displayName: String
+    enum CodingKeys: String, CodingKey { case displayName = "display_name" }
 }

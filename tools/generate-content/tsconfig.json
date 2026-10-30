@@ -7,7 +7,13 @@
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["generate.ts"]
+  "include": [
+    "generate.ts",
+    "tokens.ts",
+    "tokens.test.ts"
+  ]
 }

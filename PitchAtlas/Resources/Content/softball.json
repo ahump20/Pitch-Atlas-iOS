@@ -1,0 +1,937 @@
+{
+  "fastpitchCopy": {
+    "description": "The core of fastpitch softball pitching: the four phases of the windmill delivery, how the lower half and trunk set up the arm circle, and the rules that shape the motion. Sourced to biomechanics and official rules.",
+    "heroSub": "The underhand windmill is a whole-body sequence. Here are its four phases, how the lower half and trunk set up the arm circle, and the rules that shape the delivery.",
+    "phaseLede": "Biomechanics splits the delivery into four phases: wind-up, stride, acceleration, and follow-through. Each phase continues the motion started by the one before it."
+  },
+  "hubFastpitchBlurb": "The four phases of the windmill, how the lower half and trunk set up the arm circle, and the rules that shape the delivery.",
+  "pitches": [
+    {
+      "slug": "riseball",
+      "name": "Riseball",
+      "family": "rise",
+      "specimenNo": "S-01",
+      "status": "advanced",
+      "flagship": true,
+      "tagline": "The pitch that looks like it climbs — and the honest answer to whether it does.",
+      "intro": "The riseball is fastpitch’s signature illusion and its hardest pitch to command. The pitcher puts violent backspin on a ball thrown from below the waist, and to a hitter it appears to jump up through the zone. It is the pitch a generation grew up believing defied gravity. The truth is more interesting than the legend, and it is exactly the kind of thing this atlas exists to file honestly.",
+      "grip": {
+        "value": "A four-seam grip set so the fingers can pull up the back of the ball at release, driving pure backspin; the wrist snaps under and up out of the low release slot.",
+        "source": {
+          "id": "sb-riseball-wiki",
+          "label": "Wikipedia — Riseball (backspin, Magnus, the debated net rise)",
+          "url": "https://en.wikipedia.org/wiki/Riseball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Grips vary by coach; the constant is backspin imparted from underneath at a low release point."
+      },
+      "spin": {
+        "value": "Backspin — the spin axis set so Magnus lift points up, the opposite of a baseball curve’s topspin.",
+        "source": {
+          "id": "sb-riseball-wiki",
+          "label": "Wikipedia — Riseball (backspin, Magnus, the debated net rise)",
+          "url": "https://en.wikipedia.org/wiki/Riseball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "movement": {
+        "value": "Appears to rise, or at least to stay up and flatten, as it reaches the plate — hitters swing under it.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "physicsNote": {
+        "value": "Does it truly rise? Backspin makes upward Magnus lift, but for the ball to climb above its release line that force has to beat the ball’s own weight. An Armstrong Atlantic State applied-physics study found a light training ball, a fraction of regulation weight, appeared to follow an upward path, while a regulation softball thrown at the same speed still followed a decreasing — falling — trajectory. So a regulation riseball almost certainly does not travel a net-upward path. What it does is drop far less than the eye predicts, and off the low underhand release it arrives higher than the brain expects — reduced drop plus perception, not anti-gravity. It is the real-physics relative to baseball’s \"rising fastball,\" which this atlas files as an illusion.",
+        "source": {
+          "id": "sb-armstrong-riseball",
+          "label": "Armstrong Atlantic State University, Applied Physics (Mullenax) — Rise Ball Physics (regulation vs. Lite-Flite trajectory)",
+          "url": "http://www.chemistry.armstrong.edu/baird/physics/htdocs/faculty/mullenax/research/riseball.html",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "The Armstrong study compared a light training ball against a regulation ball; the lighter ball is far easier to lift. Sources agree the mechanism (backspin Magnus) is real; they disagree on whether a regulation ball nets an actual rise."
+      },
+      "openQuestion": "Does it truly rise, or only drop less than the eye expects?",
+      "role": "A chase pitch up and out of the zone, tunneled against the drop — the two move in opposite directions off a similar look.",
+      "notableThrowers": "Cat Osterman set up her drop with it; Monica Abbott pairs it with elite power."
+    },
+    {
+      "slug": "drop",
+      "name": "Drop ball",
+      "family": "drop",
+      "specimenNo": "S-02",
+      "status": "standard",
+      "tagline": "The ground-ball pitch — and the riseball’s honest mirror, where the physics finally cooperates.",
+      "intro": "The drop ball falls off the table at the plate and produces ground balls and swings over the top. It comes in two honest flavors that reach the same end a different way: the peel drop, where the fingers peel down the back of the ball to spin it forward, and the turnover (rollover) drop, where the wrist and forearm pronate over the top. The distinction people argue about is the recipe, not the result — both put topspin on the ball. In Cat Osterman’s hand, the movement mattered less than where she put it.",
+      "grip": {
+        "value": "Peel drop: the wrist stays firm and the fingers peel down the backside of the ball at release, snapping it forward. Turnover drop: the wrist and forearm pronate over the top. Both finish out front and low.",
+        "source": {
+          "id": "sb-sportstrace-peeldrop",
+          "label": "SportsTrace — The Peel Drop in Softball (peel vs. turnover drop, both topspin; fingers vs. wrist pronation)",
+          "url": "https://www.sportstrace.com/the-peel-drop-in-softball-history-uses-and-how-to-throw-it/",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "spin": {
+        "value": "Topspin (roughly 12-to-6) on both — the peel makes it with the fingers, the turnover with wrist pronation; the spin direction is the same, only the way it is generated differs.",
+        "source": {
+          "id": "sb-sportstrace-peeldrop",
+          "label": "SportsTrace — The Peel Drop in Softball (peel vs. turnover drop, both topspin; fingers vs. wrist pronation)",
+          "url": "https://www.sportstrace.com/the-peel-drop-in-softball-history-uses-and-how-to-throw-it/",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Some coaches still teach a “backspin peel drop”; the physics-grounded sources describe the effective drop as topspin, the same forward rotation as a baseball 12-6 curve."
+      },
+      "movement": {
+        "value": "Drops sharply — faster than gravity alone — as it reaches the plate; hitters beat it into the ground or swing over it.",
+        "source": {
+          "id": "sb-studlife-magnus",
+          "label": "Student Life — Thanks Magnus: physics defines softball’s signature pitch",
+          "url": "https://www.studlife.com/sports/softball-sports/2016/04/07/thanks-magnus-physics-defines-softballs-signature-pitch",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "physicsNote": {
+        "value": "The drop is the riseball’s honest mirror. The rise puts backspin on the ball so its Magnus lift points up — and that lift has to fight gravity, which it loses, so the rise only drops less than expected. The drop puts topspin on the ball so its Magnus force points down, the same direction as gravity. The two pull together instead of against each other, and the ball falls faster and sharper than a no-spin pitch would. There is no “does it really drop?” debate the way there is for the rise: this is the break the physics actually delivers. Tunneled off the rise — same low release, opposite spin — it is why the pair is so hard to read.",
+        "source": {
+          "id": "sb-studlife-magnus",
+          "label": "Student Life — Thanks Magnus: physics defines softball’s signature pitch",
+          "url": "https://www.studlife.com/sports/softball-sports/2016/04/07/thanks-magnus-physics-defines-softballs-signature-pitch",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "The same Student Life physics breakdown that deflates the rise (“the Magnus effect doesn’t have a big enough impact to actually make the ball defy gravity”) confirms the drop’s topspin sends the ball down — Magnus and gravity working in the same direction."
+      },
+      "openQuestion": "Is the peel drop backspin, as some coaches teach, or topspin, as the physics sources describe?",
+      "role": "A primary strike-and-ground-ball pitch, lethal when commanded down and tunneled off the rise.",
+      "notableThrowers": "Cat Osterman — the spin and command made it her signature."
+    },
+    {
+      "slug": "fastball",
+      "name": "Fastball",
+      "family": "fastball",
+      "specimenNo": "S-03",
+      "status": "standard",
+      "tagline": "The foundation pitch — and the look every other pitch borrows.",
+      "intro": "Everything in the windmill game is built on the fastball: it is the first pitch taught, the timing reference the hitter sets against, and the disguise the change and the breaking balls all wear. Thrown four-seam for a true ride or two-seam for a little arm-side run.",
+      "grip": {
+        "value": "A four-seam grip across the wide seams for a true, fast ball; a two-seam grip along the narrow seams for a little arm-side movement.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "spin": {
+        "value": "Backspin from the underhand release, axis tilted by grip toward four- or two-seam.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "movement": {
+        "value": "Mostly straight and fast (four-seam) or with slight arm-side run (two-seam).",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "physicsNote": {
+        "value": "The fastpitch fastball’s real weapon is the short pitching distance, not a readout. The hitter’s reaction window is set by distance as much as pace: a firm fastpitch fastball from the fastpitch rubber gives a batter a major-league kind of hurry from a much shorter lane. It is why the change-up off this look lands so hard.",
+        "source": {
+          "id": "sb-gorout-speed",
+          "label": "GoRout — Softball Pitch vs Baseball Pitch (43-ft distance makes a high-60s/low-70s fastball play like a mid-90s MLB pitch by reaction time)",
+          "url": "https://gorout.com/softball-pitch-vs-baseball-pitch/",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "A reaction-time equivalence that follows from the much shorter fastpitch distance. It runs even shorter in practice because the windmill stride releases the ball closer than the rubber."
+      },
+      "role": "The base of the arsenal and the timing the whole sequence plays off.",
+      "notableThrowers": "Monica Abbott — a modern power fastball reference."
+    },
+    {
+      "slug": "changeup",
+      "name": "Change-up",
+      "family": "offspeed",
+      "specimenNo": "S-04",
+      "status": "standard",
+      "tagline": "The slow pitch off a fast look, built on the timing gap.",
+      "intro": "The change-up subtracts speed while the arm keeps fastball tempo, so the hitter commits early and the ball arrives late. Fastpitch has a whole shelf of ways to make it — the flip, the turnover or backhand, the circle, the knuckle change — each killing speed a different way off the same windmill.",
+      "grip": {
+        "value": "Several recipes: a flip change off the back of the hand, a turnover/backhand change, a circle (OK) grip, or a knuckle change — all keeping the arm circle while taking speed off.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "spin": {
+        "value": "Low spin and reduced speed; the deception is sameness of arm action, not movement.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "movement": {
+        "value": "Arrives well under fastball speed; the gap, not the break, is the pitch.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "physicsNote": {
+        "value": "The change-up keeps the windmill look while arriving later than the fastball. That extra flight time is the pitch: the hitter starts the swing against the familiar arm circle, then the ball reaches the plate after the expected window.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "role": "The timing-wrecker off the same arm circle as the fastball."
+    },
+    {
+      "slug": "curve",
+      "name": "Curveball",
+      "family": "breaking",
+      "specimenNo": "S-05",
+      "status": "standard",
+      "tagline": "The horizontal breaker — sweeping across the zone, not dropping through it.",
+      "intro": "The fastpitch curve breaks side to side across the plate rather than diving like a baseball 12-6. Thrown with sidespin out of the windmill, it sweeps away from or in to a hitter depending on the spin, and it pairs with the screwball as the two halves of the horizontal game.",
+      "grip": {
+        "value": "A grip set for sidespin, the wrist turning across the ball at release to start it spinning toward the break.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "spin": {
+        "value": "Sidespin — the axis tilted so the Magnus force pushes the ball laterally across the plate.",
+        "source": {
+          "id": "sb-snexplores-curve",
+          "label": "Science News Explores — How to make a pitched ball curve to your will (sidespin Magnus break is real; the standalone gyro is essentially a myth)",
+          "url": "https://www.snexplores.org/article/pitch-physics-curve-baseball-softball-cricket",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "movement": {
+        "value": "Breaks horizontally across the zone, late, away from or in to the hitter.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "physicsNote": {
+        "value": "Unlike the rise, the curve’s break is not in dispute. Sidespin sets the Magnus force sideways and the ball genuinely moves the way it spins — a right-hander spinning it toward third base pushes it that way across the plate. What is not real is the “gyro”: a standalone, Magnus-free pitch that breaks on its own is essentially a myth — extremely hard to produce and unsupported by tracking. The fastpitch curve is honest lateral movement off the windmill, not an optical trick.",
+        "source": {
+          "id": "sb-snexplores-curve",
+          "label": "Science News Explores — How to make a pitched ball curve to your will (sidespin Magnus break is real; the standalone gyro is essentially a myth)",
+          "url": "https://www.snexplores.org/article/pitch-physics-curve-baseball-softball-cricket",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "role": "A strike-stealer and a chase pitch off the corner; the mirror of the screwball."
+    },
+    {
+      "slug": "screwball",
+      "name": "Screwball",
+      "family": "breaking",
+      "specimenNo": "S-06",
+      "status": "standard",
+      "tagline": "The curve’s mirror — breaking the other way, in on the same-handed hitter.",
+      "intro": "The screwball is the curve run in reverse: it breaks arm-side, in toward a same-handed hitter, off spin turned the opposite direction. Together the curve and the screw let a windmill pitcher move the ball both ways across the plate off one delivery.",
+      "grip": {
+        "value": "A grip and wrist turn that spin the ball the opposite way from the curve, driving an arm-side break.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "spin": {
+        "value": "Reverse sidespin from the curve — the axis flipped to break arm-side.",
+        "source": {
+          "id": "sb-snexplores-curve",
+          "label": "Science News Explores — How to make a pitched ball curve to your will (sidespin Magnus break is real; the standalone gyro is essentially a myth)",
+          "url": "https://www.snexplores.org/article/pitch-physics-curve-baseball-softball-cricket",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "movement": {
+        "value": "Breaks in on a same-handed hitter, the opposite direction from the curve.",
+        "source": {
+          "id": "sb-wiki-fastpitch",
+          "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+          "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "physicsNote": {
+        "value": "The screwball is the curve’s physics run in reverse: the same real sidespin Magnus break, the axis flipped so the ball moves arm-side — in toward a same-handed hitter — instead of glove-side. Like the curve, and unlike the rise, the movement is honest. It is the spin doing exactly what the spin should.",
+        "source": {
+          "id": "sb-snexplores-curve",
+          "label": "Science News Explores — How to make a pitched ball curve to your will (sidespin Magnus break is real; the standalone gyro is essentially a myth)",
+          "url": "https://www.snexplores.org/article/pitch-physics-curve-baseball-softball-cricket",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "role": "Jams same-handed hitters and completes the two-way horizontal attack."
+    }
+  ],
+  "craftsmen": [
+    {
+      "slug": "cat-osterman",
+      "name": "Cat Osterman",
+      "kind": "craftsman",
+      "era": "2002-2021",
+      "hand": "left",
+      "signaturePitch": "Drop ball",
+      "signaturePitchSlug": "drop",
+      "specimenNo": "SC-01",
+      "tagline": "The fastpitch answer to the thinking pitcher: a soft-tossing left arm who owned the circle on spin, command, and deception — not speed.",
+      "intro": "Cat Osterman never overpowered anyone, and that is the point. Her fastball was modest while power arms brought real heat, and she was, by reputation and by record, the most untouchable pitcher of her era anyway. She won the way Greg Maddux won — by knowing exactly where the ball was going and making four different pitches leave her hand looking the same. The drop ball was the out pitch, but the command of it was the weapon: she could climb the ladder, start one at the hips and finish one at the ankles, and make a hitter chase all three. She is the softball case for the whole atlas thesis — that the craft, not the radar gun, is what beats people.",
+      "signature": {
+        "value": "A drop ball whose effectiveness was command, not just movement: she located it in and out and walked it down the ladder, then set it up off a rise the hitter was not expecting, so the two pitches tunneled and the eyes betrayed the bat. The rest of the arsenal — a sharp backdoor curve and a changeup — all left her hand on the same look. Analysts called her \"the spin master\" precisely because none of it ran on raw power.",
+        "source": {
+          "id": "cat-d1softball-spinmaster",
+          "label": "D1Softball — Pitching Analysis: Cat Osterman, The Spin Master",
+          "url": "https://d1softball.com/pitching-analysis-cat-osterman-the-spin-master/",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Paraphrased from D1Softball’s pitching analysis and SI’s 2021 profile; the rise-sets-up-the-drop tunnel and the \"climb the ladder\" command are her catcher Gwen Svekis’s description."
+      },
+      "mentalEdge": {
+        "value": "Command over raw power, carried by total belief. Where a power pitcher reaches back for more, Osterman reached for a spot — and she did it for two decades, coming out of retirement to pitch in the 2020 Olympics at 38 and dominating the inaugural Athletes Unlimited season. Her catcher put the edge plainly: there is not a single hitter who steps in that Osterman thinks can beat her.",
+        "source": {
+          "id": "cat-si-2021",
+          "label": "Sports Illustrated — Cat Osterman brings more than leadership and a drop ball to Team USA (Gwen Svekis quotes)",
+          "url": "https://www.si.com/olympics/2021/07/20/cat-osterman-still-elite-pitcher-team-usa-softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "quote": {
+        "value": "There's not a single person that steps into the box that she thinks will beat her.",
+        "source": {
+          "id": "cat-si-2021",
+          "label": "Sports Illustrated — Cat Osterman brings more than leadership and a drop ball to Team USA (Gwen Svekis quotes)",
+          "url": "https://www.si.com/olympics/2021/07/20/cat-osterman-still-elite-pitcher-team-usa-softball",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "secondhand-attributed",
+        "note": "Her catcher, Gwen Svekis, to Sports Illustrated (2021), on the belief behind Osterman’s command. A teammate’s characterization, kept as such rather than put in Osterman’s own mouth."
+      },
+      "record": [
+        {
+          "value": "Five seasons in the Texas circle left the program record book mostly hers: a career run-prevention mark no Longhorn has touched, a strikeout-per-inning rate that still stands as the Division I career record, and eighty-five shutouts — twenty of them no-hitters.",
+          "source": {
+            "id": "cat-wikipedia",
+            "label": "Wikipedia — Cat Osterman (Texas records, Olympic medals, NPF, Athletes Unlimited)",
+            "url": "https://en.wikipedia.org/wiki/Cat_Osterman",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "USA Softball named her the national player of the year three times, which nobody else has done once more than twice. The Olympic file runs from gold in Athens, where she was the youngest arm on the roster, to silver in Tokyo at thirty-eight, after coming out of retirement to get it.",
+          "source": {
+            "id": "cat-wikipedia",
+            "label": "Wikipedia — Cat Osterman (Texas records, Olympic medals, NPF, Athletes Unlimited)",
+            "url": "https://en.wikipedia.org/wiki/Cat_Osterman",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "None of it ran on speed. The analysts called her the spin master because the out pitch was where she put it, not how hard it arrived.",
+          "source": {
+            "id": "cat-d1softball-spinmaster",
+            "label": "D1Softball — Pitching Analysis: Cat Osterman, The Spin Master",
+            "url": "https://d1softball.com/pitching-analysis-cat-osterman-the-spin-master/",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        }
+      ],
+      "recordLinks": [
+        {
+          "id": "cat-wikipedia",
+          "label": "Wikipedia — Cat Osterman (Texas records, Olympic medals, NPF, Athletes Unlimited)",
+          "url": "https://en.wikipedia.org/wiki/Cat_Osterman",
+          "retrievedAt": "2026-06-07"
+        }
+      ],
+      "rights": "original"
+    },
+    {
+      "slug": "lisa-fernandez",
+      "name": "Lisa Fernandez",
+      "kind": "craftsman",
+      "era": "1990-2004",
+      "hand": "right",
+      "signaturePitch": "Riseball",
+      "signaturePitchSlug": "riseball",
+      "specimenNo": "SC-02",
+      "tagline": "Three straight Olympic golds and a two-way dominance that may be the highest peak the sport has produced.",
+      "intro": "Lisa Fernandez is the closest thing softball has to a complete answer. She pitched and hit at a level no one has matched, leading the United States to gold at the first three Olympic softball tournaments and starring on both sides of the ball at UCLA. The riseball was the weapon, the changeup off it the punctuation, and the bat made her impossible to plan around.",
+      "signature": {
+        "value": "An overpowering riseball paired with a sharp changeup, thrown by a pitcher who was also one of the best hitters in the game — the two-way threat that set her apart. In Olympic play she once struck out 25 in a single game, an Olympic record, and hit .545 across the Games.",
+        "source": {
+          "id": "sb-fernandez-olympics",
+          "label": "Olympics.com — The Olympic story of three-time softball champion Lisa Fernandez",
+          "url": "https://www.olympics.com/en/news/success-rivalry-and-provocation-by-postcard-the-olympic-story-of-three-time-soft",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "The 25-strikeout single-game mark and the .545 Olympic batting average are individual Olympic records (Olympics.com / Wikipedia)."
+      },
+      "mentalEdge": {
+        "value": "She pitched in three consecutive Olympic gold-medal games and finished every one — a save in 1996, an extra-inning shutout in 2000, and the clincher in 2004. A career built on closing the biggest game on the schedule, three Olympiads running.",
+        "source": {
+          "id": "sb-fernandez-wikipedia",
+          "label": "Wikipedia — Lisa Fernandez (three straight Olympic golds, UCLA two-way star, Olympic strikeout record)",
+          "url": "https://en.wikipedia.org/wiki/Lisa_Fernandez",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "record": [
+        {
+          "value": "Gold at the first three Olympic softball tournaments, and she finished every one of those gold-medal games herself — the save in 1996, the extra-inning shutout in 2000, the clincher in 2004.",
+          "source": {
+            "id": "sb-fernandez-wikipedia",
+            "label": "Wikipedia — Lisa Fernandez (three straight Olympic golds, UCLA two-way star, Olympic strikeout record)",
+            "url": "https://en.wikipedia.org/wiki/Lisa_Fernandez",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "The Olympic single-game strikeout record is hers, twenty-five in one game, and so is the Olympic batting record — she hit better than half the time while she pitched her team to gold. Nobody has owned both sides of a tournament like that.",
+          "source": {
+            "id": "sb-fernandez-olympics",
+            "label": "Olympics.com — The Olympic story of three-time softball champion Lisa Fernandez",
+            "url": "https://www.olympics.com/en/news/success-rivalry-and-provocation-by-postcard-the-olympic-story-of-three-time-soft",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "At UCLA: two national championships, four first-team All-American seasons, and career marks for shutouts and winning that still lead the Bruin book.",
+          "source": {
+            "id": "sb-fernandez-wikipedia",
+            "label": "Wikipedia — Lisa Fernandez (three straight Olympic golds, UCLA two-way star, Olympic strikeout record)",
+            "url": "https://en.wikipedia.org/wiki/Lisa_Fernandez",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        }
+      ],
+      "recordLinks": [
+        {
+          "id": "sb-fernandez-wikipedia",
+          "label": "Wikipedia — Lisa Fernandez (three straight Olympic golds, UCLA two-way star, Olympic strikeout record)",
+          "url": "https://en.wikipedia.org/wiki/Lisa_Fernandez",
+          "retrievedAt": "2026-06-07"
+        }
+      ],
+      "rights": "original"
+    },
+    {
+      "slug": "jennie-finch",
+      "name": "Jennie Finch",
+      "kind": "craftsman",
+      "era": "1999-2010",
+      "hand": "right",
+      "signaturePitch": "Riseball",
+      "signaturePitchSlug": "riseball",
+      "specimenNo": "SC-03",
+      "tagline": "The face that took softball mainstream — a 60-game college win streak and a riseball that made the sport must-watch.",
+      "intro": "Jennie Finch did two things at once: she dominated, and she made everyone watch. At Arizona she won 60 games in a row, an NCAA record, and she carried that visibility to Olympic gold and into the broader culture in a way no softball player had before. The riseball was the pitch people remember, climbing out of a low release at hitters who could not lay off it.",
+      "signature": {
+        "value": "A riseball thrown out of a clean, repeatable windmill that, paired with her command, made her nearly unbeatable in college and a gold-medal arm internationally. At the 2004 Olympics she went 2-0, allowing a single hit and no runs over eight innings with 13 strikeouts.",
+        "source": {
+          "id": "sb-finch-wikipedia",
+          "label": "Wikipedia — Jennie Finch (Arizona 119-16, NCAA-record 60 straight wins, 2004 gold / 2008 silver)",
+          "url": "https://en.wikipedia.org/wiki/Jennie_Finch",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "mentalEdge": {
+        "value": "Relentless and unflappable in the biggest moments, she set the NCAA record with 60 consecutive wins and then carried the sport on her back as its most recognizable ambassador. The standard for what a dominant, visible softball star could be.",
+        "source": {
+          "id": "sb-finch-wikipedia",
+          "label": "Wikipedia — Jennie Finch (Arizona 119-16, NCAA-record 60 straight wins, 2004 gold / 2008 silver)",
+          "url": "https://en.wikipedia.org/wiki/Jennie_Finch",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "record": [
+        {
+          "value": "Sixty consecutive wins at Arizona, still the NCAA record, with the 2001 national championship in the middle of the streak — and fifty home runs of her own on the other side of the ball.",
+          "source": {
+            "id": "sb-finch-wikipedia",
+            "label": "Wikipedia — Jennie Finch (Arizona 119-16, NCAA-record 60 straight wins, 2004 gold / 2008 silver)",
+            "url": "https://en.wikipedia.org/wiki/Jennie_Finch",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "At the 2004 Olympics she won both her starts, allowed one hit and no runs across them, and came home with gold. Silver followed in 2008, and the National Softball Hall of Fame after that.",
+          "source": {
+            "id": "sb-finch-wikipedia",
+            "label": "Wikipedia — Jennie Finch (Arizona 119-16, NCAA-record 60 straight wins, 2004 gold / 2008 silver)",
+            "url": "https://en.wikipedia.org/wiki/Jennie_Finch",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        }
+      ],
+      "recordLinks": [
+        {
+          "id": "sb-finch-wikipedia",
+          "label": "Wikipedia — Jennie Finch (Arizona 119-16, NCAA-record 60 straight wins, 2004 gold / 2008 silver)",
+          "url": "https://en.wikipedia.org/wiki/Jennie_Finch",
+          "retrievedAt": "2026-06-07"
+        }
+      ],
+      "rights": "original"
+    },
+    {
+      "slug": "monica-abbott",
+      "name": "Monica Abbott",
+      "kind": "craftsman",
+      "era": "2004-2021",
+      "hand": "left",
+      "signaturePitch": "Fastball",
+      "signaturePitchSlug": "fastball",
+      "specimenNo": "SC-04",
+      "tagline": "The power counterpoint to Cat Osterman — a left-handed force and the sport’s first million-dollar pro.",
+      "intro": "If Cat Osterman is the softball case for spin and command, Monica Abbott is the case for power from the left side. The two were the left-handed twin towers of Team USA, and they could not have been more different on the mound: Osterman picked hitters apart, Abbott overpowered them. Abbott rewrote the NCAA and pro record books on the way.",
+      "signature": {
+        "value": "Overpowering force from a tall left-handed delivery. At Tennessee she set NCAA Division I career records for wins, strikeouts, shutouts, and innings, and struck out 724 in a single senior season.",
+        "source": {
+          "id": "sb-abbott-wikipedia",
+          "label": "Wikipedia — Monica Abbott (Tennessee NCAA records, Guinness pitch, Olympic silver 2008 & 2020)",
+          "url": "https://en.wikipedia.org/wiki/Monica_Abbott",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "The NCAA career records (189 wins, 2,440 K, 112 shutouts, 1,448 IP) are from her Tennessee career."
+      },
+      "mentalEdge": {
+        "value": "Sustained excellence defined the career: she became the first million-dollar player in professional fastpitch, the most decorated pitcher in NPF history, and a two-time Olympic silver medalist across a span that bridged softball’s removal from and return to the Games.",
+        "source": {
+          "id": "sb-abbott-mlb-million",
+          "label": "MLB.com Cut4 — Monica Abbott becomes first million-dollar NPF player",
+          "url": "https://www.mlb.com/cut4/monica-abbott-becomes-first-million-dollar-npf-player-c176409692",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "record": [
+        {
+          "value": "The Division I career record book is mostly hers — wins, strikeouts, shutouts, and innings, all set at Tennessee — with a senior season that ran past seven hundred strikeouts on its own. Two Olympic silvers, 2008 and 2020, bracket a career that bridged the sport’s removal from and return to the Games.",
+          "source": {
+            "id": "sb-abbott-wikipedia",
+            "label": "Wikipedia — Monica Abbott (Tennessee NCAA records, Guinness pitch, Olympic silver 2008 & 2020)",
+            "url": "https://en.wikipedia.org/wiki/Monica_Abbott",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "The first million-dollar contract in professional fastpitch was hers, and she remains the most decorated pitcher the pro league produced.",
+          "source": {
+            "id": "sb-abbott-mlb-million",
+            "label": "MLB.com Cut4 — Monica Abbott becomes first million-dollar NPF player",
+            "url": "https://www.mlb.com/cut4/monica-abbott-becomes-first-million-dollar-npf-player-c176409692",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        }
+      ],
+      "recordLinks": [
+        {
+          "id": "sb-abbott-wikipedia",
+          "label": "Wikipedia — Monica Abbott (Tennessee NCAA records, Guinness pitch, Olympic silver 2008 & 2020)",
+          "url": "https://en.wikipedia.org/wiki/Monica_Abbott",
+          "retrievedAt": "2026-06-07"
+        }
+      ],
+      "rights": "original"
+    },
+    {
+      "slug": "nijaree-canady",
+      "name": "NiJaree Canady",
+      "kind": "craftsman",
+      "era": "2022-present",
+      "hand": "right",
+      "signaturePitch": "Riseball",
+      "signaturePitchSlug": "riseball",
+      "specimenNo": "SC-05",
+      "tagline": "The current face of the college game — a power riseball, a sub-1.00 ERA, and the first million-dollar college player.",
+      "intro": "NiJaree Canady is what the sport looks like right now. She left Stanford for Texas Tech, signed the richest NIL deal in college softball history, and then justified every dollar by carrying a program to its first Women’s College World Series. She does it with a riseball that sits where the very best of the past lived — and with a release point so far out front the ball is on the hitter before it should be.",
+      "signature": {
+        "value": "A ferocious power riseball paired with a late-breaking slider, delivered from a long release point closer to the plate than most — which is part of why hitters cannot square it. In 2025 she led the nation with a 0.97 ERA, the standard-setting pitcher of her era.",
+        "source": {
+          "id": "sb-canady-ncaa-top10",
+          "label": "NCAA.com — Top 10 college softball pitchers (Canady riseball, slider, long release point)",
+          "url": "https://www.ncaa.com/news/softball/article/2025-04-17/top-10-college-softball-pitchers-season",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "The riseball, the slider, and the long, close release point are from NCAA.com’s scouting of the top college pitchers."
+      },
+      "mentalEdge": {
+        "value": "She owned the brightest stage in 2025, carrying Texas Tech to its first Women’s College World Series finals and winning a second straight NFCA National Pitcher of the Year award. The program’s million-dollar commitment had its centerpiece.",
+        "source": {
+          "id": "sb-canady-wikipedia",
+          "label": "Wikipedia — NiJaree Canady (2025: 34-7, 0.97 ERA, 317 K; $1M+ NIL; Texas Tech first WCWS; NFCA POY 2024 & 2025)",
+          "url": "https://en.wikipedia.org/wiki/NiJaree_Canady",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "quote": {
+        "value": "She's a folk hero in our sport.",
+        "source": {
+          "id": "sb-canady-espn",
+          "label": "ESPN — How NiJaree Canady became college softball's first million-dollar player ('a folk hero in our sport')",
+          "url": "https://www.espn.com/college-sports/softball/story/_/id/45166461/2025-wcws-college-softball-texas-tech-stanford-nijaree-canady-pitcher",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "secondhand-attributed",
+        "note": "How a figure in the sport described Canady to ESPN, on her becoming college softball’s first million-dollar player. A characterization, kept as such."
+      },
+      "record": [
+        {
+          "value": "In 2025 she led the nation in run prevention while carrying Texas Tech, in its first trip, to the Women’s College World Series finals. She was named national pitcher of the year for the second season in a row, 2024 and 2025.",
+          "source": {
+            "id": "sb-canady-wikipedia",
+            "label": "Wikipedia — NiJaree Canady (2025: 34-7, 0.97 ERA, 317 K; $1M+ NIL; Texas Tech first WCWS; NFCA POY 2024 & 2025)",
+            "url": "https://en.wikipedia.org/wiki/NiJaree_Canady",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "The deal that brought her to Lubbock made her college softball’s first million-dollar player — the richest commitment the sport had seen — and the riseball made the money look conservative.",
+          "source": {
+            "id": "sb-canady-wikipedia",
+            "label": "Wikipedia — NiJaree Canady (2025: 34-7, 0.97 ERA, 317 K; $1M+ NIL; Texas Tech first WCWS; NFCA POY 2024 & 2025)",
+            "url": "https://en.wikipedia.org/wiki/NiJaree_Canady",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        }
+      ],
+      "recordLinks": [
+        {
+          "id": "sb-canady-wikipedia",
+          "label": "Wikipedia — NiJaree Canady (2025: 34-7, 0.97 ERA, 317 K; $1M+ NIL; Texas Tech first WCWS; NFCA POY 2024 & 2025)",
+          "url": "https://en.wikipedia.org/wiki/NiJaree_Canady",
+          "retrievedAt": "2026-06-07"
+        }
+      ],
+      "rights": "original"
+    },
+    {
+      "slug": "teagan-kavan",
+      "name": "Teagan Kavan",
+      "kind": "craftsman",
+      "hand": "right",
+      "era": "2024-present",
+      "signaturePitch": "Riseball",
+      "signaturePitchSlug": "riseball",
+      "specimenNo": "SC-06",
+      "tagline": "Texas’s big-game ace — back-to-back national titles and the first two-time Most Outstanding Player in Women’s College World Series history.",
+      "intro": "Some pitchers are defined by a season; Teagan Kavan is defined by Junes. The Texas ace threw the Longhorns to their first national championship in 2025 and right back to a second in 2026, and in both Junes she was the best pitcher on the field — the first player ever named Women’s College World Series Most Outstanding Player twice. The bigger the game, the smaller the strike zone got for everyone facing her.",
+      "signature": {
+        "value": "A five-pitch arsenal built on a commandable rise ball she throws to all four quadrants, tunneled off a drop that leaves her hand on the same plane — so the rise and the drop look identical until they split. A deceptive changeup mixes the speeds. \"She can throw every pitch in every plane,\" which is why hitters cannot square her.",
+        "source": {
+          "id": "sb-kavan-bvm-arsenal",
+          "label": "BVM Sports — Teagan Kavan on her five-pitch arsenal (rise ball primary, change, drop)",
+          "url": "https://bvmsports.com/2026/05/21/texas-softball-pitcher-teagan-kavan-on-her-5-pitch-arsenal-nike-getting-called-out-by-her-coach/",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "The five-pitch arsenal and the rise/drop same-plane tunnel are from her own account (BVM Sports) and The Daily Texan’s profile."
+      },
+      "mentalEdge": {
+        "value": "An October arm in a June sport. In the 2025 Women’s College World Series she threw 31 2/3 consecutive scoreless innings — a WCWS record, breaking a mark that had stood since 1994 — and in 2026 she closed it out again to become the first two-time WCWS Most Outstanding Player. Back-to-back rings on the strength of pitching her best with everything on the line.",
+        "source": {
+          "id": "sb-kavan-wbsc-2026",
+          "label": "WBSC — Teagan Kavan leads Texas to second straight NCAA title, first two-time WCWS MOP (2026)",
+          "url": "https://www.wbsc.org/en/news/teagan-kavan-leads-texas-to-second-consecutive-ncaa-softball-title-makes-wcws-history-with-second-straight-mop-award",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      },
+      "record": [
+        {
+          "value": "Back-to-back national championships — Texas’s first ever in 2025, then the repeat in 2026, both finals against Texas Tech, the same in-state showdown two Junes running. In the 2026 series she threw a complete game in the opener and came back in relief to close the clincher.",
+          "source": {
+            "id": "sb-kavan-ncaa-2026",
+            "label": "NCAA.com — Texas wins the 2026 NCAA DI softball championship (repeat over Texas Tech)",
+            "url": "https://www.ncaa.com/news/softball/article/2026-06-04/texas-wins-2026-ncaa-di-softball-championship",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "She is the first player ever named Women’s College World Series Most Outstanding Player twice.",
+          "source": {
+            "id": "sb-kavan-wbsc-2026",
+            "label": "WBSC — Teagan Kavan leads Texas to second straight NCAA title, first two-time WCWS MOP (2026)",
+            "url": "https://www.wbsc.org/en/news/teagan-kavan-leads-texas-to-second-consecutive-ncaa-softball-title-makes-wcws-history-with-second-straight-mop-award",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "The 2025 title run included a scoreless streak across Oklahoma City long enough to break a Series record that had stood since 1994 — and it started in a freshman year that had already produced more wins than any Texas freshman since 2010.",
+          "source": {
+            "id": "sb-kavan-wikipedia",
+            "label": "Wikipedia — Teagan Kavan (Texas; 2025 28-5/2.16 ERA/230 K; WCWS-record 31.2 scoreless innings; back-to-back MOP)",
+            "url": "https://en.wikipedia.org/wiki/Teagan_Kavan",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        }
+      ],
+      "recordLinks": [
+        {
+          "id": "sb-kavan-wikipedia",
+          "label": "Wikipedia — Teagan Kavan (Texas; 2025 28-5/2.16 ERA/230 K; WCWS-record 31.2 scoreless innings; back-to-back MOP)",
+          "url": "https://en.wikipedia.org/wiki/Teagan_Kavan",
+          "retrievedAt": "2026-06-07"
+        }
+      ],
+      "rights": "original"
+    }
+  ],
+  "windmillPhases": [
+    {
+      "num": "01",
+      "name": "Wind-up",
+      "what": {
+        "value": "From the onset of movement until the stride-foot toe leaves the ground. The pitcher shifts weight onto the drive leg while the arm and glove action set the delivery in motion.",
+        "source": {
+          "id": "sb-friesen-2025-biomech",
+          "label": "Friesen et al., Biomechanics of Fastpitch Softball Pitching: A Practitioner’s Guide, Sports Health (2025) — PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11969493/",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      }
+    },
+    {
+      "num": "02",
+      "name": "Stride",
+      "what": {
+        "value": "From drive-leg lift to stride-foot contact. The drive leg extends to move the body toward the plate while the arm climbs the back of the circle.",
+        "source": {
+          "id": "sb-friesen-2025-biomech",
+          "label": "Friesen et al., Biomechanics of Fastpitch Softball Pitching: A Practitioner’s Guide, Sports Health (2025) — PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11969493/",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      }
+    },
+    {
+      "num": "03",
+      "name": "Acceleration",
+      "what": {
+        "value": "From stride-foot contact through ball release. The arm moves down the front of the circle and the hand delivers the ball from the low release slot.",
+        "source": {
+          "id": "sb-friesen-2025-biomech",
+          "label": "Friesen et al., Biomechanics of Fastpitch Softball Pitching: A Practitioner’s Guide, Sports Health (2025) — PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11969493/",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      }
+    },
+    {
+      "num": "04",
+      "name": "Follow-through",
+      "what": {
+        "value": "From release through the end of the motion. The arm continues forward while the trunk and lower half carry the pitcher into a balanced finish.",
+        "source": {
+          "id": "sb-friesen-2025-biomech",
+          "label": "Friesen et al., Biomechanics of Fastpitch Softball Pitching: A Practitioner’s Guide, Sports Health (2025) — PMC",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11969493/",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis"
+      }
+    }
+  ],
+  "fundamentalBlocks": [
+    {
+      "id": "sequence",
+      "index": "02",
+      "label": "Where the speed comes from",
+      "lede": "The windmill is a whole-body sequence. The lower half starts the move, the trunk carries it forward, and the arm circle completes it at release.",
+      "claims": [
+        {
+          "value": "The drive-leg push moves the pitcher toward the plate while the arm circle develops behind it.",
+          "source": {
+            "id": "sb-friesen-2025-biomech",
+            "label": "Friesen et al., Biomechanics of Fastpitch Softball Pitching: A Practitioner’s Guide, Sports Health (2025) — PMC",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11969493/",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "Hip extension and rotation contribute to the stride and help set the trunk in motion before release.",
+          "source": {
+            "id": "sb-friesen-2025-biomech",
+            "label": "Friesen et al., Biomechanics of Fastpitch Softball Pitching: A Practitioner’s Guide, Sports Health (2025) — PMC",
+            "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11969493/",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "The delivery follows a lower-body-to-trunk-to-arm sequence; changing that order changes the timing and pace of the pitch.",
+          "source": {
+            "id": "sb-ler-lowerbody",
+            "label": "Lower Extremity Review — Powering the Windmill: Lower-body mechanics of softball pitching",
+            "url": "https://lermagazine.com/cover_story/powering-the-windmill-lower-body-mechanics-of-softball-pitching",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis",
+          "note": "The broad sequence is well supported; exact timing within the windmill remains an active research question."
+        }
+      ]
+    },
+    {
+      "id": "rules",
+      "index": "03",
+      "label": "The rules that shape the craft",
+      "lede": "A few rules define a legal fastpitch delivery. They shape what the lower half can do off the rubber and how far the ball travels.",
+      "claims": [
+        {
+          "value": "Competitive fastpitch is thrown from 43 feet at the college and high-school levels, with the underhand windmill as the game’s defining delivery.",
+          "source": {
+            "id": "sb-wiki-fastpitch",
+            "label": "Wikipedia — Fastpitch softball (windmill delivery, pitch arsenal, distances)",
+            "url": "https://en.wikipedia.org/wiki/Fastpitch_softball",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "reputable-analysis"
+        },
+        {
+          "value": "Starting in 2023-24, the NCAA made leaping legal: a pitcher may push off and have both feet airborne during the stride. Replanting the pivot foot before delivering remains illegal.",
+          "source": {
+            "id": "sb-ncaa-leaping-2023",
+            "label": "NCAA.com — Softball pitchers can disengage from the playing surface while delivering a pitch (leaping legal 2023-24; crow hop still illegal)",
+            "url": "https://www.ncaa.com/news/softball/article/2023-08-11/softball-pitchers-can-disengage-playing-surface-while-delivering-pitch-next-season",
+            "retrievedAt": "2026-06-07"
+          },
+          "confidence": "official-data",
+          "note": "A recent change in what the lower half may do after leaving the rubber."
+        }
+      ]
+    }
+  ],
+  "slowpitchNotes": [
+    {
+      "label": "Legal arc (USSSA)",
+      "claim": {
+        "value": "The pitch must clear a minimum arc after leaving the hand and may not climb above a set ceiling height before it drops toward the plate.",
+        "source": {
+          "id": "sb-usssa-slowpitch-rules",
+          "label": "USSSA — Slowpitch Rules & Legal Info (arc: min 3 ft after release, max 10 ft above ground)",
+          "url": "https://www.usssa.com/slowpitch/slowpitch-rules-and-legal-info",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "official-data",
+        "note": "A floor-and-ceiling rule on the height of the lob; the exact limits live in the sanctioning body’s rulebook."
+      }
+    },
+    {
+      "label": "Why the arc limit is not one limit",
+      "claim": {
+        "value": "The legal window depends on the sanctioning body: USSSA sets one floor-and-ceiling band, while other sanctions publish a higher one. The exact ceiling varies, and umpire judgment governs the call.",
+        "source": {
+          "id": "sb-usssa-slowpitch-rulebook-2025",
+          "label": "USSSA — 2025 Slow Pitch Rule Book & By-Laws (PDF)",
+          "url": "https://cms.usssa.net/wp-content/uploads/sites/2/2025/01/usssa-slowpitch-2025-rulebook-final.pdf",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "reputable-analysis",
+        "note": "Named rather than smoothed: different leagues (USSSA vs. USA Softball and others) publish different arc limits, so any single arc band is only true for its own rulebook."
+      }
+    },
+    {
+      "label": "Where the call lives",
+      "claim": {
+        "value": "The speed of the pitch and the height of the arc are left to the umpire’s judgment.",
+        "source": {
+          "id": "sb-usssa-slowpitch-rules",
+          "label": "USSSA — Slowpitch Rules & Legal Info (arc: min 3 ft after release, max 10 ft above ground)",
+          "url": "https://www.usssa.com/slowpitch/slowpitch-rules-and-legal-info",
+          "retrievedAt": "2026-06-07"
+        },
+        "confidence": "official-data"
+      }
+    }
+  ],
+  "slowpitchCraft": [
+    "Inside the legal arc, the real skills are arc height, backspin that deadens the ball so it drops dead on the back of the plate instead of sitting up to be crushed, placement to the corners of the strike mat, and changing the arc and speed to break a hitter’s timing.",
+    "It is a game of arc and touch rather than power — the opposite end of the craft from the fastpitch riseball, and worth filing for exactly that contrast."
+  ],
+  "slowpitchFormats": [
+    "Men’s slowpitch is a power-hitting game; the pitcher’s job is arc, spin, and placement, not speed — the contest is keeping a lineup of big bats off balance with where and how the ball lands.",
+    "Coed slowpitch mixes the genders on the field and shifts the strategic focus around that; the pitching craft itself — arc, deadening spin, placement — is the same toolkit applied to a different game."
+  ]
+}

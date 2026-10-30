@@ -100,7 +100,7 @@ enum SpecimenSceneBuilder {
         guard let tube = makeSeamTube() else { return nil }
         let thread = SCNMaterial()
         thread.lightingModel = .physicallyBased
-        thread.diffuse.contents = UIColor(hexRGB: 0x594A40)
+        thread.diffuse.contents = BallMaterial.uiColor(BallMaterial.thread)
         thread.roughness.contents = 0.88
         thread.metalness.contents = 0.0
         thread.clearCoat.contents = 0.0
@@ -115,14 +115,14 @@ enum SpecimenSceneBuilder {
         guard let stitches = makeStitchGeometry() else { return nil }
         let stitchMaterial = SCNMaterial()
         stitchMaterial.lightingModel = .physicallyBased
-        stitchMaterial.diffuse.contents = UIColor(hexRGB: 0x9E2B35)
+        stitchMaterial.diffuse.contents = BallMaterial.uiColor(BallMaterial.stitch)
         stitchMaterial.roughness.contents = 0.78
         stitchMaterial.metalness.contents = 0.0
         stitchMaterial.clearCoat.contents = 0.0
         stitchMaterial.clearCoatRoughness.contents = 0.16
         // a tiny deep-red emission: the waxed crown catching rim light — a
         // glint, not a glow (web: emissive #3a0810 × 0.15)
-        stitchMaterial.emission.contents = UIColor(hexRGB: 0x3A0810)
+        stitchMaterial.emission.contents = BallMaterial.uiColor(BallMaterial.stitchEmission)
         stitchMaterial.emission.intensity = 0.0
         stitchMaterial.isDoubleSided = true
         stitches.materials = [stitchMaterial]
@@ -144,9 +144,9 @@ enum SpecimenSceneBuilder {
         // ── studio rig ────────────────────────────────────────────────────────
         scene.lightingEnvironment.contents = makeEnvironmentGradient()
         scene.lightingEnvironment.intensity = 1.0
-        addDirectionalLight(to: scene, color: UIColor(hexRGB: 0xFFFCF4), intensity: 2100,
+        addDirectionalLight(to: scene, color: BallMaterial.uiColor(BallMaterial.keyLight), intensity: 2100,
                             from: SCNVector3(2.6, 3.2, 5.2))   // warm key
-        addDirectionalLight(to: scene, color: UIColor(hexRGB: 0xC8DAF2), intensity: 550,
+        addDirectionalLight(to: scene, color: BallMaterial.uiColor(BallMaterial.fillLight), intensity: 550,
                             from: SCNVector3(-4.2, -1.4, 2.2)) // cool fill
         addDirectionalLight(to: scene, color: .white, intensity: 1300,
                             from: SCNVector3(-1.6, -2.2, -5.4)) // rim, behind-low
@@ -368,7 +368,7 @@ enum SpecimenSceneBuilder {
         let padMaterial = SCNMaterial()
         padMaterial.lightingModel = .physicallyBased
         // leather-toned, slightly deeper than the cover's warm hide
-        padMaterial.diffuse.contents = UIColor(hexRGB: 0xCFC4AC)
+        padMaterial.diffuse.contents = BallMaterial.uiColor(BallMaterial.fingerPad)
         padMaterial.roughness.contents = 0.58
         padMaterial.metalness.contents = 0.0
         pad.materials = [padMaterial]
@@ -424,8 +424,8 @@ enum SpecimenSceneBuilder {
     /// rasterized for the 3D stage.
     private static func pipImage(label: String) -> UIImage {
         let size = CGSize(width: 64, height: 64)
-        let cyan = UIColor(hexRGB: 0x37D6FF)
-        let void = UIColor(hexRGB: 0x070509).withAlphaComponent(0.82)
+        let cyan = UIColor(web: WebTokens.Palette.cyan)
+        let void = UIColor(web: WebTokens.Palette.void).withAlphaComponent(0.82)
         return UIGraphicsImageRenderer(size: size).image { ctx in
             let disc = CGRect(x: 3, y: 3, width: 58, height: 58)
             void.setFill()
@@ -434,7 +434,7 @@ enum SpecimenSceneBuilder {
             ctx.cgContext.setLineWidth(4)
             ctx.cgContext.strokeEllipse(in: disc)
 
-            let font = UIFont(name: "MartianMono-Regular", size: 26)
+            let font = UIFont(name: PitchAtlasType.Face.martian400.postScriptName, size: 26)
                 ?? UIFont.monospacedSystemFont(ofSize: 26, weight: .regular)
             let attributes: [NSAttributedString.Key: Any] = [
                 .font: font,
@@ -456,7 +456,7 @@ enum SpecimenSceneBuilder {
         let group = SCNNode()
         group.name = axisNodeName
 
-        let bone = UIColor(hexRGB: 0xC7BEA8)
+        let bone = BallMaterial.uiColor(BallMaterial.axis)
         let length = 1.5
         let head = min(0.15, length * 0.5)
         let shaft = max(0.001, length - head)
@@ -629,13 +629,3 @@ extension SIMD3 where Scalar == Float {
     }
 }
 
-private extension UIColor {
-    convenience init(hexRGB hex: UInt32) {
-        self.init(
-            red: CGFloat((hex >> 16) & 0xFF) / 255,
-            green: CGFloat((hex >> 8) & 0xFF) / 255,
-            blue: CGFloat(hex & 0xFF) / 255,
-            alpha: 1
-        )
-    }
-}

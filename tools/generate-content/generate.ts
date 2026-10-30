@@ -15,10 +15,12 @@
     npm install && npm run generate
     PITCH_ATLAS_WEB=/path/to/Pitch-Atlas npm run generate   # override web repo
 */
-import { writeFile, mkdir } from 'node:fs/promises'
+import { writeFile, mkdir, readFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { dirname, resolve, join } from 'node:path'
+import { writeTokens } from './tokens.ts'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const WEB = process.env.PITCH_ATLAS_WEB
@@ -35,7 +37,8 @@ if (!existsSync(DATA)) {
 
 const imp = (rel: string) => import(pathToFileURL(join(DATA, rel)).href)
 
-const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade, archive, tiktok] =
+const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade, archive, tiktok,
+  softball, softballFund, tidbits, quotes, external, craftsmanMedia, plate273, fieldNotes, flightLab] =
   await Promise.all([
     imp('pitches/index.ts'),
     imp('repertoire/index.ts'),
@@ -50,7 +53,60 @@ const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimen
     // references the app embeds via the official player — no media file is bundled.
     // The web side reads the same module. Promoted to the iOS bundle 2026-06-25.
     imp('media/tiktok.ts'),
+    // The wings the app gained in 1.2 (2026-10-05): softball, the hidden notes
+    // (tidbits), the rotating quote pool, credited external media, the media
+    // filed to craftsmen, and Muybridge plate 273. All pure data modules.
+    imp('softball/index.ts'),
+    imp('softball/fundamentals.ts'),
+    imp('tidbits/index.ts'),
+    imp('quotes/index.ts'),
+    imp('media/external.ts'),
+    imp('media/craftsmen.ts'),
+    imp('media/plate273.ts'),
+    // The pitch page's tier-03 chapter (2026-10-28): the ranking model as the
+    // site prints it, the vocabulary, and the note form's context lists.
+    imp('field-notes.ts'),
+    // The slow-pitch Flight Lab (2026-10-30): the rulebooks, the six example lobs,
+    // the measured batter and the notes. Exactly these four: the arsenal
+    // (SLOWPITCH_ARSENAL, web PR #272) is not exported until the app draws it.
+    imp('softball/flightLab.ts'),
   ])
+
+/*
+  Plate 273 ships as ten traced outlines (public domain). Only straight-line
+  path commands occur (M/L/Z), so each frame becomes numeric subpaths the app
+  draws with Path — the outline is generated from the web file, never redrawn.
+*/
+async function plateFrames(svgPath: string) {
+  const svg = await readFile(svgPath, 'utf8')
+  const frames = [...svg.matchAll(/<symbol id="(f\d+)" viewBox="([^"]+)">\s*<path[^>]* d="([^"]+)"/g)]
+  if (frames.length === 0) throw new Error(`no frames in ${svgPath}`)
+  return frames.map(([, id, viewBox, d]) => {
+    if (/[^MLZ0-9.\-\s]/.test(d)) throw new Error(`${id}: unexpected path command`)
+    const subpaths = d
+      .split('Z')
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .map((part) =>
+        [...part.matchAll(/[ML]\s*(-?\d+(?:\.\d+)?)\s*(-?\d+(?:\.\d+)?)/g)].map((m) => [Number(m[1]), Number(m[2])]),
+      )
+    return { id, viewBox: viewBox.split(/\s+/).map(Number), subpaths }
+  })
+}
+
+const plate = plate273.PLATE_273
+const plateBundle = {
+  viewBox: plate.viewBox,
+  frameCount: plate.frames,
+  plate: plate.plate,
+  title: plate.title,
+  maker: plate.maker,
+  work: plate.work,
+  year: plate.year,
+  rights: plate.rights,
+  source: plate.source,
+  frames: await plateFrames(join(WEB, 'public', plate.src.replace(/^\//, ''))),
+}
 
 /*
   Film mapping at the boundary. The web models a looping grip video as GripClip
@@ -77,8 +133,40 @@ function filmFor(entry: AnyRecord): AnyRecord | undefined {
       capturedAt: photos[0]?.capturedAt,
     },
     poster: c.poster,
+    // where the loop opens and the point the card window's crop keeps in view
+    start: c.start,
+    focus: c.focus,
   }
 }
+
+/*
+  The Lost Pitches through-line ("Why pitches die.") is written as a module-
+  private const inside the web's WhyPitchesDie component, built with the same
+  claim() helper as the data modules. The component imports React-side modules,
+  so it can't be imported here: its FORCES literal is sliced out of the file and
+  evaluated against the real claim(), so the copy and every source come from the
+  web file. It runs the same first-party source the module imports above already
+  execute, nothing from outside the web repo. A reshaped file fails the run
+  rather than shipping a guess.
+*/
+async function lostPitchForces(): Promise<AnyRecord[]> {
+  const file = join(WEB, 'src', 'components', 'sections', 'WhyPitchesDie.tsx')
+  const text = await readFile(file, 'utf8')
+  const decl = text.indexOf('const FORCES: Force[] = [')
+  const end = decl < 0 ? -1 : text.indexOf('\n]\n', decl)
+  if (decl < 0 || end < 0) throw new Error(`${file}: FORCES is no longer a top-level array`)
+  const literal = text.slice(text.indexOf('= [', decl) + 2, end + 2)
+  const forces = new Function('claim', `return ${literal}`)(sources.claim) as AnyRecord[]
+  for (const f of forces) {
+    const claims = f.claims as AnyRecord[] | undefined
+    if (typeof f.era !== 'string' || typeof f.heading !== 'string' || typeof f.body !== 'string' || !claims?.length) {
+      throw new Error(`${file}: a force lost its era, heading, body or claims`)
+    }
+  }
+  return forces
+}
+
+const forces = await lostPitchForces()
 
 const gripEntries = (grips.AUSTIN_GRIPS as AnyRecord[]).map((e) => {
   const { clip: _clip, ...rest } = e
@@ -107,7 +195,8 @@ const bundles: Record<string, unknown> = {
   'pitches.json': pitchEntries,
   'repertoire.json': { families: repertoire.REPERTOIRE_FAMILIES, entries: repertoire.REPERTOIRE },
   'craftsmen.json': craftsmen.CRAFTSMEN,
-  'lost-pitches.json': { tiers: lost.LOST_PITCH_TIERS, entries: lost.LOST_PITCHES },
+  // The four forces ride beside the tiers and entries they explain.
+  'lost-pitches.json': { tiers: lost.LOST_PITCH_TIERS, entries: lost.LOST_PITCHES, forces },
   'knowledge.json': knowledge.WINGS,
   'grips.json': {
     intro: grips.GRIP_LIBRARY_INTRO,
@@ -115,6 +204,8 @@ const bundles: Record<string, unknown> = {
     commandNote: grips.GRIP_LIBRARY_COMMAND_NOTE,
     attackPlan: grips.ATTACK_PLAN,
     proofLimit: grips.GRIP_PHOTO_PROOF_LIMIT,
+    // The labeled gap the library shows where the circle change's photos would be.
+    circleChangeDistinction: grips.CIRCLE_CHANGE_DISTINCTION,
     entries: gripEntries,
   },
   'sources.json': sources.allSources(),
@@ -125,6 +216,66 @@ const bundles: Record<string, unknown> = {
   // Embed-or-link, never rehost. The app embeds the official TikTok player from
   // these refs; no MP4 ships. See docs/MEDIA-LEDGER.md (web repo) rows T1–T3.
   'teaching-clips.json': tiktok.TEACHING_CLIPS,
+  'softball.json': {
+    fastpitchCopy: softballFund.SOFTBALL_FASTPITCH_COPY,
+    hubFastpitchBlurb: softballFund.SOFTBALL_HUB_FASTPITCH_BLURB,
+    pitches: softball.SOFTBALL_PITCHES,
+    craftsmen: softball.SOFTBALL_CRAFTSMEN,
+    windmillPhases: softball.WINDMILL_PHASES,
+    fundamentalBlocks: softball.FUNDAMENTAL_BLOCKS,
+    slowpitchNotes: softball.SLOWPITCH_NOTES,
+    slowpitchCraft: softball.SLOWPITCH_CRAFT,
+    slowpitchFormats: softball.SLOWPITCH_FORMATS,
+  },
+  'tidbits.json': tidbits.TIDBITS,
+  'flight-lab.json': {
+    rulebooks: flightLab.FLIGHT_LAB_RULEBOOKS,
+    lobs: flightLab.EXAMPLE_LOBS,
+    measuredBatter: flightLab.MEASURED_BATTER,
+    notes: flightLab.FLIGHT_LAB_NOTES,
+  },
+  // The rotating pool the web UI reads: curated lines plus every craftsman quote.
+  'quotes.json': quotes.quotePool(),
+  // Embed-or-link: TikTok rows play in the official player; X rows link out.
+  'external-media.json': { sources: external.EXTERNAL_SOURCES, items: external.EXTERNAL_CONTENT_ITEMS },
+  'craftsman-media.json': craftsmanMedia.allCraftsmanMedia(),
+  'plate-273.json': plateBundle,
+  // Each weight rides beside its signal so the app prints the same percentages.
+  'field-notes.json': {
+    rankSignals: (fieldNotes.RANK_SIGNALS as AnyRecord[]).map((s) => ({
+      ...s,
+      weight: (fieldNotes.RANK_WEIGHTS as Record<string, number>)[s.key as string],
+    })),
+    vocabulary: fieldNotes.FIELD_NOTE_PRIMITIVES,
+    playerLevels: fieldNotes.PLAYER_LEVELS,
+    armSlots: fieldNotes.ARM_SLOTS,
+    velocityBands: fieldNotes.VELOCITY_BANDS,
+    limits: fieldNotes.FIELD_NOTE_CONSTRAINTS,
+  },
+}
+
+// Object-shaped bundles have no single record array, so their counts are named
+// explicitly (countOf would read them as 0).
+const explicitCounts: Record<string, Record<string, number>> = {
+  'lost-pitches.json': {
+    'lost-pitches.json': lost.LOST_PITCHES.length,
+    'lost-pitches.forces': forces.length,
+  },
+  'softball.json': {
+    'softball.pitches': softball.SOFTBALL_PITCHES.length,
+    'softball.craftsmen': softball.SOFTBALL_CRAFTSMEN.length,
+  },
+  'external-media.json': { 'external-media.items': external.EXTERNAL_CONTENT_ITEMS.length },
+  'flight-lab.json': {
+    'flight-lab.rulebooks': flightLab.FLIGHT_LAB_RULEBOOKS.length,
+    'flight-lab.lobs': flightLab.EXAMPLE_LOBS.length,
+    'flight-lab.notes': flightLab.FLIGHT_LAB_NOTES.length,
+  },
+  'plate-273.json': { 'plate-273.frames': plateBundle.frames.length },
+  'field-notes.json': {
+    'field-notes.signals': fieldNotes.RANK_SIGNALS.length,
+    'field-notes.vocabulary': fieldNotes.FIELD_NOTE_PRIMITIVES.length,
+  },
 }
 
 function countOf(v: unknown): number {
@@ -144,19 +295,41 @@ for (const [file, data] of Object.entries(bundles)) {
     process.exit(1)
   }
   await writeFile(join(OUT, file), JSON.stringify(data, null, 2) + '\n', 'utf8')
-  counts[file] = countOf(data)
-  console.log(`  ${file.padEnd(20)} ${String(counts[file]).padStart(4)} records`)
+  if (explicitCounts[file]) Object.assign(counts, explicitCounts[file])
+  else counts[file] = countOf(data)
+  const shown = explicitCounts[file] ? Object.values(explicitCounts[file])[0] : counts[file]
+  console.log(`  ${file.padEnd(20)} ${String(shown).padStart(4)} records`)
 }
+
+// Design tokens: the web's palette, foils, trust tiers, accents, motion and
+// radii, written as bundled JSON plus the Swift the theme compiles against and
+// the two color sets. Same web tree, same run, so they cannot disagree.
+const tokens = await writeTokens({
+  web: WEB,
+  contentOut: OUT,
+  swiftOut: resolve(here, '../../PitchAtlas/Core/Theme/Generated'),
+  assetsOut: resolve(here, '../../PitchAtlas/Resources/Assets.xcassets'),
+})
+console.log(`  design-tokens.json   ${String(Object.keys(tokens.palette).length).padStart(4)} colors`)
+console.log('  WebTokens.swift, AccentColor, LaunchBackground')
 
 // Manifest: counts read from source (never hardcoded). A change here is a real
 // content delta, surfaced in the diff — not silent drift.
 const allSources = sources.allSources()
 const sourcesLastChecked = sources.latestRetrievedAt(allSources)
+// Content hash over every bundle written above plus the tokens (sorted name +
+// bytes): it changes exactly when shipped content changes, and needs no clock —
+// so the drift job, which regenerates and diffs, stays deterministic.
+const hash = createHash('sha256')
+for (const file of [...Object.keys(bundles), 'design-tokens.json'].sort()) {
+  hash.update(file).update(await readFile(join(OUT, file)))
+}
+const contentHash = hash.digest('hex')
 await writeFile(
   join(OUT, 'manifest.json'),
-  JSON.stringify({ counts, sourcesLastChecked }, null, 2) + '\n',
+  JSON.stringify({ counts, sourcesLastChecked, contentHash }, null, 2) + '\n',
   'utf8',
 )
 
-console.log(`✓ wrote ${Object.keys(bundles).length + 1} files to PitchAtlas/Resources/Content`)
+console.log(`✓ wrote ${Object.keys(bundles).length + 2} files to PitchAtlas/Resources/Content`)
 console.log(`  sources last checked: ${sourcesLastChecked}`)

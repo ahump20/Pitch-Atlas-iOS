@@ -31,35 +31,23 @@ enum ClaimConfidence: String, Codable, Hashable, CaseIterable {
     case unverified
 
     init(from decoder: Decoder) throws {
-        let raw = try decoder.singleValueContainer().decode(String.self)
+        self.init(lenient: try decoder.singleValueContainer().decode(String.self))
+    }
+
+    /// A tier the web adds later reads as unverified — shown, never upgraded.
+    init(lenient raw: String) {
         self = ClaimConfidence(rawValue: raw) ?? .unverified
     }
 
-    /// Short badge label.
-    var label: String {
-        switch self {
-        case .officialData: return "Official data"
-        case .pitcherOwnWords: return "Pitcher's own words"
-        case .coachObserved: return "Coach-observed"
-        case .reputableAnalysis: return "Reputable analysis"
-        case .secondhandAttributed: return "Secondhand, attributed"
-        case .communityFirsthand: return "Community, firsthand"
-        case .unverified: return "Unverified"
-        }
-    }
+    /// Short badge label, as the web prints it (data/types.ts CONFIDENCE_META).
+    var label: String { WebTokens.Tier.label[rawValue] ?? "Unverified" }
 
     /// One-line meaning, shown when the tier is explained.
-    var meaning: String {
-        switch self {
-        case .officialData: return "Measured and published by the source of record (Statcast / MLB)."
-        case .pitcherOwnWords: return "Stated by the athlete directly."
-        case .coachObserved: return "Reported firsthand by a coach."
-        case .reputableAnalysis: return "A credible analyst, or our paraphrase of a cited reference."
-        case .secondhandAttributed: return "A quote or figure relayed through a secondary source."
-        case .communityFirsthand: return "A community member's own report. Launches with safeguards."
-        case .unverified: return "No source corroborated this value. Shown so the gap is visible."
-        }
-    }
+    var meaning: String { WebTokens.Tier.meaning[rawValue] ?? "" }
+
+    /// The web's mono glyph (provenance/ConfidenceLabel.tsx), so the seven tiers
+    /// stay distinct where three colors cannot carry them.
+    var glyph: String { WebTokens.Tier.glyph[rawValue] ?? "⊘" }
 }
 
 /// What we are allowed to do with an asset or claim.
@@ -273,6 +261,17 @@ struct GripFilm: Codable, Hashable {
     let clip: VisualReference
     /// Bundled still (`/grips/<stem>-poster.webp`).
     let poster: String
+    /// The second the loop opens on, so a card window shows the grip, never the room.
+    var start: Double? = nil
+    /// Where the grip sits in the frame (percent across and down): the point a card
+    /// window's crop keeps in view.
+    var focus: FilmFocus? = nil
+}
+
+/// A point in a frame, in percent across (x) and down (y), as the web's GripClip.focus.
+struct FilmFocus: Codable, Hashable {
+    let x: Double
+    let y: Double
 }
 
 // MARK: - Pitch specimen (pitches.json → [PitchAtlasEntry])
@@ -716,9 +715,20 @@ struct LostPitch: Codable, Hashable, Identifiable {
     var recordEntries: [LabeledClaim] { record ?? numbers ?? [] }
 }
 
+/// One of the four ways a pitch dies (WhyPitchesDie.tsx): when, the force in a
+/// line, the account, and the sourced statements the account paraphrases.
+struct LostPitchForce: Codable, Hashable {
+    let era: String
+    let heading: String
+    let body: String
+    let claims: [Claim]
+}
+
 struct LostPitchesRoot: Codable, Hashable {
     let tiers: [LostPitchTierInfo]
     let entries: [LostPitch]
+    /// The through-line, in the order the forces take a pitch out of the game.
+    let forces: [LostPitchForce]
 }
 
 // MARK: - Archive plates (archive-images.json → [ArchiveImage])
@@ -817,7 +827,11 @@ struct KnowledgeWing: Codable, Hashable, Identifiable {
     let confidenceNote: String
     let educational: Bool?
     let related: [KnowledgeRelatedLink]?
+    /// Web `KnowledgeWing.boundaryOnly`: an education-only wing (arm health,
+    /// youth) that opens no discussion thread.
+    let boundaryOnly: Bool?
     var id: String { slug }
+    var allowsDiscussion: Bool { boundaryOnly != true }
 }
 
 // MARK: - Grip Library (grips.json → GripsFile)
@@ -854,12 +868,20 @@ struct GripEntry: Codable, Hashable, Identifiable {
     let photoStatus: String?
 }
 
+/// Where a grip has no photograph of Austin's hand, the library says why
+/// (web CIRCLE_CHANGE_DISTINCTION): a marker line and the reason.
+struct GripDistinction: Codable, Hashable {
+    let marker: String
+    let reason: String
+}
+
 struct GripsFile: Codable, Hashable {
     let intro: String
     let arsenal: String
     let commandNote: String
     let attackPlan: GripAttackPlan
     let proofLimit: String
+    let circleChangeDistinction: GripDistinction?
     let entries: [GripEntry]
 }
 
@@ -898,4 +920,7 @@ struct TeachingClip: Codable, Hashable, Identifiable {
 struct ContentManifest: Codable, Hashable {
     let counts: [String: Int]
     let sourcesLastChecked: String
+    /// sha256 over every generated bundle (name + bytes): changes exactly when
+    /// shipped content changes, with no clock involved.
+    let contentHash: String?
 }

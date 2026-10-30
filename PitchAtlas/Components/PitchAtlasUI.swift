@@ -12,68 +12,69 @@ import SwiftUI
 
 /// Shared warm archive field with fine rules; Reduce Transparency uses solid charcoal.
 struct FieldBackdrop: View {
+    /// The section's scene tint for the two depth pools (web .scene-* pools).
+    var sceneTint: Color = Color(web: WebTokens.Palette.columbia)
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
     var body: some View {
         ZStack {
             PitchAtlasTheme.void
             if !reduceTransparency {
-                LinearGradient(
-                colors: [
-                    Color(hex: 0xA87C4B).opacity(0.18),
-                    .clear,
-                    PitchAtlasTheme.void,
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            RadialGradient(
-                colors: [
-                    PitchAtlasTheme.cardbackPaper.opacity(0.065),
-                    .clear,
-                ],
-                center: .topLeading,
-                startRadius: 0,
-                endRadius: 340
-            )
-            RadialGradient(
-                colors: [
-                    PitchAtlasTheme.seamBright.opacity(0.06),
-                    .clear,
-                ],
-                center: .bottomLeading,
-                startRadius: 24,
-                endRadius: 360
-            )
-            RadialGradient(
-                colors: [
-                    PitchAtlasTheme.violet.opacity(0.045),
-                    .clear,
-                ],
-                center: .topTrailing,
-                startRadius: 0,
-                endRadius: 320
-            )
-            FieldRuleMesh()
-                .opacity(0.20)
+                RadialGradient(colors: [sceneTint.opacity(0.10), .clear],
+                               center: UnitPoint(x: 0.18, y: 0.08), startRadius: 0, endRadius: 360)
+                RadialGradient(colors: [sceneTint.opacity(0.06), .clear],
+                               center: UnitPoint(x: 0.88, y: 0.72), startRadius: 0, endRadius: 420)
+                FieldDotGrid()
+                    .mask(RadialGradient(colors: [.black, .clear],
+                                         center: .top, startRadius: 0, endRadius: 640))
+                FieldGrain()
+                    .opacity(0.035)
+                    .blendMode(.overlay)
             }
         }
         .ignoresSafeArea()
+        .accessibilityHidden(true)
     }
 }
 
-private struct FieldRuleMesh: View {
+/// The web's dot grid: one bone dot per 22pt tile at 5%.
+private struct FieldDotGrid: View {
     var body: some View {
         Canvas { context, size in
             let step: CGFloat = 22
+            let dot = PitchAtlasTheme.bone.opacity(0.05)
             var x: CGFloat = 0
             while x <= size.width {
                 var y: CGFloat = 0
                 while y <= size.height {
-                    let rect = CGRect(x: x, y: y, width: 1.2, height: 1.2)
-                    context.fill(Path(ellipseIn: rect), with: .color(PitchAtlasTheme.bone.opacity(0.18)))
+                    context.fill(Path(ellipseIn: CGRect(x: x, y: y, width: 1.4, height: 1.4)), with: .color(dot))
                     y += step
                 }
                 x += step
+            }
+        }
+    }
+}
+
+/// Deterministic film grain (no randomness at draw time: a fixed hash per cell).
+private struct FieldGrain: View {
+    var body: some View {
+        Canvas { context, size in
+            let cell: CGFloat = 3
+            var row: UInt32 = 0
+            var y: CGFloat = 0
+            while y < size.height {
+                var col: UInt32 = 0
+                var x: CGFloat = 0
+                while x < size.width {
+                    var h = row &* 73_856_093 ^ col &* 19_349_663
+                    h ^= h >> 13; h = h &* 0x5bd1e995; h ^= h >> 15
+                    if h % 7 == 0 {
+                        context.fill(Path(CGRect(x: x, y: y, width: 1, height: 1)), with: .color(PitchAtlasTheme.bone))
+                    }
+                    x += cell; col += 1
+                }
+                y += cell; row += 1
             }
         }
     }
@@ -84,13 +85,23 @@ private struct FieldRuleMesh: View {
 /// All-caps tracked micro-label. The "stamp" that heads a section or card.
 struct SectionLabel: View {
     let text: String
-    var color: Color = PitchAtlasTheme.bone2
-    var size: CGFloat = 10
+    var color: AnyShapeStyle
+    var size: CGFloat
+
+    init(text: String, size: CGFloat = 10) {
+        self.init(text: text, color: PitchAtlasTheme.bone2, size: size)
+    }
+
+    init<S: ShapeStyle>(text: String, color: S, size: CGFloat = 10) {
+        self.text = text
+        self.color = AnyShapeStyle(color)
+        self.size = size
+    }
 
     var body: some View {
         Text(text.uppercased())
             .font(PitchAtlasTheme.martian(size))
-            .tracking(2)
+            .tracking(em: 0.18, size: size)
             .foregroundStyle(color)
             .accessibilityAddTraits(.isHeader)
     }
@@ -98,68 +109,13 @@ struct SectionLabel: View {
 
 // MARK: - Leather-press card
 
-/// The content surface: solid press fill + 1px bone hairline. Never glass.
-/// Neutral archive stock; the signature collectible alone opts into worn orange.
-/// Texture is deterministic and decorative.
-struct ArchiveCoverSurface: View {
-    var radius: CGFloat = 18
-    var signature = false
-
-    private var stock: [Color] {
-        signature
-            ? [Color(hex: 0x93411F), Color(hex: 0x6D2E18), Color(hex: 0x3D1D13)]
-            : [Color(hex: 0x24201C), PitchAtlasTheme.press, Color(hex: 0x141312)]
-    }
-    private var edge: [Color] {
-        signature
-            ? [Color(hex: 0xE09A65).opacity(0.75), Color(hex: 0x37170F), Color(hex: 0xB76B3E).opacity(0.65)]
-            : [PitchAtlasTheme.bone.opacity(0.28), .black.opacity(0.65), PitchAtlasTheme.bone.opacity(0.13)]
-    }
-    var body: some View {
-        RoundedRectangle(cornerRadius: radius, style: .continuous)
-            .fill(LinearGradient(colors: stock,
-                                 startPoint: .topLeading, endPoint: .bottomTrailing))
-            .overlay {
-                Canvas { context, size in
-                    for i in 0..<180 {
-                        let x = CGFloat((Double(i) * 0.754877666).truncatingRemainder(dividingBy: 1)) * size.width
-                        let y = CGFloat((Double(i) * 0.569840296).truncatingRemainder(dividingBy: 1)) * size.height
-                        var stroke = Path()
-                        stroke.move(to: CGPoint(x: x, y: y))
-                        stroke.addLine(to: CGPoint(x: x + CGFloat(2 + i % 8), y: y + 0.7))
-                        context.stroke(stroke, with: .color(.black.opacity(0.11)), lineWidth: 0.5)
-                    }
-                    for i in 0..<35 {
-                        let x = CGFloat((i * 47) % 997) / 997 * size.width
-                        let y: CGFloat = i.isMultiple(of: 2) ? 2.5 : size.height - 3
-                        var wear = Path()
-                        wear.move(to: CGPoint(x: x, y: y)); wear.addLine(to: CGPoint(x: x + CGFloat(2 + i % 5), y: y))
-                        context.stroke(wear, with: .color(signature ? Color(hex: 0xD49868).opacity(0.32) : PitchAtlasTheme.bone.opacity(0.055)), lineWidth: 1)
-                    }
-                }.clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .strokeBorder(LinearGradient(colors: edge,
-                                                 startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1.2)
-            }
-            .overlay {
-                RoundedRectangle(cornerRadius: max(2, radius - 5), style: .continuous)
-                    .inset(by: 5).strokeBorder(.black.opacity(0.25), lineWidth: 1)
-                    .shadow(color: signature ? Color(hex: 0xEDAB78).opacity(0.22) : PitchAtlasTheme.bone.opacity(0.08), radius: 0, y: 1)
-            }
-            .shadow(color: .black.opacity(0.5), radius: 1, x: 0, y: 3)
-            .shadow(color: .black.opacity(0.35), radius: 12, x: 0, y: 12)
-            .accessibilityHidden(true).allowsHitTesting(false)
-    }
-}
-
 struct LeatherPress: ViewModifier {
     var padding: CGFloat
     var radius: CGFloat
     func body(content: Content) -> some View {
         content.padding(padding).frame(maxWidth: .infinity, alignment: .leading)
-            .background { ArchiveCoverSurface(radius: radius) }
+            .background { PanelSurface(radius: radius) }
+            .inkContext(.object)
     }
 }
 
@@ -171,20 +127,21 @@ struct SpecimenCardFrame: ViewModifier {
     var foilFillOpacity: Double
     func body(content: Content) -> some View {
         content.padding(padding).frame(maxWidth: .infinity, alignment: .leading)
-            .background { ArchiveCoverSurface(radius: radius) }
+            .background { PanelSurface(radius: radius) }
+            .inkContext(.object)
     }
 }
 
 extension View {
     /// Wrap content as a leather-press card.
     func leatherPress(padding: CGFloat = PitchAtlasSpacing.md,
-                      radius: CGFloat = PitchAtlasRadius.card) -> some View {
+                      radius: CGFloat = PitchAtlasRadius.panel) -> some View {
         modifier(LeatherPress(padding: padding, radius: radius))
     }
 
     /// Wrap content as a foil-edged specimen card.
     func specimenCardFrame(padding: CGFloat = PitchAtlasSpacing.md,
-                           radius: CGFloat = PitchAtlasRadius.card,
+                           radius: CGFloat = PitchAtlasRadius.panel,
                            foilIntensity: Double = 0.75,
                            foilFillOpacity: Double = 0.055) -> some View {
         modifier(SpecimenCardFrame(
@@ -216,6 +173,25 @@ struct BrandSealMark: View {
             .shadow(color: shadow ? PitchAtlasTheme.seamBright.opacity(0.18) : .clear,
                     radius: 18, x: 0, y: 8)
             .accessibilityHidden(true)
+    }
+}
+
+/// The site's `/brand/seal-128.webp`: the cream compass seal a card, a media
+/// well or a missing photo prints where a likeness would sit. Decorative.
+struct ArchiveSealMark: View {
+    static let src = "/brand/seal-128.webp"
+    var size: CGFloat = 48
+
+    var body: some View {
+        Group {
+            if let image = BundledImage.load(Self.src) {
+                Image(uiImage: image).resizable().interpolation(.high)
+            } else {
+                BrandSealMark(size: size, shadow: false)
+            }
+        }
+        .frame(width: size, height: size)
+        .accessibilityHidden(true)
     }
 }
 
@@ -266,7 +242,7 @@ struct LoadingTile: View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             ForEach(0..<3, id: \.self) { i in
                 RoundedRectangle(cornerRadius: 4, style: .continuous)
-                    .fill(i == 0 ? PitchAtlasTheme.powder.opacity(0.22) : PitchAtlasTheme.machined)
+                    .fill(i == 0 ? PitchAtlasTheme.kicker.opacity(0.22) : PitchAtlasTheme.machined)
                     .frame(height: 14)
                     .frame(maxWidth: i == 2 ? 180 : .infinity)
             }
@@ -284,38 +260,60 @@ struct LoadingTile: View {
 struct ErrorStateView: View {
     let title: String
     let reason: String
+    /// When set, a "Try again" button re-runs the read that failed.
+    var retry: (() -> Void)?
 
-    init(title: String = "Couldn't load this", reason: String) {
+    init(title: String = "Couldn't load this", reason: String, retry: (() -> Void)? = nil) {
         self.title = title
         self.reason = reason
+        self.retry = retry
     }
 
     var body: some View {
         VStack(spacing: PitchAtlasSpacing.sm) {
-            BrandSealMark(size: 58)
-            Text(title)
-                .font(PitchAtlasTheme.newsreader(18))
-                .foregroundStyle(PitchAtlasTheme.bone)
-            Text(reason)
-                .font(PitchAtlasTheme.hanken(14))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-                .multilineTextAlignment(.center)
+            VStack(spacing: PitchAtlasSpacing.sm) {
+                BrandSealMark(size: 58)
+                Text(title)
+                    .font(PitchAtlasTheme.newsreader(18))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .multilineTextAlignment(.center)
+                Text(reason)
+                    .font(PitchAtlasTheme.hanken(14))
+                    .foregroundStyle(PitchAtlasTheme.text3)
+                    .multilineTextAlignment(.center)
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(title). \(reason)")
+
+            if let retry {
+                Button(action: retry) {
+                    Label("Try again", systemImage: "arrow.clockwise")
+                        .font(PitchAtlasTheme.hankenMedium(13))
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, PitchAtlasSpacing.xl2)
         .leatherPress()
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(title). \(reason)")
     }
 }
 
 /// Empty: explains *why* there is nothing here.
 struct EmptyStateView: View {
+    var title: String?
     let message: String
 
     var body: some View {
         VStack(spacing: PitchAtlasSpacing.sm) {
             BrandSealMark(size: 50)
+            if let title {
+                Text(title)
+                    .font(PitchAtlasTheme.newsreader(18))
+                    .foregroundStyle(PitchAtlasTheme.bone)
+                    .multilineTextAlignment(.center)
+            }
             Text(message)
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone2)
@@ -325,7 +323,7 @@ struct EmptyStateView: View {
         .padding(.vertical, PitchAtlasSpacing.xl2)
         .leatherPress()
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(message)
+        .accessibilityLabel(title.map { "\($0). \(message)" } ?? message)
     }
 }
 
@@ -333,10 +331,7 @@ struct EmptyStateView: View {
 
 struct HairlineDivider: View {
     var body: some View {
-        Rectangle()
-            .fill(PitchAtlasTheme.navyLine)
-            .frame(height: 1)
-            .accessibilityHidden(true)
+        Hairline()
     }
 }
 
@@ -359,7 +354,7 @@ struct PitchFormLabel: View {
                 Text("Required")
                     .font(PitchAtlasTheme.martian(8))
                     .tracking(0.7)
-                    .foregroundStyle(PitchAtlasTheme.amberBright)
+                    .foregroundStyle(PitchAtlasTheme.caution)
             }
         }
         .accessibilityElement(children: .combine)
@@ -368,7 +363,7 @@ struct PitchFormLabel: View {
 
 struct PitchFormCaption: View {
     let text: String
-    var color: Color = PitchAtlasTheme.ink3
+    var color: AnyShapeStyle = AnyShapeStyle(PitchAtlasTheme.text3)
 
     var body: some View {
         Text(text)
@@ -383,16 +378,16 @@ private struct PitchTextFieldSurface: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .padding(.horizontal, PitchAtlasSpacing.sm)
-            .padding(.vertical, 10)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
             .frame(minHeight: minHeight, alignment: .topLeading)
             .background(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .fill(PitchAtlasTheme.void.opacity(0.96))
+                RoundedRectangle(cornerRadius: PitchAtlasRadius.input, style: .continuous)
+                    .fill(ComponentInk.inputFill)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                    .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+                RoundedRectangle(cornerRadius: PitchAtlasRadius.input, style: .continuous)
+                    .strokeBorder(PitchAtlasTheme.cyan.opacity(0.4), lineWidth: 1)
             )
             .tint(PitchAtlasTheme.cyan)
     }
@@ -430,26 +425,30 @@ struct PitchMenuField<Selection: Hashable, Content: View>: View {
             } label: {
                 HStack(spacing: PitchAtlasSpacing.sm) {
                     Text(selectedText)
-                        .font(PitchAtlasTheme.hankenMedium(14))
+                        .font(PitchAtlasType.font(.martian400, size: 13, relativeTo: .callout))
                         .foregroundStyle(PitchAtlasTheme.bone)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                     Spacer(minLength: PitchAtlasSpacing.xs)
-                    Image(systemName: "chevron.up.chevron.down")
+                }
+                .padding(.leading, 13)
+                .padding(.trailing, 34)
+                .padding(.vertical, 9)
+                .frame(minHeight: 44)
+                .overlay(alignment: .trailing) {
+                    Image(systemName: "chevron.down")
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundStyle(PitchAtlasTheme.cyan)
+                        .padding(.trailing, 13)
                         .accessibilityHidden(true)
                 }
-                .padding(.horizontal, PitchAtlasSpacing.sm)
-                .padding(.vertical, 10)
-                .frame(minHeight: 46)
                 .background(
-                    RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                        .fill(PitchAtlasTheme.void.opacity(0.96))
+                    RoundedRectangle(cornerRadius: PitchAtlasRadius.select, style: .continuous)
+                        .fill(ComponentInk.inputFill)
                 )
                 .overlay(
-                    RoundedRectangle(cornerRadius: PitchAtlasRadius.chip, style: .continuous)
-                        .strokeBorder(PitchAtlasTheme.machined, lineWidth: 1)
+                    RoundedRectangle(cornerRadius: PitchAtlasRadius.select, style: .continuous)
+                        .strokeBorder(PitchAtlasTheme.cyan.opacity(0.4), lineWidth: 1)
                 )
             }
             .pickerStyle(.menu)
@@ -473,7 +472,7 @@ struct PitchToggleField: View {
                 if let caption {
                     Text(caption)
                         .font(PitchAtlasTheme.hanken(12))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
+                        .foregroundStyle(PitchAtlasTheme.text3)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -520,7 +519,7 @@ struct HoloWordmark: View {
             .foregroundStyle(.clear)
             .lineSpacing(lineSpacing)
             .overlay {
-                PitchAtlasTheme.chrome
+                PitchAtlasMaterials.foilType()
                     .scaleEffect(2.2)
                     .offset(x: CGFloat(rake) * 70, y: CGFloat(tip) * 22)
                     .animation(.easeOut(duration: 0.14), value: motion.roll)

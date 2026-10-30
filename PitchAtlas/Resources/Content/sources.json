@@ -1551,6 +1551,44 @@
     "retrievedAt": "2026-06-07"
   },
   {
+    "id": "sb-usssa-slowpitch-rulebook-2026",
+    "label": "USSSA — 2026 Slow Pitch Rule Book (PDF): Rule 6 Sec. 6 arc, the strike-zone definition, Rule 2 Sec. 2 official bat",
+    "url": "https://cms.usssa.net/wp-content/uploads/sites/2/2025/12/usssa-slowpitch-2026-rulebook-final.pdf",
+    "retrievedAt": "2026-10-24",
+    "season": "2026"
+  },
+  {
+    "id": "sb-usa-softball-rulebook-2026",
+    "label": "USA Softball — 2026 Official Rules of Softball (PDF): Rule 6C slow-pitch arc, Senior strike mat, slow-pitch strike zone",
+    "url": "https://www.usasoftball.com/wp-content/uploads/sites/120/2026/01/1-12-2026-Rule-Book.pdf",
+    "retrievedAt": "2026-10-24",
+    "season": "2026"
+  },
+  {
+    "id": "sb-baseballmonkey-slowpitch-bats",
+    "label": "Baseball Monkey — Slowpitch Softball Bat Guide (all slowpitch bats are 34 in)",
+    "url": "https://www.baseballmonkey.com/learn/slowpitch-softball-bat-guide",
+    "retrievedAt": "2026-10-24"
+  },
+  {
+    "id": "sb-russell-sweetspot",
+    "label": "Daniel A. Russell, Penn State — What (and where) is the sweet spot of a baseball/softball bat?",
+    "url": "https://www.acs.psu.edu/drussell/bats/sweetspot.html",
+    "retrievedAt": "2026-10-24"
+  },
+  {
+    "id": "sb-flight-lab-measured-swing",
+    "label": "Pitch Atlas — one batter’s measured swing (their own video, calibrated off home plate)",
+    "url": "https://pitch-atlas.com/softball/flight-lab",
+    "retrievedAt": "2026-10-24"
+  },
+  {
+    "id": "sb-kensrud-thesis",
+    "label": "Jeffrey R. Kensrud, Determining Aerodynamic Properties of Sports Balls in Situ (M.S. thesis, Washington State University)",
+    "url": "https://baseball.physics.illinois.edu/kensrudthesis.pdf",
+    "retrievedAt": "2026-10-24"
+  },
+  {
     "id": "sb-abbott-wikipedia",
     "label": "Wikipedia — Monica Abbott (Tennessee NCAA records, Guinness pitch, Olympic silver 2008 & 2020)",
     "url": "https://en.wikipedia.org/wiki/Monica_Abbott",
@@ -1749,6 +1787,13 @@
     "label": "Wikimedia Commons, 1912 Lincoln Giants team photograph",
     "url": "https://commons.wikimedia.org/wiki/File:1912_Lincoln_Giants.jpg",
     "retrievedAt": "2026-06-27",
+    "season": "public domain image source"
+  },
+  {
+    "id": "commons-muybridge-plate-273",
+    "label": "Wikimedia Commons, Eadweard Muybridge, Animal Locomotion plate 273, Baseball, pitching (1887)",
+    "url": "https://commons.wikimedia.org/wiki/File:Nude_man_playing_baseball,_pitching_(rbm-QP301M8-1887-273).jpg",
+    "retrievedAt": "2026-09-23",
     "season": "public domain image source"
   },
   {

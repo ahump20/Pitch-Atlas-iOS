@@ -1,308 +1,284 @@
 import SwiftUI
 
 // =============================================================================
-// Pitch Atlas — Lost Pitch record
+// Pitch Atlas — a lost pitch's file
 // =============================================================================
-// A single lost pitch read in full. What it was, why it's lost, the numbers that
-// could be recovered — each carrying its source — and a footer that restates what
-// this pitch's documentation tier actually means. Every measured value goes
-// through its provenance so a thin record reads as thin, never as fact.
+// Web: pages/LostPitchChapter.tsx, in its order. The stage (breadcrumb, the era,
+// the name, the tagline, and the documentation tier riding in the hero so the
+// reader knows how solid the ground is before the first sentence), the chapter
+// boxes, the pitch on bound paper, the filed plate, what it was, why it is lost
+// (with the one real quote when it exists), the surviving record on bound paper,
+// the fadeaway's way into the screwball file, the discussion, the walk to the
+// neighboring files, and the site's footer. No specimen and no seam schematic:
+// these pitches were never filed, and that absence is the point.
 // =============================================================================
 
 struct LostPitchDetailView: View {
-    @Environment(PitchStore.self) private var store
-    @Environment(\.openURL) private var openURL
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     let pitch: LostPitch
 
-    /// The tier legend entry that matches this pitch's tier, if it shipped.
-    private var tierInfo: LostPitchTierInfo? {
-        store.lostPitches.tiers.first { $0.tier == pitch.tier }
-    }
+    @Environment(PitchStore.self) private var store
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @State private var currentChapter: String?
 
-    private var chapters: [ArchiveChapter] {
-        var result = [ArchiveChapter(id: "lost-overview", title: "Overview"),
-                      ArchiveChapter(id: "lost-plate", title: "Archive plate"),
-                      ArchiveChapter(id: "lost-craft", title: "What it was"),
-                      ArchiveChapter(id: "lost-history", title: "Why it is lost")]
-        if !pitch.recordEntries.isEmpty { result.append(ArchiveChapter(id: "lost-record", title: "The sourced record")) }
-        if pitch.quote != nil { result.append(ArchiveChapter(id: "lost-voice", title: "In their words")) }
-        if tierInfo != nil { result.append(ArchiveChapter(id: "lost-evidence", title: "Documentation boundary")) }
-        return result
-    }
+    private static let scrollSpace = "lost-pitch-scroll"
 
     var body: some View {
+        let neighbors = LostPitchFileReads.neighbors(of: pitch, in: store.lostPitches.entries)
         ZStack {
             FieldBackdrop()
-
-            ScrollViewReader { proxy in
-            ScrollView {
-                VStack(alignment: .leading, spacing: PitchAtlasSpacing.lg) {
-                    header.id("lost-overview")
-                    introCard
-                    archivePlate.id("lost-plate")
-                    whatItWas.id("lost-craft")
-                    whyItsLost.id("lost-history")
-                    numbers.id("lost-record")
-                    quote.id("lost-voice")
-                    tierFooter.id("lost-evidence")
-                }
-                .padding(.horizontal, PitchAtlasSpacing.lg)
-                .padding(.top, PitchAtlasSpacing.md)
-                .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
-            }
-            .safeAreaInset(edge: .top, spacing: 0) {
-                ArchiveChapterNavigation(chapters: chapters, compact: true) { id in
-                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) { proxy.scrollTo(id, anchor: .top) }
-                }
-            }
-            }
-        }
-        .navigationTitle(pitch.name)
-        .navigationBarTitleDisplayMode(.inline)
-    }
-
-    // MARK: - Header
-
-    private var header: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            HStack {
-                SectionLabel(text: pitch.specimenNo, color: PitchAtlasTheme.cyanDeep, size: 9)
-                Spacer()
-                StatusPill(text: pitch.tier.label, tone: pitch.tier.tone)
-            }
-
-            Text(pitch.name.uppercased())
-                .font(PitchAtlasTheme.anton(44))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .antonSkew()
-                .padding(.vertical, 2)
-
-            Text(pitch.era)
-                .font(PitchAtlasTheme.martian(10))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-
-            Text(pitch.tagline)
-                .font(PitchAtlasTheme.newsreaderItalic(18))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, PitchAtlasSpacing.xs)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(pitch.name), \(pitch.tier.label), \(pitch.era). \(pitch.tagline)")
-    }
-
-    // MARK: - Intro
-
-    private var introCard: some View {
-        Text(pitch.intro)
-            .font(PitchAtlasTheme.hanken(16))
-            .foregroundStyle(PitchAtlasTheme.bone2)
-            .fixedSize(horizontal: false, vertical: true)
-            .leatherPress()
-    }
-
-    // MARK: - Archive plate (the filed image record)
-
-    /// Give the record a face before the prose: the one verified public-domain
-    /// photo plate or first-party study filed for this pitch, with its rights
-    /// label and source. Renders only when a plate shipped; a missing plate image
-    /// falls to BundledImage's seal, never a gray box.
-    @ViewBuilder
-    private var archivePlate: some View {
-        if let image = store.archiveImage(forLostPitch: pitch.slug) {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                HStack {
-                    SectionLabel(text: image.label, size: 9)
-                    Spacer()
-                    SectionLabel(text: image.plateKind.label, color: PitchAtlasTheme.cyanDeep, size: 9)
-                }
-
-                BundledImage(src: image.imageSrc, alt: image.alt, contentMode: .fit)
-                    .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-
-                Text(image.caption)
-                    .font(PitchAtlasTheme.hanken(14))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                Text(image.qualityNote)
-                    .font(PitchAtlasTheme.martian(9))
-                    .foregroundStyle(PitchAtlasTheme.ink3)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                HStack(spacing: PitchAtlasSpacing.xs) {
-                    Text(image.rights.label.uppercased())
-                        .font(PitchAtlasTheme.martian(9))
-                        .tracking(1.0)
-                        .foregroundStyle(PitchAtlasTheme.cyan)
-                    if let source = image.source {
-                        Text("\u{00B7}")
-                            .font(PitchAtlasTheme.martian(9))
-                            .foregroundStyle(PitchAtlasTheme.ink3)
-                        Text(source.label)
-                            .font(PitchAtlasTheme.martian(9))
-                            .foregroundStyle(PitchAtlasTheme.ink3)
-                            .lineLimit(2)
+            GeometryReader { viewport in
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 0) {
+                            stage
+                            ChapterBoxes(chapters: LostPitchFileReads.chapters(pitch), current: currentChapter,
+                                         label: "In this archive file") { id in scroll(proxy, to: id) }
+                                .padding(.horizontal, 24)
+                            story.chapterAnchor("story", space: Self.scrollSpace)
+                            if let image = store.archiveImage(forLostPitch: pitch.slug) {
+                                ArchiveImageCard(image: image, variant: .detail)
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 40)
+                            }
+                            account.chapterAnchor("account", space: Self.scrollSpace)
+                            absence.chapterAnchor("absence", space: Self.scrollSpace)
+                            if !pitch.recordEntries.isEmpty {
+                                record.chapterAnchor("record", space: Self.scrollSpace)
+                            }
+                            if let followOn = LostPitchFileReads.followOn(pitch) {
+                                followOnRoom(followOn)
+                            }
+                            DiscussionDrawer(topic: LostPitchFileReads.topic(pitch), topicName: pitch.name, compact: true)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 48)
+                            ChapterWalk(name: "Lost pitch chapters", prevName: neighbors.prev?.name, nextName: neighbors.next?.name,
+                                        hallLabel: "Lost Pitches", hallLine: "Back to the archive →", hallPath: "lost-pitches") {
+                                if let prev = neighbors.prev { LostPitchDetailView(pitch: prev) }
+                            } nextDestination: {
+                                if let next = neighbors.next { LostPitchDetailView(pitch: next) }
+                            }
+                            SiteFooter(path: "/lost-pitches/\(pitch.slug)")
+                        }
+                        .padding(.bottom, PitchAtlasSpacing.tabBarClearance)
+                    }
+                    .coordinateSpace(.named(Self.scrollSpace))
+                    .onPreferenceChange(ChapterFramesKey.self) { frames in
+                        if let place = ChapterBoxes.activeChapter(frames: frames, viewportHeight: viewport.size.height),
+                           place != currentChapter {
+                            currentChapter = place
+                        }
                     }
                 }
-
-                if let video = image.video {
-                    archiveFilm(video)
-                }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .leatherPress()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(plateAccessibilityLabel(image))
+        }
+        // The site's header carries the brand on every page; the title still names
+        // the back button on the pages this one opens.
+        .navigationTitle(pitch.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
     }
 
-    /// Archival film card: motion stays at its official archive. iOS shows the
-    /// credit, the linked-only rights label, and a button that opens the archive
-    /// page out to Safari. No third-party player is embedded inline, and nothing
-    /// is rehosted; the bytes never enter the bundle.
-    @ViewBuilder
-    private func archiveFilm(_ video: ArchiveFilm) -> some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs) {
-            SectionLabel(text: "Archival film", color: PitchAtlasTheme.cyanDeep, size: 9)
+    private func scroll(_ proxy: ScrollViewProxy, to id: String) {
+        withAnimation((reduceMotion || dynamicTypeSize.isAccessibilitySize) ? nil : .easeOut(duration: 0.25)) {
+            proxy.scrollTo(id, anchor: .top)
+        }
+    }
 
-            Text(video.caption.value)
-                .font(PitchAtlasTheme.hanken(13))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .fixedSize(horizontal: false, vertical: true)
+    // MARK: - The stage
 
-            HStack(spacing: PitchAtlasSpacing.xs) {
-                Text(video.rights.label.uppercased())
-                    .font(PitchAtlasTheme.martian(9))
-                    .tracking(1.0)
-                    .foregroundStyle(PitchAtlasTheme.cyan)
-                if let source = video.caption.source {
-                    Text("\u{00B7}")
-                        .font(PitchAtlasTheme.martian(9))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
-                    Text(source.label)
-                        .font(PitchAtlasTheme.martian(9))
-                        .foregroundStyle(PitchAtlasTheme.ink3)
-                        .lineLimit(2)
-                }
-            }
-
-            Button {
-                if let url = URL(string: video.url) { openURL(url) }
-            } label: {
-                HStack(spacing: 6) {
-                    Image(systemName: "play.rectangle")
-                    Text("Watch at the archive")
-                    Text("\u{2197}")
-                }
-                .font(PitchAtlasTheme.martian(10))
-                .tracking(0.6)
+    /// `.on-stage` under the seam's faint light: the breadcrumb (its last crumb the
+    /// file's number), the era, the name in Newsreader, the tagline, and the tier.
+    private var stage: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Mono 11 on a 16.5 line, as the stage's crumbs and kicker set it. The
+            // specimen number is a hidden note.
+            Breadcrumb(trail: [Crumb(label: "The Atlas", path: "home"),
+                               Crumb(label: "Lost Pitches", path: "lost-pitches"),
+                               Crumb(label: pitch.specimenNo, note: .spitballBan)],
+                       linkInk: PitchAtlasTheme.bone2.opacity(0.8), currentInk: PitchAtlasTheme.bone2)
+                .padding(.vertical, 1.65)
+            KickerLabel(text: pitch.era)
+                .padding(.vertical, 1.65)
+                .padding(.top, 31.8)
+            Text(pitch.name)
+                .font(PitchAtlasType.font(.newsreader400, size: 43.2, relativeTo: .largeTitle))
+                .tracking(em: -0.04, size: 43.2)
                 .foregroundStyle(PitchAtlasTheme.bone)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 12)
-                .frame(maxWidth: .infinity)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 4, style: .continuous)
-                        .stroke(PitchAtlasTheme.bone.opacity(0.22))
-                )
+                .cssLineHeight(0.98, face: .newsreader400, size: 43.2, relativeTo: .largeTitle)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: 16 * 0.5665 * 43.2, alignment: .leading)
+                .padding(.top, 16)
+                .accessibilityAddTraits(.isHeader)
+            Text(pitch.tagline)
+                .font(PitchAtlasType.font(.hanken400, size: 18, relativeTo: .title3))
+                .foregroundStyle(PitchAtlasTheme.bone2)
+                .cssLineHeight(1.625, face: .hanken400, size: 18, relativeTo: .title3)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: 56 * 0.56 * 18, alignment: .leading)
+                .padding(.top, 20)
+            tierBadge.padding(.top, 28)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 64)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background { ArchiveStageGround(light: ArchiveInk.lostStageLight) }
+    }
+
+    /// The documentation tier in a hairline box: bone for a paper trail or a thin
+    /// record, the seam for a legend. Its meaning is the site's hover title.
+    private var tierBadge: some View {
+        let legend = pitch.tier == .legend
+        return Text(pitch.tier.label.uppercased())
+            .font(PitchAtlasType.font(.martian400, size: 12, relativeTo: .caption))
+            .tracking(em: 0.12, size: 12)
+            .foregroundStyle(legend ? PitchAtlasTheme.seamBright : PitchAtlasTheme.bone)
+            .cssLineHeight(16.0 / 12.0, face: .martian400, size: 12, relativeTo: .caption)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.horizontal, 17)
+            .padding(.vertical, 9)
+            .overlay {
+                RoundedRectangle(cornerRadius: 6)
+                    .strokeBorder(legend ? PitchAtlasTheme.seamBright.opacity(0.5) : PitchAtlasTheme.bone.opacity(0.25), lineWidth: 1)
+                    .accessibilityHidden(true)
             }
-            .buttonStyle(.plain)
-
-            Text("Embedded from the Internet Archive, not rehosted.")
-                .font(PitchAtlasTheme.martian(8))
-                .foregroundStyle(PitchAtlasTheme.ink3)
-        }
-        .padding(PitchAtlasSpacing.sm)
-        .background(
-            RoundedRectangle(cornerRadius: 4, style: .continuous)
-                .fill(PitchAtlasTheme.bone.opacity(0.04))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 4, style: .continuous)
-                .stroke(PitchAtlasTheme.bone.opacity(0.10))
-        )
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("Archival film. \(video.caption.value). Linked only. Opens the Internet Archive.")
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Documentation, \(pitch.tier.label)")
+            .accessibilityHint(pitch.tier.meaning)
     }
 
-    private func plateAccessibilityLabel(_ image: ArchiveImage) -> String {
-        var parts = ["\(image.label). \(image.caption)", image.rights.label]
-        if let source = image.source { parts.append("source, \(source.label)") }
-        return parts.joined(separator: ". ")
+    // MARK: - The pitch (on paper)
+
+    private var story: some View {
+        Text(pitch.intro)
+            .font(PitchAtlasType.font(.newsreader400, size: 24, relativeTo: .title2))
+            .tracking(em: -0.012, size: 24)
+            .foregroundStyle(ArchiveInk.paperInk)
+            .cssLineHeight(1.375, face: .newsreader400, size: 24, relativeTo: .title2)
+            .fixedSize(horizontal: false, vertical: true)
+            .frame(maxWidth: 58 * 0.5665 * 24, alignment: .leading)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 64)
+            .archivePaper()
     }
 
-    // MARK: - What it was
+    // MARK: - What it was, and why it is lost
 
-    private var whatItWas: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "What it was", size: 9)
-            ClaimText(claim: pitch.what)
+    private var account: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            StageTierMarker(index: "01", label: "What it was")
+            ClaimProse(claim: pitch.what, size: 20, ink: PitchAtlasTheme.bone)
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 64)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .leatherPress()
     }
 
-    // MARK: - Why it's lost
-
-    private var whyItsLost: some View {
-        VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "Why it's lost", size: 9)
-            ClaimText(claim: pitch.whyLost)
+    /// Why it is lost, and beside it the one real quote when the record holds one.
+    private var absence: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            StageTierMarker(index: "02", label: "Why it is lost")
+            VStack(alignment: .leading, spacing: 40) {
+                ClaimProse(claim: pitch.whyLost, size: 20, ink: PitchAtlasTheme.bone)
+                if let quote = pitch.quote { ArchiveQuoteFigure(quote: quote) }
+            }
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 64)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .leatherPress()
     }
 
-    // MARK: - Numbers (the part that can be recovered)
+    // MARK: - The surviving record (on paper)
 
-    @ViewBuilder
-    private var numbers: some View {
-        if !pitch.recordEntries.isEmpty {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                SectionLabel(text: "What the record gives back", size: 9)
-                ForEach(Array(pitch.recordEntries.enumerated()), id: \.offset) { _, item in
-                    GaugeView(label: item.label, claim: item.claim)
+    private var record: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            StageTierMarker(index: "03", label: "The surviving record")
+            VStack(alignment: .leading, spacing: 40) {
+                ForEach(Array(pitch.recordEntries.enumerated()), id: \.offset) { _, entry in
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(entry.label.uppercased())
+                            .font(MonoLabel.font)
+                            .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
+                            .foregroundStyle(PitchAtlasTheme.text2)
+                            .cssLineHeight(1, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityAddTraits(.isHeader)
+                        ClaimProse(claim: entry.claim, size: 18, ink: ArchiveInk.paperInk)
+                    }
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            // Verbatim, LostPitchChapter.tsx.
+            Text("Every line here is what the recovered record can actually support, labeled by its source and its confidence. Where the legend says more than the record can prove, the gap is shown, not filled.")
+                .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
+                .foregroundStyle(PitchAtlasTheme.text2)
+                .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: 78 * 0.56 * 14, alignment: .leading)
+                .padding(.top, 25)
+                .overlay(alignment: .top) {
+                    Rectangle().fill(ArchiveInk.paperInk.opacity(0.15)).frame(height: 1).accessibilityHidden(true)
+                }
+                .padding(.top, 40)
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 64)
+        .archivePaper()
     }
 
-    // MARK: - Quote
+    // MARK: - Follow the name into the pitch
 
-    @ViewBuilder
-    private var quote: some View {
-        if let q = pitch.quote {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                Text("\u{201C}\(q.value)\u{201D}")
-                    .font(PitchAtlasTheme.newsreader(20))
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .fixedSize(horizontal: false, vertical: true)
-                SourceClaimLabel(claim: q)
+    /// `.archive-history-next`: the eyebrow, the title, the account, and the way
+    /// into the basic file the surviving account names, between gold hairlines.
+    private func followOnRoom(_ followOn: LostPitchFileReads.FollowOn) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // `.archive-history-next > p` outranks `.archive-eyebrow`'s size: mono 15 on a 1.7 line.
+            Text(followOn.eyebrow.uppercased())
+                .font(PitchAtlasType.font(.martian400, size: 15, relativeTo: .subheadline))
+                .tracking(em: 0.13, size: 15)
+                .foregroundStyle(ArchiveInk.discoveryEyebrow)
+                .cssLineHeight(1.7, face: .martian400, size: 15, relativeTo: .subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+            Text(followOn.title)
+                .font(PitchAtlasType.font(.newsreader400, size: 32, relativeTo: .title))
+                .tracking(em: -0.025, size: 32)
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .cssLineHeight(1.06, face: .newsreader400, size: 32, relativeTo: .title)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.top, 12)
+                .accessibilityAddTraits(.isHeader)
+            Text(followOn.body)
+                .font(PitchAtlasType.font(.hanken400, size: 15, relativeTo: .subheadline))
+                .foregroundStyle(ArchiveInk.discoveryLede)
+                .cssLineHeight(1.7, face: .hanken400, size: 15, relativeTo: .subheadline)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: 66 * 0.56 * 15, alignment: .leading)
+                .padding(.top, 12)
+            if let id = followOn.repertoireId, let entry = store.repertoireEntry(id: id) {
+                NavigationLink { followOnFile(entry) } label: {
+                    ArchiveLinkLabel(title: followOn.link, ink: ArchiveInk.discoveryAccent)
+                }
+                .buttonStyle(.plain)
+                .accessibilityHint("Opens the \(entry.name.lowercased()) file")
+                .padding(.top, 16)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .leatherPress()
         }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 49)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .top) { Rectangle().fill(ArchiveInk.historyNextRule).frame(height: 1).accessibilityHidden(true) }
+        .overlay(alignment: .bottom) { Rectangle().fill(ArchiveInk.historyNextRule).frame(height: 1).accessibilityHidden(true) }
     }
 
-    // MARK: - Tier footer (restates what this pitch's tier means)
-
+    /// The site sends /repertoire/<id> to the filed specimen when there is one,
+    /// else to the basic file; either way it opens in this reading stack.
     @ViewBuilder
-    private var tierFooter: some View {
-        if let info = tierInfo {
-            VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-                StatusPill(text: pitch.tier.label, tone: pitch.tier.tone)
-                Text(info.note)
-                    .font(PitchAtlasTheme.hanken(14))
-                    .foregroundStyle(PitchAtlasTheme.bone2)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .leatherPress()
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("\(pitch.tier.label). \(info.note)")
+    private func followOnFile(_ entry: RepertoireEntry) -> some View {
+        if let filed = entry.filedSlug.flatMap(store.pitch(slug:)) {
+            PitchDetailView(entry: filed)
+        } else {
+            RepertoireDetailView(entry: entry)
         }
     }
 }

@@ -1,0 +1,149 @@
+{
+  "rankSignals": [
+    {
+      "key": "provenance",
+      "label": "Provenance",
+      "blurb": "Source tier and evidence. A coach-observed note with a link outranks an unverified hunch with none.",
+      "weight": 0.35
+    },
+    {
+      "key": "adoption",
+      "label": "Adoption",
+      "blurb": "How many other pitchers independently tried the same tweak. Real replication, not passive clicks.",
+      "weight": 0.2
+    },
+    {
+      "key": "usefulness",
+      "label": "Usefulness",
+      "blurb": "Marked useful, measured against views so a small loud crowd cannot stuff the rank.",
+      "weight": 0.2
+    },
+    {
+      "key": "contextMatch",
+      "label": "Context match",
+      "blurb": "How close a note is to your level, slot, and pace context. Computed in your session, never stored.",
+      "weight": 0.15
+    },
+    {
+      "key": "communityConfidence",
+      "label": "Community confidence",
+      "blurb": "Considered practice: a real sample size behind the claim, not one good bullpen.",
+      "weight": 0.1
+    }
+  ],
+  "vocabulary": [
+    {
+      "term": "Field Note",
+      "gloss": "One pitcher's report on a grip variant."
+    },
+    {
+      "term": "Variant",
+      "gloss": "A specific, named change from the canonical grip."
+    },
+    {
+      "term": "Tried This",
+      "gloss": "A second contributor replicating the tweak."
+    },
+    {
+      "term": "Coach Note",
+      "gloss": "A coach reporting on an arm they work with."
+    },
+    {
+      "term": "Source Challenge",
+      "gloss": "A standing request for the evidence behind a claim."
+    },
+    {
+      "term": "Provenance",
+      "gloss": "The source tier and evidence that set a note’s rank."
+    },
+    {
+      "term": "Adoption",
+      "gloss": "How many others independently tried it."
+    },
+    {
+      "term": "Needs Evidence",
+      "gloss": "A note flagged for missing support, kept visible."
+    }
+  ],
+  "playerLevels": [
+    {
+      "value": "youth",
+      "label": "Developing competition"
+    },
+    {
+      "value": "high-school",
+      "label": "School competition"
+    },
+    {
+      "value": "college-plus",
+      "label": "College and adult competition"
+    }
+  ],
+  "armSlots": [
+    {
+      "value": "over-the-top",
+      "label": "Over the top"
+    },
+    {
+      "value": "three-quarter",
+      "label": "Three-quarter"
+    },
+    {
+      "value": "sidearm",
+      "label": "Sidearm"
+    },
+    {
+      "value": "submarine",
+      "label": "Submarine"
+    }
+  ],
+  "velocityBands": [
+    {
+      "value": "low-effort",
+      "label": "Low-effort context"
+    },
+    {
+      "value": "developing-arm",
+      "label": "Developing pace context"
+    },
+    {
+      "value": "prep-arm",
+      "label": "Intermediate pace context"
+    },
+    {
+      "value": "college-arm",
+      "label": "Advanced pace context"
+    },
+    {
+      "value": "power-arm",
+      "label": "Power pace context"
+    }
+  ],
+  "limits": {
+    "displayName": {
+      "min": 2,
+      "max": 40
+    },
+    "tweakDescription": {
+      "max": 160
+    },
+    "cueNote": {
+      "max": 200
+    },
+    "claimedResultNote": {
+      "max": 200
+    },
+    "evidenceLabel": {
+      "max": 80
+    },
+    "evidenceUrl": {
+      "max": 512
+    },
+    "handSizeInches": {
+      "min": 6,
+      "max": 10
+    },
+    "maxTweaksPerNote": 4,
+    "maxIntentsPerNote": 3
+  }
+}

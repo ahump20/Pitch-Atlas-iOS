@@ -1,0 +1,1631 @@
+{
+  "sourceRef": "ahump20/Pitch-Atlas main@37f6246 (design-sync 2026-10-01); src/index.css; src/components",
+  "palette": {
+    "color-black": {
+      "hex": "#000000",
+      "alpha": 1
+    },
+    "color-white": {
+      "hex": "#FFFFFF",
+      "alpha": 1
+    },
+    "color-paper": {
+      "hex": "#070509",
+      "alpha": 1
+    },
+    "color-paper-2": {
+      "hex": "#0E0B15",
+      "alpha": 1
+    },
+    "color-stage": {
+      "hex": "#070509",
+      "alpha": 1
+    },
+    "color-press": {
+      "hex": "#221E18",
+      "alpha": 1
+    },
+    "color-ink": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "color-ink-2": {
+      "hex": "#C2C7D6",
+      "alpha": 1
+    },
+    "color-ink-3": {
+      "hex": "#7C8294",
+      "alpha": 1
+    },
+    "color-seam": {
+      "hex": "#FF2D44",
+      "alpha": 1
+    },
+    "color-seam-deep": {
+      "hex": "#D02539",
+      "alpha": 1
+    },
+    "color-powder": {
+      "hex": "#7FC6FF",
+      "alpha": 1
+    },
+    "color-navy": {
+      "hex": "#D8D1C0",
+      "alpha": 1
+    },
+    "color-navy-2": {
+      "hex": "#EFE9DA",
+      "alpha": 1
+    },
+    "color-navy-line": {
+      "hex": "#D8D1C0",
+      "alpha": 0.1608
+    },
+    "color-cta-text": {
+      "hex": "#FFFFFF",
+      "alpha": 1
+    },
+    "color-leather": {
+      "hex": "#7A4A2E",
+      "alpha": 1
+    },
+    "color-ok": {
+      "hex": "#34E27E",
+      "alpha": 1
+    },
+    "color-amber": {
+      "hex": "#FFC23C",
+      "alpha": 1
+    },
+    "color-sand": {
+      "hex": "#CDBA8E",
+      "alpha": 1
+    },
+    "color-machined": {
+      "hex": "#D8D1C0",
+      "alpha": 0.2
+    },
+    "color-dim": {
+      "hex": "#C2C7D6",
+      "alpha": 1
+    },
+    "color-void": {
+      "hex": "#070509",
+      "alpha": 1
+    },
+    "color-bone": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "color-bone-2": {
+      "hex": "#C9C2B0",
+      "alpha": 1
+    },
+    "color-ok-bright": {
+      "hex": "#34E27E",
+      "alpha": 1
+    },
+    "color-amber-bright": {
+      "hex": "#FFC23C",
+      "alpha": 1
+    },
+    "color-sand-bright": {
+      "hex": "#CDBA8E",
+      "alpha": 1
+    },
+    "color-tier-first": {
+      "hex": "#BF5700",
+      "alpha": 1
+    },
+    "color-tier-relayed": {
+      "hex": "#8FBAD6",
+      "alpha": 1
+    },
+    "color-tier-unverified": {
+      "hex": "#FF2D44",
+      "alpha": 1
+    },
+    "color-tier-first-ink": {
+      "hex": "#BF5700",
+      "alpha": 1
+    },
+    "color-tier-relayed-ink": {
+      "hex": "#3D6A8A",
+      "alpha": 1
+    },
+    "color-tier-unverified-ink": {
+      "hex": "#C8102E",
+      "alpha": 1
+    },
+    "color-cyan": {
+      "hex": "#5FE0EA",
+      "alpha": 1
+    },
+    "color-cyan-deep": {
+      "hex": "#1C8FD6",
+      "alpha": 1
+    },
+    "color-seam-bright": {
+      "hex": "#FF2D44",
+      "alpha": 1
+    },
+    "color-violet": {
+      "hex": "#6F8CB0",
+      "alpha": 1
+    },
+    "color-teal-glow": {
+      "hex": "#1F97A2",
+      "alpha": 1
+    },
+    "bevel-hi": {
+      "hex": "#FFFFFF",
+      "alpha": 0.6196
+    },
+    "bevel-lo": {
+      "hex": "#000000",
+      "alpha": 0.702
+    },
+    "color-columbia": {
+      "hex": "#5AA9E6",
+      "alpha": 1
+    },
+    "cb-paper": {
+      "hex": "#F2E9D5",
+      "alpha": 1
+    },
+    "cb-paper-2": {
+      "hex": "#EAE0C8",
+      "alpha": 1
+    },
+    "cb-ink": {
+      "hex": "#211D17",
+      "alpha": 1
+    },
+    "cb-ink-2": {
+      "hex": "#4A443A",
+      "alpha": 1
+    },
+    "cb-ink-3": {
+      "hex": "#6E675A",
+      "alpha": 1
+    },
+    "cb-line": {
+      "hex": "#211D17",
+      "alpha": 0.2196
+    },
+    "cb-navy": {
+      "hex": "#1F3A5F",
+      "alpha": 1
+    },
+    "cb-forest": {
+      "hex": "#2F5D46",
+      "alpha": 1
+    },
+    "cb-burgundy": {
+      "hex": "#6E2B35",
+      "alpha": 1
+    },
+    "cb-gold-ink": {
+      "hex": "#8A6B24",
+      "alpha": 1
+    },
+    "plate-edge": {
+      "hex": "#D8CFB8",
+      "alpha": 0.8196
+    },
+    "spec-accent": {
+      "hex": "#5FE0EA",
+      "alpha": 1
+    },
+    "color-paper-3": {
+      "hex": "#16121F",
+      "alpha": 1
+    },
+    "color-cream": {
+      "hex": "#070509",
+      "alpha": 1
+    },
+    "color-panel": {
+      "hex": "#0E0B15",
+      "alpha": 1
+    },
+    "kicker": {
+      "hex": "#5FE0EA",
+      "alpha": 1
+    },
+    "ctl-bg": {
+      "hex": "#0B0805",
+      "alpha": 1
+    },
+    "ctl-text": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "ctl-placeholder": {
+      "hex": "#8A90A2",
+      "alpha": 1
+    },
+    "ctl-border": {
+      "hex": "#5FE0EA",
+      "alpha": 0.4
+    },
+    "ctl-accent": {
+      "hex": "#5FE0EA",
+      "alpha": 1
+    },
+    "ctl-on-accent": {
+      "hex": "#06121B",
+      "alpha": 1
+    },
+    "background": {
+      "hex": "#070509",
+      "alpha": 1
+    },
+    "foreground": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "card": {
+      "hex": "#0E0B15",
+      "alpha": 1
+    },
+    "card-foreground": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "popover": {
+      "hex": "#0E0B15",
+      "alpha": 1
+    },
+    "popover-foreground": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "primary": {
+      "hex": "#BF5700",
+      "alpha": 1
+    },
+    "primary-foreground": {
+      "hex": "#FFFFFF",
+      "alpha": 1
+    },
+    "secondary": {
+      "hex": "#16121F",
+      "alpha": 1
+    },
+    "secondary-foreground": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "muted": {
+      "hex": "#16121F",
+      "alpha": 1
+    },
+    "muted-foreground": {
+      "hex": "#C2C7D6",
+      "alpha": 1
+    },
+    "accent": {
+      "hex": "#0E0B15",
+      "alpha": 1
+    },
+    "accent-foreground": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "destructive": {
+      "hex": "#FF2D44",
+      "alpha": 1
+    },
+    "border": {
+      "hex": "#F6F1E6",
+      "alpha": 0.1216
+    },
+    "input": {
+      "hex": "#F6F1E6",
+      "alpha": 0.1412
+    },
+    "ring": {
+      "hex": "#5FE0EA",
+      "alpha": 1
+    },
+    "chart-1": {
+      "hex": "#5FE0EA",
+      "alpha": 1
+    },
+    "chart-2": {
+      "hex": "#34E27E",
+      "alpha": 1
+    },
+    "chart-3": {
+      "hex": "#FFC23C",
+      "alpha": 1
+    },
+    "chart-4": {
+      "hex": "#8A6BFF",
+      "alpha": 1
+    },
+    "chart-5": {
+      "hex": "#FF2D44",
+      "alpha": 1
+    },
+    "sidebar": {
+      "hex": "#0E0B15",
+      "alpha": 1
+    },
+    "sidebar-foreground": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "sidebar-primary": {
+      "hex": "#5FE0EA",
+      "alpha": 1
+    },
+    "sidebar-primary-foreground": {
+      "hex": "#06121B",
+      "alpha": 1
+    },
+    "sidebar-accent": {
+      "hex": "#16121F",
+      "alpha": 1
+    },
+    "sidebar-accent-foreground": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "sidebar-border": {
+      "hex": "#F6F1E6",
+      "alpha": 0.1216
+    },
+    "sidebar-ring": {
+      "hex": "#5FE0EA",
+      "alpha": 1
+    },
+    "color-press-2": {
+      "hex": "#16130F",
+      "alpha": 1
+    },
+    "color-bone-3": {
+      "hex": "#969080",
+      "alpha": 1
+    },
+    "surface-page": {
+      "hex": "#070509",
+      "alpha": 1
+    },
+    "surface-stage": {
+      "hex": "#070509",
+      "alpha": 1
+    },
+    "surface-card": {
+      "hex": "#221E18",
+      "alpha": 1
+    },
+    "surface-card-2": {
+      "hex": "#16130F",
+      "alpha": 1
+    },
+    "surface-cream": {
+      "hex": "#F4EEE0",
+      "alpha": 1
+    },
+    "surface-cream-2": {
+      "hex": "#EAE2D2",
+      "alpha": 1
+    },
+    "text-fg": {
+      "hex": "#F6F1E6",
+      "alpha": 1
+    },
+    "text-fg-2": {
+      "hex": "#C9C2B0",
+      "alpha": 1
+    },
+    "text-fg-muted": {
+      "hex": "#969080",
+      "alpha": 1
+    },
+    "cta-bg": {
+      "hex": "#FF2D44",
+      "alpha": 1
+    },
+    "cta-bg-hover": {
+      "hex": "#D02539",
+      "alpha": 1
+    },
+    "cta-text": {
+      "hex": "#FFFFFF",
+      "alpha": 1
+    },
+    "focus-ring": {
+      "hex": "#FF2D44",
+      "alpha": 1
+    },
+    "confidence-official": {
+      "hex": "#BF5700",
+      "alpha": 1
+    },
+    "confidence-reputable": {
+      "hex": "#8FBAD6",
+      "alpha": 1
+    },
+    "confidence-secondhand": {
+      "hex": "#8FBAD6",
+      "alpha": 1
+    },
+    "confidence-unverified": {
+      "hex": "#FF2D44",
+      "alpha": 1
+    },
+    "border-card": {
+      "hex": "#F6F1E6",
+      "alpha": 0.102
+    },
+    "hairline-void": {
+      "hex": "#F6F1E6",
+      "alpha": 0.1216
+    },
+    "hairline-cream": {
+      "hex": "#0C2340",
+      "alpha": 0.1804
+    }
+  },
+  "gradients": {
+    "foil": {
+      "angle": 112,
+      "stops": [
+        {
+          "color": {
+            "hex": "#191B1F",
+            "alpha": 1
+          },
+          "location": 0
+        },
+        {
+          "color": {
+            "hex": "#2A1608",
+            "alpha": 1
+          },
+          "location": 0.04
+        },
+        {
+          "color": {
+            "hex": "#7E2909",
+            "alpha": 1
+          },
+          "location": 0.09
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.14
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.19
+        },
+        {
+          "color": {
+            "hex": "#FFE9DE",
+            "alpha": 1
+          },
+          "location": 0.24
+        },
+        {
+          "color": {
+            "hex": "#FFF3EC",
+            "alpha": 1
+          },
+          "location": 0.26
+        },
+        {
+          "color": {
+            "hex": "#B9D4E5",
+            "alpha": 1
+          },
+          "location": 0.31
+        },
+        {
+          "color": {
+            "hex": "#8FBAD6",
+            "alpha": 1
+          },
+          "location": 0.36
+        },
+        {
+          "color": {
+            "hex": "#5FE0EA",
+            "alpha": 1
+          },
+          "location": 0.42
+        },
+        {
+          "color": {
+            "hex": "#1F97A2",
+            "alpha": 1
+          },
+          "location": 0.47
+        },
+        {
+          "color": {
+            "hex": "#274253",
+            "alpha": 1
+          },
+          "location": 0.51
+        },
+        {
+          "color": {
+            "hex": "#191B1F",
+            "alpha": 1
+          },
+          "location": 0.56
+        },
+        {
+          "color": {
+            "hex": "#2A3035",
+            "alpha": 1
+          },
+          "location": 0.61
+        },
+        {
+          "color": {
+            "hex": "#6E757B",
+            "alpha": 1
+          },
+          "location": 0.66
+        },
+        {
+          "color": {
+            "hex": "#A7ADB0",
+            "alpha": 1
+          },
+          "location": 0.7
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.77
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.84
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.9
+        },
+        {
+          "color": {
+            "hex": "#7E2909",
+            "alpha": 1
+          },
+          "location": 0.95
+        },
+        {
+          "color": {
+            "hex": "#191B1F",
+            "alpha": 1
+          },
+          "location": 1
+        }
+      ]
+    },
+    "foilType": {
+      "angle": 112,
+      "stops": [
+        {
+          "color": {
+            "hex": "#6E757B",
+            "alpha": 1
+          },
+          "location": 0
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.05
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.19
+        },
+        {
+          "color": {
+            "hex": "#FFE9DE",
+            "alpha": 1
+          },
+          "location": 0.24
+        },
+        {
+          "color": {
+            "hex": "#FFF3EC",
+            "alpha": 1
+          },
+          "location": 0.26
+        },
+        {
+          "color": {
+            "hex": "#B9D4E5",
+            "alpha": 1
+          },
+          "location": 0.31
+        },
+        {
+          "color": {
+            "hex": "#8FBAD6",
+            "alpha": 1
+          },
+          "location": 0.36
+        },
+        {
+          "color": {
+            "hex": "#5FE0EA",
+            "alpha": 1
+          },
+          "location": 0.42
+        },
+        {
+          "color": {
+            "hex": "#57B3BC",
+            "alpha": 1
+          },
+          "location": 0.47
+        },
+        {
+          "color": {
+            "hex": "#6B8898",
+            "alpha": 1
+          },
+          "location": 0.51
+        },
+        {
+          "color": {
+            "hex": "#6E757B",
+            "alpha": 1
+          },
+          "location": 0.56
+        },
+        {
+          "color": {
+            "hex": "#7D848A",
+            "alpha": 1
+          },
+          "location": 0.61
+        },
+        {
+          "color": {
+            "hex": "#949A9F",
+            "alpha": 1
+          },
+          "location": 0.66
+        },
+        {
+          "color": {
+            "hex": "#A7ADB0",
+            "alpha": 1
+          },
+          "location": 0.7
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.77
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.84
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.95
+        },
+        {
+          "color": {
+            "hex": "#6E757B",
+            "alpha": 1
+          },
+          "location": 1
+        }
+      ]
+    },
+    "ember": {
+      "angle": 150,
+      "stops": [
+        {
+          "color": {
+            "hex": "#2A1208",
+            "alpha": 1
+          },
+          "location": 0
+        },
+        {
+          "color": {
+            "hex": "#451C09",
+            "alpha": 1
+          },
+          "location": 0.09
+        },
+        {
+          "color": {
+            "hex": "#6B2A08",
+            "alpha": 1
+          },
+          "location": 0.18
+        },
+        {
+          "color": {
+            "hex": "#5C2408",
+            "alpha": 1
+          },
+          "location": 0.24
+        },
+        {
+          "color": {
+            "hex": "#8A3806",
+            "alpha": 1
+          },
+          "location": 0.3
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.38
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.44
+        },
+        {
+          "color": {
+            "hex": "#FFF0E2",
+            "alpha": 1
+          },
+          "location": 0.5
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.56
+        },
+        {
+          "color": {
+            "hex": "#BF5700",
+            "alpha": 1
+          },
+          "location": 0.62
+        },
+        {
+          "color": {
+            "hex": "#8A3806",
+            "alpha": 1
+          },
+          "location": 0.7
+        },
+        {
+          "color": {
+            "hex": "#5C2408",
+            "alpha": 1
+          },
+          "location": 0.78
+        },
+        {
+          "color": {
+            "hex": "#451C09",
+            "alpha": 1
+          },
+          "location": 0.88
+        },
+        {
+          "color": {
+            "hex": "#2A1208",
+            "alpha": 1
+          },
+          "location": 1
+        }
+      ]
+    }
+  },
+  "cardFinish": {
+    "powder": {
+      "foil": {
+        "angle": 112,
+        "stops": [
+          {
+            "color": {
+              "hex": "#191B1F",
+              "alpha": 1
+            },
+            "location": 0
+          },
+          {
+            "color": {
+              "hex": "#1C0A10",
+              "alpha": 1
+            },
+            "location": 0.04
+          },
+          {
+            "color": {
+              "hex": "#6E0F22",
+              "alpha": 1
+            },
+            "location": 0.09
+          },
+          {
+            "color": {
+              "hex": "#C41E3A",
+              "alpha": 1
+            },
+            "location": 0.14
+          },
+          {
+            "color": {
+              "hex": "#C41E3A",
+              "alpha": 1
+            },
+            "location": 0.18
+          },
+          {
+            "color": {
+              "hex": "#F3DFE4",
+              "alpha": 1
+            },
+            "location": 0.22
+          },
+          {
+            "color": {
+              "hex": "#FFF6F7",
+              "alpha": 1
+            },
+            "location": 0.245
+          },
+          {
+            "color": {
+              "hex": "#CFE3F6",
+              "alpha": 1
+            },
+            "location": 0.275
+          },
+          {
+            "color": {
+              "hex": "#8FBDE8",
+              "alpha": 1
+            },
+            "location": 0.31
+          },
+          {
+            "color": {
+              "hex": "#7AADE0",
+              "alpha": 1
+            },
+            "location": 0.36
+          },
+          {
+            "color": {
+              "hex": "#6CA0D8",
+              "alpha": 1
+            },
+            "location": 0.41
+          },
+          {
+            "color": {
+              "hex": "#0C2340",
+              "alpha": 1
+            },
+            "location": 0.45
+          },
+          {
+            "color": {
+              "hex": "#C41E3A",
+              "alpha": 1
+            },
+            "location": 0.485
+          },
+          {
+            "color": {
+              "hex": "#C41E3A",
+              "alpha": 1
+            },
+            "location": 0.55
+          },
+          {
+            "color": {
+              "hex": "#0C2340",
+              "alpha": 1
+            },
+            "location": 0.59
+          },
+          {
+            "color": {
+              "hex": "#191B1F",
+              "alpha": 1
+            },
+            "location": 0.63
+          },
+          {
+            "color": {
+              "hex": "#2A3035",
+              "alpha": 1
+            },
+            "location": 0.66
+          },
+          {
+            "color": {
+              "hex": "#6E757B",
+              "alpha": 1
+            },
+            "location": 0.69
+          },
+          {
+            "color": {
+              "hex": "#A7ADB0",
+              "alpha": 1
+            },
+            "location": 0.72
+          },
+          {
+            "color": {
+              "hex": "#7AADE0",
+              "alpha": 1
+            },
+            "location": 0.78
+          },
+          {
+            "color": {
+              "hex": "#0C2340",
+              "alpha": 1
+            },
+            "location": 0.82
+          },
+          {
+            "color": {
+              "hex": "#C41E3A",
+              "alpha": 1
+            },
+            "location": 0.86
+          },
+          {
+            "color": {
+              "hex": "#C41E3A",
+              "alpha": 1
+            },
+            "location": 0.91
+          },
+          {
+            "color": {
+              "hex": "#6E0F22",
+              "alpha": 1
+            },
+            "location": 0.95
+          },
+          {
+            "color": {
+              "hex": "#191B1F",
+              "alpha": 1
+            },
+            "location": 1
+          }
+        ]
+      },
+      "ring": {
+        "hex": "#C41E3A",
+        "alpha": 1
+      },
+      "ringIn": {
+        "hex": "#C41E3A",
+        "alpha": 0.34
+      }
+    },
+    "teal": {
+      "foil": {
+        "angle": 112,
+        "stops": [
+          {
+            "color": {
+              "hex": "#0D0E10",
+              "alpha": 1
+            },
+            "location": 0
+          },
+          {
+            "color": {
+              "hex": "#16181B",
+              "alpha": 1
+            },
+            "location": 0.04
+          },
+          {
+            "color": {
+              "hex": "#7A1418",
+              "alpha": 1
+            },
+            "location": 0.09
+          },
+          {
+            "color": {
+              "hex": "#E43C40",
+              "alpha": 1
+            },
+            "location": 0.14
+          },
+          {
+            "color": {
+              "hex": "#E43C40",
+              "alpha": 1
+            },
+            "location": 0.19
+          },
+          {
+            "color": {
+              "hex": "#FBE4E4",
+              "alpha": 1
+            },
+            "location": 0.24
+          },
+          {
+            "color": {
+              "hex": "#FFFFFF",
+              "alpha": 1
+            },
+            "location": 0.26
+          },
+          {
+            "color": {
+              "hex": "#C9F0ED",
+              "alpha": 1
+            },
+            "location": 0.31
+          },
+          {
+            "color": {
+              "hex": "#00B2A9",
+              "alpha": 1
+            },
+            "location": 0.36
+          },
+          {
+            "color": {
+              "hex": "#00B2A9",
+              "alpha": 1
+            },
+            "location": 0.41
+          },
+          {
+            "color": {
+              "hex": "#0A3F3C",
+              "alpha": 1
+            },
+            "location": 0.45
+          },
+          {
+            "color": {
+              "hex": "#0D0E10",
+              "alpha": 1
+            },
+            "location": 0.49
+          },
+          {
+            "color": {
+              "hex": "#E43C40",
+              "alpha": 1
+            },
+            "location": 0.52
+          },
+          {
+            "color": {
+              "hex": "#0D0E10",
+              "alpha": 1
+            },
+            "location": 0.55
+          },
+          {
+            "color": {
+              "hex": "#16181B",
+              "alpha": 1
+            },
+            "location": 0.58
+          },
+          {
+            "color": {
+              "hex": "#2A3035",
+              "alpha": 1
+            },
+            "location": 0.62
+          },
+          {
+            "color": {
+              "hex": "#6E757B",
+              "alpha": 1
+            },
+            "location": 0.66
+          },
+          {
+            "color": {
+              "hex": "#A7ADB0",
+              "alpha": 1
+            },
+            "location": 0.7
+          },
+          {
+            "color": {
+              "hex": "#00B2A9",
+              "alpha": 1
+            },
+            "location": 0.77
+          },
+          {
+            "color": {
+              "hex": "#0A3F3C",
+              "alpha": 1
+            },
+            "location": 0.81
+          },
+          {
+            "color": {
+              "hex": "#E43C40",
+              "alpha": 1
+            },
+            "location": 0.85
+          },
+          {
+            "color": {
+              "hex": "#E43C40",
+              "alpha": 1
+            },
+            "location": 0.9
+          },
+          {
+            "color": {
+              "hex": "#7A1418",
+              "alpha": 1
+            },
+            "location": 0.95
+          },
+          {
+            "color": {
+              "hex": "#0D0E10",
+              "alpha": 1
+            },
+            "location": 1
+          }
+        ]
+      },
+      "ring": {
+        "hex": "#00B2A9",
+        "alpha": 1
+      },
+      "ringIn": {
+        "hex": "#00B2A9",
+        "alpha": 0.3
+      }
+    }
+  },
+  "creamInk": {
+    "ink": {
+      "hex": "#14161B",
+      "alpha": 1
+    },
+    "ink2": {
+      "hex": "#3F4654",
+      "alpha": 1
+    },
+    "ink3": {
+      "hex": "#5C6473",
+      "alpha": 1
+    }
+  },
+  "tiers": {
+    "dot": {
+      "official-data": {
+        "hex": "#BF5700",
+        "alpha": 1
+      },
+      "pitcher-own-words": {
+        "hex": "#BF5700",
+        "alpha": 1
+      },
+      "coach-observed": {
+        "hex": "#BF5700",
+        "alpha": 1
+      },
+      "reputable-analysis": {
+        "hex": "#8FBAD6",
+        "alpha": 1
+      },
+      "secondhand-attributed": {
+        "hex": "#8FBAD6",
+        "alpha": 1
+      },
+      "community-firsthand": {
+        "hex": "#8FBAD6",
+        "alpha": 1
+      },
+      "unverified": {
+        "hex": "#FF2D44",
+        "alpha": 1
+      }
+    },
+    "ink": {
+      "official-data": {
+        "hex": "#BF5700",
+        "alpha": 1
+      },
+      "pitcher-own-words": {
+        "hex": "#BF5700",
+        "alpha": 1
+      },
+      "coach-observed": {
+        "hex": "#BF5700",
+        "alpha": 1
+      },
+      "reputable-analysis": {
+        "hex": "#3D6A8A",
+        "alpha": 1
+      },
+      "secondhand-attributed": {
+        "hex": "#3D6A8A",
+        "alpha": 1
+      },
+      "community-firsthand": {
+        "hex": "#3D6A8A",
+        "alpha": 1
+      },
+      "unverified": {
+        "hex": "#C8102E",
+        "alpha": 1
+      }
+    },
+    "glyph": {
+      "official-data": "▪",
+      "pitcher-own-words": "◆",
+      "coach-observed": "◈",
+      "reputable-analysis": "▫",
+      "secondhand-attributed": "◌",
+      "community-firsthand": "○",
+      "unverified": "⊘"
+    },
+    "label": {
+      "official-data": "Official data",
+      "pitcher-own-words": "Pitcher's own words",
+      "coach-observed": "Coach-observed",
+      "reputable-analysis": "Reputable analysis",
+      "secondhand-attributed": "Secondhand, attributed",
+      "community-firsthand": "Community, firsthand",
+      "unverified": "Unverified"
+    },
+    "meaning": {
+      "official-data": "Published by the source of record; used for biography facts, source context, and sourced prose.",
+      "pitcher-own-words": "Stated by the athlete directly.",
+      "coach-observed": "Reported firsthand by a coach.",
+      "reputable-analysis": "A credible analyst, or our paraphrase of a cited reference.",
+      "secondhand-attributed": "A quote or figure relayed through a secondary source.",
+      "community-firsthand": "A community member's own report. Launches with safeguards.",
+      "unverified": "No source corroborated this value. Shown so the gap is visible."
+    },
+    "group": {
+      "official-data": "first",
+      "pitcher-own-words": "first",
+      "coach-observed": "first",
+      "reputable-analysis": "relayed",
+      "secondhand-attributed": "relayed",
+      "community-firsthand": "relayed",
+      "unverified": "unverified"
+    }
+  },
+  "lostTiers": {
+    "documented": {
+      "hex": "#BF5700",
+      "alpha": 1
+    },
+    "partial": {
+      "hex": "#8FBAD6",
+      "alpha": 1
+    },
+    "legend": {
+      "hex": "#FF2D44",
+      "alpha": 1
+    }
+  },
+  "status": {
+    "indexColor": {
+      "standard": {
+        "hex": "#C9C2B0",
+        "alpha": 1
+      },
+      "niche": {
+        "hex": "#C9C2B0",
+        "alpha": 1
+      },
+      "rare": {
+        "hex": "#C9C2B0",
+        "alpha": 1
+      },
+      "near-extinct": {
+        "hex": "#C9C2B0",
+        "alpha": 1
+      },
+      "banned": {
+        "hex": "#FF2D44",
+        "alpha": 1
+      },
+      "alias": {
+        "hex": "#7C8294",
+        "alpha": 1
+      },
+      "illusion": {
+        "hex": "#7C8294",
+        "alpha": 1
+      },
+      "not-a-pitch": {
+        "hex": "#7C8294",
+        "alpha": 1
+      }
+    },
+    "edge": [
+      "alias",
+      "banned",
+      "illusion",
+      "not-a-pitch"
+    ],
+    "label": {
+      "standard": "Standard",
+      "niche": "Niche",
+      "rare": "Rare",
+      "near-extinct": "Near-extinct",
+      "banned": "Banned",
+      "alias": "Alias",
+      "illusion": "Illusion",
+      "not-a-pitch": "Not a pitch"
+    }
+  },
+  "family": {
+    "fastball": "#BF5700",
+    "offspeed": "#D8CFBB",
+    "breaking": "#5FE0EA",
+    "specialty": "#B9D4E5",
+    "banned": "#FF4D46"
+  },
+  "accents": {
+    "byPitch": {
+      "four-seam": {
+        "c1": "#0A141B",
+        "c2": "#3D6178",
+        "c3": "#B9D4E5",
+        "finish": null
+      },
+      "two-seam": {
+        "c1": "#061518",
+        "c2": "#125B63",
+        "c3": "#1F97A2",
+        "finish": null
+      },
+      "circle-change": {
+        "c1": "#191510",
+        "c2": "#6E6350",
+        "c3": "#D8CFBB",
+        "finish": "teal"
+      },
+      "twelve-six": {
+        "c1": "#0A121A",
+        "c2": "#3A5F78",
+        "c3": "#8FBAD6",
+        "finish": "powder"
+      },
+      "slider": {
+        "c1": "#1C0806",
+        "c2": "#8F2420",
+        "c3": "#FF4D46",
+        "finish": null
+      },
+      "splitter": {
+        "c1": "#111417",
+        "c2": "#5A6165",
+        "c3": "#A7ADB0",
+        "finish": null
+      },
+      "splinker": {
+        "c1": "#1A0A04",
+        "c2": "#A83607",
+        "c3": "#BF5700",
+        "finish": null
+      },
+      "sweeper": {
+        "c1": "#061A1E",
+        "c2": "#1F8794",
+        "c3": "#5FE0EA",
+        "finish": null
+      },
+      "cutter": {
+        "c1": "#0A1015",
+        "c2": "#3F5768",
+        "c3": "#7F97A8",
+        "finish": null
+      },
+      "knuckleball": {
+        "c1": "#0E1113",
+        "c2": "#3B434A",
+        "c3": "#6E757B",
+        "finish": null
+      },
+      "forkball": {
+        "c1": "#08121A",
+        "c2": "#2E4D5E",
+        "c3": "#5B7F96",
+        "finish": null
+      },
+      "eephus": {
+        "c1": "#16120F",
+        "c2": "#6E5A50",
+        "c3": "#FFE9DE",
+        "finish": null
+      },
+      "riseball": {
+        "c1": "#081820",
+        "c2": "#2B7F96",
+        "c3": "#9FD8E8",
+        "finish": null
+      },
+      "drop": {
+        "c1": "#1A0F05",
+        "c2": "#8A5220",
+        "c3": "#D2843C",
+        "finish": null
+      },
+      "fastball": {
+        "c1": "#0A121A",
+        "c2": "#456478",
+        "c3": "#A8C4D8",
+        "finish": null
+      },
+      "changeup": {
+        "c1": "#16140F",
+        "c2": "#6A6353",
+        "c3": "#C9C0AA",
+        "finish": null
+      },
+      "curve": {
+        "c1": "#0A0F16",
+        "c2": "#3B5068",
+        "c3": "#6F8CB0",
+        "finish": null
+      },
+      "screwball": {
+        "c1": "#1A0C07",
+        "c2": "#8A3F28",
+        "c3": "#C76A4A",
+        "finish": null
+      }
+    },
+    "fallback": {
+      "c1": "#0E1113",
+      "c2": "#3B434A",
+      "c3": "#A7ADB0",
+      "finish": null
+    },
+    "burnt": "#BF5700"
+  },
+  "motion": {
+    "settle": [
+      0.22,
+      1,
+      0.36,
+      1
+    ],
+    "tinyMs": 120,
+    "shortMs": 190,
+    "mediumMs": 400,
+    "slowMs": 700,
+    "sweepMs": 900
+  },
+  "radius": {
+    "sm": 6,
+    "md": 8,
+    "lg": 10,
+    "pill": 999
+  },
+  "fonts": [
+    {
+      "family": "Newsreader",
+      "weight": 400,
+      "italic": false
+    },
+    {
+      "family": "Newsreader",
+      "weight": 400,
+      "italic": true
+    },
+    {
+      "family": "Newsreader",
+      "weight": 500,
+      "italic": false
+    },
+    {
+      "family": "Newsreader",
+      "weight": 600,
+      "italic": false
+    },
+    {
+      "family": "Newsreader",
+      "weight": 600,
+      "italic": true
+    },
+    {
+      "family": "Hanken Grotesk",
+      "weight": 400,
+      "italic": false
+    },
+    {
+      "family": "Hanken Grotesk",
+      "weight": 400,
+      "italic": true
+    },
+    {
+      "family": "Hanken Grotesk",
+      "weight": 500,
+      "italic": false
+    },
+    {
+      "family": "Hanken Grotesk",
+      "weight": 600,
+      "italic": false
+    },
+    {
+      "family": "Hanken Grotesk",
+      "weight": 700,
+      "italic": false
+    },
+    {
+      "family": "Martian Mono",
+      "weight": 400,
+      "italic": false
+    },
+    {
+      "family": "Martian Mono",
+      "weight": 500,
+      "italic": false
+    },
+    {
+      "family": "Martian Mono",
+      "weight": 600,
+      "italic": false
+    },
+    {
+      "family": "Anton",
+      "weight": 400,
+      "italic": false
+    }
+  ]
+}
