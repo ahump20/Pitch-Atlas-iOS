@@ -1,12 +1,12 @@
 # App Review Notes
 
-Paste into App Store Connect for build `1.2.0 (12)`.
+Paste into App Store Connect for build `1.2.0 (13)`.
 
 Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community participation is anonymous-first: no sign-in screen gates posting. Contributing creates a Supabase anonymous account silently on the first write, and the user can optionally claim that account (Sign in with Apple or email) to keep it across devices. Image uploads are the one community feature that requires a claimed (permanent) account, enforced server-side.
 
 ## Where Community Posting Lives (Guideline 2.3)
 
-Build `1.2.0 (12)` redesigned the pitch pages, so the path below replaces the one written for `1.1.0 (11)`. Every filed pitch page carries both community surfaces near its end. The fastest review path:
+Version `1.2.0` redesigned the pitch pages, so the path below replaces the one written for `1.1.0 (11)`. Every filed pitch page carries both community surfaces near its end. The fastest review path:
 
 1. Launch the app on iPhone. It opens on `Atlas`.
 2. Tap `Study this grip →` under the opening headline. This opens the `Four-seam` pitch page.
@@ -73,7 +73,7 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 - Bundle ID: `com.pitchatlas.app`
 - Version: `1.2.0`
-- Build: `12`
+- Build: `13`
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
 - No Firebase, Appwrite, CloudKit, push notifications, camera capture, video upload, or BSI dependency. The only `WKWebView` is the credited TikTok teaching-clip embed described under **Embedded Teaching Clips** above. There is no app-content webview or web wrapper.
@@ -81,6 +81,6 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 
 ## Final Build Proof
 
-Build `1.2.0 (12)` was archived from `release/1.2.0` (`ac72447`) on 2026-10-30 after the full suite passed (522 tests, 0 failed) and `testReviewerPath` walked the path above from a fresh install. App Store Connect reports build `12` as `VALID`, `APP_STORE_ELIGIBLE`, uploaded `2026-10-30T08:57:03-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`. It was submitted as review submission `5fe9bf01-253c-40c9-986e-28aa98d445a1` at `2026-10-30T16:28:48.708Z` (`WAITING_FOR_REVIEW`). Record: `docs/review-evidence/2026-10-30-build-12-submitted.md`.
+Build `1.2.0 (12)` was archived from `release/1.2.0` (`ac72447`) on 2026-10-30 after the full suite passed (522 tests, 0 failed) and `testReviewerPath` walked the path above from a fresh install. App Store Connect reports build `12` as `VALID`, `APP_STORE_ELIGIBLE`, uploaded `2026-10-30T08:57:03-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`. It was submitted as review submission `5fe9bf01-253c-40c9-986e-28aa98d445a1` at `2026-10-30T16:28:48.708Z` (`WAITING_FOR_REVIEW`). Record: `docs/review-evidence/2026-10-30-build-12-submitted.md`. Withdrawn the same day (`DEVELOPER_REJECTED`, before any review): the production release gate showed build `12` could not file a discussion post ("Sign in before doing that."), and field notes take the same path. Build `13` replaces it.
 
 History: `1.1.0 (11)` was submitted 2026-07-03, rejected 2026-07-07 under Guideline 2.3 because Apple could not find Community posting, and approved after these notes gave the exact path; its proof is in `docs/review-evidence/2026-07-03-build-11-screens/`.

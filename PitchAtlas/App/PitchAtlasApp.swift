@@ -14,6 +14,9 @@ struct PitchAtlasApp: App {
     @State private var notes: HiddenNotes
 
     init() {
+        #if DEBUG
+        OfflineLaunch.installIfAsked()
+        #endif
         AppChromeAppearance.install()
         let store = PitchStore()
         _store = State(initialValue: store)
@@ -43,6 +46,28 @@ struct PitchAtlasApp: App {
         }
     }
 }
+
+#if DEBUG
+/// DEBUG-only: PA_OFFLINE=1 refuses every request on the shared session (the
+/// one the Supabase client and the community images ride) as "not connected",
+/// so a simulator can show a first launch with no network without touching the
+/// Mac's own network. No effect in production.
+private enum OfflineLaunch {
+    static func installIfAsked() {
+        guard ProcessInfo.processInfo.environment["PA_OFFLINE"] == "1" else { return }
+        URLProtocol.registerClass(RefuseEveryRequest.self)
+    }
+
+    final class RefuseEveryRequest: URLProtocol {
+        override class func canInit(with request: URLRequest) -> Bool { true }
+        override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+        override func startLoading() {
+            client?.urlProtocol(self, didFailWithError: URLError(.notConnectedToInternet))
+        }
+        override func stopLoading() {}
+    }
+}
+#endif
 
 private enum AppChromeAppearance {
     static func install() {
