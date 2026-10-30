@@ -68,12 +68,9 @@ final class ReleaseGateUITests: XCTestCase {
         // its post with it) through the app's own Account & Safety screen.
         addTeardownBlock { @MainActor in Self.deleteGateAccount() }
 
-        let handle = app.textFields["Your name"]
-        XCTAssertTrue(handle.waitForExistence(timeout: 5), "Your name field not found")
-        if !handle.isHittable { scrollUpOnePage() }
-        handle.tap()
-        handle.typeText("Release gate")
-
+        // The comment goes in first; the name goes in last and ends with Return,
+        // which closes the single-line field and takes the keyboard down with
+        // it. (A keyboard left up covers "File post" and the tap lands on keys.)
         let field = app.textFields["File a grip cue, breakdown, image, or clip. Keep it about the pitch."]
         if !(field.exists && field.isHittable) {
             scrollUpOnePage()
@@ -84,9 +81,10 @@ final class ReleaseGateUITests: XCTestCase {
             "Release gate for build 12: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
         )
 
-        // The keyboard covers "File post" and the tap lands on the keys, so put
-        // it away first by tapping the composer's plain caption.
-        app.staticTexts["A handle is enough. No real name required."].tap()
+        let handle = app.textFields["Your name"]
+        XCTAssertTrue(handle.waitForExistence(timeout: 5), "Your name field not found")
+        handle.tap()
+        handle.typeText("Release gate\n")
         XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 3), "The keyboard never went away")
 
         let submit = app.buttons["File post"]

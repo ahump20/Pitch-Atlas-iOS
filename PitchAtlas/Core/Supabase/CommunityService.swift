@@ -185,11 +185,13 @@ struct CommunityService {
     }
 
     /// Keeps the handle a contributor files under (lib/community submitNote saves
-    /// it before the insert). The profiles UPDATE grant covers display_name only.
+    /// it before the insert). The profiles UPDATE grant covers display_name only,
+    /// and SELECT is column-scoped (is_admin hidden), so the row must not be
+    /// asked for back: a return=representation update is refused outright.
     func setDisplayName(_ name: String, userID: String) async throws {
         try await client
             .from("profiles")
-            .update(DisplayNameUpdate(displayName: name))
+            .update(DisplayNameUpdate(displayName: name), returning: .minimal)
             .eq("id", value: userID)
             .execute()
     }
@@ -465,10 +467,10 @@ struct CommunityService {
         }
 
         let raw = "\(error.localizedDescription) \(String(describing: error))".lowercased()
-        if raw.contains("auth_required") || raw.contains("jwt") || raw.contains("not authenticated") || raw.contains("permission denied") {
-            return "Sign in before doing that."
-        }
-        if raw.contains("row-level security") || raw.contains("rls") {
+        // Only a missing or expired login is a sign-in problem. Every write has a
+        // session before it runs, so a privilege or row-security refusal falls
+        // through to the specific messages below, then the fallback.
+        if raw.contains("auth_required") || raw.contains("jwt") || raw.contains("not authenticated") {
             return "Sign in before doing that."
         }
         if raw.contains("permanent account") {
@@ -491,6 +493,9 @@ struct CommunityService {
         }
         if raw.contains("duplicate key") || raw.contains("23505") {
             return raw.contains("blocked") ? "That contributor is already blocked." : "That action is already recorded."
+        }
+        if raw.contains("row-level security") || raw.contains("permission denied") {
+            return fallback
         }
         if raw.contains("check constraint") || raw.contains("violates") || raw.contains("value too long") {
             return "One field does not match the allowed choices. Review the form and try again."
