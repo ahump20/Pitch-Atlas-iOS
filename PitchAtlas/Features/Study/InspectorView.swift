@@ -171,6 +171,8 @@ struct InspectorView: View {
                     .overlay(alignment: .top) { CompareInk.roomLip.frame(height: 1).padding(.horizontal, 14) }
                     .padding(16)
                 }
+                // the room scrolls inside the safe area: never under the clock and battery
+                .clipped()
             }
             .background(CompareInk.roomOverlay)
             .toolbar(.hidden, for: .navigationBar)
