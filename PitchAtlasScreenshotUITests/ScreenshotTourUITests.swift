@@ -34,6 +34,7 @@ final class ScreenshotTourUITests: XCTestCase {
         Stop(name: "support", env: ["PA_ROUTE": "support"], pages: 8),
         Stop(name: "compare", env: ["PA_ROUTE": "compare?a=slider&b=sweeper"], pages: 8),
         Stop(name: "compareflight", env: ["PA_ROUTE": "compare?a=slider&b=sweeper&view=movement"], pages: 6),
+        Stop(name: "sandbox", env: ["PA_ROUTE": "sandbox?tilt=225&pitch=slider"], pages: 12),
         Stop(name: "inspect", env: ["PA_INSPECT": "four-seam"], pages: 6),
         Stop(name: "inspectpair", env: ["PA_INSPECT": "four-seam", "PA_INSPECT_WITH": "slider"], pages: 8),
     ]

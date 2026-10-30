@@ -55,6 +55,7 @@ struct AtlasView: View {
         .navigationTitle("Atlas")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) { AtlasMenuButton() }
             ToolbarItem(placement: .principal) {
                 BrandLockup(size: .sm)
             }
@@ -78,6 +79,7 @@ struct AtlasView: View {
             case .about: AboutView()
             case .account: AccountView()
             case .support: SupportView()
+            case .shapeLab(let tilt, let pitch): ShapeLabView(tilt: tilt, pitch: pitch)
             }
         }
         .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }

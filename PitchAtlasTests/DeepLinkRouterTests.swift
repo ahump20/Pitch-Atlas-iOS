@@ -36,6 +36,19 @@ final class DeepLinkRouterTests: XCTestCase {
         XCTAssertEqual(destination("pitchatlas://tab/index"), DeepLinkDestination(tab: .index, stack: []))
     }
 
+    /// /sandbox?tilt=&pitch= opens Shape Lab on the Atlas tab, read as the site reads
+    /// its address: a bad tilt is 12:00, an unknown pitch is no reference.
+    func testShapeLabKeepsItsTiltAndReference() {
+        XCTAssertEqual(destination("pitchatlas://sandbox"),
+                       DeepLinkDestination(tab: .atlas, stack: [.atlas(.shapeLab(tilt: 0, pitch: nil))]))
+        XCTAssertEqual(destination("pitchatlas://sandbox?tilt=225&pitch=slider"),
+                       DeepLinkDestination(tab: .atlas, stack: [.atlas(.shapeLab(tilt: 225, pitch: "slider"))]))
+        XCTAssertEqual(destination("pitchatlas://sandbox?tilt=17"),
+                       DeepLinkDestination(tab: .atlas, stack: [.atlas(.shapeLab(tilt: 0, pitch: nil))]))
+        XCTAssertEqual(destination("pitchatlas://sandbox?pitch=no-such&tilt=90"),
+                       DeepLinkDestination(tab: .atlas, stack: [.atlas(.shapeLab(tilt: 90, pitch: nil))]))
+    }
+
     func testAMissedSlugOpensTheListItWouldHaveLivedIn() {
         XCTAssertEqual(destination("pitchatlas://pitch/no-such-pitch"), DeepLinkDestination(tab: .index, stack: []))
         XCTAssertEqual(destination("pitchatlas://repertoire/no-such-file"), DeepLinkDestination(tab: .index, stack: []))
