@@ -13,6 +13,9 @@
     "softball.pitches": 6,
     "softball.craftsmen": 6,
     "tidbits.json": 10,
+    "flight-lab.rulebooks": 3,
+    "flight-lab.lobs": 6,
+    "flight-lab.notes": 4,
     "quotes.json": 19,
     "external-media.items": 6,
     "craftsman-media.json": 3,
@@ -21,5 +24,5 @@
     "field-notes.vocabulary": 8
   },
   "sourcesLastChecked": "2026-10-24",
-  "contentHash": "dec7e3e69c575c6ee8a831c0d9a371ca71c3f0f30d9e5c3c8b035e07ac8e3111"
+  "contentHash": "887c3420477968a5272f076ebb4eee715a0b5c386a11f0cfc532a8813ec59ae9"
 }

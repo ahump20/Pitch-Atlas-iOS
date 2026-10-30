@@ -38,7 +38,7 @@ if (!existsSync(DATA)) {
 const imp = (rel: string) => import(pathToFileURL(join(DATA, rel)).href)
 
 const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimenGrade, archive, tiktok,
-  softball, softballFund, tidbits, quotes, external, craftsmanMedia, plate273, fieldNotes] =
+  softball, softballFund, tidbits, quotes, external, craftsmanMedia, plate273, fieldNotes, flightLab] =
   await Promise.all([
     imp('pitches/index.ts'),
     imp('repertoire/index.ts'),
@@ -66,6 +66,10 @@ const [pitches, repertoire, craftsmen, lost, knowledge, grips, sources, specimen
     // The pitch page's tier-03 chapter (2026-10-28): the ranking model as the
     // site prints it, the vocabulary, and the note form's context lists.
     imp('field-notes.ts'),
+    // The slow-pitch Flight Lab (2026-10-30): the rulebooks, the six example lobs,
+    // the measured batter and the notes. Exactly these four: the arsenal
+    // (SLOWPITCH_ARSENAL, web PR #272) is not exported until the app draws it.
+    imp('softball/flightLab.ts'),
   ])
 
 /*
@@ -224,6 +228,12 @@ const bundles: Record<string, unknown> = {
     slowpitchFormats: softball.SLOWPITCH_FORMATS,
   },
   'tidbits.json': tidbits.TIDBITS,
+  'flight-lab.json': {
+    rulebooks: flightLab.FLIGHT_LAB_RULEBOOKS,
+    lobs: flightLab.EXAMPLE_LOBS,
+    measuredBatter: flightLab.MEASURED_BATTER,
+    notes: flightLab.FLIGHT_LAB_NOTES,
+  },
   // The rotating pool the web UI reads: curated lines plus every craftsman quote.
   'quotes.json': quotes.quotePool(),
   // Embed-or-link: TikTok rows play in the official player; X rows link out.
@@ -256,6 +266,11 @@ const explicitCounts: Record<string, Record<string, number>> = {
     'softball.craftsmen': softball.SOFTBALL_CRAFTSMEN.length,
   },
   'external-media.json': { 'external-media.items': external.EXTERNAL_CONTENT_ITEMS.length },
+  'flight-lab.json': {
+    'flight-lab.rulebooks': flightLab.FLIGHT_LAB_RULEBOOKS.length,
+    'flight-lab.lobs': flightLab.EXAMPLE_LOBS.length,
+    'flight-lab.notes': flightLab.FLIGHT_LAB_NOTES.length,
+  },
   'plate-273.json': { 'plate-273.frames': plateBundle.frames.length },
   'field-notes.json': {
     'field-notes.signals': fieldNotes.RANK_SIGNALS.length,
