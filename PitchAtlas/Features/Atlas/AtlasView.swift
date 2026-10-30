@@ -80,6 +80,7 @@ struct AtlasView: View {
             case .account: AccountView()
             case .support: SupportView()
             case .shapeLab(let tilt, let pitch): ShapeLabView(tilt: tilt, pitch: pitch)
+            case .shapeMap: ShapeMapView()
             }
         }
         .navigationDestination(for: PitchAtlasEntry.self) { PitchDetailView(entry: $0) }

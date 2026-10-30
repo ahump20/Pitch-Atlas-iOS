@@ -69,7 +69,7 @@ enum LearnHubReads {
 enum WingFileReads {
     /// Where a "Keep reading" link goes in the app.
     enum RelatedRoute: Equatable {
-        case wing(slug: String), pitch(slug: String), index, compare
+        case wing(slug: String), pitch(slug: String), index, compare, shapeMap
         /// A page the app does not file yet: it opens on pitch-atlas.com.
         case web(path: String)
     }
@@ -119,6 +119,7 @@ enum WingFileReads {
         if parts.count == 2, parts[0] == "pitch" { return .pitch(slug: parts[1]) }
         if to == "/repertoire" { return .index }
         if to == "/compare" { return .compare }
+        if to == "/movement-map" { return .shapeMap }
         return .web(path: to)
     }
 }

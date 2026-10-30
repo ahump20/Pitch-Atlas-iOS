@@ -3,7 +3,7 @@ import XCTest
 
 /// The site's phone menu (layout/Masthead.tsx NAV, MORE_CONTENT, TOOLS; web 47e21e6) as
 /// the Atlas tab's ☰ sheet. Pitch Index and Grips are tabs here, one tap already;
-/// Softball joins with the softball wing (D5) and the Shape map with D3.
+/// Softball joins with the softball wing (D5).
 final class AtlasMenuTests: XCTestCase {
     private let store = PitchStore()
 
@@ -12,7 +12,7 @@ final class AtlasMenuTests: XCTestCase {
         XCTAssertEqual(AtlasMenu.groups.map { $0.items.map(\.label) }, [
             ["Learn"],
             ["Craftsmen", "Lost Pitches", "Sources", "About"],
-            ["Shape Lab", "Compare two pitches", "Compare two grips"],
+            ["Shape Lab", "Shape map", "Compare two pitches", "Compare two grips"],
         ])
     }
 

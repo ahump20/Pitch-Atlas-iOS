@@ -6,7 +6,7 @@ import SwiftUI
 // Web: layout/Masthead.tsx, the phone menu (#mobile-nav): NAV, then "The rest of
 // the atlas" (MORE_CONTENT), then "Tools" (TOOLS), each a mono capital line over
 // a hairline. Pitch Index and Grips are tabs here, already one tap away; Softball
-// joins with the softball wing and the Shape map with its own task. A sheet from
+// joins with the softball wing. A sheet from
 // the leading ☰ in the Atlas toolbar; a choice closes it and follows the link.
 // =============================================================================
 
@@ -32,6 +32,7 @@ enum AtlasMenu {
         ]),
         Group(title: "Tools", items: [
             Item(label: "Shape Lab", route: "sandbox"),
+            Item(label: "Shape map", route: "movement-map"),
             Item(label: "Compare two pitches", route: "compare"),
             Item(label: "Compare two grips", route: "grips"),
         ]),

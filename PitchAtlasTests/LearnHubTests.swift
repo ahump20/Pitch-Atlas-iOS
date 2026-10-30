@@ -126,13 +126,13 @@ final class LearnHubTests: XCTestCase {
         XCTAssertNil(last.next)
     }
 
-    /// "Keep reading" goes where the site's links go; the movement map opens on
-    /// the web until the app files its own.
+    /// "Keep reading" goes where the site's links go, the shape map included.
     func testKeepReadingRoutesWhereTheSiteGoes() {
         XCTAssertEqual(WingFileReads.route("/learn/spin"), .wing(slug: "spin"))
         XCTAssertEqual(WingFileReads.route("/pitch/four-seam"), .pitch(slug: "four-seam"))
         XCTAssertEqual(WingFileReads.route("/repertoire"), .index)
         XCTAssertEqual(WingFileReads.route("/compare"), .compare)
-        XCTAssertEqual(WingFileReads.route("/movement-map"), .web(path: "/movement-map"))
+        XCTAssertEqual(WingFileReads.route("/movement-map"), .shapeMap)
+        XCTAssertEqual(WingFileReads.route("/softball"), .web(path: "/softball"), "a page the app does not file yet opens on the site")
     }
 }

@@ -49,6 +49,10 @@ final class DeepLinkRouterTests: XCTestCase {
                        DeepLinkDestination(tab: .atlas, stack: [.atlas(.shapeLab(tilt: 90, pitch: nil))]))
     }
 
+    func testTheShapeMapOpensOnTheAtlasTab() {
+        XCTAssertEqual(destination("pitchatlas://movement-map"), DeepLinkDestination(tab: .atlas, stack: [.atlas(.shapeMap)]))
+    }
+
     func testAMissedSlugOpensTheListItWouldHaveLivedIn() {
         XCTAssertEqual(destination("pitchatlas://pitch/no-such-pitch"), DeepLinkDestination(tab: .index, stack: []))
         XCTAssertEqual(destination("pitchatlas://repertoire/no-such-file"), DeepLinkDestination(tab: .index, stack: []))

@@ -246,6 +246,9 @@ struct KnowledgeWingView: View {
         case .compare:
             Button { comparison.presented = true } label: { relatedPlate(link, web: false) }
                 .buttonStyle(.plain)
+        case .shapeMap:
+            NavigationLink { ShapeMapView() } label: { relatedPlate(link, web: false) }
+                .buttonStyle(.plain)
         case .web:
             webLink(link)
         }

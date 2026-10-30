@@ -19,6 +19,7 @@ import Observation
 //   pitchatlas://about, ://account,
 //     ://support                          -> Atlas, that page
 //   pitchatlas://grips, ://sources        -> that tab
+//   pitchatlas://movement-map             -> Atlas, the Shape map
 //   pitchatlas://sandbox[?tilt=&pitch=]   -> Atlas, Shape Lab (a bad tilt is 12:00,
 //                                            an unknown pitch no reference)
 // pitchatlas://compare belongs to CompareSelection. A link replaces the stack on
@@ -31,6 +32,7 @@ enum AtlasRoute: Hashable {
     case craftsmen, learn, lostPitches, about, account, support
     /// Shape Lab, carrying the link's tilt and reference (the site's ?tilt=&pitch=).
     case shapeLab(tilt: Int, pitch: String?)
+    case shapeMap
 }
 
 /// One screen a link stacks onto a tab, carrying the value its destination reads.
@@ -124,6 +126,8 @@ final class DeepLinkRouter {
             func value(_ key: String) -> String? { items.first { $0.name == key }?.value }
             let reference = ShapeLab.reference(value("pitch"), store: store)?.slug
             return land(.atlas, [.atlas(.shapeLab(tilt: ShapeLab.parseTilt(value("tilt")), pitch: reference))])
+        case "movement-map":
+            return land(.atlas, [.atlas(.shapeMap)])
         case "grips":
             return land(.grips)
         case "sources":
