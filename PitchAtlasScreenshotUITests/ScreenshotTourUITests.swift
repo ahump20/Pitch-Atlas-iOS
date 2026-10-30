@@ -201,6 +201,64 @@ final class ScreenshotTourUITests: XCTestCase {
         app.terminate()
     }
 
+    /// A first launch with no network: PA_OFFLINE (DEBUG builds only) refuses
+    /// every request the app makes as "not connected". The bundled atlas still
+    /// opens, a specimen still reads, and both community surfaces say the server
+    /// didn't answer instead of sitting blank. Uninstall the app first for a true
+    /// first launch. Runs only when PA_SHOTS names "offline".
+    @MainActor
+    func testOfflineFirstLaunch() throws {
+        let raw = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? "all"
+        try XCTSkipUnless(raw.split(separator: ",").contains("offline"), "PA_SHOTS does not name offline")
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchEnvironment = ["PA_OFFLINE": "1"]
+        app.launchArguments += Self.typeSizeArguments
+        app.launch()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30), "The app never showed its tab bar offline")
+        Thread.sleep(forTimeInterval: 3)
+        func snap(_ name: String) {
+            let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+            attachment.name = "offline-\(name)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+        func reach(_ element: XCUIElement, strokes: Int = 60) -> Bool {
+            for _ in 0..<strokes where !(element.exists && element.isHittable) { scrollOnePage(app) }
+            return element.exists && element.isHittable
+        }
+        func labelled(_ text: String) -> XCUIElement {
+            app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", text)).firstMatch
+        }
+        snap("01-atlas")
+
+        let study = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "Study this grip")).firstMatch
+        XCTAssertTrue(study.waitForExistence(timeout: 10), "Study this grip → is not on Atlas offline")
+        study.tap()
+        Thread.sleep(forTimeInterval: 2)
+        snap("02-specimen")
+
+        let notesFailed = labelled("Couldn't load the field notes.")
+        XCTAssertTrue(reach(notesFailed), "The field notes never said they couldn't load")
+        XCTAssertTrue(labelled("The server didn't answer.").exists, "The field notes failure gave no reason")
+        snap("03-field-notes-offline")
+
+        let drawer = app.buttons["discussion-drawer"]
+        XCTAssertTrue(reach(drawer), "The Discussion drawer never came into reach")
+        drawer.tap()
+        let postsFailed = labelled("Could not load the discussion.")
+        XCTAssertTrue(postsFailed.waitForExistence(timeout: 15), "The discussion never said it couldn't load")
+        _ = reach(postsFailed, strokes: 6)
+        snap("04-discussion-offline")
+
+        for tab in ["Index", "Grips", "Craftsmen", "Sources"] {
+            app.tabBars.buttons[tab].tap()
+            Thread.sleep(forTimeInterval: 1.5)
+            snap("05-\(tab.lowercased())")
+        }
+        app.terminate()
+    }
+
     @MainActor
     private func capture(_ stop: Stop) {
         let app = XCUIApplication()
