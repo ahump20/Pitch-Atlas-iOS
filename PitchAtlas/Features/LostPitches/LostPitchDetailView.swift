@@ -94,10 +94,10 @@ struct LostPitchDetailView: View {
     private var stage: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Mono 11 on a 16.5 line, as the stage's crumbs and kicker set it. The
-            // number is a hidden-note button on the site; here it is the plain crumb.
+            // specimen number is a hidden note.
             Breadcrumb(trail: [Crumb(label: "The Atlas", path: "home"),
                                Crumb(label: "Lost Pitches", path: "lost-pitches"),
-                               Crumb(label: pitch.specimenNo)],
+                               Crumb(label: pitch.specimenNo, note: .spitballBan)],
                        linkInk: PitchAtlasTheme.bone2.opacity(0.8), currentInk: PitchAtlasTheme.bone2)
                 .padding(.vertical, 1.65)
             KickerLabel(text: pitch.era)

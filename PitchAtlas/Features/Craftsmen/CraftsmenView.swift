@@ -101,17 +101,17 @@ struct CraftsmenView: View {
         .buttonStyle(.plain)
     }
 
-    /// The dashed note beside the legend. Its heading is a hidden-note button on
-    /// the site; here it is the plain heading until the notes are wired.
+    /// The dashed note beside the legend. Its heading is a hidden note.
     private var whyALegend: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Why a legend, not a master".uppercased())
-                .font(MonoLabel.font)
-                .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
-                .foregroundStyle(PitchAtlasTheme.ink2)
-                .cssLineHeight(1, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityAddTraits(.isHeader)
+            EggButton(note: .knuckleball) {
+                Text("Why a legend, not a master".uppercased())
+                    .font(MonoLabel.font)
+                    .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
+                    .foregroundStyle(PitchAtlasTheme.ink2)
+                    .cssLineHeight(1, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             // Verbatim, CraftsmenHall.tsx.
             Text("The gyroball is filed apart on purpose. It is a real pitch, but most of what is said about it is myth. We keep it to show the difference between a sourced record and a good story, and to label which is which.")
                 .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))

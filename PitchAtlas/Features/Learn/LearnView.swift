@@ -105,16 +105,16 @@ struct LearnView: View {
             .accessibilityAddTraits(.isButton)
     }
 
-    /// A cryptic filing mark: the famous distance. On the site it hides a note
-    /// about why; here it is the plain mark until the hidden notes are filed.
+    /// A cryptic filing mark: the famous distance, hiding a note about why.
     private var distance: some View {
-        Text("60′\u{2009}6″")
-            .font(MonoLabel.font)
-            .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
-            .foregroundStyle(PitchAtlasTheme.ink3)
-            .cssLineHeight(1, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
-            .frame(maxWidth: .infinity, minHeight: 24, alignment: .trailing)
-            .accessibilityLabel("60 feet 6 inches")
+        EggButton(note: .sixtySix) {
+            Text("60′\u{2009}6″")
+                .font(MonoLabel.font)
+                .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
+                .foregroundStyle(PitchAtlasTheme.ink3)
+                .cssLineHeight(1, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
+        }
+        .frame(maxWidth: .infinity, minHeight: 24, alignment: .trailing)
     }
 }
 

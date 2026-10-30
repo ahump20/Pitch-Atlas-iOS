@@ -96,7 +96,7 @@ struct CraftsmanDetailView: View {
             // Mono 11 on a 16.5 line, as the stage's crumbs and kicker set it.
             Breadcrumb(trail: [Crumb(label: "The Atlas", path: "home"),
                                Crumb(label: "The Craftsmen", path: "craftsmen"),
-                               Crumb(label: craftsman.specimenNo)],
+                               Crumb(label: craftsman.specimenNo, note: .curveballClaim)],
                        linkInk: PitchAtlasTheme.bone2.opacity(0.8), currentInk: PitchAtlasTheme.bone2)
                 .padding(.vertical, 1.65)
             KickerLabel(text: CraftsmanFileReads.kicker(craftsman))

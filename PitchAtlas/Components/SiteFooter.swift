@@ -35,11 +35,13 @@ struct SiteFooter: View {
             VStack(alignment: .leading, spacing: 0) {
                 SeamGuide(variant: .orbit)
                     .padding(.bottom, 16)
-                Text("The archive stays open.")
-                    .font(PitchAtlasTheme.anton(20, relativeTo: .title3))
-                    .textCase(.uppercase)
-                    .foregroundStyle(PitchAtlasTheme.bone)
-                    .accessibilityAddTraits(.isHeader)
+                // the vow line is also a hidden note: where the game's origin story came from
+                EggButton(note: .doubleday) {
+                    Text("The archive stays open.")
+                        .font(PitchAtlasTheme.anton(20, relativeTo: .title3))
+                        .textCase(.uppercase)
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                }
                 Text(frontDoorLine)
                     .font(Self.labelFont)
                     .tracking(Self.labelTracking)
@@ -85,6 +87,11 @@ struct SiteFooter: View {
                 }
             }
             .padding(.vertical, 48)
+            // the quiet on-ramp to the hidden notes: a map, not a spoiler
+            HiddenNotesCounter()
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .overlay(alignment: .top) { PitchAtlasTheme.bone.opacity(0.08).frame(height: 1) }
         }
         .padding(.horizontal, 20)
         .frame(maxWidth: .infinity, alignment: .leading)

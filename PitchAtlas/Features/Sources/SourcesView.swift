@@ -15,6 +15,7 @@ import SwiftUI
 
 struct SourcesView: View {
     @Environment(PitchStore.self) private var store
+    @Environment(\.hiddenNotes) private var notes
     @State private var query = ""
 
     var body: some View {
@@ -66,11 +67,12 @@ struct SourcesView: View {
     // MARK: - As of (computed, never hardcoded)
 
     /// `.mono-label`: the date in bone and in its own case, as the site's
-    /// button keeps it (preflight's text-transform: none).
+    /// button keeps it (preflight's text-transform: none). The date is a hidden
+    /// note ("the-k"), a link inside the line.
     private func asOf(_ colophon: [Source]) -> some View {
         let date = SourceRegistry.latestRetrievedAt(colophon).map(AsOf.format)
         let tail = "Sources last checked, not auto-refreshed."
-        let line = date.map { Text("AS OF ") + Text($0).foregroundStyle(PitchAtlasTheme.bone) + Text(". " + tail.uppercased()) }
+        let line = date.map { Text("AS OF ") + Text(asOfDate($0)) + Text(". " + tail.uppercased()) }
             ?? Text(("Not recorded in this build. " + tail).uppercased())
         return line
             .font(MonoLabel.font)
@@ -78,6 +80,19 @@ struct SourcesView: View {
             .foregroundStyle(PitchAtlasTheme.ink2)
             .fixedSize(horizontal: false, vertical: true)
             .accessibilityLabel(date.map { "As of \($0). \(tail)" } ?? "Not recorded in this build. \(tail)")
+            .tint(PitchAtlasTheme.bone)
+            .hiddenNoteLinks(.theK)
+    }
+
+    private func asOfDate(_ date: String) -> AttributedString {
+        var text = AttributedString(date)
+        text.foregroundColor = PitchAtlasTheme.bone
+        text.link = HiddenNotePlacement.theK.url
+        if notes?.has(HiddenNotePlacement.theK.rawValue) == true {
+            text.underlineStyle = .single
+            text.underlineColor = UIColor(PitchAtlasTheme.cyan.opacity(0.4))
+        }
+        return text
     }
 
     // MARK: - How to read a claim

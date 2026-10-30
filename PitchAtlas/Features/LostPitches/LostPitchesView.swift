@@ -104,19 +104,19 @@ struct LostPitchesView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    /// The dashed seam note under the plates. Its heading is a hidden-note button
-    /// on the site; here it is the plain heading until the notes are wired.
+    /// The dashed seam note under the plates. Its heading is a hidden note.
     private var whyTheTiers: some View {
         VStack(alignment: .leading, spacing: 8) {
             // The heading sits on its block's 16/24 line, 6 down.
-            Text("Why the tiers".uppercased())
-                .font(MonoLabel.font)
-                .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
-                .foregroundStyle(PitchAtlasTheme.seamBright)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 6)
-                .frame(minHeight: 24, alignment: .top)
-                .accessibilityAddTraits(.isHeader)
+            EggButton(note: .firstNightGame) {
+                Text("Why the tiers".uppercased())
+                    .font(MonoLabel.font)
+                    .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
+                    .foregroundStyle(PitchAtlasTheme.seamBright)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(.top, 6)
+            .frame(minHeight: 24, alignment: .top)
             // Verbatim, LostPitchesHall.tsx.
             Text("Segregated record-keeping, almost no surviving film, barnstorming with no institutional archive, doctored pitches that were permitted in Black baseball and banned in the white one, and a culture of self-promotion that turned pitch names into ticket sales: five forces erased the technical record. The tier on each plate is how we stay honest about which of those forces we beat and which we did not.")
                 .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))

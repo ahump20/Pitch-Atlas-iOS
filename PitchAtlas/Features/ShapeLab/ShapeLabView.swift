@@ -250,8 +250,7 @@ struct ShapeLabView: View {
 
     private var teaching: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // D4's hidden note ("stitches") sits on this label
-            monoLabel("Teaching model", ink: PitchAtlasTheme.bone2)
+            EggButton(note: .stitches) { monoLabel("Teaching model", ink: PitchAtlasTheme.bone2) }
             Text(ShapeLab.anchorNote)
             Text(ShapeLab.sideNote)
         }

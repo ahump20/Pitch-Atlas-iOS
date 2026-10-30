@@ -620,8 +620,7 @@ private struct GripCompareEntry: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // A hidden note on the site; the plain kicker until the notes are filed.
-            KickerLabel(text: "Same release, different grip")
+            EggButton(note: .rubbingMud) { KickerLabel(text: "Same release, different grip") }
             TightLines("Two grips, one arm slot".uppercased(), face: .anton400, size: 26, lineHeight: 0.98,
                        relativeTo: .title2, balanced: true)
                 .foregroundStyle(PitchAtlasTheme.bone)

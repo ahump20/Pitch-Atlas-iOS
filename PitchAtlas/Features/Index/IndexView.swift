@@ -173,6 +173,16 @@ struct IndexView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 8)
                 .accessibilityLabel(query.countLabel(total: total))
+            if HiddenNotePlacement.showsEephus(query: query.text) {
+                EggButton(note: .eephus) {
+                    Text("A hidden note on the eephus →")
+                        .textCase(.uppercase)
+                        .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
+                        .tracking(10 * 0.1)
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                }
+                .padding(.top, 8)
+            }
         }
         .padding(.top, 36)
         .padding(.bottom, 12)

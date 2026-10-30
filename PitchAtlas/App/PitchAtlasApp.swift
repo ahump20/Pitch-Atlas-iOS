@@ -5,14 +5,19 @@ import UIKit
 struct PitchAtlasApp: App {
     @Environment(\.scenePhase) private var scenePhase
     /// The bundled content, loaded once at launch and shared via @Environment.
-    @State private var store = PitchStore()
+    @State private var store: PitchStore
     /// The gyroscope feed for the foil rake, shared across surfaces.
     @State private var motion = MotionProvider()
     /// Supabase auth/session state for community actions.
     @State private var auth = AuthSessionStore()
+    /// The hidden archive notes found on this device (the site's localStorage set).
+    @State private var notes: HiddenNotes
 
     init() {
         AppChromeAppearance.install()
+        let store = PitchStore()
+        _store = State(initialValue: store)
+        _notes = State(initialValue: HiddenNotes(known: store.tidbits.map(\.id)))
     }
 
     var body: some Scene {
@@ -22,6 +27,7 @@ struct PitchAtlasApp: App {
                     .environment(store)
                     .environment(motion)
                     .environment(auth)
+                    .environment(\.hiddenNotes, notes)
                     .preferredColorScheme(.dark)
                     .task {
                         motion.start()
@@ -106,6 +112,9 @@ struct RootView: View {
     @State private var comparison = CompareSelection()
     @State private var bench = SpecimenBench()
     @State private var toasts = ToastCenter()
+    @Environment(\.hiddenNotes) private var notes
+    /// DEBUG-only: a hidden note's reveal (or the found index) opened at launch.
+    @State private var debugNote: HiddenNoteSheet.Mode?
 
     /// DEBUG-only launch override so QA can open straight to a tab; production always starts on Atlas.
     static var initialTab: AppTab {
@@ -196,6 +205,9 @@ struct RootView: View {
             if !comparison.handle(url, store: store) { router.handle(url, store: store) }
         }
         .task { applyDebugLaunch() }
+        .sheet(item: $debugNote) { mode in
+            if let notes { HiddenNoteSheet(mode: mode, notes: notes) }
+        }
     }
 
     /// DEBUG-only: push a detail straight from a launch env so QA can screenshot it
@@ -221,6 +233,15 @@ struct RootView: View {
             bench.open(slug, store: store)
             if let partner = env["PA_INSPECT_WITH"] {
                 bench.choosePartner(partner, store: store, compare: comparison)
+            }
+        }
+        // PA_NOTE files a hidden note and opens its reveal; "index" opens the found index
+        if let id = env["PA_NOTE"], let notes {
+            if id == "index" {
+                debugNote = .index
+            } else {
+                notes.discover(id)
+                debugNote = .reveal(id)
             }
         }
         #endif

@@ -113,6 +113,8 @@ struct SeamGuide: View {
 struct Crumb: Hashable {
     let label: String
     var path: String? = nil
+    /// The hidden note the last crumb carries (a stage's specimen number).
+    var note: HiddenNotePlacement? = nil
 }
 
 /// Breadcrumb.tsx: mono 11, upper case, tracked .14em; each crumb but the last
@@ -142,6 +144,10 @@ struct Breadcrumb: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityHint("Opens \(crumb.label)")
+                    } else if last, let note = crumb.note {
+                        EggButton(note: note) {
+                            Text(crumb.label.uppercased()).foregroundStyle(currentInk)
+                        }
                     } else {
                         Text(crumb.label.uppercased())
                             .foregroundStyle(last ? currentInk : linkInk)
