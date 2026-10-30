@@ -63,7 +63,7 @@ enum SoftballReads {
     static let stillToCome = "Every line above is one click from its source. Still to come for the circle: the full grip geometry and a 12″ seam, the way the baseball wing files a pitch."
     static let recordNote = "The record is told in prose, each claim confidence-labeled and one click from its source. Where a line is a teammate’s words rather than the pitcher’s own, it is labeled as such, not put in her mouth."
 
-    /// The Flight Lab opens on the site until the app files it (the C7 pattern).
+    /// The Flight Lab on the site: the way on when the bundled lab data cannot load.
     static let flightLabURL = URL(string: "https://pitch-atlas.com/softball/flight-lab")
 }
 

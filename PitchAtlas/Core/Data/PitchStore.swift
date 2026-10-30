@@ -32,6 +32,8 @@ final class PitchStore {
     let archiveImages: [ArchiveImage]
     let teachingClips: [TeachingClip]
     let softball: SoftballBundle
+    /// The slow-pitch Flight Lab's rulebooks, example lobs, measured batter and notes (flight-lab.json).
+    let flightLab: FlightLabContent?
     let tidbits: [Tidbit]
     let quotes: [AtlasQuote]
     let externalMedia: ExternalMediaBundle
@@ -73,6 +75,7 @@ final class PitchStore {
         self.archiveImages = load("archive-images", [ArchiveImage].self, fallback: [])
         self.teachingClips = load("teaching-clips", [TeachingClip].self, fallback: [])
         self.softball = load("softball", SoftballBundle.self, fallback: .empty)
+        self.flightLab = load("flight-lab", FlightLabContent?.self, fallback: nil)
         self.tidbits = load("tidbits", [Tidbit].self, fallback: [])
         self.quotes = load("quotes", [AtlasQuote].self, fallback: [])
         self.externalMedia = load("external-media", ExternalMediaBundle.self, fallback: .empty)

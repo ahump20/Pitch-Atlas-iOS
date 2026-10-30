@@ -84,6 +84,7 @@ struct AtlasView: View {
             case .softball: SoftballHubView()
             case .fastpitch: SoftballFastpitchView()
             case .slowpitch: SoftballSlowpitchView()
+            case .flightLab(let rule): FlightLabView(rule: rule)
             case .softballPitch(let slug):
                 if let pitch = store.softballPitch(slug: slug) { SoftballPitchView(pitch: pitch) } else { SoftballHubView() }
             case .softballCraftsman(let slug):

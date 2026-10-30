@@ -36,6 +36,7 @@ const stops = {
   slowpitch: '/softball/slowpitch',
   sbpitch: '/softball/pitch/riseball',
   sbcraftsman: '/softball/craftsmen/cat-osterman',
+  flightlab: '/softball/flight-lab',
   inspect: '/?inspect=four-seam&aspect=grip',
   inspectpair: '/?inspect=four-seam&with=slider&aspect=grip',
 }

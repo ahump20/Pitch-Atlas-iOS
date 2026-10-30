@@ -104,14 +104,12 @@ struct SoftballSlowpitchView: View {
             }
             SoftballRoom(index: "04", label: "See your zone at your height") {
                 SoftballProse(text: SoftballReads.slowpitchZone).padding(.bottom, 32)
-                if let url = SoftballReads.flightLabURL {
-                    Link(destination: url) {
-                        SoftballStartPlate(eyebrow: "Slowpitch · flight lab", title: "Your zone, at your height",
-                                           blurb: SoftballReads.slowpitchLabBlurb, accent: PitchAtlasTheme.cyan,
-                                           open: "Open the lab ↗\u{FE0E}")
-                    }
-                    .accessibilityHint("Opens in Safari")
+                NavigationLink(value: AtlasRoute.flightLab(rule: .usssa)) {
+                    SoftballStartPlate(eyebrow: "Slowpitch · flight lab", title: "Your zone, at your height",
+                                       blurb: SoftballReads.slowpitchLabBlurb, accent: PitchAtlasTheme.cyan,
+                                       open: "Open the lab →")
                 }
+                .buttonStyle(.plain)
             }
             SiteFooter(path: "/softball/slowpitch")
         }

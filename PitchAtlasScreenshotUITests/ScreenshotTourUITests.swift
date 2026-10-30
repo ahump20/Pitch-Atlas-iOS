@@ -43,6 +43,7 @@ final class ScreenshotTourUITests: XCTestCase {
         Stop(name: "slowpitch", env: ["PA_ROUTE": "softball/slowpitch"], pages: 10),
         Stop(name: "sbpitch", env: ["PA_ROUTE": "softball/pitch/riseball"], pages: 16),
         Stop(name: "sbcraftsman", env: ["PA_ROUTE": "softball/craftsmen/cat-osterman"], pages: 12),
+        Stop(name: "flightlab", env: ["PA_ROUTE": "softball/flight-lab"], pages: 18),
         Stop(name: "inspect", env: ["PA_INSPECT": "four-seam"], pages: 6),
         Stop(name: "inspectpair", env: ["PA_INSPECT": "four-seam", "PA_INSPECT_WITH": "slider"], pages: 8),
     ]
@@ -60,6 +61,31 @@ final class ScreenshotTourUITests: XCTestCase {
         for stop in stops {
             XCTContext.runActivity(named: stop.name) { _ in capture(stop) }
         }
+    }
+
+    /// The Flight Lab's throw: the ball mid-flight, then down. Runs with the tour
+    /// only when PA_SHOTS names "flightthrow".
+    @MainActor
+    func testFlightLabThrow() throws {
+        let raw = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? "all"
+        try XCTSkipUnless(raw.split(separator: ",").contains("flightthrow"), "PA_SHOTS does not name flightthrow")
+        let app = XCUIApplication()
+        app.launchEnvironment = ["PA_ROUTE": "softball/flight-lab"]
+        app.launch()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+        Thread.sleep(forTimeInterval: 3)
+        let throwButton = app.buttons["Throw →"]
+        for _ in 0..<4 where !throwButton.isHittable { scrollOnePage(app) }
+        app.buttons["Slow"].tap()
+        throwButton.tap()
+        for (i, wait) in [0.9, 1.2, 6.0].enumerated() {
+            Thread.sleep(forTimeInterval: wait)
+            let attachment = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+            attachment.name = String(format: "flightthrow-%02d", i + 1)
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+        app.terminate()
     }
 
     @MainActor

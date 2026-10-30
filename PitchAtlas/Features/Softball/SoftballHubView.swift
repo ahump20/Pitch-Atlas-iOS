@@ -32,14 +32,11 @@ struct SoftballHubView: View {
                                                blurb: SoftballReads.slowpitchBlurb, accent: PitchAtlasTheme.seamBright)
                         }
                         .buttonStyle(.plain)
-                        if let url = SoftballReads.flightLabURL {
-                            Link(destination: url) {
-                                SoftballStartPlate(eyebrow: "Slowpitch · flight lab", title: "Your zone, at your height",
-                                                   blurb: SoftballReads.flightLabBlurb, accent: Color(web: WebTokens.Palette.amberBright),
-                                                   open: "Open ↗\u{FE0E}")
-                            }
-                            .accessibilityHint("Opens in Safari")
+                        NavigationLink(value: AtlasRoute.flightLab(rule: .usssa)) {
+                            SoftballStartPlate(eyebrow: "Slowpitch · flight lab", title: "Your zone, at your height",
+                                               blurb: SoftballReads.flightLabBlurb, accent: Color(web: WebTokens.Palette.amberBright))
                         }
+                        .buttonStyle(.plain)
                     }
                     section("01", "The fastpitch arsenal", lede: SoftballReads.arsenalLede) {
                         ForEach(store.softball.pitches) { pitch in
