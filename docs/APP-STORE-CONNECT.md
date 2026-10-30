@@ -1,7 +1,9 @@
 # Pitch Atlas App Store Connect Pack
 
-Status: 2026-07-07 resubmitted release for `com.pitchatlas.app`; build
-`1.1.0 (11)` is in App Store Connect as `WAITING_FOR_REVIEW`.
+Status: 2026-10-30, `1.2.0 (13)` is `WAITING_FOR_REVIEW` for `com.pitchatlas.app`,
+set to release after approval (record:
+`docs/review-evidence/2026-10-30-build-13-submitted.md`). `1.2.0 (12)` was
+withdrawn before review. The dated updates below are history.
 
 Update, 2026-07-07: Apple rejected the July 3 submission under Guideline 2.3
 because review could not locate the anonymous Community posting feature that the
@@ -241,7 +243,7 @@ Answer: uses only exempt encryption through standard HTTPS/ATS. `ITSAppUsesNonEx
 
 ## App Review Notes
 
-Paste from `docs/APP-REVIEW-NOTES.md` into the version's review details. For `1.2.0 (12)` it was written by API on 2026-10-30 (2689 characters).
+Paste from `docs/APP-REVIEW-NOTES.md` into the version's review details. For `1.2.0 (13)` it was written by API on 2026-10-30 (2688 characters; the build-12 text with its first line naming build 13). The build-12 entry below is history: that build was withdrawn before review.
 
 If reviewer credentials are required, provide a Supabase test account in the App Store Connect reviewer credentials fields only.
 
@@ -272,6 +274,14 @@ For every final screenshot report, verify the rendered state first, then include
   ten 1320 × 2868 screenshots and the first app preview on the `1.2.0` version;
   review submission `5fe9bf01-253c-40c9-986e-28aa98d445a1` `WAITING_FOR_REVIEW`
   since 2026-10-30. Record: `docs/review-evidence/2026-10-30-build-12-submitted.md`.
+  Withdrawn the same day before review (`DEVELOPER_REJECTED`): it could not file
+  an anonymous post in production.
+- `1.2.0 (13)`: GitHub CI and Xcode Cloud run 42 on `35c9584` succeeded; build
+  `13` `VALID`; the same listing, screenshots and preview; production release
+  gate filed a field note, a post and a reply, then deleted its account; review
+  submission `0b7dce83-8e94-415f-9d89-404ba3c941ab` `WAITING_FOR_REVIEW` since
+  2026-10-30T19:49Z, release after approval. Record:
+  `docs/review-evidence/2026-10-30-build-13-submitted.md`.
 - The app preview is re-filmed with `PA_SHOTS=preview` and
   `AppPreviewUITests.testPreviewTour` under `simctl io recordVideo`; previews and
   screenshots are per version, so each release re-checks them.

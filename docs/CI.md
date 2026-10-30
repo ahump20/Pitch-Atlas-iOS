@@ -28,15 +28,18 @@ web repo and no Node. Refreshing content from the web source is a deliberate,
 local pre-release step (`cd tools/generate-content && npm i && npm run generate`),
 run and committed before tagging a release. CI does not do this per build.
 
-## Workflows to create (in Xcode → Cloud, or App Store Connect)
+## Workflows
 
-1. **CI**: on push to `main` and PRs, Build + Test (the `PitchAtlas` scheme,
-   iOS Simulator). No archive. Fast feedback.
-2. **Release**: on a release branch or tag, Build, Test, Archive, then TestFlight.
-   This is the one that uploads.
+One Xcode Cloud workflow exists (read from the App Store Connect API on
+2026-10-30): **Default**, started by every push to `main`, one action: Archive
+(the `PitchAtlas` scheme, iOS) with no distribution audience. It is a release
+build check, not a delivery path; no Xcode Cloud workflow uploads to TestFlight
+or App Store Connect. Builds are delivered from a local signed archive (see
+`docs/review-evidence/2026-10-30-build-13-submitted.md`). A Release workflow
+that archives and uploads on a tag was planned and never created.
 
-Both run `ci_post_clone.sh` automatically (Xcode Cloud convention: any executable
-in `ci_scripts/` named `ci_post_clone.sh` runs after clone).
+Every workflow runs `ci_post_clone.sh` automatically (Xcode Cloud convention:
+any executable in `ci_scripts/` named `ci_post_clone.sh` runs after clone).
 
 Xcode Cloud resolves Swift packages with automatic resolution off, so
 `ci_post_clone.sh` copies the pinned `ci_scripts/Package.resolved` into the
@@ -47,9 +50,11 @@ over it and commit, or Xcode Cloud builds against the old pin. (Run 38 on
 
 ## Release conventions
 
-- **Build numbers are monotonic.** Xcode Cloud increments the build number above
-  whatever is in `project.yml`'s `CURRENT_PROJECT_VERSION` at archive time; never
-  hand-set a number below the last TestFlight build.
+- **Build numbers are monotonic.** Builds reach App Store Connect only from a
+  local signed archive, which keeps `project.yml`'s `CURRENT_PROJECT_VERSION` as
+  written, so set it to the exact next build number before archiving and never
+  below the last uploaded build. (An Xcode Cloud archive would number above
+  that value, but the Default workflow does not upload.)
 - **`action_required` means a compile error**, not a manual approval gate. Read
   the build log's error count and fix the code.
 - **Same-day merge-back:** a release branch merges back to `main` the day it
