@@ -28,6 +28,9 @@ const stops = {
   support: '/support',
   compare: '/compare?a=slider&b=sweeper',
   compareflight: '/compare?a=slider&b=sweeper&view=movement',
+  // the bench opens on the card there; the app's bench opens on the grip (the card aspect is a fast-follow)
+  inspect: '/?inspect=four-seam&aspect=grip',
+  inspectpair: '/?inspect=four-seam&with=slider&aspect=grip',
 }
 const W = 440
 const H = 956

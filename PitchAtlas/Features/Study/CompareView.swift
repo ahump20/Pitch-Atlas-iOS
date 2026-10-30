@@ -32,7 +32,9 @@ struct CompareView: View {
                             ErrorStateView(reason: reason).padding(.top, 20)
                         } else if let a = selection.a.flatMap(store.pitch(slug:)),
                                   let b = selection.b.flatMap(store.pitch(slug:)) {
-                            BenchBody(entries: [a, b], viewport: geo.size.width)
+                            BenchBody(entries: [a, b], viewport: geo.size.width,
+                                      mode: $selection.mode, orientation: $selection.orientation,
+                                      hand: $selection.hand) { selection.inspect($0.slug, store: store) }
                                 .padding(.top, 20)
                             next
                         } else {
@@ -314,13 +316,18 @@ private struct CompareControls: View {
 // MARK: - The bench (BenchBody.tsx, .bench--page)
 
 /// The stage (the ball in the hand, or the flight figure) with its controls, then
-/// the rows that say what the stage shows.
-private struct BenchBody: View {
+/// the rows that say what the stage shows. The table and the one-pitch bench each
+/// hand it their own aspect, view and hand, and say where "Study" goes.
+struct BenchBody: View {
     let entries: [PitchAtlasEntry]
     /// The screen's width: the ball's well is 76% of it, never past 380.
     let viewport: CGFloat
-    @Environment(\.compareSelection) private var selection
-    @Environment(PitchStore.self) private var store
+    @Binding var mode: CompareSelection.Mode
+    @Binding var orientation: GripView
+    @Binding var hand: Handedness
+    /// The table frames the bench itself (`.bench--page`); the bench's room frames it.
+    var framed = true
+    let onStudy: (PitchAtlasEntry) -> Void
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// What the reader picked belongs to the pair it was picked on; a new pair
@@ -352,21 +359,26 @@ private struct BenchBody: View {
     private func who(_ index: Int) -> String? { pair ? entries[index].display.shortName : nil }
 
     var body: some View {
-        VStack(spacing: 0) {
+        let bench = VStack(spacing: 0) {
             stage
             rail
         }
-        .padding(1)
-        .background(CompareInk.benchGround)
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-        .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(CompareInk.benchRim, lineWidth: 1))
+        if framed {
+            bench
+                .padding(1)
+                .background(CompareInk.benchGround)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(CompareInk.benchRim, lineWidth: 1))
+        } else {
+            bench
+        }
     }
 
     // MARK: The stage
 
     private var stage: some View {
         VStack(alignment: .leading, spacing: 14) {
-            if selection.mode == .movement {
+            if mode == .movement {
                 flight
             } else {
                 // a phone has room for one ball, so A and B take turns in it
@@ -417,7 +429,7 @@ private struct BenchBody: View {
                 } else {
                     SeamBall(motion: entry.motion, size: side,
                              contacts: entry.canonical.fingerPlacement,
-                             orientation: selection.orientation, hand: selection.hand,
+                             orientation: orientation, hand: hand,
                              showMovement: false,
                              referenceContacts: entry.canonical.fingerPlacement,
                              highlightedFinger: finger)
@@ -431,7 +443,7 @@ private struct BenchBody: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(CompareInk.ballRing, lineWidth: 1))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(BenchReads.stageLabel(entry, hand: selection.hand, view: selection.orientation))
+        .accessibilityLabel(BenchReads.stageLabel(entry, hand: hand, view: orientation))
     }
 
     /// `.bench-flight`: the Illustrative chip and its line, then the figure.
@@ -445,25 +457,25 @@ private struct BenchBody: View {
                     .cssLineHeight(1.4, face: .hanken400, size: 13, relativeTo: .footnote)
                     .fixedSize(horizontal: false, vertical: true)
             }
-            FlightFigure(a: entries[0], b: pair ? entries[1] : nil, hand: selection.hand)
+            FlightFigure(a: entries[0], b: pair ? entries[1] : nil, hand: hand)
                 .aspectRatio(FlightPath.w / FlightPath.h, contentMode: .fit)
                 .frame(maxWidth: .infinity, maxHeight: 460)
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel(BenchReads.flightLabel(entries, hand: selection.hand))
+                .accessibilityLabel(BenchReads.flightLabel(entries, hand: hand))
                 .accessibilityAddTraits(.isImage)
         }
     }
 
     /// `.bench-toolbar`: the view (not in Flight) and the hand, while a grip is filed.
     @ViewBuilder private var toolbar: some View {
-        let views = selection.mode != .movement && anyFiled
-        let hands = selection.mode == .movement || anyFiled
+        let views = mode != .movement && anyFiled
+        let hands = mode == .movement || anyFiled
         let viewSeg = BenchSeg(label: pair ? "View both" : "View",
                                options: [(GripView.top, "Top"), (.side, "Side"), (.thumb, "Thumb")],
-                               selected: selection.orientation) { selection.orientation = $0 }
+                               selected: orientation) { orientation = $0 }
         let handSeg = BenchSeg(label: "Pitching hand",
                                options: [(Handedness.right, "Right"), (.left, "Left")],
-                               selected: selection.hand) { selection.hand = $0 }
+                               selected: hand) { hand = $0 }
         if stacked {
             VStack(spacing: 8) {
                 if views { viewSeg }
@@ -514,7 +526,7 @@ private struct BenchBody: View {
                 .foregroundStyle(CompareInk.specimenName)
                 .cssLineHeight(1.3, face: .hanken600, size: 12, relativeTo: .caption)
             // in Flight the heads carry the line each path is drawn with
-            if selection.mode == .movement {
+            if mode == .movement {
                 LineSample(color: edge(entries[index]), dashed: index == 1)
                     .frame(width: 22, height: 2)
             }
@@ -525,7 +537,7 @@ private struct BenchBody: View {
     }
 
     @ViewBuilder private var rows: some View {
-        switch selection.mode {
+        switch mode {
         case .grips:
             claimRow("The hold", dim: finger != nil) { $0.canonical.grip }
             handRow
@@ -741,9 +753,9 @@ private struct BenchBody: View {
     private var study: some View {
         FlowRow(spacing: 20, lineSpacing: 0) {
             ForEach(entries, id: \.slug) { entry in
-                Button { selection.inspect(entry.slug, store: store); Haptics.selection() } label: {
+                Button { onStudy(entry); Haptics.selection() } label: {
                     HStack(spacing: 6) {
-                        Text(BenchReads.studyLabel(entry, pair: pair, mode: selection.mode))
+                        Text(BenchReads.studyLabel(entry, pair: pair, mode: mode))
                             .underline(true, color: CompareInk.linkRule)
                         Text("→").underline(true, color: CompareInk.linkRule).accessibilityHidden(true)
                     }
@@ -801,7 +813,7 @@ private struct BenchChip: View {
 }
 
 /// `.specimen-seg`: one 44pt rail of equal choices, the pressed one lit in gold.
-private struct BenchSeg<Value: Hashable>: View {
+struct BenchSeg<Value: Hashable>: View {
     let label: String
     let options: [(value: Value, title: String)]
     let selected: Value

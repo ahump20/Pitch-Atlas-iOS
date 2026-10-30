@@ -215,7 +215,8 @@ struct CraftsmanDetailView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Open the \(pitch.canonical.name.lowercased()) file")
             .accessibilityAddTraits(.isButton)
-            HStack(spacing: 8) {
+            FlowRow(spacing: 8, lineSpacing: 8) {
+                InspectButton(slug: pitch.slug)
                 CompareButton(slug: pitch.slug)
                 if hasFilm(pitch) && !reduceMotion { PauseMotionButton() }
             }

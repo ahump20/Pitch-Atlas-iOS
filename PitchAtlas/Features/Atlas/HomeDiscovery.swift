@@ -88,6 +88,14 @@ struct HomeDiscovery: View {
             .accessibilityLabel("Open specimen \(pitch.display.specimenNo), \(pitch.canonical.name)")
             .accessibilityAddTraits(.isButton)
             .frame(maxWidth: .infinity)
+            // PitchSpecimenCard's `.archive-specimen-actions`, .65rem under the card
+            FlowRow(spacing: 8, lineSpacing: 8) {
+                InspectButton(slug: pitch.slug)
+                CompareButton(slug: pitch.slug)
+            }
+            .frame(width: 290, alignment: .leading)
+            .frame(maxWidth: .infinity)
+            .padding(.top, 10.4)
             Text("Grip demonstration by Austin H.")
                 .font(PitchAtlasTheme.hanken(12, relativeTo: .footnote))
                 .foregroundStyle(ArchiveInk.referenceCredit)

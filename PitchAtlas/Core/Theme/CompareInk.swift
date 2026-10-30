@@ -95,4 +95,21 @@ enum CompareInk {
     static let study = Color(hex: 0xDDA775)
     /// TunnelPlot's HALO, the ring around each endpoint and each name
     static let halo = Color(hex: 0x0B0A09)
+
+    // MARK: The one-pitch bench (inspector.css, bench.css)
+    /// .specimen-inspector-overlay: the page dimmed behind the room (#050403e0)
+    static let roomOverlay = Color(hex: 0x050403, opacity: 0xE0 / 255.0)
+    /// .specimen-inspector's 1px rim (#a38a5e66) and its top lip (inset 0 1px 0 #f6f1e614)
+    static let roomRim = Color(hex: 0xA38A5E, opacity: 0x66 / 255.0)
+    static let roomLip = Color(hex: 0xF6F1E6, opacity: 0x14 / 255.0)
+    /// .specimen-close: its disc (#0b0a09cc), its ring (#a38a5e59), its X (#d9ccb3)
+    static let closeDisc = Color(hex: 0x0B0A09, opacity: 0xCC / 255.0)
+    static let closeRing = Color(hex: 0xA38A5E, opacity: 0x59 / 255.0)
+    static let closeInk = Color(hex: 0xD9CCB3)
+    /// .bench-with .rfx-select: the dark scene's --ctl-border (#a38a5e66) and words (#efe6d6)
+    static let withRim = Color(hex: 0xA38A5E, opacity: 0x66 / 255.0)
+    static let withInk = Color(hex: 0xEFE6D6)
+    /// .specimen-action (compare.css): the Inspect card button's rim (#8a7a5e80) and words
+    static let actionRim = Color(hex: 0x8A7A5E, opacity: 0x80 / 255.0)
+    static let actionInk = Color(hex: 0xD9CCB3)
 }

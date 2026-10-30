@@ -104,6 +104,7 @@ struct RootView: View {
     @Environment(AuthSessionStore.self) private var auth
     @State private var router = DeepLinkRouter()
     @State private var comparison = CompareSelection()
+    @State private var bench = SpecimenBench()
     @State private var toasts = ToastCenter()
 
     /// DEBUG-only launch override so QA can open straight to a tab; production always starts on Atlas.
@@ -118,6 +119,7 @@ struct RootView: View {
 
     var body: some View {
         @Bindable var router = router
+        @Bindable var bench = bench
         TabView(selection: $router.selection) {
             NavigationStack(path: $router.atlasPath) {
                 TabScaffold(tab: .atlas) { AtlasView() }
@@ -151,6 +153,7 @@ struct RootView: View {
                 .tag(AppTab.sources)
         }
         .environment(\.compareSelection, comparison)
+        .environment(\.specimenBench, bench)
         .environment(router)
         // a third pitch asks for room over any page while the table is shut
         .overlay {
@@ -166,6 +169,16 @@ struct RootView: View {
         .environment(toasts)
         // The cover sits outside the environment written above, so it carries its own:
         // the specimen pages it opens post toasts, and its links leave through the router.
+        // the one-pitch bench (InspectButton), over the page like the table
+        .fullScreenCover(item: $bench.opened) { opened in
+            if let entry = store.pitch(slug: opened.slug) {
+                InspectorView(entry: entry, bench: bench)
+                    .toastHost()
+                    .environment(toasts)
+                    .environment(router)
+                    .environment(\.compareSelection, comparison)
+            }
+        }
         .fullScreenCover(isPresented: $comparison.presented) {
             CompareView()
                 .toastHost()
@@ -202,6 +215,13 @@ struct RootView: View {
         // and opens it exactly as the link would.
         if let route = env["PA_ROUTE"], let url = URL(string: "pitchatlas://\(route)") {
             if !comparison.handle(url, store: store) { router.handle(url, store: store) }
+        }
+        // PA_INSPECT opens the one-pitch bench on a pitch; PA_INSPECT_WITH names its partner
+        if let slug = env["PA_INSPECT"] {
+            bench.open(slug, store: store)
+            if let partner = env["PA_INSPECT_WITH"] {
+                bench.choosePartner(partner, store: store, compare: comparison)
+            }
         }
         #endif
     }

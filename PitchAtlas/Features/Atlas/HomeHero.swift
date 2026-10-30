@@ -95,7 +95,9 @@ struct HomeHero: View {
     }
 
     private var cardControls: some View {
-        HStack(spacing: 10) {
+        // `.archive-specimen-actions`: they wrap under a narrow card
+        FlowRow(spacing: 8, lineSpacing: 8) {
+            InspectButton(slug: featured.slug)
             CompareButton(slug: featured.slug)
             if hasFilm && !reduceMotion { PauseMotionButton() }
         }
