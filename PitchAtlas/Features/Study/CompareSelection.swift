@@ -106,6 +106,13 @@ import Observation
     @discardableResult func handle(_ url: URL, store: PitchStore) -> Bool {
         guard url.scheme == "pitchatlas", url.host == "compare" else { return false }
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems ?? []
+        // CompareProvider parses the address only when it carries a query: a bare
+        // link (the menu's "Compare two pitches") opens the table on the saved pair.
+        guard !items.isEmpty else {
+            inspection = nil
+            presented = true
+            return true
+        }
         func value(_ key: String) -> String? { items.first { $0.name == key }?.value }
         func valid(_ slug: String?) -> String? { slug.flatMap { store.pitch(slug: $0) == nil ? nil : $0 } }
         let first = valid(value("a"))

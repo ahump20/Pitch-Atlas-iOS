@@ -77,6 +77,10 @@ final class DeepLinkRouter {
     var gripsPath = NavigationPath()
     var craftsmenPath = NavigationPath()
     var sourcesPath = NavigationPath()
+    /// Every link landed, counted: the covers (the table, the bench) close and the
+    /// Index lets go of a row-tapped page when it changes, so a link followed from
+    /// inside one goes where it says.
+    private(set) var landings = 0
 
     func handle(_ url: URL, store: PitchStore) {
         guard let destination = Self.destination(for: url, store: store) else { return }
@@ -90,6 +94,7 @@ final class DeepLinkRouter {
         case .sources: sourcesPath = path
         }
         selection = destination.tab
+        landings += 1
     }
 
     static func destination(for url: URL, store: PitchStore) -> DeepLinkDestination? {

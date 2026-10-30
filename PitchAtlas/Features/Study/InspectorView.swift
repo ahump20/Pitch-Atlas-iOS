@@ -189,6 +189,10 @@ struct InspectorView: View {
             }
         }
         .tint(PitchAtlasTheme.kicker)
+        // the cover hides RootView's overlay, so the bench asks for room itself
+        .overlay {
+            if let pending = compare.pending, !compare.presented { MakeRoom(pending: pending) }
+        }
     }
 
     // MARK: The header (.specimen-rail-head, phone width)

@@ -993,8 +993,19 @@ struct FlightFigure: View {
 
 // MARK: - Making room (CompareProvider.tsx)
 
+/// Where the "make room" choice shows: over whatever is in front.
+enum MakeRoomHost: Equatable {
+    case root, table, bench
+
+    static func host(pending: Bool, tableOpen: Bool, benchOpen: Bool) -> MakeRoomHost? {
+        guard pending else { return nil }
+        if tableOpen { return .table }
+        return benchOpen ? .bench : .root
+    }
+}
+
 /// A third pitch asks which place it takes; the other pitch stays. The table
-/// shows it over the pair; RootView shows it over any page when the table is shut.
+/// shows it over the pair, the bench over itself, RootView over any other page.
 struct MakeRoom: View {
     let pending: String
     @Environment(\.compareSelection) private var selection

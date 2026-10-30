@@ -24,6 +24,7 @@ struct IndexView: View {
     @State private var scrollRestoration = IndexScrollRestoration()
     @State private var selectedEntry: RepertoireEntry?
     @State private var selectedPitch: PitchAtlasEntry?
+    @Environment(DeepLinkRouter.self) private var router
 
     var body: some View {
         ZStack {
@@ -94,6 +95,13 @@ struct IndexView: View {
         // A pitchatlas://repertoire/<id> link pushes by value (DeepLinkRouter);
         // a row tap keeps the item bindings above so the scroll anchor holds.
         .navigationDestination(for: RepertoireEntry.self) { RepertoireDetailView(entry: $0) }
+        // a link that lands on the Index ("Back to every pitch", the crumb) lets go
+        // of the page a row tap pushed, which sits outside the router's path
+        .onChange(of: router.landings) {
+            guard router.selection == .index else { return }
+            selectedPitch = nil
+            selectedEntry = nil
+        }
     }
 
     // MARK: - Header

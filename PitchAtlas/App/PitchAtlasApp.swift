@@ -166,11 +166,17 @@ struct RootView: View {
         .environment(router)
         // a third pitch asks for room over any page while the table is shut
         .overlay {
-            if let pending = comparison.pending, !comparison.presented {
+            if let pending = comparison.pending,
+               MakeRoomHost.host(pending: true, tableOpen: comparison.presented, benchOpen: bench.opened != nil) == .root {
                 MakeRoom(pending: pending).environment(\.compareSelection, comparison)
             }
         }
         // the tray's status line (role="status"), spoken once for every tab's tray
+        // a link followed from inside the table or the bench goes where it says
+        .onChange(of: router.landings) {
+            comparison.presented = false
+            bench.opened = nil
+        }
         .onChange(of: comparison.slugs.count) { _, chosen in
             AccessibilityNotification.Announcement(CompareTrayReads.status(chosen: chosen)).post()
         }
