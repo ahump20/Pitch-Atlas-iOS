@@ -67,6 +67,38 @@ final class FlightLabPageTests: XCTestCase {
         XCTAssertTrue(try FlightLabReads.thisPitchStats(model(.senior)).last!.value.hasPrefix("0–"))
     }
 
+    /// Review Focus 4: every lob at every slider extreme, under every rulebook,
+    /// either converges or carries the unsolved flag the page shows; no NaN or
+    /// infinity reaches the drawing or the words.
+    func testTheSliderExtremesNeverDrawANaN() throws {
+        let content = try XCTUnwrap(store.flightLab)
+        let base = FlightLab.defaultLobParams(content.lobs)
+        let s = FlightLab.DEFAULT_SETTINGS
+        for heightIn in [FlightLab.HEIGHT_RANGE.min, FlightLab.HEIGHT_RANGE.max] {
+            for rule in SlowpitchRuleKey.allCases {
+                for lob in content.lobs {
+                    for (apex, land, side) in [(4.2, -30.0, -24.0), (13.0, 150.0, 24.0), (4.2, 150.0, 0.0), (13.0, -30.0, 0.0)] {
+                        var p = try XCTUnwrap(base[lob.key])
+                        p.apex = apex; p.land = land; p.side = side
+                        let stance = SlowpitchStance(heightIn: heightIn, toesIn: s.toesIn, box: s.box, batIn: 34)
+                        let m = try XCTUnwrap(FlightLab.buildLabModel(rule: rule, stance: stance, compareIn: 32, params: [lob.key: p],
+                                                                      selected: lob.key, lobs: content.lobs, rulebooks: content.rulebooks))
+                        let f = m.selected.flight
+                        let tag = "\(rule) \(lob.key) h\(heightIn) apex \(apex) land \(land) side \(side)"
+                        XCTAssertTrue(f.positions.allSatisfy(\.isFinite), "positions: \(tag)")
+                        XCTAssertTrue(f.crossing.y.isFinite && f.land.z.isFinite && f.duration.isFinite, "flight: \(tag)")
+                        let r = m.selected.reading
+                        XCTAssertTrue(r.apexFt.isFinite && r.overPlateIn.isFinite && r.fallingAngleDeg.isFinite, "reading: \(tag)")
+                        if let b = r.barrel { XCTAssertTrue(b.heightIn.isFinite && b.outFrontIn.isFinite, "barrel: \(tag)") }
+                        let words = [FlightLabReads.statusText(m), FlightLabReads.stageLabel(m)]
+                            + FlightLabReads.thisPitchStats(m).map { $0.value + $0.unit }
+                        XCTAssertFalse(words.contains { $0.contains("NaN") || $0.contains("inf") }, "words: \(tag)")
+                    }
+                }
+            }
+        }
+    }
+
     func testTheLobLineSpeaksNoSpinOrSpeed() {
         let p = SlowpitchLobParams(apex: 10, land: 6, side: -3, rpm: 900, push: 0)
         XCTAssertEqual(FlightLabReads.lobLine(p), "Peaks at 10.0 ft, lands 6 in past the front of the plate, 3 in inside.")
