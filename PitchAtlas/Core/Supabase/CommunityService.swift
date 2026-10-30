@@ -206,6 +206,16 @@ struct CommunityService {
             .execute()
     }
 
+    /// File a reader's suggested pitching post for review (the web's
+    /// submitExternalSuggestion). The six columns only; a refusal is mapped to the
+    /// site's words by the caller.
+    func fileSuggestion(_ insert: ExternalSuggestion.Insert) async throws {
+        try await client
+            .from("external_content_suggestions")
+            .insert(insert)
+            .execute()
+    }
+
     /// Insert the post and return the server-generated id. RETURNING is scoped
     /// to the id column on purpose: the column-scoped SELECT grant covers id,
     /// while `select()` (RETURNING *) would touch ungranted columns and fail.

@@ -95,7 +95,8 @@ struct GripsView: View {
                 MediaRail(eyebrow: "Grip lessons in motion",
                           title: "More hands in the conversation.",
                           intro: "First-party photographs remain the evidence in this library. These official, credited embeds add outside teaching and history without becoming the canonical grip.",
-                          items: MediaShelf.query(store.externalMedia.items, placement: .grips, limit: 4))
+                          items: MediaShelf.query(store.externalMedia.items, placement: .grips, limit: 4),
+                          allowsSuggestion: true)
                 AttackPlanSection(file: file)
                 GripCompareEntry()
             }

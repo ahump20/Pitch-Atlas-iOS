@@ -18,7 +18,8 @@ struct HomeMediaRail: View {
         MediaRail(eyebrow: "Fresh from the game",
                   title: "From one hand to another.",
                   intro: "Listen to a pitcher explain it. Watch a grip turn. These lessons and recovered conversations keep the people beside the pitch. Choose a player when you are ready to watch.",
-                  items: MediaShelf.home(store.externalMedia.items, limit: 3))
+                  items: MediaShelf.home(store.externalMedia.items, limit: 3),
+                  allowsSuggestion: true)
     }
 }
 
@@ -29,6 +30,10 @@ struct MediaRail: View {
     var title = "The craft keeps moving."
     var intro = "Current lessons and old knowledge, filed where they are useful and kept with the people who shared them."
     let items: [ExternalContentItem]
+    /// The suggestion form under the shelf (the site's allowSuggestion), with the
+    /// chapter's pitch when it has one.
+    var allowsSuggestion = false
+    var pitchSlug: String?
 
     var body: some View {
         if !items.isEmpty {
@@ -46,6 +51,7 @@ struct MediaRail: View {
                     ForEach(items) { MediaCard(item: $0) }
                 }
                 .padding(.top, 36)
+                if allowsSuggestion { MediaSuggestionForm(pitchSlug: pitchSlug) }
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 56)

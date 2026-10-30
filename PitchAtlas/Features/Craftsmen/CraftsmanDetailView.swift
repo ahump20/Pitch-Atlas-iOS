@@ -47,7 +47,8 @@ struct CraftsmanDetailView: View {
                             MediaRail(eyebrow: "The lesson, on film",
                                       title: CraftsmanFileReads.mediaTitle(craftsman),
                                       intro: "A route-aware shelf for credited interviews, demonstrations, and historical clips connected to this craftsman's file.",
-                                      items: MediaShelf.query(store.externalMedia.items, craftsmanSlug: craftsman.slug, limit: 2))
+                                      items: MediaShelf.query(store.externalMedia.items, craftsmanSlug: craftsman.slug, limit: 2),
+                                      allowsSuggestion: true)
                             if !craftsman.recordProse.isEmpty {
                                 record.chapterAnchor("record", space: Self.scrollSpace)
                             }

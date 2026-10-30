@@ -105,7 +105,8 @@ struct PitchDetailView: View {
             MediaRail(eyebrow: "Filed from the conversation",
                       title: "See the \(entry.canonical.name.lowercased()) taught.",
                       intro: "Credited posts that add a useful grip, release, history, or craft perspective to this specimen. The original provider serves every clip.",
-                      items: MediaShelf.query(store.externalMedia.items, pitchSlug: entry.slug, limit: 2))
+                      items: MediaShelf.query(store.externalMedia.items, pitchSlug: entry.slug, limit: 2),
+                      allowsSuggestion: true, pitchSlug: entry.slug)
         }
     }
 
