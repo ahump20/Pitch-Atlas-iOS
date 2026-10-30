@@ -1,34 +1,36 @@
 # App Review Notes
 
-Paste into App Store Connect for build `1.1.0 (11)`.
+Paste into App Store Connect for build `1.2.0 (12)`.
 
 Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community participation is anonymous-first: no sign-in screen gates posting. Contributing creates a Supabase anonymous account silently on the first write, and the user can optionally claim that account (Sign in with Apple or email) to keep it across devices. Image uploads are the one community feature that requires a claimed (permanent) account, enforced server-side.
 
-## Guideline 2.3 Resolution
+## Where Community Posting Lives (Guideline 2.3)
 
-Apple reported that Community posting could not be located. It is present in build `1.1.0 (11)` on each filed pitch detail. The fastest review path is:
+Build `1.2.0 (12)` redesigned the pitch pages, so the path below replaces the one written for `1.1.0 (11)`. Every filed pitch page carries both community surfaces near its end. The fastest review path:
 
-1. Launch the app on iPhone.
-2. On the first `Atlas` screen, tap the large featured `00 Four-seam` specimen card.
-3. On the `Four-seam` pitch detail, swipe up about four long swipes. Stop when the segmented control `Field Notes | Discussion` is fully above the bottom tab bar.
-4. This is the Community panel. The first visible state may say no one has filed a note yet; that is the honest empty state, not a missing feature.
-5. To post anonymously in `Field Notes`, scroll slightly below the empty state, turn on `I accept the community guidelines` and `I confirm I am 17 or older before posting or uploading`, then enter a required grip/feel cue and tap `Submit field note`.
-6. To post anonymously in `Discussion`, tap the `Discussion` segment in the same Community panel, enter a `Discussion post`, and tap `Submit post`.
-7. No sign-in is shown before either text post path. The app creates a Supabase anonymous account silently on first write.
+1. Launch the app on iPhone. It opens on `Atlas`.
+2. Tap `Study this grip →` under the opening headline. This opens the `Four-seam` pitch page.
+3. Swipe up until the chapter `Field notes from the bullpen.` and the `Log a field note` box appear (well past the grip, the lessons and the history; about two thirds of the way down).
+4. **Field note:** tap `Write a note →`. At the top of the form, turn on `I accept the community guidelines` and `I confirm I am 17 or older before posting or uploading`. Enter a handle in `Submitted by` and a grip cue in `The tweak`, then tap `File field note →`. New field notes stay private until a person reviews them, so the note will not appear in the list right away; the form confirms it was sent for review.
+5. **Discussion post:** keep swiping to the bar marked `Discussion · Talk through the four-seam` and tap it to open the drawer. Turn on the same two switches if they are not already on, enter a handle in `Your name` and a comment, then tap `File post`. The line `Filed ✓` confirms the server accepted it, and the post appears in the thread.
+6. No sign-in is shown before either path. The app creates a Supabase anonymous account silently on first write.
 
-I rechecked this path on July 7, 2026: the app opens the featured pitch, the Community panel appears after the pitch detail sections, and the panel exposes `Field Notes`, `Discussion`, and the no-account-needed empty state.
+The same field notes and Discussion drawer sit on every filed pitch page; the Discussion drawer alone also sits on the softball pitches, the lost-pitch files, the Learn topics and the repertoire pages.
 
 ## Reviewer Path
 
 1. Launch the app.
 2. Browse Atlas, Index, Grips, Craftsmen, and Sources without signing in.
-3. Use the Guideline 2.3 path above to open the Community panel.
-4. Submit a Field Note or Discussion post. This works without account setup; an anonymous account is created behind the scenes on first contribution.
-5. Use the item menu to report content or block a different user. These also work anonymously.
-6. Open Atlas, then Account and Safety: the account shows as "Anonymous contributor" with a "Claim this record" block. Claim it with Sign in with Apple or an email confirmation link; the same account (and its posts) is preserved.
-7. For image upload, claim the account first (uploads require a permanent account), then accept image terms and choose a still image with PhotosPicker.
-8. Review the private blocked list in Account and Safety.
-9. Return to Account and Safety to delete the account (works for anonymous and claimed accounts).
+3. Use the path above to file a field note or a discussion post. This works without account setup; an anonymous account is created behind the scenes on first contribution.
+4. Use the menu on any post or note to report it or to block a different user. These also work anonymously.
+5. Tap the account button at the top right of Atlas to open Account and Safety: the account shows as "Anonymous contributor" with a "Claim this record" block. Claim it with Sign in with Apple or an email confirmation link; the same account (and its posts) is preserved.
+6. For image upload, claim the account first (uploads require a permanent account), then accept image terms and choose a still image with PhotosPicker.
+7. Review the private blocked list in Account and Safety.
+8. Return to Account and Safety to delete the account (works for anonymous and claimed accounts).
+
+## Suggesting a Post for Review (new in 1.2.0)
+
+Atlas, each pitch page and each craftsman page end their credited-clip shelf with a fold, `Know a pitching post that belongs here?`. A reader can paste a public X, Instagram, TikTok or YouTube URL and a short reason and tap `Send to review`. This is a write, so it creates the same silent anonymous account. The suggestion goes to a private review queue that no reader can see; nothing publishes from it until a person checks and tags the post. No media is uploaded through it.
 
 ## Guideline 5.1.1(v) Posture
 
@@ -70,8 +72,8 @@ The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, na
 ## Build Notes
 
 - Bundle ID: `com.pitchatlas.app`
-- Version: `1.1.0`
-- Build: `11`
+- Version: `1.2.0`
+- Build: `12`
 - Privacy policy: `https://pitch-atlas.com/privacy`
 - Support: `https://pitch-atlas.com/support`
 - No Firebase, Appwrite, CloudKit, push notifications, camera capture, video upload, or BSI dependency. The only `WKWebView` is the credited TikTok teaching-clip embed described under **Embedded Teaching Clips** above. There is no app-content webview or web wrapper.

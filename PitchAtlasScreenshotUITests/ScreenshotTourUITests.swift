@@ -118,26 +118,30 @@ final class ScreenshotTourUITests: XCTestCase {
             for _ in 0..<strokes where !(element.exists && element.isHittable) { scrollOnePage(app) }
             return element.exists && element.isHittable
         }
-        let study = app.buttons["Study this grip →"]
+        // the button style sets the label in capitals, so match without case
+        let study = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "Study this grip")).firstMatch
         XCTAssertTrue(study.waitForExistence(timeout: 10), "Study this grip → is not on Atlas")
         study.tap()
         Thread.sleep(forTimeInterval: 2)
         snap("01-specimen")
 
-        let write = app.buttons["Write a note"]
+        let write = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "Write a note")).firstMatch
         XCTAssertTrue(reach(write), "Write a note never came into reach on the four-seam page")
         snap("02-field-notes")
         write.tap()
         Thread.sleep(forTimeInterval: 1)
+        // The gate shows until it is accepted once on the device; a reviewer's
+        // fresh install sees it, a simulator that accepted before does not.
         for gate in ["I accept the community guidelines", "I confirm I am 17 or older"] {
             let toggle = app.switches.matching(NSPredicate(format: "label BEGINSWITH %@", gate)).firstMatch
-            XCTAssertTrue(reach(toggle, strokes: 6), "Gate not found: \(gate)")
+            guard toggle.waitForExistence(timeout: 2) else { continue }
+            _ = reach(toggle, strokes: 4)
             if toggle.value as? String != "1" {
                 toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
             }
             XCTAssertEqual(toggle.value as? String, "1", "Gate did not turn on: \(gate)")
         }
-        let fileNote = app.buttons["File field note"]
+        let fileNote = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "File field note")).firstMatch
         XCTAssertTrue(reach(fileNote, strokes: 8), "File field note is not in the composer")
         snap("03-field-note-composer")
 
@@ -147,7 +151,7 @@ final class ScreenshotTourUITests: XCTestCase {
         Thread.sleep(forTimeInterval: 1)
         let name = app.textFields["Your name"]
         XCTAssertTrue(reach(name, strokes: 6), "Your name is not in the discussion composer")
-        let filePost = app.buttons["File post"]
+        let filePost = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "File post")).firstMatch
         XCTAssertTrue(reach(filePost, strokes: 6), "File post is not in the discussion composer")
         snap("04-discussion-composer")
         app.terminate()
