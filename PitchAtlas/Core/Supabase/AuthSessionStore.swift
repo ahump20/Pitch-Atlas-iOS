@@ -52,13 +52,6 @@ final class AuthSessionStore {
     /// gates on this, not on `isSignedIn`.
     var isClaimed: Bool { isSignedIn && !isAnonymous }
 
-    var displayName: String {
-        if let email, let prefix = email.split(separator: "@").first {
-            return String(prefix).replacingOccurrences(of: ".", with: " ")
-        }
-        return "Pitch Atlas contributor"
-    }
-
     func start() async {
         await refreshSession()
         observeAuthChanges()
@@ -69,8 +62,18 @@ final class AuthSessionStore {
             let session = try await client.auth.session
             apply(session: session)
         } catch {
-            apply(session: nil)
+            // Only a missing session is signed out. A refresh that fails offline or
+            // on a hiccup keeps the stored session, so the block filter still runs
+            // and an anonymous contributor is never shown the sign-in path that
+            // would orphan their record (ensureSessionForWrite draws the same line).
+            apply(session: Self.keepsStoredSession(after: error) ? client.auth.currentSession : nil)
         }
+    }
+
+    /// True for every refresh failure except a genuinely missing session.
+    nonisolated static func keepsStoredSession(after error: Error) -> Bool {
+        if case AuthError.sessionMissing = error { return false }
+        return true
     }
 
     func handle(url: URL) {

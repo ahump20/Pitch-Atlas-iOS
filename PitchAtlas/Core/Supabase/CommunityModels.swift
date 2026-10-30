@@ -595,6 +595,18 @@ struct NewDiscussionPost: Encodable {
     }
 }
 
+/// The handle a post or reply files under: the site's required "Your name" field
+/// (DiscussionForum.tsx), defaulting to the profile's handle (useDiscussion.ts:
+/// `prev || identity?.displayName || ''`). Never derived from an email address.
+enum DiscussionHandle {
+    static let label = "Your name"
+    static let caption = "A handle is enough. No real name required."
+
+    static func initial(current: String, profileName: String?) -> String {
+        current.isEmpty ? (profileName ?? "") : current
+    }
+}
+
 enum DiscussionPostLimits {
     static let displayName = 40
     static let body = 4000
@@ -608,7 +620,10 @@ extension NewDiscussionPost {
         parentID: String?
     ) throws -> NewDiscussionPost {
         let cleanDisplayName = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard (2...DiscussionPostLimits.displayName).contains(cleanDisplayName.count) else {
+        guard cleanDisplayName.count >= 2 else {
+            throw CommunityServiceError.invalidDiscussionPost("Add a name (2+ characters) so people know who is talking.")
+        }
+        guard cleanDisplayName.count <= DiscussionPostLimits.displayName else {
             throw CommunityServiceError.invalidDiscussionPost("Your display name must be 2 to 40 characters.")
         }
 

@@ -41,6 +41,9 @@ struct CommunityPanel: View {
 
     @State private var postsState: CommunityLoadState<[DiscussionPost]> = .idle
     @State private var postBody = ""
+    /// The handle posts and replies file under (the site's "Your name"), seeded from
+    /// the profile's handle over an existing session; never from the email.
+    @State private var handle = ""
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var preparedImage: PreparedCommunityImage?
     @State private var actionMessage: ActionMessage?
@@ -163,6 +166,7 @@ struct CommunityPanel: View {
         if canContribute {
             VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
                 SectionLabel(text: "Start a conversation")
+                handleField
                 VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
                     PitchFormLabel("Comment", required: true)
                     TextField("File a grip cue, breakdown, image, or clip. Keep it about the pitch.", text: $postBody, axis: .vertical)
@@ -355,10 +359,29 @@ struct CommunityPanel: View {
         .accessibilityLabel(label)
     }
 
+    /// The site's "Your name" field: a handle, 2–40 characters, no real name needed.
+    private var handleField: some View {
+        VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
+            PitchFormLabel(DiscussionHandle.label, required: true)
+            TextField(DiscussionHandle.label, text: $handle)
+                .font(PitchAtlasTheme.hanken(15))
+                .foregroundStyle(PitchAtlasTheme.bone)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+                .textContentType(.nickname)
+                .onChange(of: handle) { _, next in
+                    if next.count > DiscussionPostLimits.displayName { handle = String(next.prefix(DiscussionPostLimits.displayName)) }
+                }
+                .pitchTextFieldSurface()
+            PitchFormCaption(text: DiscussionHandle.caption)
+        }
+    }
+
     @ViewBuilder
     private func replyComposer(to post: DiscussionPost) -> some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.xs2) {
             if canContribute {
+                handleField
                 PitchFormLabel("Reply", required: true)
                 TextField("Reply to \(post.displayName)…", text: $replyBody, axis: .vertical)
                     .font(PitchAtlasTheme.hanken(15))
@@ -567,7 +590,16 @@ struct CommunityPanel: View {
 
     private func reload() async {
         guard await hydrateHiddenAuthorsForCurrentUser() else { return }
+        await seedHandle()
         await loadDiscussion()
+    }
+
+    /// useDiscussion: `prev || identity?.displayName || ''`. A read over an existing
+    /// session only; a reader with no session starts with an empty field.
+    private func seedHandle() async {
+        guard handle.isEmpty, auth.isSignedIn, let userID = auth.userID else { return }
+        let profileName = try? await service.contributorIdentity(userID: userID)?.displayName
+        handle = DiscussionHandle.initial(current: handle, profileName: profileName ?? nil)
     }
 
     private func hydrateHiddenAuthorsForCurrentUser() async -> Bool {
@@ -614,6 +646,16 @@ struct CommunityPanel: View {
             return
         }
 
+        // Validate before the write intent, so a bad name or body never mints an account.
+        let post: NewDiscussionPost
+        do {
+            post = try NewDiscussionPost.validated(topicKey: topicKey, displayName: handle, body: postBody, parentID: nil)
+        } catch {
+            actionMessage = ActionMessage(text: CommunityService.userMessage(for: error), tone: .error)
+            Haptics.failure()
+            return
+        }
+
         isSubmitting = true
         defer { isSubmitting = false }
 
@@ -633,12 +675,8 @@ struct CommunityPanel: View {
         // the id column); the insert returns it for the media attach below.
         let postID: String
         do {
-            let post = try NewDiscussionPost.validated(
-                topicKey: postTopicKey,
-                displayName: auth.displayName,
-                body: postBody,
-                parentID: nil
-            )
+            // lib/discussion createPost: the handle is kept on the profile first.
+            try await service.setDisplayName(post.displayName, userID: userID)
             postID = try await service.submitPost(post)
         } catch {
             // The post itself failed — keep the composer intact so the user can retry.
@@ -694,13 +732,14 @@ struct CommunityPanel: View {
         }
         replyError = nil
         do {
-            _ = try await auth.ensureSessionForWrite()
             let reply = try NewDiscussionPost.validated(
                 topicKey: topicKey,
-                displayName: auth.displayName,
+                displayName: handle,
                 body: replyBody,
                 parentID: parent.id
             )
+            let userID = try await auth.ensureSessionForWrite()
+            try await service.setDisplayName(reply.displayName, userID: userID)
             _ = try await service.submitPost(reply)
             // Collapse the box once it saved so it can't be filed twice.
             replyBody = ""
