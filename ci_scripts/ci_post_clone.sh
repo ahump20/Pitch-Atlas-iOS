@@ -20,3 +20,11 @@ fi
 cd "$CI_PRIMARY_REPOSITORY_PATH"
 xcodegen generate
 echo "post-clone: generated PitchAtlas.xcodeproj"
+
+# Xcode Cloud resolves packages with automatic resolution off, so the generated
+# project needs the pinned Package.resolved the tests ran against. The project
+# is generated (and gitignored), so the pin lives beside this script.
+SPM_DIR="PitchAtlas.xcodeproj/project.xcworkspace/xcshareddata/swiftpm"
+mkdir -p "$SPM_DIR"
+cp ci_scripts/Package.resolved "$SPM_DIR/Package.resolved"
+echo "post-clone: pinned Swift packages from ci_scripts/Package.resolved"
