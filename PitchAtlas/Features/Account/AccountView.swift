@@ -3,6 +3,7 @@ import SwiftUI
 
 struct AccountView: View {
     @Environment(AuthSessionStore.self) private var auth
+    @Environment(ToastCenter.self) private var toasts
     @Environment(\.openURL) private var openURL
     @Environment(\.dismiss) private var dismiss
     @State private var email = ""
@@ -10,6 +11,9 @@ struct AccountView: View {
     @State private var deleteRequested = false
     @State private var deleteFinished = false
     @State private var anonymousSignOutRequested = false
+    @State private var showContact = false
+    @State private var showCommunityTerms = false
+    @State private var hiddenContent = HiddenCommunityContent.shared
     @State private var blockedState: CommunityLoadState<[BlockedContributor]> = .idle
 
     private var service: CommunityService { CommunityService(client: auth.client) }
@@ -47,6 +51,8 @@ struct AccountView: View {
         .toolbar {
             ToolbarItem(placement: .principal) { BrandLockup(size: .sm) }
         }
+        .sheet(isPresented: $showContact) { DeveloperContactView() }
+        .sheet(isPresented: $showCommunityTerms) { CommunityGuidelinesView() }
         .task(id: auth.userID) { await loadBlockedContributors() }
         .alert("Delete this account?", isPresented: $deleteRequested) {
             Button("Cancel", role: .cancel) {}
@@ -215,8 +221,8 @@ struct AccountView: View {
 
     private var safety: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "Community rules")
-            Text("Post your own experience only. No minors in uploads. No copyrighted media. No abusive, unsafe, or medical-advice claims. Reports can hide content before review.")
+            SectionLabel(text: "Safety")
+            Text("Post your own experience only. No minors in uploads. No copyrighted media. No abusive, unsafe, or medical-advice claims. Hide removes content immediately; Report also sends it for review.")
                 .font(PitchAtlasTheme.hanken(14))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -224,9 +230,57 @@ struct AccountView: View {
                 .font(PitchAtlasTheme.newsreaderItalic(14))
                 .foregroundStyle(PitchAtlasTheme.text3)
                 .fixedSize(horizontal: false, vertical: true)
+            Button { showContact = true } label: {
+                Label("Contact developer", systemImage: "envelope")
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            Button { showCommunityTerms = true } label: {
+                Label("Community Terms and EULA", systemImage: "doc.text")
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.large)
+            pendingReportsSection
             blockedContributorsSection
         }
         .leatherPress()
+    }
+
+    @ViewBuilder
+    private var pendingReportsSection: some View {
+        if !hiddenContent.pendingReports.isEmpty {
+            Divider().overlay(PitchAtlasTheme.machined)
+            SectionLabel(text: "Unsent reports")
+            ForEach(hiddenContent.pendingReports) { report in
+                HStack {
+                    Text(reportLabel(report.kind))
+                        .font(PitchAtlasTheme.hankenMedium(14))
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                    Spacer()
+                    Button(hiddenContent.sendingReportIDs.contains(report.id) ? "Sending…" : "Retry report") {
+                        Task {
+                            switch await hiddenContent.deliverReport(report.id, using: auth) {
+                            case .sent: toasts.show("Report sent")
+                            case .failed: toasts.show("Report did not send. Try again.", isFailure: true)
+                            case .alreadySending, .noPendingReport: break
+                            }
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+                    .disabled(hiddenContent.sendingReportIDs.contains(report.id))
+                    .accessibilityLabel("Retry \(reportLabel(report.kind).lowercased())")
+                }
+            }
+        }
+    }
+
+    private func reportLabel(_ kind: HiddenCommunityContent.Kind) -> String {
+        switch kind {
+        case .post: "Post report"
+        case .note: "Field note report"
+        case .media: "Media report"
+        }
     }
 
     @ViewBuilder

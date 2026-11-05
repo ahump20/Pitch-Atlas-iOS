@@ -39,6 +39,9 @@ struct CommunityPanel: View {
     /// The thread's name as a reader says it ("Four-Seam Fastball").
     let topicName: String
 
+    @State private var hiddenContent = HiddenCommunityContent.shared
+    @State private var failedReport: (target: ReportTarget, reason: String)?
+    @State private var isReporting = false
     @State private var postsState: CommunityLoadState<[DiscussionPost]> = .idle
     @State private var postBody = ""
     /// The handle posts and replies file under (the site's "Your name"), seeded from
@@ -104,9 +107,10 @@ struct CommunityPanel: View {
         ) { target in
             TextField("What is wrong?", text: $reportReason)
             Button("Submit report") { Task { await fileReport(target, reason: reportReason) } }
+                .disabled(isReporting)
             Button("Cancel", role: .cancel) { reportReason = "" }
         } message: { _ in
-            Text("Tell us briefly what is wrong. A few reports hide it for review. The reason is optional; keep it short.")
+            Text("This immediately hides the item from your feed and sends it for review. The reason is optional.")
         }
         .sheet(item: $playingVideo) { video in
             MotionSpecimenPlayer(url: video.url, topicName: topicName)
@@ -126,6 +130,15 @@ struct CommunityPanel: View {
                 .foregroundStyle(actionMessage.tone == .success ? PitchAtlasTheme.success : PitchAtlasTheme.caution)
                 .fixedSize(horizontal: false, vertical: true)
 
+                if let failedReport {
+                    Button("Retry report") {
+                        Task { await fileReport(failedReport.target, reason: failedReport.reason) }
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.large)
+                    .disabled(isReporting)
+                }
+
                 if let undoBlock {
                     Button("Undo") {
                         Task { await unblock(undoBlock.authorID) }
@@ -141,7 +154,7 @@ struct CommunityPanel: View {
 
     /// The web's line under the discussion composer (DiscussionForum.tsx).
     private var discussionSafetyLine: some View {
-        Text("Filed as experience and technique, not personal medical advice. Nothing here replaces a coach or physician. Reports from a few accounts auto-hide a post or a clip for review.")
+        Text("Filed as experience and technique, not personal medical advice. Nothing here replaces a coach or physician. Hide removes an item from your feed immediately. Report also sends it for moderation.")
             .font(PitchAtlasTheme.hanken(12))
             .foregroundStyle(PitchAtlasTheme.text3)
             .fixedSize(horizontal: false, vertical: true)
@@ -250,7 +263,12 @@ struct CommunityPanel: View {
                     Task { await reload() }
                 }
             case .loaded(let posts):
-                ForEach(posts) { post in
+                let visible = CommunityVisibility.visibleDiscussionPosts(
+                    posts, hiddenAuthorIDs: hiddenAuthorIDs,
+                    hiddenPostIDs: hiddenContent.postIDs, hiddenMediaIDs: hiddenContent.mediaIDs
+                )
+                if visible.isEmpty { EmptyStateView(message: "No posts to show.") }
+                ForEach(visible) { post in
                     VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
                         discussionPostCard(post, isReply: false)
                         ForEach(post.replies) { reply in
@@ -286,7 +304,8 @@ struct CommunityPanel: View {
                     VStack(alignment: .leading, spacing: 2) { postByline(post, isMine: isMine) }
                 }
                 Spacer(minLength: 0)
-                safetyMenu(authorID: post.authorID, displayName: post.displayName) {
+                safetyMenu(authorID: post.authorID, displayName: post.displayName,
+                           hideAction: { hide(.post(post.id)); toasts.show("Post hidden") }) {
                     reportReason = ""
                     reporting = .post(post.id)
                 }
@@ -395,7 +414,7 @@ struct CommunityPanel: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
             } else {
-                Text("Accept the community guidelines and confirm you are 17 or older above to reply.")
+                Text("Accept the Community Terms and EULA and confirm you are 18 or older above to reply.")
                     .font(PitchAtlasTheme.hanken(13))
                     .foregroundStyle(PitchAtlasTheme.text3)
                     .fixedSize(horizontal: false, vertical: true)
@@ -438,11 +457,17 @@ struct CommunityPanel: View {
                 ForEach(media) { item in
                     VStack(alignment: .leading, spacing: 0) {
                         mediaTile(item, displayName: displayName)
-                        Button {
-                            reportReason = ""
-                            reporting = .media(item.id)
+                        Menu {
+                            Button("Hide media") {
+                                hide(.media(item.id))
+                                toasts.show("Media hidden")
+                            }
+                            Button("Report media") {
+                                reportReason = ""
+                                reporting = .media(item.id)
+                            }
                         } label: {
-                            Text("REPORT MEDIA")
+                            Text("MEDIA ACTIONS")
                                 .font(PitchAtlasTheme.martian(9))
                                 .tracking(1.2)
                                 .foregroundStyle(PitchAtlasTheme.text3)
@@ -450,7 +475,7 @@ struct CommunityPanel: View {
                                 .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel("Report media uploaded by \(displayName)")
+                        .accessibilityLabel("Actions for media uploaded by \(displayName)")
                     }
                 }
             }
@@ -568,9 +593,10 @@ struct CommunityPanel: View {
     /// anonymous session lazily via ensureSessionForWrite when none exists.
     /// Block needs a person behind the row: a deleted account's row can still
     /// be reported, and a viewer never blocks themselves.
-    private func safetyMenu(authorID: String?, displayName: String, reportAction: @escaping () -> Void) -> some View {
+    private func safetyMenu(authorID: String?, displayName: String, hideAction: @escaping () -> Void, reportAction: @escaping () -> Void) -> some View {
         let blockable = authorID.map { !CommunityVisibility.viewerIsAuthor($0, viewerID: auth.userID) } ?? false
         return Menu {
+            Button("Hide post", action: hideAction)
             Button("Report") { reportAction() }
             if blockable, let authorID {
                 Button("Block user", role: .destructive) {
@@ -583,7 +609,7 @@ struct CommunityPanel: View {
                 .frame(minWidth: 44, minHeight: 44)
         }
         .accessibilityLabel("More actions")
-        .accessibilityHint(blockable ? "Report or block this contributor" : "Report this")
+        .accessibilityHint(blockable ? "Hide, report, or block this contributor" : "Hide or report this post")
     }
 
     // MARK: Reads
@@ -639,7 +665,7 @@ struct CommunityPanel: View {
     // MARK: Writes
 
     private func submitDiscussionPost() async {
-        guard !isSubmitting else { return }
+        guard canContribute, !isSubmitting else { return }
         guard pendingMediaRetry == nil || preparedImage == nil else {
             actionMessage = ActionMessage(text: "Retry the pending image before submitting another image.", tone: .error)
             Haptics.failure()
@@ -699,7 +725,7 @@ struct CommunityPanel: View {
                 if pendingMediaRetry?.postID == postID {
                     pendingMediaRetry = nil
                 }
-                actionMessage = ActionMessage(text: "Filed ✓", tone: .success)
+                actionMessage = ActionMessage(text: "Filed. Image sent for review.", tone: .success)
             } catch {
                 preparedImage = pendingImage
                 pendingMediaRetry = PendingMediaRetry(postID: postID, topicKey: postTopicKey, userID: userID, image: pendingImage)
@@ -723,7 +749,7 @@ struct CommunityPanel: View {
     /// A one-level reply, the web's reply box: text only here; the server
     /// refuses a reply to a reply (too_deep) or to a post that's gone.
     private func submitReply(to parent: DiscussionPost) async {
-        guard !isSubmitting else { return }
+        guard canContribute, !isSubmitting else { return }
         isSubmitting = true
         filingReplyTo = parent.id
         defer {
@@ -765,19 +791,39 @@ struct CommunityPanel: View {
     }
 
     private func fileReport(_ target: ReportTarget, reason: String) async {
-        let cleanReason = CommunityReport.cleanReason(reason)
+        guard !isReporting else { return }
+        // Hide before authentication or network work, including while offline.
+        hide(target)
+        isReporting = true
+        defer { isReporting = false }
+        let pending: HiddenCommunityContent.PendingReport
+        switch target {
+        case .post(let id): pending = hiddenContent.queueReport(id, kind: .post, reason: reason)
+        case .media(let id): pending = hiddenContent.queueReport(id, kind: .media, reason: reason)
+        }
         reportReason = ""
-        do {
-            _ = try await auth.ensureSessionForWrite()
-            switch target {
-            case .post(let id):
-                try await service.reportPost(id: id, reason: cleanReason)
-            case .media(let id):
-                try await service.reportMedia(id: id, reason: cleanReason)
-            }
+        switch await hiddenContent.deliverReport(pending.id, using: auth) {
+        case .sent:
+            failedReport = nil
+            actionMessage = ActionMessage(text: "Hidden. Report sent.", tone: .success)
             toasts.show("Report sent")
-        } catch {
-            toasts.show("Report didn't send. Try again.", isFailure: true)
+        case .failed:
+            failedReport = (target, reason)
+            actionMessage = ActionMessage(text: "Hidden. Report did not send. Retry here or in Account > Safety.", tone: .error)
+            toasts.show("Hidden. Report did not send.", isFailure: true)
+        case .alreadySending, .noPendingReport:
+            break
+        }
+    }
+
+    private func hide(_ target: ReportTarget) {
+        switch target {
+        case .post(let id):
+            hiddenContent.hide(id, kind: .post)
+            if replyTo == id { replyTo = nil; replyBody = "" }
+        case .media(let id):
+            hiddenContent.hide(id, kind: .media)
+            playingVideo = nil
         }
     }
 
@@ -815,6 +861,7 @@ struct CommunityPanel: View {
     }
 
     private func retryPendingMedia() async {
+        guard canContribute else { return }
         guard let retry = pendingMediaRetry, let userID = auth.userID else { return }
         guard retry.userID == userID else {
             actionMessage = ActionMessage(text: "Sign back in with the account that created that post before retrying the image.", tone: .error)
@@ -835,7 +882,7 @@ struct CommunityPanel: View {
             if pendingMediaRetry == retry {
                 pendingMediaRetry = nil
             }
-            actionMessage = ActionMessage(text: "Image attached.", tone: .success)
+            actionMessage = ActionMessage(text: "Image sent for review.", tone: .success)
             Haptics.success()
             await loadDiscussion()
         } catch {

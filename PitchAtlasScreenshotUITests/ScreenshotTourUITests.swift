@@ -132,7 +132,7 @@ final class ScreenshotTourUITests: XCTestCase {
         Thread.sleep(forTimeInterval: 1)
         // The gate shows until it is accepted once on the device; a reviewer's
         // fresh install sees it, a simulator that accepted before does not.
-        for gate in ["I accept the community guidelines", "I confirm I am 17 or older"] {
+        for gate in ["I accept the Community Terms and EULA", "I confirm I am 18 or older"] {
             let toggle = app.switches.matching(NSPredicate(format: "label BEGINSWITH %@", gate)).firstMatch
             guard toggle.waitForExistence(timeout: 2) else { continue }
             _ = reach(toggle, strokes: 4)

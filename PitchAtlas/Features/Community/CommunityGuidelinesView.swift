@@ -1,13 +1,9 @@
 import SwiftUI
 
-/// The published community guidelines, readable in-app before anyone accepts them.
-/// Every rule here maps to something the app actually enforces: reports insert to
-/// the moderation tables, blocking hides content both ways at the database layer,
-/// the age gate stands in front of posting, and account deletion is one tap away.
-/// Nothing here is aspirational copy — it is the contract the moderation suite keeps.
+/// The agreement presented before a reader accepts the contribution terms.
 struct CommunityGuidelinesView: View {
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.openURL) private var openURL
+    @State private var showContact = false
 
     var body: some View {
         NavigationStack {
@@ -22,19 +18,19 @@ struct CommunityGuidelinesView: View {
                         )
                         rule(
                             "There is no room for objectionable content",
-                            "Harassment, hate, threats, sexual content, and anything illegal are not allowed. There is zero tolerance — accounts that post it are removed."
+                            "There is zero tolerance for objectionable content or abusive users. Harassment, hate, threats, sexual content, and illegal material are prohibited. Violating content is removed and offending accounts are ejected."
                         )
                         rule(
                             "You control what you see",
-                            "Report any note or post, and block any contributor. A report can hide content before a human looks at it. Blocking hides that person's content for you both ways and stops replies across that edge."
+                            "Hide any post, reply, note, or attached media immediately from your feed. Report also hides the item for you and sends it for moderation. Block a contributor to hide their content and stop replies across that connection."
                         )
                         rule(
                             "We act within 24 hours",
-                            "Reported content and the accounts behind it are reviewed and acted on within 24 hours. Confirmed violations are removed and the contributor is ejected."
+                            "Within 24 hours of a report, automated safeguards remove the content from public view and restrict the contributor. Confirmed violations lead to permanent content removal and ejection of the contributor."
                         )
                         rule(
-                            "Seventeen and older to contribute",
-                            "Reading the field manual needs no account. Posting and replying need no sign-in either, only confirmation that you are 17 or older. Uploading an image needs a claimed account."
+                            "Eighteen and older to contribute",
+                            "You must be 18 or older and accept these Community Terms and EULA before posting, replying, suggesting a public post, or uploading. Reading needs no account. Uploading an image requires a claimed account and the image upload terms; images remain private until reviewed."
                         )
                         contact
                     }
@@ -42,7 +38,7 @@ struct CommunityGuidelinesView: View {
                     .padding(.bottom, PitchAtlasSpacing.xl3)
                 }
             }
-            .navigationTitle("Community Guidelines")
+            .navigationTitle("Community Terms and EULA")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
@@ -50,16 +46,16 @@ struct CommunityGuidelinesView: View {
                 }
             }
         }
+        .sheet(isPresented: $showContact) { DeveloperContactView() }
     }
 
     private var masthead: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
-            SectionLabel(text: "The contract")
-            Text("HOW THIS PLACE WORKS")
+            Text("COMMUNITY TERMS")
                 .font(PitchAtlasTheme.anton(34))
                 .foregroundStyle(PitchAtlasTheme.bone)
                 .antonSkew()
-            Text("Pitch Atlas keeps a small community room around the craft: the tell, the feel, the miss, the adjustment, and what a pitcher actually trusted. These rules keep that room useful, and the tools behind every one of them ship in the app.")
+            Text("By accepting, you agree to these community rules and Apple’s Standard End User License Agreement. These terms apply to everything you contribute to Pitch Atlas.")
                 .font(PitchAtlasTheme.hanken(15))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
@@ -80,17 +76,20 @@ struct CommunityGuidelinesView: View {
     private var contact: some View {
         VStack(alignment: .leading, spacing: PitchAtlasSpacing.sm) {
             SectionLabel(text: "Reach us")
-            Text("Posting is also governed by the standard license agreement. If something here needs a human, contact us through support.")
+            Text("Contact the developer to report inappropriate activity, including anything you cannot report from a post.")
                 .font(PitchAtlasTheme.hanken(14))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .fixedSize(horizontal: false, vertical: true)
             Button {
-                openURL(URL(string: "https://pitch-atlas.com/support")!)
+                showContact = true
             } label: {
-                Label("Support", systemImage: "lifepreserver")
+                Label("Contact developer", systemImage: "envelope")
             }
             .buttonStyle(.bordered)
             .controlSize(.large)
+            Link("Apple’s Standard EULA", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
+                .font(PitchAtlasTheme.hanken(14))
+                .frame(minHeight: 44)
         }
         .leatherPress()
     }

@@ -39,10 +39,10 @@ final class ReleaseGateUITests: XCTestCase {
             for _ in 0..<strokes where !(element.exists && element.isHittable) { scrollUpOnePage() }
             return element.exists && element.isHittable
         }
-        // Both contribution gates (guidelines, 17+) show until accepted once on
+        // Both contribution gates (terms, 18+) show until accepted once on
         // this device.
         func acceptGates() {
-            for gate in ["I accept the community guidelines", "I confirm I am 17 or older"] {
+            for gate in ["I accept the Community Terms and EULA", "I confirm I am 18 or older"] {
                 let toggle = app.switches.matching(NSPredicate(format: "label BEGINSWITH %@", gate)).firstMatch
                 guard toggle.waitForExistence(timeout: 3) else { continue }
                 _ = reach(toggle, strokes: 4)
