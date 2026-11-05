@@ -45,6 +45,7 @@ struct DeveloperContactView: View {
                                     .pitchTextFieldSurface()
                                     .accessibilityLabel("Reply email, optional")
                             }
+                            .disabled(isSending)
                             Text("Your message and optional reply email are private. We use your contributor ID, anonymous if you have not signed in, for customer support and safety.")
                                 .font(PitchAtlasTheme.hanken(13))
                                 .foregroundStyle(PitchAtlasTheme.bone2)

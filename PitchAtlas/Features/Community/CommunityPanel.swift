@@ -130,7 +130,7 @@ struct CommunityPanel: View {
                 .foregroundStyle(actionMessage.tone == .success ? PitchAtlasTheme.success : PitchAtlasTheme.caution)
                 .fixedSize(horizontal: false, vertical: true)
 
-                if let failedReport {
+                if let failedReport, hasPendingReport(for: failedReport.target) {
                     Button("Retry report") {
                         Task { await fileReport(failedReport.target, reason: failedReport.reason) }
                     }
@@ -787,6 +787,13 @@ struct CommunityPanel: View {
             await loadDiscussion()
         } catch {
             toasts.show(CommunityService.userMessage(for: error, fallback: "Post didn't delete. Try again."), isFailure: true)
+        }
+    }
+
+    private func hasPendingReport(for target: ReportTarget) -> Bool {
+        switch target {
+        case .post(let id): return hiddenContent.hasPendingReport(id, kind: .post)
+        case .media(let id): return hiddenContent.hasPendingReport(id, kind: .media)
         }
     }
 

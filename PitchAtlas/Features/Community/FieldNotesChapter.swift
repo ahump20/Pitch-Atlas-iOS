@@ -219,7 +219,7 @@ struct FieldNotesChapter: View {
                 blockedLine(blocked).padding(.bottom, 16)
             }
 
-            if let failedReport {
+            if let failedReport, hiddenContent.hasPendingReport(failedReport.noteID, kind: .note) {
                 VStack(alignment: .leading, spacing: 8) {
                     SiteFieldError(text: "Note hidden. Report did not send. Retry here or in Account > Safety.")
                     Button("Retry report") {
@@ -348,7 +348,7 @@ struct FieldNotesChapter: View {
             SiteSeparator().padding(.top, 12)
             (Text("\(entry.community.safetyNote) No abuse, no personal attacks, no off-topic spam, nothing aimed at minors. New field notes stay private until review. See a problem with a public note? Use ")
                 + Text("Report").foregroundStyle(PitchAtlasTheme.bone)
-                + Text(" on it; a note flagged by enough people is hidden automatically until it is checked."))
+                + Text(" on it. The note is hidden for you immediately and sent for review."))
                 .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)

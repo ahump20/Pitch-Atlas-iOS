@@ -34,6 +34,8 @@ final class AuthSessionStore {
     private let magicLinkCooldown: TimeInterval = 30
 
     private var authTask: Task<Void, Never>?
+    @ObservationIgnored private var writeSessionTask: Task<String, Error>?
+    @ObservationIgnored private var authTransitionWaiters: [CheckedContinuation<Void, Never>] = []
     private var pendingAppleNonce: String?
 
     init(client: SupabaseClient = SupabaseConfig.makeClient()) {
@@ -77,9 +79,24 @@ final class AuthSessionStore {
     }
 
     func handle(url: URL) {
-        guard url.scheme == "pitchatlas" else { return }
-        client.auth.handle(url)
-        Task { await refreshSession() }
+        guard Self.isAuthCallback(url) else { return }
+        Task {
+            do {
+                try await withAuthTransition {
+                    let session = try await client.auth.session(from: url)
+                    apply(session: session)
+                }
+            } catch {
+                errorMessage = "Could not finish sign-in. Open the link again or request a new one."
+            }
+        }
+    }
+
+    nonisolated static func isAuthCallback(_ url: URL) -> Bool {
+        let redirect = SupabaseConfig.authRedirectURL
+        return url.scheme?.lowercased() == redirect.scheme?.lowercased()
+            && url.host?.lowercased() == redirect.host?.lowercased()
+            && (url.path.isEmpty || url.path == "/")
     }
 
     /// Write-intent session: return the signed-in user id (anonymous or claimed),
@@ -93,6 +110,52 @@ final class AuthSessionStore {
     /// or blocks. A failed session lookup surfaces as an error instead of minting
     /// a replacement account that would orphan the existing record.
     func ensureSessionForWrite() async throws -> String {
+        try await ensureSessionForWrite {
+            try await self.resolveSessionForWrite()
+        }
+    }
+
+    /// All concurrent writes share one session lookup or anonymous signup. The
+    /// creator clears the task on success or failure; cancelling one waiter does
+    /// not cancel the shared request needed by other writes. The injected
+    /// operation lets tests hold the actual gate across a suspension.
+    func ensureSessionForWrite(operation: @escaping @MainActor () async throws -> String) async throws -> String {
+        // Account changes own the session until they finish. Let the write retry
+        // instead of creating a contributor that could replace the new account.
+        guard !isWorking else { throw CommunityServiceError.sessionStartFailed }
+        if let writeSessionTask { return try await writeSessionTask.value }
+        let task = Task { @MainActor in try await operation() }
+        writeSessionTask = task
+        defer { writeSessionTask = nil }
+        return try await task.value
+    }
+
+    /// Reserve the account transition before suspending, then let an existing
+    /// signup settle. Apple can now link that contributor; sign-out cannot be
+    /// undone by its late response. Auth callbacks queue rather than disappearing
+    /// behind another action. A cancelled waiter releases its turn without
+    /// cancelling signup or entering the account operation.
+    func withAuthTransition<Value>(operation: @MainActor () async throws -> Value) async throws -> Value {
+        try Task.checkCancellation()
+        if isWorking {
+            await withCheckedContinuation { authTransitionWaiters.append($0) }
+        } else {
+            isWorking = true
+        }
+        defer {
+            if authTransitionWaiters.isEmpty {
+                isWorking = false
+            } else {
+                authTransitionWaiters.removeFirst().resume()
+            }
+        }
+        try Task.checkCancellation()
+        if let writeSessionTask { _ = await writeSessionTask.result }
+        try Task.checkCancellation()
+        return try await operation()
+    }
+
+    private func resolveSessionForWrite() async throws -> String {
         do {
             let session = try await client.auth.session
             apply(session: session)
@@ -116,13 +179,6 @@ final class AuthSessionStore {
 
     func sendMagicLink(email: String) async {
         guard !isWorking else { return }
-        // A magic link signs into a DIFFERENT account, which would orphan every
-        // note filed under this device's anonymous record. Claiming an anonymous
-        // account goes through claimEmail; this path is for signed-out sign-in only.
-        if isSignedIn && isAnonymous {
-            errorMessage = "This device has an anonymous record. Use \"Claim this record\" so your filed notes ride along."
-            return
-        }
         // Resend cooldown: a sign-in link is already in their inbox, so a second
         // tap a moment later just spams them. Tell them, don't re-send.
         if let last = lastMagicLinkAt {
@@ -132,18 +188,25 @@ final class AuthSessionStore {
                 return
             }
         }
-        isWorking = true
         errorMessage = nil
         magicLinkSentTo = nil
-        defer { isWorking = false }
 
         do {
-            try await client.auth.signInWithOTP(
-                email: email,
-                redirectTo: SupabaseConfig.authRedirectURL
-            )
-            magicLinkSentTo = email
-            lastMagicLinkAt = Date()
+            try await withAuthTransition {
+                await refreshSession()
+                // Recheck after any pending signup: OTP must never replace the
+                // anonymous record that signup just created.
+                if isSignedIn && isAnonymous {
+                    errorMessage = "This device has an anonymous record. Use \"Claim this record\" so your filed notes ride along."
+                    return
+                }
+                try await client.auth.signInWithOTP(
+                    email: email,
+                    redirectTo: SupabaseConfig.authRedirectURL
+                )
+                magicLinkSentTo = email
+                lastMagicLinkAt = Date()
+            }
         } catch {
             errorMessage = "Magic link failed. Check the address and try again."
         }
@@ -157,9 +220,7 @@ final class AuthSessionStore {
     }
 
     func completeAppleSignIn(_ result: Result<ASAuthorization, Error>) async {
-        isWorking = true
         errorMessage = nil
-        defer { isWorking = false }
 
         do {
             let authorization = try result.get()
@@ -178,17 +239,21 @@ final class AuthSessionStore {
                 idToken: idToken,
                 nonce: nonce
             )
+            pendingAppleNonce = nil
 
-            if isSignedIn && isAnonymous {
-                // Claim path: LINK the Apple identity onto the anonymous account
-                // so the user id — and every note filed under it — is preserved.
-                // Never fall back to signInWithIdToken here: that would sign into
-                // a different account and orphan the anonymous record.
-                let session = try await client.auth.linkIdentityWithIdToken(credentials: credentials)
-                apply(session: session)
-            } else {
-                let session = try await client.auth.signInWithIdToken(credentials: credentials)
-                apply(session: session)
+            try await withAuthTransition {
+                await refreshSession()
+                if isSignedIn && isAnonymous {
+                    // Claim path: LINK the Apple identity onto the anonymous account
+                    // so the user id — and every note filed under it — is preserved.
+                    // Never fall back to signInWithIdToken here: that would sign into
+                    // a different account and orphan the anonymous record.
+                    let session = try await client.auth.linkIdentityWithIdToken(credentials: credentials)
+                    apply(session: session)
+                } else {
+                    let session = try await client.auth.signInWithIdToken(credentials: credentials)
+                    apply(session: session)
+                }
             }
         } catch let error where Self.isAppleIdentityConflict(error) {
             errorMessage = Self.appleIdentityConflictMessage
@@ -228,75 +293,72 @@ final class AuthSessionStore {
     /// anonymous record. Mirrors the web's `claimWithEmail`.
     func claimEmail(_ email: String) async {
         guard !isWorking else { return }
-        isWorking = true
         errorMessage = nil
         claimEmailSentTo = nil
-        defer { isWorking = false }
 
         do {
-            try await client.auth.update(
-                user: UserAttributes(email: email),
-                redirectTo: SupabaseConfig.authRedirectURL
-            )
-            claimEmailSentTo = email
-            // The SDK already refreshed the local user; re-apply so isAnonymous
-            // and email reflect the server's view of the claim in progress.
-            await refreshSession()
+            try await withAuthTransition {
+                try await client.auth.update(
+                    user: UserAttributes(email: email),
+                    redirectTo: SupabaseConfig.authRedirectURL
+                )
+                claimEmailSentTo = email
+                // The SDK already refreshed the local user; re-apply so isAnonymous
+                // and email reflect the server's view of the claim in progress.
+                await refreshSession()
+            }
         } catch {
             errorMessage = "Could not send the claim email just now. Check the address and try again."
         }
     }
 
     func signOut() async {
-        isWorking = true
-        defer { isWorking = false }
         do {
-            try await client.auth.signOut()
-            apply(session: nil)
+            try await withAuthTransition {
+                try await client.auth.signOut()
+                apply(session: nil)
+            }
         } catch {
             errorMessage = "Sign out failed. Try again."
         }
     }
 
     func deleteAccount() async -> Bool {
-        // Ask the SDK for the session instead of trusting the cached token
-        // string: the SDK refreshes an expired session on read, while a stale
-        // cached token 401s at the edge function. An app left overnight then
-        // asked to delete its account hit exactly that.
-        let freshToken: String
-        do {
-            freshToken = try await client.auth.session.accessToken
-        } catch {
-            errorMessage = "You need to sign in before deleting an account."
-            return false
-        }
-
-        isWorking = true
         errorMessage = nil
-        defer { isWorking = false }
-
         do {
-            var request = URLRequest(url: SupabaseConfig.functionsURL.appendingPathComponent("delete-account"))
-            request.httpMethod = "POST"
-            // A flaky network must not leave the user staring at a spinner forever.
-            request.timeoutInterval = 30
-            request.setValue("Bearer \(freshToken)", forHTTPHeaderField: "Authorization")
-            request.setValue(SupabaseConfig.publishableKey, forHTTPHeaderField: "apikey")
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.httpBody = Data("{}".utf8)
+            return try await withAuthTransition {
+                // Fetch after pending signup and earlier account changes settle.
+                // The SDK refreshes expired tokens; the cached token may be stale.
+                let freshToken: String
+                do {
+                    freshToken = try await client.auth.session.accessToken
+                } catch {
+                    errorMessage = "You need to sign in before deleting an account."
+                    return false
+                }
 
-            let (_, response) = try await URLSession.shared.data(for: request)
-            let status = (response as? HTTPURLResponse)?.statusCode ?? 0
-            if !(200..<300).contains(status) {
-                errorMessage = status == 401
-                    ? "Sign in again before deleting this account."
-                    : "Delete account failed. Try again, or use Support if it keeps failing."
-                return false
+                var request = URLRequest(url: SupabaseConfig.functionsURL.appendingPathComponent("delete-account"))
+                request.httpMethod = "POST"
+                // A flaky network must not leave the user staring at a spinner forever.
+                request.timeoutInterval = 30
+                request.setValue("Bearer \(freshToken)", forHTTPHeaderField: "Authorization")
+                request.setValue(SupabaseConfig.publishableKey, forHTTPHeaderField: "apikey")
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.httpBody = Data("{}".utf8)
+
+                let (_, response) = try await URLSession.shared.data(for: request)
+                let status = (response as? HTTPURLResponse)?.statusCode ?? 0
+                if !(200..<300).contains(status) {
+                    errorMessage = status == 401
+                        ? "Sign in again before deleting this account."
+                        : "Delete account failed. Try again, or use Support if it keeps failing."
+                    return false
+                }
+
+                try? await client.auth.signOut()
+                apply(session: nil)
+                return true
             }
-
-            try? await client.auth.signOut()
-            apply(session: nil)
-            return true
         } catch {
             errorMessage = "Delete account failed. Check your connection and try again."
             return false

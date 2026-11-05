@@ -159,4 +159,4 @@ Old test totals, uploads, and WAITING_FOR_REVIEW readbacks certify only their da
 
 ## Product boundary
 
-Pitch Atlas is its own app. Do not introduce Blaze Sports Intel marks, copy, accounts, or support surfaces into this submission.
+Pitch Atlas is its own app. Do not introduce outside brands, marks, copy, accounts, or support surfaces into this submission.

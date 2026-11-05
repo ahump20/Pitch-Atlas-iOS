@@ -100,7 +100,11 @@ final class CommunitySafetyTests: XCTestCase {
         defer { defaults.removePersistentDomain(forName: suite) }
         let content = HiddenCommunityContent(defaults: defaults)
         let report = content.queueReport("post-1", kind: .post, reason: nil)
+        XCTAssertTrue(content.hasPendingReport("post-1", kind: .post))
+        XCTAssertFalse(content.hasPendingReport("post-1", kind: .note))
         _ = await content.deliverReport(report.id) { _ in }
+        XCTAssertFalse(content.hasPendingReport("post-1", kind: .post),
+                       "A retry in another screen must disappear after Account delivers the report")
         let repeated = await content.deliverReport(report.id) { _ in
             XCTFail("A delivered report must not be sent twice")
         }

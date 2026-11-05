@@ -76,6 +76,11 @@ final class HiddenCommunityContent {
         return report
     }
 
+    /// A retry is available only while this exact kind and content remain queued.
+    func hasPendingReport(_ contentID: String, kind: Kind) -> Bool {
+        pendingReports.contains { $0.contentID == contentID && $0.kind == kind }
+    }
+
     func deliverReport(_ reportID: String, using auth: AuthSessionStore) async -> DeliveryResult {
         await deliverReport(reportID) { report in
             _ = try await auth.ensureSessionForWrite()
