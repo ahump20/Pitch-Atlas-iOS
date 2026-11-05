@@ -18,7 +18,7 @@ jobs:
       matrix:
         device: [phone, ipad]
     env:
-      APP_SOURCE_COMMIT: 6c915f8a5c174671fac081c4795f1bb1e81bb3f3
+      APP_SOURCE_COMMIT: 1995628cc68454ed492f94d57d49c547bb85d2b7
       REVIEW_DEVICE: ${{ matrix.device }}
     steps:
       - uses: actions/checkout@v4
