@@ -13,6 +13,7 @@ final class AppReviewSafetyUITests: XCTestCase {
         app.launchEnvironment = ["PA_ROUTE": "account"]
         app.launch()
         XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+        Thread.sleep(forTimeInterval: 3)
 
         let contact = app.buttons["Contact developer"]
         XCTAssertTrue(reach(contact, in: app), "Contact developer is unavailable from Account")
@@ -53,6 +54,7 @@ final class AppReviewSafetyUITests: XCTestCase {
         app.launchArguments = ["-pa.community.guidelinesAccepted", "YES", "-pa.community.ageConfirmed", "YES"]
         app.launch()
         XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+        Thread.sleep(forTimeInterval: 3)
         let write = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "Write a note")).firstMatch
         XCTAssertTrue(reach(write, in: app, strokes: 60))
         write.tap()
@@ -69,11 +71,7 @@ final class AppReviewSafetyUITests: XCTestCase {
 
     @MainActor
     private func reach(_ element: XCUIElement, in app: XCUIApplication, strokes: Int = 16) -> Bool {
-        for _ in 0..<strokes where !(element.exists && element.isHittable) {
-            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.82))
-                .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.18)))
-        }
-        return element.exists && element.isHittable
+        reachSafely(element, in: app, strokes: strokes)
     }
 
     @MainActor
@@ -83,4 +81,26 @@ final class AppReviewSafetyUITests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
     }
+    @MainActor
+    private func fullyVisible(_ element: XCUIElement, in app: XCUIApplication) -> Bool {
+        guard element.exists && element.isHittable else { return false }
+        let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 4 : app.frame.minY + 24
+        let bar = app.tabBars.firstMatch
+        let bottom = bar.exists ? bar.frame.minY - 8 : app.frame.maxY - 24
+        return element.frame.minY >= top && element.frame.maxY <= bottom
+    }
+
+    @MainActor
+    private func reachSafely(_ element: XCUIElement, in app: XCUIApplication, strokes: Int) -> Bool {
+        for _ in 0..<strokes {
+            if fullyVisible(element, in: app) { return true }
+            let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 4 : app.frame.minY + 24
+            let scrollBack = element.exists && element.frame.minY < top
+            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.3 : 0.78))
+            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.78 : 0.3))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
+        }
+        return fullyVisible(element, in: app)
+    }
+
 }

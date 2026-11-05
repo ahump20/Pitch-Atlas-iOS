@@ -104,6 +104,7 @@ final class ScreenshotTourUITests: XCTestCase {
     func testReviewerPath() throws {
         let raw = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? "all"
         try XCTSkipUnless(raw.split(separator: ",").contains("reviewpath"), "PA_SHOTS does not name reviewpath")
+        continueAfterFailure = false
         let app = XCUIApplication()
         app.launch()
         XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
@@ -115,8 +116,7 @@ final class ScreenshotTourUITests: XCTestCase {
             add(attachment)
         }
         func reach(_ element: XCUIElement, strokes: Int = 60) -> Bool {
-            for _ in 0..<strokes where !(element.exists && element.isHittable) { scrollOnePage(app) }
-            return element.exists && element.isHittable
+            reachSafely(element, in: app, strokes: strokes)
         }
         // the button style sets the label in capitals, so match without case
         let study = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "Study this grip")).firstMatch
@@ -135,11 +135,17 @@ final class ScreenshotTourUITests: XCTestCase {
         for gate in ["I accept the Community Terms and EULA", "I confirm I am 18 or older"] {
             let toggle = app.switches.matching(NSPredicate(format: "label BEGINSWITH %@", gate)).firstMatch
             guard toggle.waitForExistence(timeout: 2) else { continue }
-            _ = reach(toggle, strokes: 4)
+            XCTAssertTrue(reach(toggle, strokes: 8), "Consent must be fully visible above the tab bar")
             if toggle.value as? String != "1" {
-                toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
+                toggle.tap()
             }
-            XCTAssertEqual(toggle.value as? String, "1", "Gate did not turn on: \(gate)")
+            // Accepting the second agreement removes the entire gate.
+            if gate.contains("18") {
+                XCTAssertTrue(toggle.waitForNonExistence(timeout: 5), "The accepted gate did not close")
+            } else {
+                let accepted = expectation(for: NSPredicate(format: "value == '1'"), evaluatedWith: toggle)
+                wait(for: [accepted], timeout: 5)
+            }
         }
         let fileNote = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "File field note")).firstMatch
         XCTAssertTrue(reach(fileNote, strokes: 8), "File field note is not in the composer")
@@ -296,4 +302,26 @@ final class ScreenshotTourUITests: XCTestCase {
         start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
         Thread.sleep(forTimeInterval: 0.7)
     }
+    @MainActor
+    private func fullyVisible(_ element: XCUIElement, in app: XCUIApplication) -> Bool {
+        guard element.exists && element.isHittable else { return false }
+        let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 4 : app.frame.minY + 24
+        let bar = app.tabBars.firstMatch
+        let bottom = bar.exists ? bar.frame.minY - 8 : app.frame.maxY - 24
+        return element.frame.minY >= top && element.frame.maxY <= bottom
+    }
+
+    @MainActor
+    private func reachSafely(_ element: XCUIElement, in app: XCUIApplication, strokes: Int) -> Bool {
+        for _ in 0..<strokes {
+            if fullyVisible(element, in: app) { return true }
+            let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 4 : app.frame.minY + 24
+            let scrollBack = element.exists && element.frame.minY < top
+            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.3 : 0.78))
+            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.78 : 0.3))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
+        }
+        return fullyVisible(element, in: app)
+    }
+
 }

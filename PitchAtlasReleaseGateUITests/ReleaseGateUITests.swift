@@ -26,20 +26,13 @@ final class ReleaseGateUITests: XCTestCase {
         // DEBUG QA hook: open straight onto the slider specimen.
         app.launchEnvironment["PA_PITCH"] = "slider"
         app.launch()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+        Thread.sleep(forTimeInterval: 3)
         // Separate simultaneous phone/iPad fixtures without touching app code.
         let gateHandle = "Review \(UUID().uuidString.prefix(8))"
 
-        // Do NOT use app.swipeUp(): it starts at screen center, which on this
-        // page is the interactive 3D specimen stage — the drag orbits the ball
-        // and the page never scrolls. Start each stroke low, below the stage.
-        func scrollUpOnePage() {
-            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.82))
-            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.18))
-            start.press(forDuration: 0.05, thenDragTo: end)
-        }
         func reach(_ element: XCUIElement, strokes: Int = 40) -> Bool {
-            for _ in 0..<strokes where !(element.exists && element.isHittable) { scrollUpOnePage() }
-            return element.exists && element.isHittable
+            reachSafely(element, in: app, strokes: strokes)
         }
         // Both contribution gates (terms, 18+) show until accepted once on
         // this device.
@@ -47,11 +40,17 @@ final class ReleaseGateUITests: XCTestCase {
             for gate in ["I accept the Community Terms and EULA", "I confirm I am 18 or older"] {
                 let toggle = app.switches.matching(NSPredicate(format: "label BEGINSWITH %@", gate)).firstMatch
                 guard toggle.waitForExistence(timeout: 3) else { continue }
-                _ = reach(toggle, strokes: 4)
+                XCTAssertTrue(reach(toggle, strokes: 8), "Consent must be fully visible above the tab bar")
                 if toggle.value as? String != "1" {
-                    toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.92, dy: 0.5)).tap()
+                    toggle.tap()
                 }
-                XCTAssertEqual(toggle.value as? String, "1", "Gate did not turn on: \(gate)")
+                // Accepting the second agreement removes the entire gate.
+                if gate.contains("18") {
+                    XCTAssertTrue(toggle.waitForNonExistence(timeout: 5), "The accepted gate did not close")
+                } else {
+                    let accepted = expectation(for: NSPredicate(format: "value == '1'"), evaluatedWith: toggle)
+                    wait(for: [accepted], timeout: 5)
+                }
             }
         }
         // A multi-line field takes Return as a new line, so each composer gets
@@ -163,4 +162,26 @@ final class ReleaseGateUITests: XCTestCase {
         XCTAssertTrue(app.alerts["Account deleted"].waitForExistence(timeout: 20),
                       "The gate account was not deleted; remove it by hand before release")
     }
+    @MainActor
+    private func fullyVisible(_ element: XCUIElement, in app: XCUIApplication) -> Bool {
+        guard element.exists && element.isHittable else { return false }
+        let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 4 : app.frame.minY + 24
+        let bar = app.tabBars.firstMatch
+        let bottom = bar.exists ? bar.frame.minY - 8 : app.frame.maxY - 24
+        return element.frame.minY >= top && element.frame.maxY <= bottom
+    }
+
+    @MainActor
+    private func reachSafely(_ element: XCUIElement, in app: XCUIApplication, strokes: Int) -> Bool {
+        for _ in 0..<strokes {
+            if fullyVisible(element, in: app) { return true }
+            let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 4 : app.frame.minY + 24
+            let scrollBack = element.exists && element.frame.minY < top
+            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.3 : 0.78))
+            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.78 : 0.3))
+            start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
+        }
+        return fullyVisible(element, in: app)
+    }
+
 }
