@@ -28,6 +28,9 @@ struct FieldNotesChapter: View {
     @Environment(PitchStore.self) private var store
     @Environment(ToastCenter.self) private var toasts
 
+    @State private var hiddenContent = HiddenCommunityContent.shared
+    @State private var failedReport: (noteID: String, reason: String)?
+    @State private var isReporting = false
     @State private var notesState: CommunityLoadState<[CommunityFieldNote]> = .idle
     @State private var identity: ContributorIdentityState = .signedOut
     @State private var viewerTried: Set<String> = []
@@ -216,6 +219,18 @@ struct FieldNotesChapter: View {
                 blockedLine(blocked).padding(.bottom, 16)
             }
 
+            if let failedReport, hiddenContent.hasPendingReport(failedReport.noteID, kind: .note) {
+                VStack(alignment: .leading, spacing: 8) {
+                    SiteFieldError(text: "Note hidden. Report did not send. Retry here or in Account > Safety.")
+                    Button("Retry report") {
+                        Task { try? await report(failedReport.noteID, reason: failedReport.reason) }
+                    }
+                    .buttonStyle(.site(.outline))
+                    .disabled(isReporting)
+                }
+                .padding(.bottom, 16)
+            }
+
             switch notesState {
             case .idle, .loading:
                 VStack(spacing: 16) {
@@ -228,17 +243,23 @@ struct FieldNotesChapter: View {
             case .empty:
                 emptyNotes
             case .loaded(let notes):
+                let visible = CommunityVisibility.visibleFieldNotes(
+                    notes, hiddenAuthorIDs: hiddenAuthorIDs, hiddenNoteIDs: hiddenContent.noteIDs
+                )
+                if visible.isEmpty { EmptyStateView(message: "No notes to show.") }
                 VStack(spacing: 16) {
-                    ForEach(notes) { note in
+                    ForEach(visible) { note in
                         NoteCard(
                             note: note,
                             isMine: CommunityVisibility.viewerIsAuthor(note.authorID, viewerID: auth.userID),
                             tried: viewerTried.contains(note.id),
                             helpful: viewerHelpful.contains(note.id),
                             blockable: note.authorID != nil,
+                            reportEnabled: !isReporting,
                             onTried: { Task { await toggle(note.id, kind: .tried) } },
                             onHelpful: { Task { await toggle(note.id, kind: .helpful) } },
                             onReport: { reason in try await report(note.id, reason: reason) },
+                            onHide: { hiddenContent.hide(note.id, kind: .note); toasts.show("Note hidden") },
                             onBlock: { Task { await block(note) } }
                         )
                     }
@@ -252,9 +273,13 @@ struct FieldNotesChapter: View {
     /// The count prints only once the notes are in, as the site's does.
     private var countLabel: String {
         switch notesState {
-        case .empty: "0 notes"
-        case .loaded(let notes): notes.count == 1 ? "1 note" : "\(notes.count) notes"
-        default: ""
+        case .empty: return "0 notes"
+        case .loaded(let notes):
+            let count = CommunityVisibility.visibleFieldNotes(
+                notes, hiddenAuthorIDs: hiddenAuthorIDs, hiddenNoteIDs: hiddenContent.noteIDs
+            ).count
+            return count == 1 ? "1 note" : "\(count) notes"
+        default: return ""
         }
     }
 
@@ -323,7 +348,7 @@ struct FieldNotesChapter: View {
             SiteSeparator().padding(.top, 12)
             (Text("\(entry.community.safetyNote) No abuse, no personal attacks, no off-topic spam, nothing aimed at minors. New field notes stay private until review. See a problem with a public note? Use ")
                 + Text("Report").foregroundStyle(PitchAtlasTheme.bone)
-                + Text(" on it; a note flagged by enough people is hidden automatically until it is checked."))
+                + Text(" on it. The note is hidden for you immediately and sent for review."))
                 .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
                 .foregroundStyle(PitchAtlasTheme.bone2)
                 .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
@@ -457,9 +482,24 @@ struct FieldNotesChapter: View {
     }
 
     private func report(_ noteID: String, reason: String) async throws {
-        _ = try await auth.ensureSessionForWrite()
-        try await service.reportFieldNote(id: noteID, reason: reason)
+        guard !isReporting else { throw CancellationError() }
+        let pending = hiddenContent.queueReport(noteID, kind: .note, reason: reason)
+        isReporting = true
+        defer { isReporting = false }
+        switch await hiddenContent.deliverReport(pending.id, using: auth) {
+        case .sent:
+            failedReport = nil
+            toasts.show("Note hidden. Report sent.")
+        case .failed:
+            failedReport = (noteID, reason)
+            toasts.show("Note hidden. Report did not send.", isFailure: true)
+            throw ReportDeliveryError.failed
+        case .alreadySending, .noPendingReport:
+            throw CancellationError()
+        }
     }
+
+    private enum ReportDeliveryError: Error { case failed }
 
     /// lib/community claimWithEmail: an account first (minted if need be), then
     /// the address. True when the email went out.
@@ -621,7 +661,7 @@ private struct BullpenCardPanel: View {
 // MARK: - The note form
 
 /// SubmitForm: "Log a field note" until it is opened, then the form. On iPhone
-/// the community guidelines and the 17+ confirmation sit at the top of the
+/// the Community Terms and EULA and the 18+ confirmation sit at the top of the
 /// opened form and filing waits on them.
 private struct FieldNoteForm: View {
     let pitchName: String
@@ -877,9 +917,11 @@ private struct NoteCard: View {
     let tried: Bool
     let helpful: Bool
     let blockable: Bool
+    let reportEnabled: Bool
     let onTried: () -> Void
     let onHelpful: () -> Void
     let onReport: (String) async throws -> Void
+    let onHide: () -> Void
     let onBlock: () -> Void
 
     private enum ReportPhase: Equatable { case idle, choosing, sending, done, failed }
@@ -1002,6 +1044,11 @@ private struct NoteCard: View {
                 mark(helpful ? "✓ Helpful" : "Helpful", count: note.helpfulCount, isOn: helpful,
                      name: "Helpful", action: onHelpful)
             }
+            Button(action: onHide) {
+                siteButtonLabel("Hide note", size: 10, trackingEm: 0.14, uppercase: true)
+            }
+            .buttonStyle(.site(.ghost))
+            .accessibilityLabel("Hide this note")
             flag
         }
     }
@@ -1031,6 +1078,7 @@ private struct NoteCard: View {
             }
             .buttonStyle(.site(.ghost))
             .accessibilityLabel("Report this note")
+            .disabled(!reportEnabled)
         case .sending:
             status("Flagging…")
         case .done:
@@ -1054,6 +1102,7 @@ private struct NoteCard: View {
                             .foregroundStyle(PitchAtlasTheme.bone2)
                     }
                     .buttonStyle(.site(.outline))
+                    .disabled(!reportEnabled)
                 }
                 // The App Store's rule for user content: a reader can also stop
                 // seeing a contributor altogether.

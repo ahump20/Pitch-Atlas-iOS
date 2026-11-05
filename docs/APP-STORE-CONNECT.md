@@ -1,125 +1,8 @@
 # Pitch Atlas App Store Connect Pack
 
-Status: 2026-10-30, `1.2.0 (13)` is `WAITING_FOR_REVIEW` for `com.pitchatlas.app`,
-set to release after approval (record:
-`docs/review-evidence/2026-10-30-build-13-submitted.md`). `1.2.0 (12)` was
-withdrawn before review. The dated updates below are history.
+Current work: candidate `1.2.0 (14)` for `com.pitchatlas.app`, addressing the November 2 rejection of submission `0b7dce83-8e94-415f-9d89-404ba3c941ab` (build 13). Build 14 upload, native acceptance, final metadata readback, and resubmission are pending. Historical waiting-for-review states below are not current status.
 
-Update, 2026-07-07: Apple rejected the July 3 submission under Guideline 2.3
-because review could not locate the anonymous Community posting feature that the
-metadata describes. Root cause: the feature was present, but the submitted App
-Review notes only said "open a pitch detail and scroll to Community"; the panel
-sits several long swipes down the pitch-detail page, and the first visible state
-can be an honest empty state. XcodeBuildMCP rechecked the path on the iPhone 17
-Pro simulator: launch, tap the featured `00 Four-seam` specimen, swipe up about
-four long swipes, and the `Field Notes | Discussion` Community control appears
-with the "no account needed" empty state. App Store Review notes were patched to
-start with that exact Guideline 2.3 resolution path (`3001` characters), the
-rejected review item was marked `resolved`, and review submission
-`7f3ac406-4831-42b9-b7be-b284a494a781` was resubmitted at
-`2026-07-07T09:02:43.862Z`. Final App Store Connect readback reports `1.1.0` as
-`WAITING_FOR_REVIEW`; build `11`
-(`04554def-bc16-4176-bfbf-396979f7d496`) remains `VALID` /
-`APP_STORE_ELIGIBLE`. During the API trace, a new empty review submission
-`c9a20d43-1d03-40a2-aa23-c3ae24ea457e` was created but no item was attached to
-it; it is not the active submitted review.
-
-Update, 2026-07-03 evening: Austin approved briefly releasing the older approved
-`1.0.1 (10)` build to unlock the stuck App Store version slot. App Store Connect
-accepted the manual release request for `1.0.1` (`201`) and then reported
-`1.0.1` as `READY_FOR_SALE`. A new `1.1.0` App Store version was created
-(`db6cb47d-3547-4acd-91ba-d41857b65c67`), build `11`
-(`04554def-bc16-4176-bfbf-396979f7d496`) was attached, the `en-US` store copy
-and App Review notes were updated, the Media Manager `APP_IPHONE_67` screenshot
-set was replaced with five complete build-11 screenshots at `1320x2868`, and
-review submission `7f3ac406-4831-42b9-b7be-b284a494a781` was submitted at
-`2026-07-03T22:50:48.918Z`. Final App Store Connect readback reported `1.1.0`
-as `WAITING_FOR_REVIEW`; `1.0.1` remains `READY_FOR_SALE` while Apple reviews
-the update.
-
-Build `11` local proof: XcodeBuildMCP built and launched the app on the
-`Pitch Atlas 6.9 Screenshot iPhone` simulator. `test_sim` passed `65` tests,
-`0` failures. Fresh 6.9-inch screenshots live in
-`docs/review-evidence/2026-07-03-build-11-screens/` at `1320x2868`. App Store
-Connect now has one `APP_IPHONE_67` screenshot set for `1.1.0` with these five
-complete build-11 images: `01-atlas.png`, `02-pitch-detail.png`,
-`03-grips.png`, `04-index.png`, and `05-sources.png`. No App Preview videos are
-present.
-
-Earlier blocker, now resolved: before `1.0.1` was manually released, uploading
-build-11 screenshots into the old live `1.0.1` Media Manager set returned `409
-ENTITY_ERROR.ATTRIBUTE.INVALID.INVALID_STATE` on `appScreenshots`. No existing
-screenshot was deleted in that failed write. After `1.1.0` was created, the
-new version's inherited old screenshots were replaced safely: five build-11
-screenshots uploaded to `COMPLETE`, then the inherited old five were deleted
-from the `1.1.0` set.
-
-Supabase production proof: the web repo is on `a703784`
-(`fix(db): repair the community grants-hardening fallout (field notes +
-discussion media) (#151)`), and the live Supabase migration list includes
-`20260703164350_field_note_rank_trigger_security` and
-`20260703164408_discussion_media_read_policy_grant`.
-
-Chrome UI proof note: the Codex Chrome Extension is installed and enabled in
-Chrome `Profile 1`, Chrome is running, and the native-host manifest is correct,
-but the browser-client backend still returned no available Chrome backend after
-retry. App Store Connect UI was therefore not inspected through Chrome in this
-pass, per the Chrome plugin rule against substituting another browser driver for
-account work.
-
-Update, 2026-07-03: the pre-archive release gate (now a real XCUITest — the
-`PitchAtlasReleaseGate` scheme, never run by CI) caught and fixed two 1.1.0
-write-path bugs against production before archive: the delete-account call sent
-a stale cached token (401 after an overnight session; fixed by refreshing the
-session through the SDK), and community insert payloads carried a client-minted
-`id` that sits outside the column-scoped INSERT grants, denying the whole
-insert (fixed by mirroring the web contract — server-generated id, read back
-via RETURNING; pinned by a payload-shape unit test). Field-note posting had
-been gated on a server-side grant fix from the web repo; PR #151 is now on web
-`main` and its two July 3 migrations are live in Supabase production.
-
-Update, 2026-07-02: version `1.1.0` build `11` prepared on `release/1.1.0` — the
-"Specimen Comes Alive" wave: the native 3D specimen ball (SceneKit, seam-informed
-schematic label preserved), anonymous-first community with a claimable record,
-the field-note Tried this / Helpful loop with live ranking, teaching clips
-(poster-gated remote embeds), the dormant archival-film layer, and the launch
-line corrected to the identity line. Ship path: local signed archive (the same
-path build 10 shipped through) → TestFlight internal. Superseded 2026-07-03:
-the old `1.0.1 (10)` slot was manually released with Austin's approval, then
-`1.1.0 (11)` was created and submitted for review. The description/truth-table
-corrections for anonymous-first below were applied to the `1.1.0` App Store
-version before submission.
-
-Update, 2026-06-25: build `1.0.1 (10)` was uploaded from the local signed
-archive after the tab-bar gutter fix and App Store Connect reports it as
-`VALID` (`a953bb8c-e419-40e2-a339-b02830b966df`, uploaded
-`2026-06-25T21:59:10-07:00`). It is assigned to the internal TestFlight group
-`Pitch Atlas Internal Testers`, and the all-builds internal group should also
-see it.
-
-Update, 2026-06-26: App Store Connect submission was moved from build `9` to
-build `10`. The previous waiting review submission was removed, build `10` was
-attached to version `1.0.1`, reviewer notes were refreshed for build `10`, and
-new review submission `eb1c9764-d7af-4ce8-8896-938e7f25fb96` was submitted at
-`2026-06-26T08:53:05.618Z`.
-
-Historical: build `1.0.1 (10)` was the submitted release target before the
-`1.1.0` update. App Store Connect reported version `1.0` as previously
-approved/closed, rejected `1.0.0 (5)`, and accepted build `6` on 2026-06-24
-before the final visual/loading pass. Build `10` superseded builds `6`, `7`,
-`8`, and `9`; build `11` now supersedes build `10` for the next update.
-
-Verified 2026-06-26 through the App Store Connect API:
-
-- Build `10`: `VALID`, uploaded `2026-06-25T21:59:10-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`, build ID `a953bb8c-e419-40e2-a339-b02830b966df`.
-- App version `1.0.1`: was `WAITING_FOR_REVIEW` with attached build `10` during the 2026-06-26 submission; it is now `READY_FOR_SALE`.
-- Review submission `eb1c9764-d7af-4ce8-8896-938e7f25fb96`: `WAITING_FOR_REVIEW`, submitted `2026-06-26T08:53:05.618Z`.
-- Internal TestFlight: build `10` is in `Pitch Atlas Internal Testers`, and the all-builds internal group should also see it.
-- External public-link TestFlight group was not changed.
-- Chrome UI verification was unavailable from Codex because the Chrome extension backend did not respond, so ASC state was verified through the official API instead.
-- This run did not drive a physical TestFlight install on a tester device from this shell.
-
-## App Identity
+## App identity and release source
 
 - App name: `Pitch Atlas`
 - Bundle ID: `com.pitchatlas.app`
@@ -127,28 +10,38 @@ Verified 2026-06-26 through the App Store Connect API:
 - Primary category: `Sports`
 - Secondary category: `Education`
 - Pricing: `Free`
-- Platform: `iOS`
-- Device family: `iPhone`
-- Version: `1.1.0`
-- Build: `11`
+- Platform/device family: `iOS / iPhone`
+- Candidate version/build: `1.2.0 (14)`
 
-## Canonical Xcode Project
+Archive from the release checkout's generated `PitchAtlas.xcodeproj` and record its commit, archive identity, signing result, and upload receipt. The old local skeleton using `com.pitchatlas.local-skeleton` is not a release source.
 
-Archive and upload from `PitchAtlas.xcodeproj` in the main `Pitch-Atlas-iOS` repo/worktree only. The local skeleton at `/Users/AustinHumphrey/Pitch-Atlas-iOS-local-skeleton-20260608-221355/Pitch Atlas/Pitch Atlas.xcodeproj` is a prototype and is intentionally retargeted to `com.pitchatlas.local-skeleton` so it cannot collide with the production App Store bundle.
+## November remediation
 
-## Subtitle
+Implemented candidate changes:
+
+- Versioned Community Terms and EULA acceptance plus an 18+ confirmation on all contribution paths, including public-post suggestions.
+- Immediate local Hide and Report hiding on posts, replies, field notes, and media.
+- Persistent failed-report queue with retries in Account > Safety.
+- Direct Contact developer form naming Austin Humphrey, reachable from Account > Safety and Support, with an optional reply email and server-confirmed delivery.
+- Pending images remain private until approval.
+- Native terms describe automated public removal and contributor restriction within 24 hours, with permanent removal/ejection for confirmed violations; they do not promise staffed human review within 24 hours.
+- Customer Support privacy disclosure added.
+
+Production verification: the Apple Auth provider is enabled and its public settings endpoint returned HTTP 200 with `external.apple=true`. The moderation migration and contact RPC are deployed, production transaction checks completed, and a real deadline-sweep cron run succeeded at `2026-11-05 04:20:00 UTC`. These are backend results; native Apple sign-in and other candidate acceptance checks are still pending.
+
+## Store copy
+
+Subtitle:
 
 `A field manual for pitch craft`
 
-## Promotional Text
+Promotional text, retained from the 1.2.0 listing:
 
 `The pitch, in your hand: grips, seams and sources, now with a softball wing and a slow-pitch Flight Lab that puts the zone at your height.`
 
-138 characters (1.2.0).
+### What's New — 1.2.0
 
-## What's New — 1.2.0
-
-Submitted 2026-10-30, 941 characters, read back from App Store Connect. No spin, speed or break figures.
+The October 30 listing copy is retained below as historical submitted text. Any revision for build 14 must be read back from App Store Connect after saving.
 
 ```text
 1.2.0 brings the app level with pitch-atlas.com.
@@ -166,126 +59,104 @@ Discussion posts now file under a handle you type, never your email. You can als
 And the screens hold together at the largest accessibility text sizes.
 ```
 
-## What's New — 1.1.0
-
-`The specimen comes alive: an interactive 3D ball on every filed pitch — warm leather, raised seam, and the fingertip pressure marks of the grip, drawn from the same sourced geometry as the schematic. Drag to turn it; the honest 2D schematic remains for Reduce Motion. Community is now anonymous-first: file a note with no account, then claim your record with Apple or email whenever you want it to travel. Field notes gained the Tried this / Helpful loop with live ranking, filed specimens gained teaching clips, and the launch screen now carries the line the product lives by: Preserving & Progressing the Art of the Pitch.`
-
-## Description
+### Description
 
 Pitch Atlas is a native field manual for the craft of pitching. It explains how pitches are gripped, how they move, who made them famous, and how solid each claim is.
 
-The app is built around a simple rule: sourced, not corrected. A measured figure, a pitcher quote, a coach observation, and an unverified claim do not wear the same label. Every pitch read shows its evidence tier so the gap stays visible.
+A measured figure, a pitcher quote, a coach observation, and an unverified claim carry different evidence labels. Each pitch shows its sources.
 
 Inside the app:
 
 - A searchable pitch index, from four-seams and sliders to lost pitches and banned doctored balls.
-- Native seam specimens with sourced motion cues and seam-informed schematics.
+- Native seam specimens and grip schematics.
 - A grip library built from first-party grip photography and first-person notes.
-- Craftsmen and lost-pitches wings for the pitchers, pitch names, and techniques that shaped the language.
-- A sources browser so the reader can see where each claim came from.
-- An optional, free community layer: post field notes and discussion, report content, and block contributors with no account setup — an anonymous record is created on your first contribution, and you can claim it with Sign in with Apple or email to keep it across devices and attach still images.
+- Craftsmen and lost-pitches wings for the pitchers and techniques that shaped the game.
+- A source browser.
+- Optional community field notes and discussion for contributors 18 or older who accept the Community Terms and EULA. An anonymous record is created on the first write; Apple or email sign-in can claim it across devices. Still-image attachments require a claimed account.
+- Hide, report, block, and direct developer contact controls.
 
-The full reference library is bundled inside the app, so it works on first launch without an account and without a network connection. Community participation needs no sign-in: posting, reporting, and blocking work anonymously. Sign-in exists only to claim your record across devices and to attach images.
+The reference library is bundled and works on first launch without an account or network connection. Reporting, blocking, and developer contact do not require a claimed account.
 
-## Keywords
+This is candidate copy, not a claim that the current listing already contains it.
+
+### Keywords
 
 `baseball,pitching,grips,pitches,spin,curveball,slider,changeup,fastball,sources`
 
-79 characters.
+### URLs
 
-## URLs
+- Marketing: https://pitch-atlas.com/
+- Support: https://pitch-atlas.com/support
+- Privacy: https://pitch-atlas.com/privacy
 
-- Marketing URL: `https://pitch-atlas.com/`
-- Support URL: `https://pitch-atlas.com/support`
-- Privacy URL: `https://pitch-atlas.com/privacy`
+Verify current page content and availability before resubmission; old HTTP checks do not establish current publication.
 
-Verified 2026-06-24: support and privacy routes return HTTP 200 through Cloudflare.
+## App privacy
 
-## App Privacy
+Do not set Data Not Collected. Match `PitchAtlas/Resources/PrivacyInfo.xcprivacy`.
 
-Do not set `Data Not Collected`. Match `PitchAtlas/Resources/PrivacyInfo.xcprivacy`.
+All listed data is linked to the user, used for App Functionality, and not used for tracking:
 
-Collected data, all linked to identity, none used for tracking, all for App Functionality:
+- Email Address: account access and optional support reply address.
+- User ID: contributor identifier, including anonymous IDs.
+- Other User Content: field notes, discussion, replies, suggestions, and reports.
+- Customer Support: private messages voluntarily sent through Contact developer.
+- Photos or Videos: still-image attachments; no native video upload.
 
-- Email Address: account sign-in.
-- User ID: the Supabase account identifier.
-- Other User-Generated Content: field notes, discussion posts, reports.
-- Photos or Videos: still images the user chooses to attach.
+Current App Store Connect label publication/readback is pending. Opening Contact developer sends no data; submission sends the message, optional reply email, and contributor ID.
 
-Truth table for this binary:
+Other binary facts:
 
-- Optional account, anonymous-first. Community posting, reporting, and blocking work with no sign-in (an anonymous account is created server-side on the first write). Sign in with Apple / email exists to claim the record; image uploads require a claimed account.
-- Sign in with Apple is supported.
-- No analytics SDK.
-- No advertising SDK.
-- No tracking.
-- No Firebase, Appwrite, CloudKit, push notifications, camera capture, or video upload.
-- One WKWebView exists: the teaching-clip embed on a specimen page. It loads nothing until the poster is tapped, plays a remote TikTok embed (never rehosted), and is not a web wrapper around app content.
-- Device motion is used only on-device for the foil card effect and the specimen ball's resting parallax, and stops when Reduce Motion is enabled.
+- No analytics or advertising SDK, tracking, ATT prompt, push notifications, or camera capture.
+- Apple/email sign-in is optional for reference access and anonymous text participation.
+- Images require a claimed account and remain private until approved.
+- TikTok teaching clips load through one poster-gated WKWebView; the app is otherwise native and does not rehost those clips.
+- Device motion is used only on-device and respects Reduce Motion.
 
-## Age Rating
+## Age rating
 
-Expected posture: answer the questionnaire honestly and let App Store Connect compute the rating. The reference content is baseball instruction; community contribution is gated by guidelines acceptance and a 17+ posting/upload confirmation (sign-in is optional — contribution is anonymous-first).
+The candidate requires 18+ confirmation and updated Community Terms and EULA acceptance for posting, replying, field notes, public-post suggestions, and image uploads. Reporting, blocking, and contacting the developer remain available without contribution consent.
 
-- User-generated content: yes.
-- Posting, reporting, and blocking work anonymously after guidelines and 17+
-  confirmation. Image uploads require a claimed account.
-- Reporting, blocking, guidelines, image terms, and in-app account deletion are present.
-- No gambling, unrestricted web access, camera capture, video upload, or medical treatment advice.
-- Questions added by Apple in 2026 (answered 2026-10-30): Social Media no
-  (per-pitch threads, no feed), Social Media Disabled for Users Under 13 no
-  (no social feature, no Declared Age Range API call), Messaging and Chat no,
-  Advertising no. Calculated rating 9+, no override.
+Apple requested an 18+ rating for this submission. Set and verify the App Store age-rating override to 18+ in addition to the in-app contribution gate. Answer the questionnaire from actual features, including user-generated content, safety controls, and age assurance. The old October 30 calculated rating is not current validation; record the final questionnaire and 18+ rating readback before submission.
 
-## Export Compliance
+## Export compliance
 
-Answer: uses only exempt encryption through standard HTTPS/ATS. `ITSAppUsesNonExemptEncryption` is false in the generated Info.plist.
+The app uses standard HTTPS/ATS and `ITSAppUsesNonExemptEncryption=false`. Confirm the generated archive and App Store Connect answer agree.
 
-## App Review Notes
+## Review notes and response
 
-Paste from `docs/APP-REVIEW-NOTES.md` into the version's review details. For `1.2.0 (13)` it was written by API on 2026-10-30 (2688 characters; the build-12 text with its first line naming build 13). The build-12 entry below is history: that build was withdrawn before review.
+Candidate reviewer paths and evidence are in `docs/APP-REVIEW-NOTES.md`. An unsent response draft is in the investigation outputs as `review-response-build14-draft.md`. Complete its runtime and upload evidence placeholders before sending.
 
-If reviewer credentials are required, provide a Supabase test account in the App Store Connect reviewer credentials fields only.
+No reviewer account is required for browsing, anonymous text participation, reporting, blocking, or Contact developer. If Apple needs a claimed test account for image review, use the private App Store Connect reviewer-credentials fields.
 
-## Screenshots To Capture
+## Release gates for build 14
 
-Required iPhone set:
+| Gate | Status |
+| --- | --- |
+| Native source parsing, privacy plist, diff whitespace | Passed for the safety changes. |
+| New safety unit tests | 11 added; runtime result pending. |
+| Production Apple provider | Enabled; HTTP 200 settings readback confirms `external.apple=true`. |
+| Production moderation/contact | Deployed; backend checks and actual scheduled execution verified. |
+| Native Apple sign-in/claim | Pending. |
+| Native contribution, hide/report retry, contact, block, image, deletion paths | Pending. |
+| Final archive/signing and build identity | Pending. |
+| Upload receipt and App Store Connect processing/validity | Pending. |
+| Build 14 attached to version 1.2.0 | Pending. |
+| Privacy labels, age rating, reviewer notes, screenshots/preview readback | Pending. |
+| Review response sent and new submission status | Pending. |
 
-- Atlas home: card-style specimen, `Pitch Atlas`, `Sourced, not corrected`, and tab bar.
-- Pitch Index: search and family filters.
-- Pitch detail: native seam specimen, source badges, grip/coaching sections, and community surface.
-- Grip Library: first-party grip photography and `not tracked data` framing.
-- Sources: provenance/source browser.
-- Account and Safety: sign-in, safety notes, reports/blocks/account deletion path.
+Capture current rendered screens before changing screenshots. Existing listing media is historical until confirmed representative of the candidate.
 
-For every final screenshot report, verify the rendered state first, then include annotated design/UX critique with at least 10 high-level fixes or improvements per image.
+## Historical evidence
 
-## Release Gates
+Preserve dated records under `docs/review-evidence/`:
 
-- Production Supabase project `cloeoulvrrfcbitrjpso` exposes `block_user`, `unblock_user`, and `my_blocked_users` to authenticated clients.
-- Clean 6.9-inch simulator testing passed: 65 tests, 0 failures. App Store Connect build `11` resolves to pre-release version `1.1.0`, build `11`, min OS `17.0`, `APP_STORE_ELIGIBLE`, and `ITSAppUsesNonExemptEncryption=false`.
-- App Store Connect build `11` is `VALID`; review submission
-  `7f3ac406-4831-42b9-b7be-b284a494a781` is `WAITING_FOR_REVIEW` after the
-  2026-07-07 Guideline 2.3 notes fix.
-- Internal TestFlight has build `11` in `Pitch Atlas Internal`; `Pitch Atlas Internal Testers` and the external public-link group were not changed.
-- The new screenshots were uploaded to the `1.1.0` App Store version's
-  `APP_IPHONE_67` set on 2026-07-03.
-- `1.2.0 (12)`: Xcode Cloud run 39 on `ac72447` succeeded; build `12` `VALID`;
-  ten 1320 × 2868 screenshots and the first app preview on the `1.2.0` version;
-  review submission `5fe9bf01-253c-40c9-986e-28aa98d445a1` `WAITING_FOR_REVIEW`
-  since 2026-10-30. Record: `docs/review-evidence/2026-10-30-build-12-submitted.md`.
-  Withdrawn the same day before review (`DEVELOPER_REJECTED`): it could not file
-  an anonymous post in production.
-- `1.2.0 (13)`: GitHub CI and Xcode Cloud run 42 on `35c9584` succeeded; build
-  `13` `VALID`; the same listing, screenshots and preview; production release
-  gate filed a field note, a post and a reply, then deleted its account; review
-  submission `0b7dce83-8e94-415f-9d89-404ba3c941ab` `WAITING_FOR_REVIEW` since
-  2026-10-30T19:49Z, release after approval. Record:
-  `docs/review-evidence/2026-10-30-build-13-submitted.md`.
-- The app preview is re-filmed with `PA_SHOTS=preview` and
-  `AppPreviewUITests.testPreviewTour` under `simctl io recordVideo`; previews and
-  screenshots are per version, so each release re-checks them.
+- Build 13: October 30 archive and submission proof at `2026-10-30-build-13-submitted.md`; subsequently rejected in the November 2 notice referenced above.
+- Build 12: October 30 submission proof at `2026-10-30-build-12-submitted.md`; withdrawn before review after the production anonymous-post failure.
+- Build 11: July review screenshots at `2026-07-03-build-11-screens/`; historical reviewer-path evidence.
 
-## Internal Brand Guardrail
+Old test totals, uploads, and WAITING_FOR_REVIEW readbacks certify only their dated builds. They must not be reused as final build-14 evidence.
 
-Do not use Blaze Sports Intel, BSI marks, BSI copy, BSI account language, or BSI support surfaces for this submission. Pitch Atlas is its own app and product.
+## Product boundary
+
+Pitch Atlas is its own app. Do not introduce outside brands, marks, copy, accounts, or support surfaces into this submission.

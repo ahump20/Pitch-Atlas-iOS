@@ -1,73 +1,83 @@
 # Pitch Atlas iOS Compliance Contract
 
-This file describes the submitted binary. Do not keep competing offline/no-login claims in this repo.
+This document describes candidate `1.2.0 (14)` and separates implemented behavior from release evidence. The candidate has not yet been established as uploaded or resubmitted.
 
-## Scope
+## Scope and identity
 
-Pitch Atlas v1 is a native SwiftUI iPhone app with bundled reference content and a Supabase-backed community layer.
+Pitch Atlas is a native SwiftUI iPhone app with a bundled reference manual and a Supabase-backed community layer.
 
-- Logged-out users can browse the bundled reference manual. Reads never create an account.
-- Anonymous-first since 1.1.0: filing a field note, posting, replying, reporting, and blocking need no sign-in. The first write mints an anonymous account (`AuthSessionStore.ensureSessionForWrite()`, the app's only mint site); Sign in with Apple or an email claim upgrades it in place.
-- Image uploads require a claimed account (server policy). Account deletion works for anonymous and claimed accounts alike.
-- Since 1.2.0 a reader can suggest a public pitching post (X, Instagram, TikTok or YouTube URL plus a 10–300 character reason) from the "Know a pitching post that belongs here?" fold on Atlas, a pitch page or a craftsman page. Sending one is a write: it mints an anonymous account the same way and inserts one row into `external_content_suggestions`, a private review queue that readers cannot read and that never publishes on its own. The fold carries no guidelines or 17+ gate, because nothing in it is shown to other users; whether to gate it anyway is an open owner decision.
-- Supabase project `cloeoulvrrfcbitrjpso` is reused. Do not create a second project.
-- `ahump20/Pitch-Atlas` remains the Supabase migration/function source of truth.
-- iOS uploads are image-only from PhotosPicker. No video upload, GIF upload, live camera capture, push notifications, Firebase, Appwrite, CloudKit, or any outside backend. A clip filed on the website plays in the system video player, muted until the viewer turns it up; the app never uploads one.
-- Teaching clips are remote embeds only: TikTok's official player loads in the app's single `WKWebView` behind a poster tap, credited on-screen, with an outbound link to the original post. No third-party media bytes ship in the bundle — embed-or-link, never rehost (rights record: web repo `docs/MEDIA-LEDGER.md`, rows T1–T3).
+- Reading needs no account and does not create one.
+- Posting field notes, discussion posts, replies, and public-post suggestions requires the versioned Community Terms and EULA plus confirmation that the contributor is 18 or older. Old consent does not satisfy the new gate.
+- The first write creates an anonymous contributor record through `AuthSessionStore.ensureSessionForWrite()`. Apple or email sign-in can claim that record. Reporting, blocking, and contacting the developer do not require contribution consent or a claimed account.
+- Image uploads require a claimed account, contribution consent, and image upload terms. The backend enforces claimed-account upload access. Images remain private until approved.
+- Public-post suggestions are private review submissions and do not publish automatically. The suggestion form now includes the same terms and 18+ gate.
+- Account deletion works for anonymous and claimed accounts through the JWT-protected `delete-account` Edge Function.
+- Use production Supabase project `cloeoulvrrfcbitrjpso`; `ahump20/Pitch-Atlas` owns its migration and function source.
+- iOS uploads are still images from PhotosPicker. No camera capture, video/GIF upload, push notifications, Firebase, Appwrite, or CloudKit is present.
+- Teaching clips use TikTok's official player behind a poster tap in the app's single WKWebView, with credit and an outbound original-post link. They are not bundled, downloaded, or rehosted.
 
-## App Review Safety
+## Community safety
 
-User content triggers Apple Guideline 1.2 obligations. The app must ship with:
+The candidate implements these Guideline 1.2 controls:
 
-- community guidelines acceptance before posting
-- 17+ confirmation before posting or uploading
-- media terms before image upload
-- report actions on notes/posts
-- block/unblock support
-- support contact link
-- in-app account deletion backed by the `delete-account` Edge Function
+- Explicit zero tolerance for objectionable content and abusive users in the Community Terms and EULA, linked to Apple's Standard EULA.
+- Versioned consent and 18+ confirmation before every contribution path.
+- Server-side banned-term filtering for submitted text and approval before image publication.
+- Hide and Report on posts, replies, field notes, and attached media. Hide is immediate and persisted locally, independent of authentication or network availability.
+- Report hides first and saves a pending report before network delivery. Failed reports survive navigation and relaunch; Account > Safety exposes retries. Only confirmed server acceptance clears a pending report.
+- Contributor block/unblock, bidirectional content filtering, and restrictions on direct replies across blocked connections.
+- Contact developer in Account > Safety, Support, and the Community Terms. The form identifies Austin Humphrey, accepts an optional reply address, and shows success only after a server receipt. Restricted existing identities may still contact the developer.
+- Automated moderation safeguards remove reported content from public view and restrict contributors before the 24-hour deadline. Moderator-confirmed violations lead to permanent removal and ejection. No staffed human-review guarantee is claimed.
 
-The backend now has `blocked_users`, blocked-content filtering, narrowed report grants, and a JWT-protected `delete-account` function. Remaining Supabase advisor warnings for public community reads are intentional only where visible community content is public; document any accepted warning before submission.
+Production migration `app_review_community_moderation` (source timestamp `20261105032000`) is deployed. The `pitch-atlas-community-review-deadlines` cron runs every 10 minutes, processing unresolved reports aged 22 hours. An actual scheduled run succeeded at `2026-11-05 04:20:00 UTC`. That proves a successful execution; continuing operation must still be monitored.
 
 ## Privacy
 
-App Store privacy labels must not say “Data Not Collected.”
+App Store privacy labels must not say Data Not Collected.
 
-Expected labels for this binary:
+| Data | Purpose and handling |
+| --- | --- |
+| Email Address | Account access and an optional reply address submitted through Contact developer. |
+| User ID | Contributor identity, including anonymous IDs used for community safety and support. |
+| Other User Content | Field notes, discussion posts, replies, suggestions, and reports. |
+| Customer Support | Private messages submitted to the developer for support and safety. |
+| Photos or Videos | Still images selected by the user; no native video upload. |
 
-- Contact Info: Email Address
-- Identifiers: User ID
-- User Content: Other User Content
-- Photos or Videos: Photos
+All are linked to the user and used for App Functionality. None is used for tracking. There is no ATT prompt, advertising SDK, or analytics SDK. Contact information is sent only when the user submits the form. Account deletion clears the support sender's contributor-ID link, but the private message and optional reply email remain; there is no automatic contact-retention deadline or deletion job. The privacy policy discloses this and directs access/deletion requests to Contact developer.
 
-All are linked to the user and used for app functionality/community safety. Tracking is false. There is no ATT prompt.
+`PrivacyInfo.xcprivacy` includes Customer Support and the UserDefaults required-reason declaration. UserDefaults stores versioned consent, device-local hidden-content preferences, and unsent reports retained for retry. The draft privacy policy is `docs/PRIVACY-POLICY.md`; production publication and App Store Connect label readback require separate evidence.
 
-`PrivacyInfo.xcprivacy` declares the same data types and the UserDefaults required-reason API used for local community acceptance flags.
+## Verified backend evidence
 
-## Backend Release Gate
+As of 2026-11-05 UTC:
 
-Verify before submission:
+- Production Apple provider is enabled; its public settings endpoint returned HTTP 200 with `external.apple=true`.
+- Production moderation migration deployed; explicit post, note, and media report fixtures passed local and hosted rollback checks, and a real cron execution succeeded as recorded above.
+- `submit_safety_contact(p_message, p_reply_email)` accepted a private message, returned a UUID receipt, deduplicated an identical retry within 10 minutes, enforced the five-messages-per-hour limit, and allowed an existing restricted sender.
+- Pending images cannot be publicly read or signed for playback before approval.
 
-- Supabase project `cloeoulvrrfcbitrjpso` is active.
-- iOS community RPCs are present: `block_user`, `unblock_user`, and `my_blocked_users`.
-- Field notes use the live enum values and reject invalid rows.
-- Discussion media can upload, insert metadata, sign for readback, report, and stop serving after hide/delete.
-- Blocking hides content both ways and prevents direct replies.
-- `delete-account` Edge Function is active with `verify_jwt = true`.
-- `public.is_admin()` is not executable by anon/authenticated roles.
+Evidence: investigation outputs `backend-moderation-verification.md` and `moderation-operator-runbook.md`. Backend checks do not prove native interaction or Apple authorization completion.
 
-Open checks:
+## Remaining release gates
 
-- Confirm the `external_content_suggestions` insert grant/policy is live for the anonymous role (a read with the publishable key returns 42501, which proves the table exists and is private, not that inserts work). File one suggestion from a TestFlight build, or read the policy in the Supabase console. Automated tests and screenshot runs never submit this form.
-- Recheck Supabase GitHub branch/migration health from the web/backend repo. Prior release notes recorded `MIGRATIONS_FAILED`; do not rely on automatic Supabase branch/deploy behavior if the live console still reports that.
-- Review security advisors for intentionally public community reads (`field_notes`, `discussion_posts`, `discussion_media`, `profiles`) and signed-in own-state tables before submission.
-- Leaked password protection remains disabled. If password sign-in is enabled in Supabase Auth, turn it on. If only Apple and magic link are enabled, document that no password credential is collected.
+These remain pending until separately verified on the final candidate:
 
-## App Store Metadata
+- Native Apple sign-in and anonymous-record claim, including failure/cancellation handling.
+- Runtime unit tests and fresh-install/upgrade UI checks.
+- New 18+ consent on notes, posts, replies, suggestions, and image uploads.
+- Offline hide/report behavior and retry after navigation/relaunch from Account > Safety.
+- Native contact success, failure, optional reply email, and restricted-account access.
+- Native image upload, pending state, and approved-media readback.
+- Posting/replying, block/unblock, and anonymous/claimed account deletion.
+- Signed archive, App Store Connect processing/validity, and attached build identity.
+- Current privacy labels, age questionnaire/override, support/privacy pages, review notes, and submission status read back from App Store Connect.
+
+## App Store metadata
 
 - Bundle ID: `com.pitchatlas.app`
 - Display name: `Pitch Atlas`
-- Privacy URL: `https://pitch-atlas.com/privacy`
-- Support URL: `https://pitch-atlas.com/support`
-- Current screenshot target: 6.9-inch iPhone screenshots
-- Age rating answers must reflect user-generated content and the 17+ community gate.
+- Candidate version/build: `1.2.0 (14)`
+- Privacy URL: https://pitch-atlas.com/privacy
+- Support URL: https://pitch-atlas.com/support
+- Screenshots: 6.9-inch iPhone target
+- Community contribution age: 18+. Apple also requested an App Store age-rating override of 18+; verify its saved readback separately from the in-app gate.
