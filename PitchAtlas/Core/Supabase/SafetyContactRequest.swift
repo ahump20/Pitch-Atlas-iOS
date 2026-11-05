@@ -25,14 +25,34 @@ struct SafetyContactRequest: Encodable {
     static func validated(message: String, replyEmail: String) throws -> Self {
         let message = message.trimmingCharacters(in: .whitespacesAndNewlines)
         let email = replyEmail.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard (messageMinimum...messageLimit).contains(message.count) else { throw ValidationError.messageLength }
+        guard hasValidMessageLength(message) else { throw ValidationError.messageLength }
         if !email.isEmpty {
-            guard email.count <= 254,
+            guard email.unicodeScalars.count <= 254,
                   email.range(of: #"^[^\s@]+@[^\s@]+\.[^\s@]+$"#, options: .regularExpression) != nil else {
                 throw ValidationError.email
             }
         }
         return Self(message: message, replyEmail: email.isEmpty ? nil : email)
+    }
+
+    /// PostgreSQL char_length counts Unicode scalars, not Swift grapheme clusters.
+    static func hasValidMessageLength(_ text: String) -> Bool {
+        let message = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        return (messageMinimum...messageLimit).contains(message.unicodeScalars.count)
+    }
+
+    /// Keep complete visible characters while enforcing the server's scalar cap.
+    static func boundedMessage(_ text: String) -> String {
+        guard text.unicodeScalars.count > messageLimit else { return text }
+        var scalarCount = 0
+        var end = text.startIndex
+        for character in text {
+            let nextCount = scalarCount + character.unicodeScalars.count
+            guard nextCount <= messageLimit else { break }
+            scalarCount = nextCount
+            end = text.index(after: end)
+        }
+        return String(text[..<end])
     }
 
     static func userMessage(for error: Error) -> String {

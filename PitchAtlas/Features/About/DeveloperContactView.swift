@@ -31,9 +31,8 @@ struct DeveloperContactView: View {
                                     .pitchTextFieldSurface(minHeight: 150)
                                     .accessibilityLabel("Message to developer")
                                     .onChange(of: message) { _, text in
-                                        if text.count > SafetyContactRequest.messageLimit {
-                                            message = String(text.prefix(SafetyContactRequest.messageLimit))
-                                        }
+                                        let bounded = SafetyContactRequest.boundedMessage(text)
+                                        if bounded != text { message = bounded }
                                     }
                                 PitchFormLabel("Reply email (optional)")
                                 TextField("Email", text: $replyEmail)
@@ -62,7 +61,7 @@ struct DeveloperContactView: View {
                             }
                             .buttonStyle(.borderedProminent)
                             .controlSize(.large)
-                            .disabled(isSending || message.trimmingCharacters(in: .whitespacesAndNewlines).count < SafetyContactRequest.messageMinimum)
+                            .disabled(isSending || !SafetyContactRequest.hasValidMessageLength(message))
                         }
                     }
                     .padding(PitchAtlasSpacing.lg)

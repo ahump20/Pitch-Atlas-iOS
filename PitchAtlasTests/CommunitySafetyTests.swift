@@ -149,6 +149,43 @@ final class CommunitySafetyTests: XCTestCase {
         XCTAssertEqual(encoded, ["p_message": "Please review this activity.", "p_reply_email": "reader@example.com"])
     }
 
+    func testContactMessageLimitsMatchServerUnicodeScalarCounts() throws {
+        let composed = String(repeating: "e\u{301}", count: 5)
+        XCTAssertEqual(composed.count, 5)
+        XCTAssertEqual(composed.unicodeScalars.count, 10)
+        XCTAssertTrue(SafetyContactRequest.hasValidMessageLength(" \(composed)\n"))
+        XCTAssertNoThrow(try SafetyContactRequest.validated(message: composed, replyEmail: ""))
+        XCTAssertThrowsError(try SafetyContactRequest.validated(message: String(composed.dropLast()), replyEmail: ""))
+
+        let family = "👨‍👩‍👧‍👦"
+        let maximum = String(repeating: family, count: 571) + "abc"
+        XCTAssertEqual(maximum.unicodeScalars.count, 4_000)
+        XCTAssertNoThrow(try SafetyContactRequest.validated(message: maximum, replyEmail: ""))
+        XCTAssertFalse(SafetyContactRequest.hasValidMessageLength(maximum + "d"))
+        XCTAssertThrowsError(try SafetyContactRequest.validated(message: maximum + "d", replyEmail: ""))
+    }
+
+    func testContactMessageClampPreservesWholeEmojiAndCombiningCharacters() {
+        let family = "👨‍👩‍👧‍👦"
+        let beforeEmoji = String(repeating: "a", count: 3_996)
+        XCTAssertEqual(SafetyContactRequest.boundedMessage(beforeEmoji + family), beforeEmoji)
+
+        let combined = "e\u{301}"
+        let exactFit = String(repeating: "a", count: 3_998) + combined
+        XCTAssertEqual(SafetyContactRequest.boundedMessage(exactFit + "z"), exactFit)
+        XCTAssertEqual(SafetyContactRequest.boundedMessage(exactFit).unicodeScalars.count, 4_000)
+        let beforeCombined = String(repeating: "a", count: 3_999)
+        XCTAssertEqual(SafetyContactRequest.boundedMessage(beforeCombined + combined), beforeCombined)
+        XCTAssertTrue(SafetyContactRequest.boundedMessage("e" + String(repeating: "\u{301}", count: 4_000)).isEmpty)
+    }
+
+    func testContactReplyEmailLimitMatchesServerUnicodeScalarCount() {
+        let atLimit = String(repeating: "e\u{301}", count: 121) + "@example.com"
+        XCTAssertEqual(atLimit.unicodeScalars.count, 254)
+        XCTAssertNoThrow(try SafetyContactRequest.validated(message: "Please review this activity.", replyEmail: atLimit))
+        XCTAssertThrowsError(try SafetyContactRequest.validated(message: "Please review this activity.", replyEmail: "a" + atLimit))
+    }
+
     func testContactFailureNeverExposesServerTextOrClaimsDelivery() {
         let error = NSError(domain: "service", code: 500, userInfo: [NSLocalizedDescriptionKey: "private server detail"])
         XCTAssertEqual(SafetyContactRequest.userMessage(for: error), "Message did not send. Your text is still here; try again.")
