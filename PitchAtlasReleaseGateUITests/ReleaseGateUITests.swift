@@ -26,6 +26,8 @@ final class ReleaseGateUITests: XCTestCase {
         // DEBUG QA hook: open straight onto the slider specimen.
         app.launchEnvironment["PA_PITCH"] = "slider"
         app.launch()
+        // Separate simultaneous phone/iPad fixtures without touching app code.
+        let gateHandle = "Review \(UUID().uuidString.prefix(8))"
 
         // Do NOT use app.swipeUp(): it starts at screen center, which on this
         // page is the interactive 3D specimen stage — the drag orbits the ball
@@ -58,7 +60,7 @@ final class ReleaseGateUITests: XCTestCase {
         // takes the tap.
         func typeName(_ field: XCUIElement) {
             field.tap()
-            field.typeText("Release gate\n")
+            field.typeText("\(gateHandle)\n")
             XCTAssertTrue(app.keyboards.firstMatch.waitForNonExistence(timeout: 3), "The keyboard never went away")
         }
 
@@ -78,7 +80,7 @@ final class ReleaseGateUITests: XCTestCase {
         let tweak = placeholder("Thumb tucked deeper")
         XCTAssertTrue(reach(tweak, strokes: 4), "The tweak field not found")
         tweak.tap()
-        tweak.typeText("Release gate for build 13: a test note that deletes with its test account.")
+        tweak.typeText("Release gate for build 14: a test note that deletes with its test account.")
         typeName(placeholder("e.g. RHP_threequarter"))
         let fileNote = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "File field note")).firstMatch
         XCTAssertTrue(reach(fileNote, strokes: 6), "File field note not found")
@@ -97,7 +99,7 @@ final class ReleaseGateUITests: XCTestCase {
         XCTAssertTrue(reach(field, strokes: 4), "Discussion composer field not found")
         field.tap()
         field.typeText(
-            "Release gate for build 13: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
+            "Release gate for build 14: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
         )
         let handle = app.textFields["Your name"]
         typeName(handle)
@@ -111,13 +113,13 @@ final class ReleaseGateUITests: XCTestCase {
 
         // 3. The post shows under the handle typed (its reply button names the
         // author), and a reply to it files.
-        let replyTo = app.buttons["Reply to Release gate"]
+        let replyTo = app.buttons["Reply to \(gateHandle)"]
         XCTAssertTrue(reach(replyTo, strokes: 6), "The post never showed under the handle Release gate")
         replyTo.tap()
-        let reply = app.textFields["Reply to Release gate…"]
+        let reply = app.textFields["Reply to \(gateHandle)…"]
         XCTAssertTrue(reply.waitForExistence(timeout: 5), "The reply field never opened")
         reply.tap()
-        reply.typeText("Release gate reply for build 13.")
+        reply.typeText("Release gate reply for build 14.")
         // The reply composer repeats the name field (same handle, already
         // "Release gate"); Return in that copy closes the keyboard unchanged.
         let names = app.textFields.matching(identifier: "Your name")

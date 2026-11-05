@@ -1,0 +1,128 @@
+name: App Review build 14 acceptance
+
+on:
+  push:
+    branches: ["test/app-review-build14-cloud"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acceptance:
+    name: ${{ matrix.device }} acceptance
+    runs-on: macos-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        device: [phone, ipad]
+    env:
+      APP_SOURCE_COMMIT: b846d6aeab35eb97865de02d4b5dca5bf3068c4c
+      REVIEW_DEVICE: ${{ matrix.device }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify unchanged build 14 app source
+        run: |
+          git diff --exit-code "$APP_SOURCE_COMMIT" -- PitchAtlas project.yml ci_scripts/Package.resolved
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/validation-commit.txt
+          git rev-parse "$APP_SOURCE_COMMIT:PitchAtlas" > evidence/app-source-tree.txt
+          xcodebuild -version > evidence/xcode-version.txt
+          xcrun simctl list runtimes --json > evidence/runtimes.json
+
+      - name: Generate project and resolve pinned packages
+        run: |
+          brew install xcodegen
+          xcodegen generate
+          mkdir -p PitchAtlas.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
+          cp ci_scripts/Package.resolved PitchAtlas.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+          xcodebuild -resolvePackageDependencies -project PitchAtlas.xcodeproj -scheme PitchAtlas \
+            -clonedSourcePackagesDirPath .build/SourcePackages -onlyUsePackageVersionsFromResolvedFile
+
+      - name: Create isolated simulator
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          devices = json.loads(subprocess.check_output(["xcrun", "simctl", "list", "devices", "available", "--json"]))["devices"]
+          kind = os.environ["REVIEW_DEVICE"]
+          candidates = []
+          for runtime, entries in devices.items():
+              if ".iOS-" not in runtime:
+                  continue
+              version = tuple(int(part) for part in runtime.split(".iOS-")[1].split("-"))
+              for device in entries:
+                  expected = "iPhone" if kind == "phone" else "iPad"
+                  if expected in device["name"] and device.get("isAvailable"):
+                      preferred = "Pro Max" in device["name"] if kind == "phone" else "iPad Pro" in device["name"]
+                      candidates.append((version, preferred, device["name"], runtime, device["deviceTypeIdentifier"]))
+          if not candidates:
+              raise SystemExit("No available " + kind + " simulator runtime")
+          version, preferred, name, runtime, device_type = sorted(candidates, reverse=True)[0]
+          udid = subprocess.check_output(["xcrun", "simctl", "create", "Pitch Atlas build 14 " + kind, device_type, runtime], text=True).strip()
+          with open(os.environ["GITHUB_ENV"], "a") as target:
+              target.write("REVIEW_UDID=" + udid + "\n")
+          with open("evidence/device.json", "w") as target:
+              json.dump({"udid": udid, "deviceType": device_type, "runtime": runtime, "referenceDevice": name, "appSourceCommit": os.environ["APP_SOURCE_COMMIT"]}, target, indent=2)
+          print(udid, name, runtime)
+          PY
+
+      - name: Boot the isolated simulator
+        run: |
+          xcrun simctl boot "$REVIEW_UDID"
+          xcrun simctl bootstatus "$REVIEW_UDID" -b
+
+      - name: Read-only safety and review screens
+        env:
+          TEST_RUNNER_PA_SHOTS: account,support,reviewpath
+        run: |
+          set -o pipefail
+          xcodebuild test -project PitchAtlas.xcodeproj -scheme PitchAtlasScreenshots \
+            -destination "platform=iOS Simulator,id=$REVIEW_UDID" \
+            -derivedDataPath .build/DerivedData -clonedSourcePackagesDirPath .build/SourcePackages \
+            -disableAutomaticPackageResolution -parallel-testing-enabled NO \
+            -resultBundlePath evidence/safety.xcresult \
+            -only-testing:PitchAtlasScreenshotUITests/AppReviewSafetyUITests \
+            -only-testing:PitchAtlasScreenshotUITests/ScreenshotTourUITests/testTour \
+            -only-testing:PitchAtlasScreenshotUITests/ScreenshotTourUITests/testReviewerPath \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee evidence/safety.log
+
+      - name: Anonymous contribution and account deletion acceptance
+        if: ${{ !cancelled() && env.REVIEW_UDID != '' }}
+        run: |
+          set -o pipefail
+          xcodebuild test -project PitchAtlas.xcodeproj -scheme PitchAtlasReleaseGate \
+            -destination "platform=iOS Simulator,id=$REVIEW_UDID" \
+            -derivedDataPath .build/DerivedData -clonedSourcePackagesDirPath .build/SourcePackages \
+            -disableAutomaticPackageResolution -parallel-testing-enabled NO \
+            -resultBundlePath evidence/contributions.xcresult \
+            CODE_SIGNING_ALLOWED=NO 2>&1 | tee evidence/contributions.log
+
+      - name: Export screenshots and test summaries
+        if: always()
+        run: |
+          for suite in safety contributions; do
+            if [ -d "evidence/$suite.xcresult" ]; then
+              xcrun xcresulttool get test-results summary --path "evidence/$suite.xcresult" > "evidence/$suite-summary.json" || true
+              xcrun xcresulttool export attachments --path "evidence/$suite.xcresult" --output-path "evidence/$suite-raw" || true
+              if [ -d "evidence/$suite-raw" ]; then
+                python3 scripts/export-shots.py "evidence/$suite-raw" "evidence/$suite-screenshots" --full
+              fi
+            fi
+          done
+
+      - name: Upload review evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-review-build14-${{ matrix.device }}
+          path: evidence
+          retention-days: 7
+
+      - name: Shut down the isolated simulator
+        if: always()
+        run: |
+          if [ -n "$REVIEW_UDID" ]; then xcrun simctl shutdown "$REVIEW_UDID" || true; fi
