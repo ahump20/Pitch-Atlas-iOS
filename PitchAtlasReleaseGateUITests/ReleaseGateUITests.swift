@@ -83,10 +83,11 @@ final class ReleaseGateUITests: XCTestCase {
         typeName(placeholder("e.g. RHP_threequarter"))
         let fileNote = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "File field note")).firstMatch
         XCTAssertTrue(reach(fileNote, strokes: 6), "File field note not found")
+        XCTAssertTrue(fileNote.isEnabled, "File field note stayed disabled: \(screenReason(app))")
         fileNote.tap()
         XCTAssertTrue(
             app.staticTexts["Sent for review ✓ · it stays private until approved."].waitForExistence(timeout: 20),
-            "The field note was not accepted by the server within 20s"
+            "The field note was not accepted by the server within 20s: \(screenReason(app))"
         )
 
         // 2. A discussion post.
@@ -108,7 +109,7 @@ final class ReleaseGateUITests: XCTestCase {
         // "Filed ✓" is the success line; the failure path writes a different
         // message, so this is the real server-accepted signal.
         XCTAssertTrue(app.staticTexts["Filed ✓"].waitForExistence(timeout: 20),
-                      "The post was not accepted by the server within 20s")
+                      "The post was not accepted by the server within 20s: \(screenReason(app))")
 
         // 3. The post shows under the handle typed (its reply button names the
         // author), and a reply to it files.
@@ -130,7 +131,7 @@ final class ReleaseGateUITests: XCTestCase {
         XCTAssertTrue(reach(fileReply, strokes: 6), "The reply's file button not found")
         fileReply.tap()
         XCTAssertTrue(app.staticTexts["Reply filed ✓"].waitForExistence(timeout: 20),
-                      "The reply was not accepted by the server within 20s")
+                      "The reply was not accepted by the server within 20s: \(screenReason(app))")
 
         // PA_GATE_HOLD seconds before teardown, so the rows can be read on the
         // server while they exist.
@@ -184,4 +185,16 @@ final class ReleaseGateUITests: XCTestCase {
         return fullyVisible(element, in: app)
     }
 
+
+    /// On a missed server receipt, name what the screen said instead, so a
+    /// failure separates "button never enabled" from "server refused".
+    @MainActor
+    private func screenReason(_ app: XCUIApplication) -> String {
+        let words = ["could", "try again", "did not", "didn't", "limit", "blocked", "restricted", "sign", "error", "terms", "18"]
+        let seen = app.staticTexts.allElementsBoundByIndex.compactMap { el -> String? in
+            let label = el.label
+            return words.contains(where: { label.lowercased().contains($0) }) ? label : nil
+        }
+        return seen.isEmpty ? "no error text on screen" : seen.prefix(6).joined(separator: " | ")
+    }
 }

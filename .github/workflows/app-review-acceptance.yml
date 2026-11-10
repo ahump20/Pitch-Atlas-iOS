@@ -1,8 +1,8 @@
 name: App Review build 14 acceptance
 
+# Writes test rows to the production backend (removed by the test's own
+# teardown), so it runs only when dispatched by hand.
 on:
-  push:
-    branches: ["test/app-review-build14-cloud"]
   workflow_dispatch:
 
 permissions:
