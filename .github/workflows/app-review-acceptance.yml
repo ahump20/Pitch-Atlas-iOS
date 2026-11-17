@@ -101,6 +101,11 @@ jobs:
           TEST_RUNNER_PA_SHOTS: reviewpath
         run: |
           set -o pipefail
+          # The upgrade fixture starts with only the old agreement on disk.
+          # Remove the test app's contribution consent from this isolated device.
+          if xcrun simctl get_app_container "$REVIEW_UDID" com.pitchatlas.app data >/dev/null 2>&1; then
+            xcrun simctl uninstall "$REVIEW_UDID" com.pitchatlas.app
+          fi
           xcodebuild test -project PitchAtlas.xcodeproj -scheme PitchAtlasScreenshots \
             -destination "platform=iOS Simulator,id=$REVIEW_UDID" \
             -derivedDataPath .build/DerivedData -clonedSourcePackagesDirPath .build/SourcePackages \
