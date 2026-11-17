@@ -69,11 +69,16 @@ final class ReleaseGateUITests: XCTestCase {
         addTeardownBlock { @MainActor in self.deleteGateAccount(required: filedNote) }
 
         // 1. A field note, filed under the handle typed.
-        let chapter = app.buttons["Discussion"]
-        XCTAssertTrue(reach(chapter), "The Discussion chapter link never came into reach")
-        chapter.tap()
         let write = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "Write a note")).firstMatch
-        XCTAssertTrue(reach(write, searchUp: true), "The field-note composer above Discussion never came into reach")
+        // The compact compatibility window reaches the composer from the chapter
+        // shortcut. A full-size phone can scroll straight down the specimen.
+        let useChapterShortcut = ProcessInfo.processInfo.environment["PA_REVIEW_DEVICE"] == "ipad"
+        if useChapterShortcut {
+            let chapter = app.buttons["Discussion"]
+            XCTAssertTrue(reach(chapter), "The Discussion chapter link never came into reach")
+            chapter.tap()
+        }
+        XCTAssertTrue(reach(write, strokes: 60, searchUp: useChapterShortcut), "The field-note composer never came into reach")
         write.tap()
         acceptGates()
         // The note's fields expose only their placeholders to accessibility.

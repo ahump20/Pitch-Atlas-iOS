@@ -84,6 +84,8 @@ jobs:
 
       - name: Anonymous contribution and account deletion acceptance
         if: ${{ !cancelled() && env.REVIEW_UDID != '' }}
+        env:
+          TEST_RUNNER_PA_REVIEW_DEVICE: ${{ matrix.device }}
         run: |
           set -o pipefail
           xcodebuild test -project PitchAtlas.xcodeproj -scheme PitchAtlasReleaseGate \
