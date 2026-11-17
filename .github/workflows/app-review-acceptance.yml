@@ -75,7 +75,19 @@ jobs:
           xcrun simctl boot "$REVIEW_UDID"
           xcrun simctl bootstatus "$REVIEW_UDID" -b
 
+      - name: Anonymous contribution and account deletion acceptance
+        if: ${{ !cancelled() && env.REVIEW_UDID != '' }}
+        run: |
+          set -o pipefail
+          xcodebuild test -project PitchAtlas.xcodeproj -scheme PitchAtlasReleaseGate \
+            -destination "platform=iOS Simulator,id=$REVIEW_UDID" \
+            -derivedDataPath .build/DerivedData -clonedSourcePackagesDirPath .build/SourcePackages \
+            -disableAutomaticPackageResolution -parallel-testing-enabled NO \
+            -resultBundlePath evidence/contributions.xcresult \
+            CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- 2>&1 | tee evidence/contributions.log
+
       - name: Read-only safety and review screens
+        if: ${{ !cancelled() && env.REVIEW_UDID != '' }}
         env:
           TEST_RUNNER_PA_SHOTS: reviewpath
         run: |
@@ -87,22 +99,16 @@ jobs:
             -resultBundlePath evidence/safety.xcresult \
             -only-testing:PitchAtlasScreenshotUITests/AppReviewSafetyUITests \
             -only-testing:PitchAtlasScreenshotUITests/ScreenshotTourUITests/testReviewerPath \
-            CODE_SIGNING_ALLOWED=NO 2>&1 | tee evidence/safety.log
-
-      - name: Anonymous contribution and account deletion acceptance
-        if: ${{ !cancelled() && env.REVIEW_UDID != '' }}
-        run: |
-          set -o pipefail
-          xcodebuild test -project PitchAtlas.xcodeproj -scheme PitchAtlasReleaseGate \
-            -destination "platform=iOS Simulator,id=$REVIEW_UDID" \
-            -derivedDataPath .build/DerivedData -clonedSourcePackagesDirPath .build/SourcePackages \
-            -disableAutomaticPackageResolution -parallel-testing-enabled NO \
-            -resultBundlePath evidence/contributions.xcresult \
-            CODE_SIGNING_ALLOWED=NO 2>&1 | tee evidence/contributions.log
+            CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- 2>&1 | tee evidence/safety.log
 
       - name: Export screenshots and test summaries
         if: always()
         run: |
+          app_path=.build/DerivedData/Build/Products/Debug-iphonesimulator/PitchAtlas.app
+          if [ -d "$app_path" ]; then
+            codesign -dvv "$app_path" 2> evidence/simulator-signature.txt
+            xcrun otool -s __TEXT __entitlements "$app_path/PitchAtlas" > evidence/simulator-entitlements.txt
+          fi
           for suite in safety contributions; do
             if [ -d "evidence/$suite.xcresult" ]; then
               xcrun xcresulttool get test-results summary --path "evidence/$suite.xcresult" > "evidence/$suite-summary.json" || true
