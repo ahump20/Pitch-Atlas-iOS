@@ -1,88 +1,71 @@
-# App Review Notes
+# App Review Notes — candidate 1.2.0 (14)
 
-Paste into App Store Connect for build `1.2.0 (13)`.
+Status: remediation candidate for the November 2 rejection of submission `0b7dce83-8e94-415f-9d89-404ba3c941ab`. Build 14 upload, native acceptance testing, and resubmission are pending. Do not treat the build-13 test record as proof for this candidate.
 
-Pitch Atlas is a native SwiftUI iPhone app for how baseball pitches are gripped and thrown. The reference manual is bundled in the app and works while logged out. Community participation is anonymous-first: no sign-in screen gates posting. Contributing creates a Supabase anonymous account silently on the first write, and the user can optionally claim that account (Sign in with Apple or email) to keep it across devices. Image uploads are the one community feature that requires a claimed (permanent) account, enforced server-side.
+## Reviewer notes
 
-## Where Community Posting Lives (Guideline 2.3)
+Pitch Atlas is a native SwiftUI iPhone field manual for how baseball pitches are gripped and thrown. The bundled reference manual works without an account. Community contributions require acceptance of the Community Terms and EULA and confirmation that the contributor is 18 or older. The first write creates an anonymous contributor record; Apple or email sign-in can claim it for use across devices. Still-image uploads require a claimed account.
 
-Version `1.2.0` redesigned the pitch pages, so the path below replaces the one written for `1.1.0 (11)`. Every filed pitch page carries both community surfaces near its end. The fastest review path:
+### Find community posting
 
-1. Launch the app on iPhone. It opens on `Atlas`.
-2. Tap `Study this grip →` under the opening headline. This opens the `Four-seam` pitch page.
-3. Swipe up until the chapter `Field notes from the bullpen.` and the `Log a field note` box appear (well past the grip, the lessons and the history; about two thirds of the way down).
-4. **Field note:** tap `Write a note →`. At the top of the form, turn on `I accept the community guidelines` and `I confirm I am 17 or older before posting or uploading`. Enter a handle in `Submitted by` and a grip cue in `The tweak`, then tap `File field note →`. New field notes stay private until a person reviews them, so the note will not appear in the list right away; the form confirms it was sent for review.
-5. **Discussion post:** keep swiping to the bar marked `Discussion · Talk through the four-seam` and tap it to open the drawer. Turn on the same two switches if they are not already on, enter a handle in `Your name` and a comment, then tap `File post`. The line `Filed ✓` confirms the server accepted it, and the post appears in the thread.
-6. No sign-in is shown before either path. The app creates a Supabase anonymous account silently on first write.
+1. Launch on Atlas and tap `Study this grip →` to open Four-seam.
+2. Scroll past the grip, lessons, and history to `Field notes from the bullpen.` and `Log a field note`.
+3. Tap `Write a note →`. Accept `I accept the Community Terms and EULA` and `I confirm I am 18 or older`. Enter a handle in `Submitted by` and a grip cue in `The tweak`, then tap `File field note →`. Field notes remain private until approved.
+4. Continue to `Discussion · Talk through the four-seam` and open the drawer. Accept the same terms and age confirmation if needed, enter a handle in `Your name`, enter a comment, and tap `File post`.
+5. The same consent applies to replies and suggestions submitted from `Know a pitching post that belongs here?`. Suggestions remain private until reviewed and approved.
+6. Image attachment requires a claimed account, the same 18+ consent, and the image upload terms. Submitted images remain private until approved.
 
-The same field notes and Discussion drawer sit on every filed pitch page; the Discussion drawer alone also sits on the softball pitches, the lost-pitch files, the Learn topics and the repertoire pages.
+These steps describe the implemented candidate. Their execution on build 14 is still pending, as recorded below.
 
-## Reviewer Path
+### Safety controls
 
-1. Launch the app.
-2. Browse Atlas, Index, Grips, Craftsmen, and Sources without signing in.
-3. Use the path above to file a field note or a discussion post. This works without account setup; an anonymous account is created behind the scenes on first contribution.
-4. Use the menu on any post or note to report it or to block a different user. These also work anonymously.
-5. Tap the account button at the top right of Atlas to open Account and Safety: the account shows as "Anonymous contributor" with a "Claim this record" block. Claim it with Sign in with Apple or an email confirmation link; the same account (and its posts) is preserved.
-6. For image upload, claim the account first (uploads require a permanent account), then accept image terms and choose a still image with PhotosPicker.
-7. Review the private blocked list in Account and Safety.
-8. Return to Account and Safety to delete the account (works for anonymous and claimed accounts).
+- The Community Terms and EULA state that objectionable content and abusive users are not tolerated and link to Apple's Standard EULA. The new consent keys require existing users to accept the updated terms and 18+ confirmation again.
+- Open a post, reply, field-note, or attached-media menu to Hide or Report. Hide removes the item immediately on the device, including offline, and persists after relaunch. Report also hides it immediately before attempting delivery.
+- If a report cannot send, it is retained on the device. Retry from that screen or from `Account > Safety > Unsent reports`. The app confirms delivery only after the server accepts it.
+- Block another contributor from their content menu. Blocking filters content in both directions and prevents direct replies across the blocked connection. Manage the private blocked list in `Account > Safety`.
+- Production text filtering and pending-image restrictions run on the server. Submitted images cannot be publicly read or signed for playback before approval.
+- Automated safeguards remove reported content from public view and restrict the contributor within 24 hours. Confirmed violations result in permanent content removal and contributor ejection. This is not a claim that a staffed human review occurs within 24 hours.
+- Open `Account > Safety > Contact developer` or `Support > Contact developer`. The form identifies Austin Humphrey and accepts a private message and optional reply email without requiring an existing post or claimed account. A successful server receipt produces `Message sent`; failure preserves the text for retry.
+- Account deletion is available for both anonymous and claimed accounts.
 
-## Suggesting a Post for Review (new in 1.2.0)
+### Sign in with Apple
 
-Atlas, each pitch page and each craftsman page end their credited-clip shelf with a fold, `Know a pitching post that belongs here?`. A reader can paste a public X, Instagram, TikTok or YouTube URL and a short reason and tap `Send to review`. This is a write, so it creates the same silent anonymous account. The suggestion goes to a private review queue that no reader can see; nothing publishes from it until a person checks and tags the post. No media is uploaded through it.
+Open Account from the account button on Atlas. An anonymous contributor can use `Claim this record` to claim the existing record with Apple or email. A reader without a contributor record can also sign in from Account.
 
-## Guideline 5.1.1(v) Posture
+The production Apple provider is now enabled and its public Auth settings endpoint returns HTTP 200 with `external.apple=true`. This verifies backend configuration only. The complete native Apple authorization, token exchange, and anonymous-account claim flows remain pending build-14 acceptance checks.
 
-Sign-in is never forced for non-account features. The full reference manual is readable with no account, and community contribution itself needs no sign-in — the anonymous account is created lazily and invisibly on the first write. Apple or email sign-in exists only to claim the record (keep it across devices) and to unlock image uploads, which are restricted to permanent accounts for moderation accountability.
+### Media and privacy
 
-## Community Safety
+The app accepts still images through PhotosPicker. It does not upload video or GIFs, capture camera media, track users, or include advertising or analytics SDKs.
 
-- Reporting, blocking, and text posting work anonymously; each write rides a real (anonymous) Supabase account, so rate limits, banned-term filters, and moderation apply to every contributor.
-- Image uploads and the upload-terms acceptance require a claimed (non-anonymous) account, enforced by server policy.
-- Account deletion requires an existing session (anonymous or claimed).
-- Reading community content is open and never creates an account.
-- Community posts are user-submitted field notes, not measured claims.
-- Field-note inputs are validated against live Supabase limits before submission.
-- Reports are write-only for normal clients and can auto-hide content through backend policy/trigger rules.
-- Blocking hides community content both ways, prevents unsafe direct replies, and can be undone from Account and Safety.
-- Account deletion calls the JWT-protected Supabase `delete-account` Edge Function.
+Credited teaching clips use TikTok's official player in a poster-gated WKWebView. No player request occurs until the reader taps the poster. The original post remains available through an outbound link. The app does not download or rehost these clips.
 
-## Media
+Contact developer sends the submitted message, optional reply email, and contributor ID, including anonymous IDs, for private customer support and safety. Opening the form sends nothing. Account deletion removes the sender-ID link from support records; the private message and optional reply email remain unless separately deleted. The privacy manifest declares Customer Support, Email Address, User ID, Other User Content, and Photos or Videos as linked to the user, used for App Functionality, and not used for tracking.
 
-iOS v1 accepts still images only through PhotosPicker. There is no video upload, GIF upload, live camera capture, or camera permission.
+## Candidate evidence and remaining gates
 
-## Embedded Teaching Clips
+Evidence snapshot: 2026-11-05 UTC (November 4 in America/Chicago).
 
-Ships in the first build after `1.0.1 (10)`. Four of the twelve filed-specimen screens (four-seam, two-seam, slider, circle-change) show one short, credited teaching clip embedded from TikTok — three clips total; the Nolan Ryan clip files against both fastballs. Each uses TikTok's own official player (`https://www.tiktok.com/player/v1/<id>`) inside a `WKWebView` — the same public embed any website uses. These are supplementary teaching references; the app is fully usable without them, and every other surface is native SwiftUI.
+| Check | Evidence/status |
+| --- | --- |
+| Candidate identity | Version 1.2.0, build 14, bundle `com.pitchatlas.app`; not yet claimed uploaded or submitted. |
+| Native source checks | Changed Swift files parse; `git diff --check` and privacy plist validation passed. |
+| Unit tests | 11 safety tests added for consent upgrade, hiding, report persistence/retry, and contact validation. Runtime execution for the final candidate is pending. |
+| Apple provider | Production enabled; HTTP 200 settings readback reports `external.apple=true`. Native sign-in and claim completion pending. |
+| Moderation backend | `app_review_community_moderation` deployed; explicit post, note, and media report fixtures passed local and hosted rollback checks. Automated sweep `pitch-atlas-community-review-deadlines` runs every 10 minutes for unresolved reports aged 22 hours; a real run succeeded at 2026-11-05 04:20:00 UTC. |
+| Developer contact backend | Production RPC accepted a message with an optional reply email, returned a UUID receipt, returned the same receipt for a duplicate retry, enforced the hourly limit, and accepted an existing restricted identity. Native form acceptance pending. |
+| Media backend | Pending-image public reads/signing are denied before approval. Native upload and review-state UI acceptance pending. |
+| Native acceptance | Fresh install, upgrade from old consent, offline hide/report retry, post/reply/note/media menus, contact, block/unblock, and account deletion pending on the final candidate. |
+| Distribution | Signed archive, upload/processing, build-14 attachment, privacy readback, requested 18+ App Store rating override/readback, final review reply, and resubmission pending. |
 
-- Each clip is credited to the original creator on-screen, with a "Watch on TikTok" button that opens the original post.
-- Nothing is downloaded, re-encoded, or re-hosted. TikTok serves the video from its own player; the app bundles no clip file. (Rights record: web repo `docs/MEDIA-LEDGER.md`, rows T1–T3.)
-- No autoplay, and no network request until the user taps the native poster tile to load the player. If the player fails to load, the card says so and the outbound link remains the path to the clip.
-- This is the only `WKWebView` in the app and its only third-party embed. It is not a web wrapper — navigation, content, and provenance rendering are all native.
+Backend evidence and the operator runbook are saved in the investigation outputs as `backend-moderation-verification.md` and `moderation-operator-runbook.md`. Do not convert a pending row to passed without its own result.
 
-## Privacy
+## Build and listing
 
-The app does not track users and does not include ads. It collects account email/user ID, user-written content, and uploaded still images only for app functionality and moderation/safety. App privacy labels should not say `Data Not Collected`.
-
-## Native Value
-
-The app is not a wrapped website. Pitch Atlas uses native SwiftUI navigation, native pitch/grip screens, native bundled content, native source/provenance rendering, native account/safety flows, and native community surfaces.
-
-## Build Notes
-
-- Bundle ID: `com.pitchatlas.app`
 - Version: `1.2.0`
-- Build: `13`
-- Privacy policy: `https://pitch-atlas.com/privacy`
-- Support: `https://pitch-atlas.com/support`
-- No Firebase, Appwrite, CloudKit, push notifications, camera capture, video upload, or BSI dependency. The only `WKWebView` is the credited TikTok teaching-clip embed described under **Embedded Teaching Clips** above. There is no app-content webview or web wrapper.
-- Production Supabase block RPCs were applied on 2026-06-24 as migration `20260624194451 block_user_rpcs`.
+- Candidate build: `14`
+- Bundle ID: `com.pitchatlas.app`
+- Privacy: https://pitch-atlas.com/privacy
+- Support: https://pitch-atlas.com/support
 
-## Final Build Proof
-
-Build `1.2.0 (13)` was archived from `main` at `35c9584` (PR #37, tag `v1.2.0-build13`, also `release/1.2.0`) on 2026-10-30 after the full suite passed (524 tests, 0 failed), GitHub CI and Xcode Cloud run 42 passed on that commit, and the production release gate filed a field note, a discussion post and a reply under one handle and then deleted its throwaway account in the app. App Store Connect reports build `13` (`d12be2a7-0af3-4cc3-998b-69a225f54d53`) as `VALID`, uploaded `2026-10-30T12:46:57-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`. It was submitted as review submission `0b7dce83-8e94-415f-9d89-404ba3c941ab` at `2026-10-30T19:49:12.249Z` (`WAITING_FOR_REVIEW`). Record: `docs/review-evidence/2026-10-30-build-13-submitted.md`.
-
-Before it, build `1.2.0 (12)` was archived from `release/1.2.0` (`ac72447`) on 2026-10-30 after the full suite passed (522 tests, 0 failed) and `testReviewerPath` walked the path above from a fresh install. App Store Connect reports build `12` as `VALID`, `APP_STORE_ELIGIBLE`, uploaded `2026-10-30T08:57:03-07:00`, min OS `17.0`, `usesNonExemptEncryption=false`. It was submitted as review submission `5fe9bf01-253c-40c9-986e-28aa98d445a1` at `2026-10-30T16:28:48.708Z` (`WAITING_FOR_REVIEW`). Record: `docs/review-evidence/2026-10-30-build-12-submitted.md`. Withdrawn the same day (`DEVELOPER_REJECTED`, before any review): the production release gate showed build `12` could not file a discussion post ("Sign in before doing that."), and field notes take the same path. Build `13` replaces it.
-
-History: `1.1.0 (11)` was submitted 2026-07-03, rejected 2026-07-07 under Guideline 2.3 because Apple could not find Community posting, and approved after these notes gave the exact path; its proof is in `docs/review-evidence/2026-07-03-build-11-screens/`.
+Build 13 was the rejected submission, not the current candidate. Its October 30 archive, tests, and submission remain historical evidence in `docs/review-evidence/2026-10-30-build-13-submitted.md`. The corresponding build-12 and July build-11 evidence is also historical and does not certify build 14.

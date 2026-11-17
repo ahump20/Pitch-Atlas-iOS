@@ -6,13 +6,13 @@ import SwiftUI
 // Web: pages/SupportPage.tsx, in its order and words. The header, the three
 // help routes as numbered rows, the contact paragraph, the footer. One row
 // changes: the site's delete route speaks about the app from outside it, so in
-// here it names the app's own path. No invented email, phone, or address; the
-// contact route is the in-product Report flow.
+// here it names the app's own path. Contact opens the private developer form.
 // =============================================================================
 
 struct SupportView: View {
     @Environment(DeepLinkRouter.self) private var router
     @Environment(PitchStore.self) private var store
+    @State private var showContact = false
 
     var body: some View {
         ZStack {
@@ -34,6 +34,14 @@ struct SupportView: View {
                     }
                     PageSection {
                         SectionKick(text: "Contact")
+                        Button {
+                            showContact = true
+                        } label: {
+                            Label("Contact developer", systemImage: "envelope")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .padding(.top, 16)
                         contact.padding(.top, 16)
                     }
                     SiteFooter(path: "/support")
@@ -42,6 +50,7 @@ struct SupportView: View {
                 .emitsScrollProgress()
             }
         }
+        .sheet(isPresented: $showContact) { DeveloperContactView() }
         .navigationTitle("Support")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -74,7 +83,7 @@ enum SupportCopy {
     /// HELP_ROWS, the delete route walked the way the app lays it out.
     static let rows: [(label: String, text: String)] = [
         ("Report a problem with a note or post",
-         "Every field note and discussion post carries a Report action. Use it. Reports go to a moderation queue, and a post reported by enough separate accounts is hidden pending review. In the iOS app you can also block a contributor outright."),
+         "Use Hide to remove a note, post, reply, or media from your feed immediately. Report also sends it to the moderation queue. Block stops a contributor’s content and replies from reaching you. For other inappropriate activity, use Contact developer below."),
         ("Delete your account",
          "In the Pitch Atlas iOS app, open Atlas, then Account and Safety, and choose Delete account. That removes your community posts, your uploaded media, and the account itself. On the web you can delete your own discussion posts from the page where they appear."),
         ("Question a claim in the archive",
@@ -90,7 +99,7 @@ enum SupportCopy {
             run.underlineStyle = Text.LineStyle(pattern: .solid, color: PageInk.seamUnderline)
             return run
         }
-        var line = AttributedString("Report issues through the in-product Report flow on any note or post. Every report is reviewed. For how the archive handles your data, read the ")
+        var line = AttributedString("Contact developer sends a private message without requiring sign-in or an existing post. You may include a reply email. Read the ")
         line.append(link("privacy policy", "https://pitch-atlas.com/privacy"))
         line.append(AttributedString("; for how archive claims are sourced, read the "))
         line.append(link("source registry", "pitchatlas://sources"))

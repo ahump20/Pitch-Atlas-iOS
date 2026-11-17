@@ -26,7 +26,7 @@ final class SupportCopyTests: XCTestCase {
     func testContactLinksOpenThePolicyAndTheRegistry() {
         let contact = SupportCopy.contact
         XCTAssertEqual(String(contact.characters),
-                       "Report issues through the in-product Report flow on any note or post. Every report is reviewed. For how the archive handles your data, read the privacy policy; for how archive claims are sourced, read the source registry.")
+                       "Contact developer sends a private message without requiring sign-in or an existing post. You may include a reply email. Read the privacy policy; for how archive claims are sourced, read the source registry.")
         let links = contact.runs.compactMap(\.link).map(\.absoluteString)
         XCTAssertEqual(links, ["https://pitch-atlas.com/privacy", "pitchatlas://sources"])
     }

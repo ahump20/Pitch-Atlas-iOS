@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--
   Pitch Atlas privacy manifest.
-  Supabase community v1 collects account identifiers, user-written community
-  content, and still images only when a signed-in user chooses to post or upload.
+  Supabase collects contributor identifiers, community content, and selected
+  still images. Private developer-contact messages and an optional reply email
+  are linked to the sender's contributor ID (anonymous accounts are supported)
+  for customer support and safety. Opening the form collects nothing.
   No tracking, no ads, no camera capture, no push notifications.
 -->
 <plist version="1.0">
@@ -41,6 +43,18 @@
         <dict>
             <key>NSPrivacyCollectedDataType</key>
             <string>NSPrivacyCollectedDataTypeOtherUserContent</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeCustomerSupport</string>
             <key>NSPrivacyCollectedDataTypeLinked</key>
             <true/>
             <key>NSPrivacyCollectedDataTypeTracking</key>

@@ -13,6 +13,8 @@ import SwiftUI
 struct MediaSuggestionForm: View {
     var pitchSlug: String?
     @Environment(AuthSessionStore.self) private var auth
+    @AppStorage(ContributionGate.guidelinesKey) private var guidelinesAccepted = false
+    @AppStorage(ContributionGate.ageKey) private var ageConfirmed = false
     @State private var open = false
     @State private var url = ""
     @State private var rationale = ""
@@ -30,9 +32,14 @@ struct MediaSuggestionForm: View {
     static let fineprint = "Public URLs only · no uploads · reviewed before publication"
     static let filed = "Filed for review. Nothing publishes until it is checked and tagged."
 
+    private var canContribute: Bool {
+        CommunityContributionGate.canContribute(guidelinesAccepted: guidelinesAccepted, ageConfirmed: ageConfirmed)
+    }
+
     var body: some View {
         DisclosureGroup(isExpanded: $open) {
             VStack(alignment: .leading, spacing: 12) {
+                if !canContribute { ContributionGate() }
                 field(Self.urlLabel) {
                     TextField("", text: $url, prompt: Text(verbatim: Self.urlPrompt).foregroundStyle(PitchAtlasTheme.placeholder))
                         .keyboardType(.URL)
@@ -62,7 +69,7 @@ struct MediaSuggestionForm: View {
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .disabled(busy)
+                    .disabled(busy || !canContribute)
                     Text(Self.fineprint.uppercased())
                         .font(PitchAtlasType.font(.martian400, size: 9, relativeTo: .caption2))
                         .tracking(em: 0.08, size: 9)
@@ -119,6 +126,7 @@ struct MediaSuggestionForm: View {
 
     /// Only ever on a reader's own tap. No test, screenshot run or check calls it.
     private func submit() async {
+        guard canContribute, !busy else { return }
         busy = true
         status = nil
         error = nil

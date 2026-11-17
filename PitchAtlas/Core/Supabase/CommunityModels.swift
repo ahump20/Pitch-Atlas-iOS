@@ -727,16 +727,21 @@ enum CommunityVisibility {
         Set(contributors.map(\.blockedID))
     }
 
-    static func visibleFieldNotes(_ notes: [CommunityFieldNote], hiddenAuthorIDs: Set<String>) -> [CommunityFieldNote] {
-        notes.filter { !isHidden($0.authorID, hiddenAuthorIDs) }
+    static func visibleFieldNotes(_ notes: [CommunityFieldNote], hiddenAuthorIDs: Set<String>, hiddenNoteIDs: Set<String> = []) -> [CommunityFieldNote] {
+        notes.filter { !isHidden($0.authorID, hiddenAuthorIDs) && !hiddenNoteIDs.contains($0.id) }
     }
 
     /// Hides a blocked author's posts and replies. A hidden top-level post takes
     /// its replies with it, the way an orphaned reply drops out of the web's thread.
-    static func visibleDiscussionPosts(_ posts: [DiscussionPost], hiddenAuthorIDs: Set<String>) -> [DiscussionPost] {
-        posts.filter { !isHidden($0.authorID, hiddenAuthorIDs) }.map { post in
+    static func visibleDiscussionPosts(_ posts: [DiscussionPost], hiddenAuthorIDs: Set<String>, hiddenPostIDs: Set<String> = [], hiddenMediaIDs: Set<String> = []) -> [DiscussionPost] {
+        posts.filter { !isHidden($0.authorID, hiddenAuthorIDs) && !hiddenPostIDs.contains($0.id) }.map { post in
             var post = post
-            post.replies = post.replies.filter { !isHidden($0.authorID, hiddenAuthorIDs) }
+            post.media.removeAll { hiddenMediaIDs.contains($0.id) }
+            post.replies = post.replies.filter { !isHidden($0.authorID, hiddenAuthorIDs) && !hiddenPostIDs.contains($0.id) }.map { reply in
+                var reply = reply
+                reply.media.removeAll { hiddenMediaIDs.contains($0.id) }
+                return reply
+            }
             return post
         }
     }
