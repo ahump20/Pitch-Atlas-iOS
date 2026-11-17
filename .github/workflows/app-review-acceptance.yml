@@ -62,7 +62,14 @@ jobs:
           if not candidates:
               raise SystemExit("No available " + kind + " simulator runtime")
           version, preferred, name, runtime, device_type = sorted(candidates, reverse=True)[0]
-          udid = subprocess.check_output(["xcrun", "simctl", "create", "Pitch Atlas build 14 " + kind, device_type, runtime], text=True).strip()
+          if kind == "ipad":
+              with open("evidence/runtimes.json") as source:
+                  selected_runtime = next(r for r in json.load(source)["runtimes"] if r["identifier"] == runtime)
+              for model in selected_runtime.get("supportedDeviceTypes", []):
+                  if model["name"] == "iPad Air 11-inch (M3)":
+                      name, device_type = model["name"], model["identifier"]
+                      break
+          udid = subprocess.check_output(["xcrun", "simctl", "create", "Pitch Atlas review " + kind, device_type, runtime], text=True).strip()
           with open(os.environ["GITHUB_ENV"], "a") as target:
               target.write("REVIEW_UDID=" + udid + "\n")
           with open("evidence/device.json", "w") as target:
@@ -123,7 +130,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: app-review-build14-${{ matrix.device }}
+          name: pitch-atlas-review-${{ matrix.device }}
           path: evidence
           retention-days: 7
 

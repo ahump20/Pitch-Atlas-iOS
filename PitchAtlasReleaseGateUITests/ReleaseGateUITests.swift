@@ -31,8 +31,8 @@ final class ReleaseGateUITests: XCTestCase {
         // Separate simultaneous phone/iPad fixtures without touching app code.
         let gateHandle = "Review \(UUID().uuidString.prefix(8))"
 
-        func reach(_ element: XCUIElement, strokes: Int = 40) -> Bool {
-            reachSafely(element, in: app, strokes: strokes)
+        func reach(_ element: XCUIElement, strokes: Int = 40, searchUp: Bool = false) -> Bool {
+            reachSafely(element, in: app, strokes: strokes, searchUp: searchUp)
         }
         // Both contribution gates (terms, 18+) show until accepted once on
         // this device.
@@ -65,11 +65,15 @@ final class ReleaseGateUITests: XCTestCase {
 
         // Whatever happens below, delete the throwaway anonymous account (and
         // what it filed) through the app's own Account & Safety screen.
-        addTeardownBlock { @MainActor in Self.deleteGateAccount() }
+        var filedNote = false
+        addTeardownBlock { @MainActor in self.deleteGateAccount(required: filedNote) }
 
         // 1. A field note, filed under the handle typed.
+        let chapter = app.buttons["Discussion"]
+        XCTAssertTrue(reach(chapter), "The Discussion chapter link never came into reach")
+        chapter.tap()
         let write = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "Write a note")).firstMatch
-        XCTAssertTrue(reach(write), "Write a note never came into reach on the slider page")
+        XCTAssertTrue(reach(write, searchUp: true), "The field-note composer above Discussion never came into reach")
         write.tap()
         acceptGates()
         // The note's fields expose only their placeholders to accessibility.
@@ -79,7 +83,7 @@ final class ReleaseGateUITests: XCTestCase {
         let tweak = placeholder("Thumb tucked deeper")
         XCTAssertTrue(reach(tweak, strokes: 4), "The tweak field not found")
         tweak.tap()
-        tweak.typeText("Release gate for build 14: a test note that deletes with its test account.")
+        tweak.typeText("Release verification. This test note is removed with its test account.")
         typeName(placeholder("e.g. RHP_threequarter"))
         let fileNote = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "File field note")).firstMatch
         XCTAssertTrue(reach(fileNote, strokes: 6), "File field note not found")
@@ -95,6 +99,7 @@ final class ReleaseGateUITests: XCTestCase {
             XCTFail("Missing field note receipt. Visible errors: \(failures.allElementsBoundByIndex.map(\.label))")
             return
         }
+        filedNote = true
 
         // 2. A discussion post.
         let drawer = app.buttons["discussion-drawer"]
@@ -105,7 +110,7 @@ final class ReleaseGateUITests: XCTestCase {
         XCTAssertTrue(reach(field, strokes: 4), "Discussion composer field not found")
         field.tap()
         field.typeText(
-            "Release gate for build 14: verifying the anonymous discussion path end to end. This post deletes with its test account in a moment."
+            "Release verification of the anonymous discussion. This test post is removed with its test account."
         )
         let handle = app.textFields["Your name"]
         typeName(handle)
@@ -125,7 +130,7 @@ final class ReleaseGateUITests: XCTestCase {
         let reply = app.textFields["Reply to \(gateHandle)…"]
         XCTAssertTrue(reply.waitForExistence(timeout: 5), "The reply field never opened")
         reply.tap()
-        reply.typeText("Release gate reply for build 14.")
+        reply.typeText("Release verification reply.")
         // The reply composer repeats the name field (same handle, already
         // "Release gate"); Return in that copy closes the keyboard unchanged.
         let names = app.textFields.matching(identifier: "Your name")
@@ -151,17 +156,17 @@ final class ReleaseGateUITests: XCTestCase {
     /// relaunch in the keychain) and deletes the account. If no account was
     /// ever minted there is nothing to delete.
     @MainActor
-    static func deleteGateAccount() {
+    private func deleteGateAccount(required: Bool) {
         let app = XCUIApplication()
         app.terminate()
         app.launchEnvironment = ["PA_ROUTE": "account"]
         app.launch()
         let delete = app.buttons["Delete account"]
-        guard delete.waitForExistence(timeout: 15) else { return }
-        for _ in 0..<6 where !delete.isHittable {
-            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
-                .press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3)))
+        guard delete.waitForExistence(timeout: 15) else {
+            XCTAssertFalse(required, "The contributor session was missing after relaunch")
+            return
         }
+        XCTAssertTrue(reachSafely(delete, in: app, strokes: 20), "Delete account never came into reach")
         delete.tap()
         let confirm = app.alerts["Delete this account?"].buttons["Delete"]
         XCTAssertTrue(confirm.waitForExistence(timeout: 5), "The delete confirmation never showed")
@@ -179,7 +184,7 @@ final class ReleaseGateUITests: XCTestCase {
     }
 
     @MainActor
-    private func reachSafely(_ element: XCUIElement, in app: XCUIApplication, strokes: Int) -> Bool {
+    private func reachSafely(_ element: XCUIElement, in app: XCUIApplication, strokes: Int, searchUp: Bool = false) -> Bool {
         for _ in 0..<strokes {
             if fullyVisible(element, in: app) { return true }
             let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 4 : app.frame.minY + 24
@@ -187,7 +192,7 @@ final class ReleaseGateUITests: XCTestCase {
             let scrollView = app.scrollViews.firstMatch
             let surface = scrollView.exists ? scrollView : app.windows.firstMatch
             let frame = element.exists ? element.frame : .zero
-            let scrollBack = !frame.isEmpty && frame.midY < top
+            let scrollBack = frame.isEmpty ? searchUp : frame.midY < top
             let start = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.87, dy: scrollBack ? 0.30 : 0.76))
             let end = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.87, dy: scrollBack ? 0.76 : 0.30))
             start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
