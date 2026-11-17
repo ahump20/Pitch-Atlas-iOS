@@ -95,9 +95,13 @@ final class AppReviewSafetyUITests: XCTestCase {
         for _ in 0..<strokes {
             if fullyVisible(element, in: app) { return true }
             let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 4 : app.frame.minY + 24
-            let scrollBack = element.exists && element.frame.minY < top
-            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.3 : 0.78))
-            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.78 : 0.3))
+            // In iPad compatibility mode the scroll view occupies only the phone window.
+            let scrollView = app.scrollViews.firstMatch
+            let surface = scrollView.exists ? scrollView : app.windows.firstMatch
+            let frame = element.exists ? element.frame : .zero
+            let scrollBack = !frame.isEmpty && frame.midY < top
+            let start = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.87, dy: scrollBack ? 0.30 : 0.76))
+            let end = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.87, dy: scrollBack ? 0.76 : 0.30))
             start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
         }
         return fullyVisible(element, in: app)

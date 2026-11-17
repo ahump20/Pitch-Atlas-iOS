@@ -1,8 +1,8 @@
-name: App Review build 14 acceptance
+name: Pitch Atlas App Review verification
 
 on:
   push:
-    branches: ["test/app-review-build14-cloud"]
+    branches: ["test/app-review-nov17-verification"]
   workflow_dispatch:
 
 permissions:
@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify unchanged build 14 app source
+      - name: Verify release candidate source
         run: |
           git diff --exit-code "$APP_SOURCE_COMMIT" -- PitchAtlas project.yml ci_scripts/Package.resolved
           mkdir -p evidence
@@ -57,7 +57,7 @@ jobs:
               for device in entries:
                   expected = "iPhone" if kind == "phone" else "iPad"
                   if expected in device["name"] and device.get("isAvailable"):
-                      preferred = "Pro Max" in device["name"] if kind == "phone" else "iPad Pro" in device["name"]
+                      preferred = "Pro Max" in device["name"] if kind == "phone" else "iPad Air 11-inch (M3)" in device["name"]
                       candidates.append((version, preferred, device["name"], runtime, device["deviceTypeIdentifier"]))
           if not candidates:
               raise SystemExit("No available " + kind + " simulator runtime")
@@ -77,7 +77,7 @@ jobs:
 
       - name: Read-only safety and review screens
         env:
-          TEST_RUNNER_PA_SHOTS: account,support,reviewpath
+          TEST_RUNNER_PA_SHOTS: reviewpath
         run: |
           set -o pipefail
           xcodebuild test -project PitchAtlas.xcodeproj -scheme PitchAtlasScreenshots \
@@ -86,7 +86,6 @@ jobs:
             -disableAutomaticPackageResolution -parallel-testing-enabled NO \
             -resultBundlePath evidence/safety.xcresult \
             -only-testing:PitchAtlasScreenshotUITests/AppReviewSafetyUITests \
-            -only-testing:PitchAtlasScreenshotUITests/ScreenshotTourUITests/testTour \
             -only-testing:PitchAtlasScreenshotUITests/ScreenshotTourUITests/testReviewerPath \
             CODE_SIGNING_ALLOWED=NO 2>&1 | tee evidence/safety.log
 

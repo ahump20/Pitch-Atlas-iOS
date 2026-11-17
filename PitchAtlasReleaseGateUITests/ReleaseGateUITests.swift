@@ -83,11 +83,18 @@ final class ReleaseGateUITests: XCTestCase {
         typeName(placeholder("e.g. RHP_threequarter"))
         let fileNote = app.buttons.matching(NSPredicate(format: "label BEGINSWITH[c] %@", "File field note")).firstMatch
         XCTAssertTrue(reach(fileNote, strokes: 6), "File field note not found")
+        XCTAssertTrue(fileNote.isEnabled, "The completed field note form must enable submission")
         fileNote.tap()
-        XCTAssertTrue(
-            app.staticTexts["Sent for review ✓ · it stays private until approved."].waitForExistence(timeout: 20),
-            "The field note was not accepted by the server within 20s"
-        )
+        let receipt = app.staticTexts["Sent for review ✓ · it stays private until approved."]
+        if !receipt.waitForExistence(timeout: 20) {
+            let attachment = XCTAttachment(screenshot: app.screenshot())
+            attachment.name = "Field note after submission"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            let failures = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH[c] %@ OR label BEGINSWITH[c] %@", "Could not", "Couldn’t"))
+            XCTFail("Missing field note receipt. Visible errors: \(failures.allElementsBoundByIndex.map(\.label))")
+            return
+        }
 
         // 2. A discussion post.
         let drawer = app.buttons["discussion-drawer"]
@@ -176,9 +183,13 @@ final class ReleaseGateUITests: XCTestCase {
         for _ in 0..<strokes {
             if fullyVisible(element, in: app) { return true }
             let top = app.navigationBars.firstMatch.exists ? app.navigationBars.firstMatch.frame.maxY + 4 : app.frame.minY + 24
-            let scrollBack = element.exists && element.frame.minY < top
-            let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.3 : 0.78))
-            let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.94, dy: scrollBack ? 0.78 : 0.3))
+            // In iPad compatibility mode the scroll view occupies only the phone window.
+            let scrollView = app.scrollViews.firstMatch
+            let surface = scrollView.exists ? scrollView : app.windows.firstMatch
+            let frame = element.exists ? element.frame : .zero
+            let scrollBack = !frame.isEmpty && frame.midY < top
+            let start = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.87, dy: scrollBack ? 0.30 : 0.76))
+            let end = surface.coordinate(withNormalizedOffset: CGVector(dx: 0.87, dy: scrollBack ? 0.76 : 0.30))
             start.press(forDuration: 0.05, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
         }
         return fullyVisible(element, in: app)
