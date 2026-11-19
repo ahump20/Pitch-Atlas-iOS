@@ -26,9 +26,9 @@ enum CraftsmenHallReads {
         featuredSlugs.compactMap { slug in items.first { $0.craftsmanSlug == slug } }
     }
 
-    /// MediaFrame's provider line.
-    static func frameLabel(_ item: CraftsmanMediaItem) -> String {
-        item.kind == "tiktok" ? "TikTok embed" : "X embed"
+    /// Publisher of the teaching clip linked from a pitcher's file.
+    static func providerName(_ item: CraftsmanMediaItem) -> String {
+        item.kind == "tiktok" ? "TikTok" : "X"
     }
 }
 

@@ -119,6 +119,10 @@ struct CraftsmanDetailView: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: 54 * 0.56 * 18, alignment: .leading)
                 .padding(.top, 20)
+            if let photo = CraftsmanPhoto.catalog[craftsman.slug] {
+                CraftsmanPhotoFigure(photo: photo)
+                    .padding(.top, 24)
+            }
             signatureChip.padding(.top, 28)
             if let pitch {
                 NavigationLink { PitchDetailView(entry: pitch, opensAt: .grip) } label: {

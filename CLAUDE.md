@@ -16,7 +16,7 @@ Native SwiftUI iPhone app for **Pitch Atlas** — a sourced, interactive referen
 - **No mock data, no fabrication.** No `Math.random`, no placeholder arrays, no invented spin/velo. The grip photos carry "not tracked data." If a real source can't be determined, stop and ask.
 - **No fabricated freshness.** Every "as of" computes from a real `retrievedAt`. No hardcoded "Updated today"/"Live".
 - **Four states on every data surface.** loading (source-tagged skeleton) / error (a reason — the seal + alt-text tile, never a blank box) / empty (a reason) / populated (data + source + tier dot).
-- **Rights-first images.** The visual actor is the seam specimen or first-party grip photography. No agency/player photos, no team/league marks, no re-hosted third-party footage.
+- **Rights-first images.** The Craftsmen hall uses credited, reuse-permitted documentary photos packaged with their source, license and crops in `Resources/craftsmen-photos`. The seam specimens and first-party grip photography remain the references for pitch technique. Keep third-party footage at its publisher and team or league marks out of app branding.
 - **Done = visitor-verified.** "Build succeeded" is not proof. Run it on the simulator/device and confirm what a user sees. For the offline promise, test in airplane mode on first launch.
 
 ## Content source of truth

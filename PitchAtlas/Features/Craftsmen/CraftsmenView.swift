@@ -133,37 +133,18 @@ struct CraftsmenView: View {
 
 // MARK: - Film filed
 
-/// CraftsmenMediaShelf: "F Film filed", the heading and its one paragraph, then
-/// a card for each featured clip that opens its craftsman's file. The clip
-/// stays at its source: the card names the provider and the date it was filed,
-/// with the seal in the well where the player would sit. Renders nothing when
-/// no clip is filed, as the site's shelf returns null.
+/// A still of each pitcher opens his file, where the original teaching clip is linked.
 struct CraftsmenFilmShelf: View {
     let items: [CraftsmanMediaItem]
 
     var body: some View {
         if !items.isEmpty {
-            VStack(alignment: .leading, spacing: 0) {
-                StageTierMarker(index: "F", label: "Film filed")
-                Text("The clip belongs under the arm.")
+            VStack(alignment: .leading, spacing: 16) {
+                Text("Teaching film")
                     .font(PitchAtlasType.font(.newsreader400, size: 36, relativeTo: .largeTitle))
-                    .tracking(em: -0.012, size: 36)
                     .foregroundStyle(PitchAtlasTheme.bone)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: 11 * 0.5665 * 36, alignment: .leading)
                     .accessibilityAddTraits(.isHeader)
-                // Verbatim, CraftsmanMedia.tsx.
-                Text("Teaching footage now files beside the craftsman when the rights posture is embed-only and the source is credited. The media stays at the source; the atlas gives it a shelf.")
-                    .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
-                    .foregroundStyle(PitchAtlasTheme.ink2)
-                    .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: 46 * 0.56 * 14, alignment: .leading)
-                    .padding(.top, 16)
-                VStack(spacing: 16) {
-                    ForEach(items) { FilmShelfCard(item: $0) }
-                }
-                .padding(.top, 32)
+                ForEach(items) { FilmShelfCard(item: $0) }
             }
             .padding(.horizontal, 20)
             .padding(.top, 56)
@@ -173,9 +154,6 @@ struct CraftsmenFilmShelf: View {
     }
 }
 
-/// One filed clip: the frame (provider, month, the seal in a 16:9 well), the
-/// arm in athletic type, the clip's title, its lede cut at three lines, and
-/// the way into the file.
 private struct FilmShelfCard: View {
     let item: CraftsmanMediaItem
     @Environment(PitchStore.self) private var store
@@ -185,70 +163,52 @@ private struct FilmShelfCard: View {
             NavigationLink(value: craftsman) { card }
                 .buttonStyle(.plain)
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(item.craftsmanName). \(item.title). \(item.lede) \(CraftsmenHallReads.frameLabel(item)), filed \(MediaShelf.monthYear(item.retrievedAt).capitalized).")
+                .accessibilityLabel("\(item.craftsmanName). \(item.title). \(item.lede) \(CraftsmenHallReads.providerName(item)), filed \(MediaShelf.monthYear(item.retrievedAt).capitalized).")
                 .accessibilityHint("Opens \(item.craftsmanName)'s file")
-                .accessibilityAddTraits(.isButton)
+                .accessibilityIdentifier("craftsmen-film-\(item.craftsmanSlug)")
         }
     }
 
     private var card: some View {
         VStack(alignment: .leading, spacing: 0) {
-            frame
-            Text(item.craftsmanName.uppercased())
-                .font(PitchAtlasType.font(.anton400, size: 22, relativeTo: .title2))
-                .foregroundStyle(PitchAtlasTheme.bone)
-                .cssLineHeight(1.25, face: .anton400, size: 22, relativeTo: .title2)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 16)
-            TightLines(item.title.uppercased(), face: .martian400, size: MonoLabel.size, lineHeight: 1,
-                       relativeTo: .caption2, trackingEm: MonoLabel.trackingEm)
-                .foregroundStyle(PitchAtlasTheme.cyan)
-                .padding(.top, 4)
-            Text(item.lede)
-                .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
-                .lineLimit(3)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.top, 12)
-            Text("Open the file →".uppercased())
-                .font(MonoLabel.font)
-                .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
-                .foregroundStyle(PitchAtlasTheme.bone2)
-                .cssLineHeight(1, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
-                .padding(.top, 16)
+            if let image = CraftsmanPhoto.catalog[item.craftsmanSlug]?.image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .accessibilityHidden(true)
+            }
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .firstTextBaseline, spacing: 12) {
+                    Text(item.craftsmanName.uppercased())
+                        .font(PitchAtlasType.font(.anton400, size: 24, relativeTo: .title2))
+                        .foregroundStyle(PitchAtlasTheme.bone)
+                    Spacer(minLength: 8)
+                    Image(systemName: "chevron.right")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(PitchAtlasTheme.bone2)
+                }
+                TightLines(item.title.uppercased(), face: .martian400, size: MonoLabel.size, lineHeight: 1,
+                           relativeTo: .caption2, trackingEm: MonoLabel.trackingEm)
+                    .foregroundStyle(PitchAtlasTheme.cyan)
+                    .padding(.top, 6)
+                Text(item.lede)
+                    .font(PitchAtlasType.font(.hanken400, size: 14, relativeTo: .subheadline))
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+                    .cssLineHeight(1.625, face: .hanken400, size: 14, relativeTo: .subheadline)
+                    .lineLimit(3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 12)
+                Text("\(CraftsmenHallReads.providerName(item)) · filed \(MediaShelf.monthYear(item.retrievedAt))".uppercased())
+                    .font(MonoLabel.font)
+                    .foregroundStyle(PitchAtlasTheme.bone2)
+                    .padding(.top, 12)
+            }
+            .padding(17)
         }
-        .padding(17)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(RoundedRectangle(cornerRadius: 6).fill(PitchAtlasTheme.press))
+        .background(PitchAtlasTheme.press)
+        .clipShape(RoundedRectangle(cornerRadius: 6))
         .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
         .contentShape(RoundedRectangle(cornerRadius: 6))
-    }
-
-    /// MediaFrame: the provider and the month over the well.
-    private var frame: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(alignment: .firstTextBaseline, spacing: 12) {
-                Text(CraftsmenHallReads.frameLabel(item).uppercased())
-                    .foregroundStyle(PitchAtlasTheme.cyan)
-                Spacer(minLength: 0)
-                Text(MediaShelf.monthYear(item.retrievedAt))
-                    .foregroundStyle(PitchAtlasTheme.bone2.opacity(0.7))
-            }
-            .font(MonoLabel.font)
-            .tracking(em: MonoLabel.trackingEm, size: MonoLabel.size)
-            .lineLimit(1)
-            .cssLineHeight(1, face: .martian400, size: MonoLabel.size, relativeTo: .caption2)
-            // The site paints no ground in the well (its arbitrary background
-            // class does not compile), so only the hairline and the seal show.
-            RoundedRectangle(cornerRadius: 6)
-                .strokeBorder(PitchAtlasTheme.bone.opacity(0.10), lineWidth: 1)
-                .aspectRatio(16.0 / 9.0, contentMode: .fit)
-                .overlay { ArchiveSealMark(size: 54).opacity(0.75) }
-                .accessibilityHidden(true)
-        }
-        .padding(17)
-        .background(RoundedRectangle(cornerRadius: 6).fill(ArchiveInk.filmFrame))
-        .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(PitchAtlasTheme.bone.opacity(0.15), lineWidth: 1))
     }
 }

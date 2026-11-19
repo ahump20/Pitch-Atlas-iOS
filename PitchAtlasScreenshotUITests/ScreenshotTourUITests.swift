@@ -69,6 +69,47 @@ final class ScreenshotTourUITests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testCraftsmenPhotosOffline() throws {
+        let stops = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? ""
+        try XCTSkipUnless(stops.split(separator: ",").contains("craftsmenphotos"))
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchEnvironment = ["PA_TAB": "craftsmen", "PA_OFFLINE": "1"]
+        app.launch()
+        XCTAssertTrue(app.tabBars.firstMatch.waitForExistence(timeout: 30))
+
+        func bringIntoView(_ element: XCUIElement) {
+            let height = app.frame.height
+            for _ in 0..<6 {
+                if element.exists, element.isHittable, element.frame.midY < height * 0.60 { break }
+                let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.88, dy: 0.71))
+                let end = app.coordinate(withNormalizedOffset: CGVector(dx: 0.88, dy: 0.45))
+                start.press(forDuration: 0.08, thenDragTo: end, withVelocity: .slow, thenHoldForDuration: 0.3)
+            }
+        }
+        func photograph(_ name: String) {
+            let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+            shot.name = "craftsmenphotos-\(name)"
+            shot.lifetime = .keepAlways
+            add(shot)
+        }
+        let ryan = app.descendants(matching: .any)["craftsmen-film-nolan-ryan"].firstMatch
+        bringIntoView(ryan)
+        XCTAssertTrue(ryan.isHittable)
+        photograph("01")
+        ryan.tap()
+        let photo = app.images["craftsman-photo-nolan-ryan"]
+        XCTAssertTrue(photo.waitForExistence(timeout: 10))
+        XCTAssertTrue(photo.label.contains("Nolan Ryan"))
+        let credit = app.buttons.matching(NSPredicate(format: "label CONTAINS %@", "Chuck Andersen")).firstMatch
+        bringIntoView(credit)
+        XCTAssertTrue(credit.isHittable)
+        credit.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["CC BY 2.0"].firstMatch.waitForExistence(timeout: 5))
+        photograph("02")
+    }
+
     /// The Flight Lab's throw: the ball mid-flight, then down. Runs with the tour
     /// only when PA_SHOTS names "flightthrow".
     @MainActor

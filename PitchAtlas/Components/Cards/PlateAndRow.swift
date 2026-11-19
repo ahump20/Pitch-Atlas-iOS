@@ -598,8 +598,7 @@ enum CraftsmanPlate {
     }
 }
 
-/// A craftsman, filed as a Tier B plate. When the atlas has his signature pitch on
-/// file, its seam schematic is the card's actor — never a player likeness.
+/// A pitcher's portrait identifies the file. Undocumented faces fall back to the signature pitch when available.
 struct CraftsmanCard: View {
     let craftsman: Craftsman
     @Environment(PitchStore.self) private var store
@@ -618,14 +617,18 @@ struct CraftsmanCard: View {
                 if let span = CraftsmanPlate.span(craftsman) { EraBand(span: span, accent: accent) }
             }
             HStack(spacing: 16) {
-                Group {
-                    if let signature {
-                        SeamBall(motion: signature.motion, size: 44, showMovement: false, showsLacing: false)
-                    } else {
-                        ArchiveSealMark(size: 48).opacity(0.8)
-                    }
+                if let thumbnail = CraftsmanPhoto.catalog[craftsman.slug]?.thumbnail {
+                    Image(uiImage: thumbnail)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 64, height: 64)
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                        .accessibilityHidden(true)
+                } else if let signature {
+                    SeamBall(motion: signature.motion, size: 44, showMovement: false, showsLacing: false)
+                        .frame(width: 56, height: 56)
+                        .accessibilityHidden(true)
                 }
-                .frame(width: 56, height: 56)
                 VStack(alignment: .leading, spacing: 6) {
                     // .rfx-platetitle under text-2xl: 24 on a 32 line, tighter than Anton's own box
                     TightLines(craftsman.name.uppercased(), face: .anton400, size: 24, lineHeight: 32.0 / 24.0,
