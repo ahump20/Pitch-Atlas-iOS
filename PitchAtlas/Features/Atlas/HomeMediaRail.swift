@@ -182,7 +182,7 @@ private struct MediaCard: View {
     }
 
     /// `.archive-media-player`: a black well with a cyan lamp. Until the reader asks,
-    /// it holds the seal and the provider's name; then TikTok's own player, or the
+    /// it shows the provider action; then TikTok's own player, or the
     /// reason it did not load. An X post opens on X.
     private var well: some View {
         Group {
@@ -220,24 +220,26 @@ private struct MediaCard: View {
                     .padding(.horizontal, 24)
                 }
             } else if player != nil {
-                Button { phase = .loading } label: { placeholder("Load from \(provider)") }
+                Button { phase = .loading } label: { placeholder("Load from \(provider)", symbol: "play.circle") }
                     .buttonStyle(.plain)
                     .accessibilityLabel("Load \(item.title) from \(provider)")
                     .accessibilityHint("Plays the post in \(provider)'s player")
             } else if !removed, let original = URL(string: item.canonicalUrl) {
-                Link(destination: original) { placeholder("Open on \(provider) ↗\u{FE0E}") }
+                Link(destination: original) { placeholder("Open on \(provider) ↗\u{FE0E}", symbol: "arrow.up.right.square") }
                     .accessibilityLabel("Open \(item.title) on \(provider)")
                     .accessibilityHint("Opens outside the app")
             } else {
-                placeholder("Original post unavailable")
+                placeholder("Original post unavailable", symbol: "video.slash")
             }
         }
     }
 
-    private func placeholder(_ words: String) -> some View {
+    private func placeholder(_ words: String, symbol: String) -> some View {
         HStack(spacing: 12) {
-            BrandSealMark(size: 24, shadow: false)
-                .opacity(0.7)
+            Image(systemName: symbol)
+                .font(.title3)
+                .foregroundStyle(PitchAtlasTheme.cyan)
+                .accessibilityHidden(true)
             Text(words)
                 .font(PitchAtlasType.font(.martian400, size: 10, relativeTo: .caption2))
                 .textCase(.uppercase)

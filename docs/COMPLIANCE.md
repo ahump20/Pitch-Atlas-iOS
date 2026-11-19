@@ -9,6 +9,7 @@ Pitch Atlas is a native SwiftUI iPhone app with a bundled reference manual and a
 - Reading needs no account and does not create one.
 - Posting field notes, discussion posts, replies, and public-post suggestions requires the versioned Community Terms and EULA plus confirmation that the contributor is 18 or older. Old consent does not satisfy the new gate.
 - The first write creates an anonymous contributor record through `AuthSessionStore.ensureSessionForWrite()`. Apple or email sign-in can claim that record. Reporting, blocking, and contacting the developer do not require contribution consent or a claimed account.
+- The built-in Craftsmen photographs are bundled editorial images. The in-app pitcher files identify the photographer or archive, link to the original, and show the license and crop notice. The [photo files and credits](../PitchAtlas/Resources/craftsmen-photos) are available under the respective source licenses, including the cropped copies.
 - Image uploads require a claimed account, contribution consent, and image upload terms. The backend enforces claimed-account upload access. Images remain private until approved.
 - Public-post suggestions are private review submissions and do not publish automatically. The suggestion form now includes the same terms and 18+ gate.
 - Account deletion works for anonymous and claimed accounts through the JWT-protected `delete-account` Edge Function.

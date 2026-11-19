@@ -54,7 +54,7 @@ final class CraftsmenHallTests: XCTestCase {
     func testTheFilmShelfFeaturesRyanRiveraSkenesFirstClipEach() {
         let featured = CraftsmenHallReads.featuredFilm(store.craftsmanMedia)
         XCTAssertEqual(featured.map(\.craftsmanSlug), ["nolan-ryan", "mariano-rivera", "paul-skenes"])
-        XCTAssertEqual(featured.map(CraftsmenHallReads.frameLabel), ["TikTok embed", "X embed", "TikTok embed"])
+        XCTAssertEqual(featured.map(CraftsmenHallReads.providerName), ["TikTok", "X", "TikTok"])
         XCTAssertEqual(featured.map { MediaShelf.monthYear($0.retrievedAt) }, ["JUN 2026", "JUN 2026", "JUN 2026"])
 
         let ryan = featured[0]
@@ -67,6 +67,27 @@ final class CraftsmenHallTests: XCTestCase {
         XCTAssertEqual(CraftsmenHallReads.featuredFilm([second, elsewhere, ryan]).map(\.id), ["second"],
                        "one clip per featured arm, the first filed; an arm outside the three stays off the shelf")
         XCTAssertEqual(CraftsmenHallReads.featuredFilm([]), [])
+    }
+
+    func testEveryPitcherHasACreditedBundledPhotoAndThumbnail() throws {
+        let pitchers = store.craftsmen.filter { $0.kind == .craftsman }
+        XCTAssertFalse(pitchers.isEmpty)
+        XCTAssertEqual(Set(CraftsmanPhoto.catalog.keys), Set(pitchers.map(\.slug)))
+        for pitcher in pitchers {
+            let photo = try XCTUnwrap(CraftsmanPhoto.catalog[pitcher.slug], pitcher.name)
+            let image = try XCTUnwrap(photo.image, pitcher.name)
+            let thumbnail = try XCTUnwrap(photo.thumbnail, pitcher.name)
+            XCTAssertEqual(thumbnail.size.width, thumbnail.size.height, pitcher.name)
+            XCTAssertGreaterThan(image.size.width, thumbnail.size.width, pitcher.name)
+            XCTAssertEqual(photo.source.scheme, "https")
+            XCTAssertFalse(photo.credit.isEmpty)
+            XCTAssertFalse(photo.title.isEmpty)
+            XCTAssertFalse(photo.alt.isEmpty)
+            if photo.license != "Public domain" { XCTAssertEqual(photo.licenseURL?.scheme, "https") }
+            if CraftsmenHallReads.featuredSlugs.contains(pitcher.slug) {
+                XCTAssertEqual(image.size.width / image.size.height, 16.0 / 9.0, accuracy: 0.01)
+            }
+        }
     }
 
     // MARK: - A craftsman's file
