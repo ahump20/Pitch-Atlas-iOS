@@ -71,8 +71,9 @@ final class ScreenshotTourUITests: XCTestCase {
 
     @MainActor
     func testCraftsmenPhotosOffline() throws {
-        let stops = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? ""
-        try XCTSkipUnless(stops.split(separator: ",").contains("craftsmenphotos"))
+        let selection = ProcessInfo.processInfo.environment["PA_SHOTS"] ?? "all"
+        let stops = selection.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+        try XCTSkipUnless(stops.isEmpty || stops.contains("all") || stops.contains("craftsmen"))
         continueAfterFailure = false
         let app = XCUIApplication()
         app.launchEnvironment = ["PA_TAB": "craftsmen", "PA_OFFLINE": "1"]
