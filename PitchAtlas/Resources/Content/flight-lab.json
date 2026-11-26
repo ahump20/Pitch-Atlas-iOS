@@ -345,6 +345,21 @@
       }
     },
     {
+      "label": "Knuckler: the seams push it",
+      "claim": {
+        "value": "A ball that barely turns is pushed around by its seams, with a force that beats four times a turn; under half a turn on the way in makes the wildest path.",
+        "source": {
+          "id": "sb-nelson-strauss-knuckleball",
+          "label": "Nicholas J. Nelson and Eric Strauss, Dynamical Chaos in a Simple Model of a Knuckleball (arXiv:2009.05140)",
+          "url": "https://arxiv.org/abs/2009.05140",
+          "retrievedAt": "2026-10-28"
+        },
+        "confidence": "reputable-analysis",
+        "approximate": true,
+        "note": "A baseball model at big-league speed. The lab runs it on a 12 in softball at slow-pitch speed, so its dance is a model, not a measurement."
+      }
+    },
+    {
       "label": "Lift and drag: baseball fits",
       "claim": {
         "value": "The flight uses a constant drag coefficient and a spin-dependent lift fit from baseball aerodynamics, applied to a 12 in softball.",

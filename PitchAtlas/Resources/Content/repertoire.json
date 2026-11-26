@@ -893,34 +893,32 @@
       "family": "breaking",
       "status": "standard",
       "aka": [
-        "bullet slider",
-        "no-dot slider"
+        "bullet slider"
       ],
       "grip": {
-        "value": "The hand stays on the side of the ball so it leaves the fingers spinning end-over-end like a thrown football, producing bullet spin rather than the sideways tilt of a typical slider.",
+        "value": "Bullet spin describes what the release produces, not a specific finger placement. The ball leaves with its spin axis close to the direction of flight.",
         "source": {
           "id": "tht-gyro-physics",
-          "label": "The Hardball Times, The Physics of the Gyro Pitch (Alan Nathan)",
+          "label": "The Hardball Times, The Physics of the Gyro Pitch (David Kagan)",
           "url": "https://tht.fangraphs.com/the-physics-of-the-gyro-pitch/",
           "retrievedAt": "2026-06-04"
         },
         "confidence": "reputable-analysis"
       },
       "movement": {
-        "value": "Because the spin axis points toward the plate, almost none of the spin generates Magnus force, so the pitch has near-zero break and simply falls late and hard; hitters describe it as a slider that disappears, and the absence of the usual visible red dot makes it the prototype swing-and-miss slider, the way Sergio Romo's looks like a fastball coming in.",
+        "value": "Spin aligned with the direction of flight contributes no Magnus force. Any spin across that direction can still bend the pitch, so a gyro slider can move and its exact break varies.",
         "source": {
-          "id": "fangraphs-romo-no-dot",
-          "label": "FanGraphs, Sergio Romo's No-Dot Slider Revealed",
-          "url": "https://blogs.fangraphs.com/sergio-romos-no-dot-slider-revealed/",
+          "id": "tht-gyro-physics",
+          "label": "The Hardball Times, The Physics of the Gyro Pitch (David Kagan)",
+          "url": "https://tht.fangraphs.com/the-physics-of-the-gyro-pitch/",
           "retrievedAt": "2026-06-04"
         },
         "confidence": "reputable-analysis"
       },
-      "notableThrowers": "Sergio Romo (the no-dot slider)",
-      "plain": "A slider that barely breaks. The ball spins end-over-end like a thrown football, pointed at the plate, so almost none of that spin bends it. It just looks like a fastball, then drops late and hard. The missing red dot is why hitters swing right through it.",
+      "plain": "A gyro slider spins more like a football spiral than a somersault. With its spin axis close to the direction it travels, less of its spin bends its path. That does not mean it flies straight.",
       "studyFirstSlug": "slider",
       "contextNote": {
-        "value": "This is the bullet-spin end of the slider family. The filed Slider is the grip to study; the gyro version trades the slider's tilt for end-over-end spin that barely breaks and just disappears late.",
+        "value": "Study the filed Slider grip first. Sergio Romo’s slider is a separate example: FanGraphs reported no visible red dot and substantial sideways break. The missing dot does not establish a gyro spin axis.",
         "source": {
           "id": "fangraphs-romo-no-dot",
           "label": "FanGraphs, Sergio Romo's No-Dot Slider Revealed",
@@ -1482,7 +1480,7 @@
         "value": "Because the spin axis points toward the plate, the ball generates almost no Magnus force — so a correctly thrown gyroball gets little to no lift and travels essentially straight, dropping mainly under gravity. RIKEN's simulations are what established this near-zero-deflection behavior.",
         "source": {
           "id": "tht-gyro-physics",
-          "label": "The Hardball Times, The Physics of the Gyro Pitch (Alan Nathan)",
+          "label": "The Hardball Times, The Physics of the Gyro Pitch (David Kagan)",
           "url": "https://tht.fangraphs.com/the-physics-of-the-gyro-pitch/",
           "retrievedAt": "2026-06-04"
         },

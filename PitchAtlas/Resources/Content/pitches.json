@@ -2434,7 +2434,7 @@
           "value": "The axis points largely toward the plate, bullet spin, so much of the spin is gyroscopic and does no Magnus work. Tracking reads that as low active spin: most of the turn is wasted as a spiral. For a right-hander the tilt sits late in the clock, biased to the glove side.",
           "source": {
             "id": "tht-gyro-physics",
-            "label": "The Hardball Times, The Physics of the Gyro Pitch (Alan Nathan)",
+            "label": "The Hardball Times, The Physics of the Gyro Pitch (David Kagan)",
             "url": "https://tht.fangraphs.com/the-physics-of-the-gyro-pitch/",
             "retrievedAt": "2026-06-04"
           },
@@ -2457,7 +2457,7 @@
           "value": "A four-seam spins backspin, its axis sideways to flight, so the Magnus force pushes up and it rides. A gyro slider spins like a thrown football, its axis pointed at the catcher, so the spin makes almost no Magnus force. With little lift to fight gravity it drops more than the fastball, and the small tilt left in the axis bends it glove-side, late and short. Same arm, opposite Magnus budget.",
           "source": {
             "id": "tht-gyro-physics",
-            "label": "The Hardball Times, The Physics of the Gyro Pitch (Alan Nathan)",
+            "label": "The Hardball Times, The Physics of the Gyro Pitch (David Kagan)",
             "url": "https://tht.fangraphs.com/the-physics-of-the-gyro-pitch/",
             "retrievedAt": "2026-06-04"
           },
