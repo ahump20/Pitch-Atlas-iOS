@@ -1589,6 +1589,30 @@
     "retrievedAt": "2026-10-24"
   },
   {
+    "id": "sb-slopitchcentral-knuckler",
+    "label": "Slo-Pitch Central glossary — Knuckler (minimal or no spin; moves unpredictably)",
+    "url": "https://slopitchcentral.com/glossary/knuckler",
+    "retrievedAt": "2026-10-28"
+  },
+  {
+    "id": "sb-slopitchcentral-backspin",
+    "label": "Slo-Pitch Central glossary — Backspin pitch (slower descent; weak contact or pop-ups)",
+    "url": "https://slopitchcentral.com/glossary/backspin-pitch",
+    "retrievedAt": "2026-10-28"
+  },
+  {
+    "id": "sb-slopitchcentral-tumbler",
+    "label": "Slo-Pitch Central glossary — Tumbler (forward spin) pitch (often drops more sharply)",
+    "url": "https://slopitchcentral.com/glossary/tumbler-forward-spin-pitch",
+    "retrievedAt": "2026-10-28"
+  },
+  {
+    "id": "sb-nelson-strauss-knuckleball",
+    "label": "Nicholas J. Nelson and Eric Strauss, Dynamical Chaos in a Simple Model of a Knuckleball (arXiv:2009.05140)",
+    "url": "https://arxiv.org/abs/2009.05140",
+    "retrievedAt": "2026-10-28"
+  },
+  {
     "id": "sb-abbott-wikipedia",
     "label": "Wikipedia — Monica Abbott (Tennessee NCAA records, Guinness pitch, Olympic silver 2008 & 2020)",
     "url": "https://en.wikipedia.org/wiki/Monica_Abbott",
